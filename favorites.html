@@ -524,7 +524,8 @@
       return;
     }
 
-    countEl.textContent = favProducts.length + ' items';
+    countEl.textContent =
+    favProducts.length + (favProducts.length === 1 ? ' item' : ' items');
     grid.innerHTML = '';
 
     favProducts.forEach(p => {
