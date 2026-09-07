@@ -2278,60 +2278,6 @@
       border: none;
       border-radius: 10px;
       background: linear-gradient(135deg, #D4AF37, #C9A030);
-      color: #0A0A0A;
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: auto;
-      font-family: "Poppins", sans-serif;
-      letter-spacing: 0.3px;
-      box-shadow: 0 2px 15px rgba(212, 175, 55, 0.2);
-    }
-    .fav-grid .best-card button:last-child:hover {
-      background: linear-gradient(135deg, #E8C84A, #D4AF37);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.35);
-    }
-
-    /* ✅ Favorites Page - Remove Heart Button From Cards */
-    .fav-grid .best-card .favorite-btn {
-      display: none !important;
-    }
-
-    /* Mobile Responsive - 2 columns */
-    @media (max-width: 768px) {
-      .fav-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-      }
-      .fav-grid .best-card img {
-        height: 120px;
-      }
-      .fav-grid .best-card h3 {
-        font-size: 12px;
-        min-height: 30px;
-      }
-      .fav-grid .best-card .price-row .new {
-        font-size: 15px;
-      }
-      .fav-grid .best-card button:last-child {
-        height: 34px;
-        font-size: 11px;
-      }
-    }
-    @media (max-width: 450px) {
-      .fav-grid {
-        gap: 8px;
-      }
-      .fav-grid .best-card {
-        padding: 10px 8px;
-      }
-      .fav-grid .best-card img {
-        height: 100px;
-        padding: 6px;
-      }
-    }
 
 
 
