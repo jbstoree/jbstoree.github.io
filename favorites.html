@@ -11,185 +11,470 @@
        Favorites Page - Premium Card Fix
        ========================================== */
     
-    /* Header Center Fix */
-    .favorites-page .page-head {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      border-bottom: 2px solid rgba(212, 175, 55, 0.1);
-      padding-bottom: 18px;
-      margin-bottom: 32px;
-    }
-    .favorites-page .page-head h1 {
-      margin: 0;
-      font-size: 28px;
-      font-weight: 700;
-      color: #fff;
-      text-align: center;
-      letter-spacing: 0.5px;
-    }
-    .favorites-page .page-head h1::before {
-      content: '❤️ ';
-      font-size: 28px;
-    }
-    .favorites-page .page-head .fav-count {
-      color: #d4af37;
-      font-size: 14px;
-      font-weight: 600;
-      padding: 4px 20px;
-      border: 1px solid rgba(212, 175, 55, 0.2);
-      border-radius: 30px;
-      background: rgba(212, 175, 55, 0.04);
-      text-align: center;
-    }
+    
+      /* ==========================================
+   FAVORITES PAGE - PERFECT FIT
+   ========================================== */
 
-    /* ---- Premium Grid & Cards ---- */
+.favorites-page {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 12px 100px;
+}
+
+/* ---------- Header ---------- */
+
+.favorites-page .page-head {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    padding: 8px 0 18px;
+    margin: 0 0 24px;
+
+    border-bottom: 2px solid rgba(212, 175, 55, 0.12);
+}
+
+.favorites-page .page-head h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #222;
+    text-align: center;
+    line-height: 1.2;
+    letter-spacing: 0.5px;
+}
+
+.favorites-page .page-head h1::before {
+    content: "❤️ ";
+    font-size: 28px;
+}
+
+.favorites-page .page-head .fav-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 120px;
+    box-sizing: border-box;
+
+    color: #c49b18;
+    font-size: 14px;
+    font-weight: 600;
+
+    padding: 6px 18px;
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: 30px;
+    background: rgba(212, 175, 55, 0.04);
+}
+
+/* ---------- Product Grid ---------- */
+
+.fav-grid {
+    width: 100%;
+    box-sizing: border-box;
+
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+
+    align-items: stretch;
+}
+
+/* ---------- Product Card ---------- */
+
+.fav-grid .best-card {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    padding: 12px;
+    border-radius: 16px;
+
+    background: linear-gradient(145deg, #1a1a1a, #111111);
+
+    border: 1px solid #ffd700 !important;
+
+    box-shadow: 0 0 4px rgba(255, 215, 0, 0.05) !important;
+
+    overflow: hidden;
+}
+
+/* ---------- Product Image ---------- */
+
+.fav-grid .best-card img {
+    display: block;
+
+    width: 100%;
+    height: 150px;
+
+    box-sizing: border-box;
+
+    object-fit: contain;
+
+    padding: 8px;
+
+    background: #0a0a0a;
+    border-radius: 10px;
+
+    margin: 0 0 8px;
+}
+
+/* ---------- Product Name ---------- */
+
+.fav-grid .best-card h3 {
+    width: 100%;
+    box-sizing: border-box;
+
+    margin: 3px 0 2px;
+
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.3;
+
+    color: #fff;
+
+    min-height: 36px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+/* ---------- Brand ---------- */
+
+.fav-grid .best-card .brand {
+    margin: 2px 0;
+
+    font-size: 12px;
+    line-height: 1.3;
+
+    color: #999;
+}
+
+/* ---------- Price ---------- */
+
+.fav-grid .best-card .price-row {
+    width: 100%;
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin: 8px 0 8px;
+
+    flex-wrap: wrap;
+}
+
+.fav-grid .best-card .price-row .new {
+    color: #d4af37;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.fav-grid .best-card .price-row .old {
+    color: #777;
+    font-size: 13px;
+    text-decoration: line-through;
+}
+
+/* ---------- View Details ---------- */
+
+.fav-grid .best-card button:last-child {
+    width: 100%;
+    height: 40px;
+
+    box-sizing: border-box;
+
+    margin-top: auto;
+
+    border: none;
+    border-radius: 10px;
+
+    background: linear-gradient(135deg, #d4af37, #c9a030);
+
+    color: #0a0a0a;
+
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+/* Hide heart inside favorite cards */
+
+.fav-grid .best-card .favorite-btn {
+    display: none !important;
+}
+
+/* ==========================================
+   EMPTY FAVORITES
+   ========================================== */
+
+.fav-grid .fav-empty {
+    width: 100%;
+    box-sizing: border-box;
+
+    grid-column: 1 / -1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 55px 20px;
+    margin: 0 auto;
+}
+
+.fav-grid .fav-empty .empty-icon {
+    display: block;
+
+    font-size: 52px;
+    line-height: 1;
+
+    margin-bottom: 18px;
+}
+
+.fav-grid .fav-empty h2 {
+    margin: 0 0 10px;
+
+    color: #222;
+
+    font-size: 25px;
+    font-weight: 700;
+
+    line-height: 1.25;
+}
+
+.fav-grid .fav-empty p {
+    max-width: 360px;
+
+    margin: 0 0 22px;
+
+    color: #555;
+
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.fav-grid .fav-empty .shop-now-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 170px;
+    height: 42px;
+
+    padding: 0 22px;
+
+    box-sizing: border-box;
+
+    border-radius: 10px;
+
+    background: linear-gradient(135deg, #d4af37, #c9a030);
+
+    color: #111 !important;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+}
+
+/* ==========================================
+   TABLET
+   ========================================== */
+
+@media (max-width: 900px) {
+
     .fav-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 22px;
-      width: 100%;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
     }
 
-    /* Card Base - Gold Ring, Dark Glass */
+}
+
+/* ==========================================
+   MOBILE
+   ========================================== */
+
+@media (max-width: 768px) {
+
+    .favorites-page {
+        padding: 0 8px 95px;
+    }
+
+    .favorites-page .page-head {
+        padding: 6px 0 16px;
+        margin-bottom: 18px;
+    }
+
+    .favorites-page .page-head h1 {
+        font-size: 25px;
+    }
+
+    .favorites-page .page-head h1::before {
+        font-size: 25px;
+    }
+
+    .favorites-page .page-head .fav-count {
+        min-width: 110px;
+        padding: 5px 16px;
+        font-size: 13px;
+    }
+
+    .fav-grid {
+        width: 100%;
+
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
+    }
+
     .fav-grid .best-card {
-      position: relative;
-      background: linear-gradient(145deg, #1A1A1A, #111111);
-      border-radius: 16px;
-      padding: 16px 14px 16px;
-      border: 1px solid #FFD700 !important;
-      box-shadow: 0 0 4px rgba(255, 215, 0, 0.05) !important;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      transition: all 0.3s ease;
-      width: 100%;
+        width: 100%;
+        min-width: 0;
+
+        padding: 8px;
+
+        border-radius: 14px;
     }
 
-    .fav-grid .best-card:hover {
-      transform: translateY(-4px);
-      border-color: #FFD700 !important;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(212, 175, 55, 0.05) !important;
-    }
-
-    /* Image Fix - Perfect size & centering */
     .fav-grid .best-card img {
-      width: 100%;
-      height: 150px;
-      object-fit: contain;
-      padding: 10px;
-      background: #0A0A0A;
-      border-radius: 10px;
-      margin-bottom: 8px;
-      transition: transform 0.3s ease;
-    }
-    .fav-grid .best-card:hover img {
-      transform: scale(1.04);
-    }
+        width: 100%;
+        height: 115px;
 
-    /* Product Name */
-    .fav-grid .best-card h3 {
-      font-size: 14px;
-      font-weight: 600;
-      color: #FFFFFF;
-      margin: 4px 0 2px;
-      line-height: 1.3;
-      min-height: 38px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    /* Brand */
-    .fav-grid .best-card .brand {
-      color: #999;
-      font-size: 12px;
-      margin: 2px 0;
-    }
-
-    /* Price Row */
-    .fav-grid .best-card .price-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 8px 0 6px;
-      flex-wrap: wrap;
-    }
-    .fav-grid .best-card .price-row .new {
-      color: #D4AF37;
-      font-size: 18px;
-      font-weight: 700;
-    }
-    .fav-grid .best-card .price-row .old {
-      color: #777;
-      text-decoration: line-through;
-      font-size: 13px;
-    }
-
-    /* View Details Button - Sticky Bottom */
-    .fav-grid .best-card button:last-child {
-      width: 100%;
-      height: 40px;
-      border: none;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #D4AF37, #C9A030);
-      color: #0A0A0A;
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: auto;
-      font-family: "Poppins", sans-serif;
-      letter-spacing: 0.3px;
-      box-shadow: 0 2px 15px rgba(212, 175, 55, 0.2);
-    }
-    .fav-grid .best-card button:last-child:hover {
-      background: linear-gradient(135deg, #E8C84A, #D4AF37);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.35);
-    }
-
-    /* ✅ Favorites Page - Remove Heart Button From Cards */
-    .fav-grid .best-card .favorite-btn {
-      display: none !important;
-    }
-
-    /* Mobile Responsive - 2 columns */
-    @media (max-width: 768px) {
-      .fav-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-      }
-      .fav-grid .best-card img {
-        height: 120px;
-      }
-      .fav-grid .best-card h3 {
-        font-size: 12px;
-        min-height: 30px;
-      }
-      .fav-grid .best-card .price-row .new {
-        font-size: 15px;
-      }
-      .fav-grid .best-card button:last-child {
-        height: 34px;
-        font-size: 11px;
-      }
-    }
-    @media (max-width: 450px) {
-      .fav-grid {
-        gap: 8px;
-      }
-      .fav-grid .best-card {
-        padding: 10px 8px;
-      }
-      .fav-grid .best-card img {
-        height: 100px;
         padding: 6px;
-      }
+
+        border-radius: 9px;
     }
+
+    .fav-grid .best-card h3 {
+        font-size: 12px;
+        min-height: 31px;
+
+        margin-top: 3px;
+    }
+
+    .fav-grid .best-card .brand {
+        font-size: 11px;
+    }
+
+    .fav-grid .best-card .price-row {
+        gap: 5px;
+        margin: 6px 0;
+    }
+
+    .fav-grid .best-card .price-row .new {
+        font-size: 15px;
+    }
+
+    .fav-grid .best-card .price-row .old {
+        font-size: 11px;
+    }
+
+    .fav-grid .best-card button:last-child {
+        height: 35px;
+
+        border-radius: 9px;
+
+        font-size: 11px;
+    }
+
+    /* Empty state */
+
+    .fav-grid .fav-empty {
+        padding: 55px 12px;
+    }
+
+    .fav-grid .fav-empty .empty-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+    }
+
+    .fav-grid .fav-empty h2 {
+        font-size: 23px;
+    }
+
+    .fav-grid .fav-empty p {
+        font-size: 14px;
+        max-width: 320px;
+    }
+
+    .fav-grid .fav-empty .shop-now-btn {
+        min-width: 155px;
+        height: 40px;
+        font-size: 13px;
+    }
+}
+
+/* ==========================================
+   SMALL MOBILE
+   ========================================== */
+
+@media (max-width: 450px) {
+
+    .favorites-page {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+
+    .fav-grid {
+        gap: 8px;
+    }
+
+    .fav-grid .best-card {
+        padding: 7px;
+        border-radius: 13px;
+    }
+
+    .fav-grid .best-card img {
+        height: 105px;
+        padding: 5px;
+    }
+
+    .fav-grid .best-card h3 {
+        font-size: 11.5px;
+        min-height: 30px;
+    }
+
+    .fav-grid .best-card .brand {
+        font-size: 10.5px;
+    }
+
+    .fav-grid .best-card .price-row .new {
+        font-size: 14px;
+    }
+
+    .fav-grid .best-card .price-row .old {
+        font-size: 10px;
+    }
+
+    .fav-grid .best-card button:last-child {
+        height: 34px;
+        font-size: 10.5px;
+    }
+
+}
   </style>
 </head>
 <body>
