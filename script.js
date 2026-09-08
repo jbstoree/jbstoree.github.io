@@ -198,6 +198,8 @@ function displayProducts() {
   products.forEach(product => {
     const card = document.createElement("div");
     card.className = "deal-card";
+card.style.cursor = "pointer";
+card.addEventListener("click", () => viewProduct(product.id));
 
     const firstVariant = getFirstVariant(product);
     let variantHTML = '';
