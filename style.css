@@ -3180,6 +3180,13 @@
         .product-fav-btn .fa-heart {
             font-size: 18px !important;
         }
+
+      .footer-row .inline-list {
+        width: 100% !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+      }
     }
 
 
