@@ -37,24 +37,16 @@ if (slides.length > 1) {
 }
 
 // ==========================================
-// 2. ALL PRODUCTS & STATIC MAP
+// 2. ALL PRODUCTS
+// SUPABASE PRODUCTS ONLY
 // ==========================================
 
-const allProducts = [
-  ...mobileProducts,
-  ...refrigeratorProducts,
-  ...washingProducts,
-  ...acProducts,
-  ...tvProducts
-];
+const allProducts = [];
+
+console.log('Static products disabled. Waiting for Supabase products...');
 
 console.log('Total static products loaded:', allProducts.length);
 
-// ─── STATIC PRODUCTS MAP (for merging) ───
-const staticProductsMap = {};
-allProducts.forEach(p => {
-  staticProductsMap[p.id] = p;
-});
 
 // ─── MERGE FUNCTION (UPDATED to include extra fields) ───
 function mergeProduct(supabaseProduct) {
