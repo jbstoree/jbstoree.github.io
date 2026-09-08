@@ -221,11 +221,7 @@ card.addEventListener("click", () => viewProduct(product.id));
         <p class="price">₹${(product.price || 0).toLocaleString("en-IN")}</p>
         <p class="old-price">₹${(product.oldPrice || 0).toLocaleString("en-IN")}</p>
       </div>
-      <div class="deal-actions">
-        <button type="button" class="view-details-btn" onclick="viewProduct('${product.id}')">
-          🔍 View Details
-        </button>
-      </div>
+    
     `;
 
     productGrid.appendChild(card);
