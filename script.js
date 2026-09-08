@@ -43,9 +43,7 @@ if (slides.length > 1) {
 
 const allProducts = [];
 
-console.log('Static products disabled. Waiting for Supabase products...');
-
-console.log('Total static products loaded:', allProducts.length);
+console.log('Supabase products only. Waiting for products...');
 
 
 // ─── MERGE FUNCTION (UPDATED to include extra fields) ───
