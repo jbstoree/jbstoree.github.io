@@ -272,9 +272,11 @@
         if (error) throw error;
 
         if (!data || data.length === 0) {
-          console.warn('⚠️ No products found in Supabase. Keeping static data.');
-          return;
-        }
+  allProducts.splice(0, allProducts.length);
+  displayProducts();
+  console.warn('⚠️ No products found in Supabase.');
+  return;
+}
 
         if (typeof allProducts !== 'undefined' && Array.isArray(allProducts)) {
           allProducts.splice(0, allProducts.length, ...data);
