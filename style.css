@@ -2230,17 +2230,19 @@
         }
 
         .menu-drawer {
-            width: 280px;
-            right: 0;
-            left: auto;
-            transform: translateX(110%);
-            border-left: 2px solid rgba(212, 175, 55, 0.25);
-            border-right: none;
-            box-shadow: -8px 0 60px rgba(0, 0, 0, 0.06);
-        }
-        .menu-drawer.open {
-            transform: translateX(0);
-        }
+    width: 50vw;
+    max-width: 50vw;
+    right: 0;
+    left: auto;
+    transform: translateX(110%);
+    border-left: 2px solid rgba(212, 175, 55, 0.25);
+    border-right: none;
+    box-shadow: -8px 0 60px rgba(0, 0, 0, 0.06);
+}
+
+.menu-drawer.open {
+    transform: translateX(0);
+}
 
         .menu-item {
             font-size: 14px;
