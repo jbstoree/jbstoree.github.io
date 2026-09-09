@@ -513,23 +513,25 @@
 <script src="favorites.js"></script>
 
 <script>
-  // ==========================================
-  // FAVORITES - LOAD DIRECTLY FROM SUPABASE
-  // ==========================================
+  // =========================================================
+  // JB STORE - FAVORITES PAGE
+  // Loads favorite products DIRECTLY from Supabase
+  // =========================================================
+
   async function renderFavoritesGrid() {
     const grid = document.getElementById('favoritesGrid');
     const countEl = document.getElementById('favCount');
 
     if (!grid || !countEl) return;
 
-    const favIds = (typeof getFavorites === 'function' ? getFavorites() : [])
-      .map(id => String(id));
+    const savedIds = (typeof getFavorites === 'function'
+      ? getFavorites()
+      : []).map(id => String(id));
 
-    // Count saved favorites immediately.
     countEl.textContent =
-      favIds.length + (favIds.length === 1 ? ' item' : ' items');
+      savedIds.length + (savedIds.length === 1 ? ' item' : ' items');
 
-    if (!favIds.length) {
+    if (savedIds.length === 0) {
       grid.innerHTML = `
         <div class="fav-empty">
           <span class="empty-icon">💔</span>
@@ -549,79 +551,104 @@
 
     try {
       if (typeof supabase === 'undefined') {
-        throw new Error('Supabase library not loaded');
+        throw new Error('Supabase library did not load.');
       }
 
-      // SAME Supabase project used by the main product page.
-      const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
-      const SUPABASE_ANON =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
-
       const client = supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_ANON
+        'https://iuucwxdkjqpecqwbsoyv.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ'
       );
 
-      const { data: products, error } = await client
+      const { data, error } = await client
         .from('products')
         .select('*');
 
       if (error) throw error;
 
-      console.log('✅ Favorites: Supabase products:', products);
+      const products = Array.isArray(data) ? data : [];
 
-      // IMPORTANT: compare IDs as strings.
-      // This fixes number-vs-string ID mismatch.
-      const favProducts = (products || []).filter(product =>
-        favIds.includes(String(product.id))
+      console.log('JB FAVORITES saved IDs:', savedIds);
+      console.log('JB FAVORITES Supabase products:', products);
+
+      // Match exactly the same product IDs used by product.html.
+      const favorites = products.filter(product =>
+        savedIds.includes(String(product.id))
       );
 
-      console.log('❤️ Favorite IDs:', favIds);
-      console.log('❤️ Matched favorite products:', favProducts);
+      console.log('JB FAVORITES matched:', favorites);
 
-      if (!favProducts.length) {
+      if (favorites.length === 0) {
         grid.innerHTML = `
           <div class="fav-empty">
             <span class="empty-icon">⚠️</span>
-            <h2>Product not found</h2>
-            <p>The favorite is saved, but its product ID does not match the Supabase product ID.</p>
+            <h2>Favorite product not found</h2>
+            <p>Your favorite is saved, but the saved product ID does not match a product in Supabase.</p>
             <a href="index.html" class="shop-now-btn">Browse Products</a>
           </div>`;
         return;
       }
 
       countEl.textContent =
-        favProducts.length +
-        (favProducts.length === 1 ? ' item' : ' items');
+        favorites.length + (favorites.length === 1 ? ' item' : ' items');
 
       grid.innerHTML = '';
 
-      favProducts.forEach(p => {
+      favorites.forEach(product => {
         const card = document.createElement('div');
         card.className = 'best-card';
         card.style.position = 'relative';
         card.style.cursor = 'pointer';
-        card.setAttribute('onclick', `viewProduct('${p.id}')`);
 
         const image =
-          p.image ||
-          (Array.isArray(p.images) && p.images.length ? p.images[0] : '') ||
+          product.image ||
+          (Array.isArray(product.images) && product.images.length
+            ? product.images[0]
+            : '') ||
           'images/placeholder.png';
 
-        const price = Number(p.price || 0);
-        const oldPrice = Number(p.oldPrice || 0);
+        const price = Number(product.price || 0);
+        const oldPrice = Number(product.oldPrice || 0);
+
+        card.onclick = () => {
+          if (typeof viewProduct === 'function') {
+            viewProduct(product.id);
+          } else {
+            window.location.href = `product.html?id=${encodeURIComponent(product.id)}`;
+          }
+        };
 
         card.innerHTML = `
-          <img src="${image}" alt="${p.name || 'Product'}" loading="lazy">
-          <h3>${p.name || 'Product'}</h3>
-          <p class="brand">${p.brand || ''}</p>
+          <img
+            src="${image}"
+            alt="${product.name || 'Product'}"
+            loading="lazy"
+            onerror="this.src='images/placeholder.png'"
+          >
+
+          <h3>${product.name || 'Product'}</h3>
+
+          <p class="brand">${product.brand || ''}</p>
+
           <div class="price-row">
-            <span class="new">₹${price.toLocaleString('en-IN')}</span>
-            ${oldPrice > 0
-              ? `<span class="old">₹${oldPrice.toLocaleString('en-IN')}</span>`
-              : ''}
+            <span class="new">
+              ₹${price.toLocaleString('en-IN')}
+            </span>
+
+            ${oldPrice > 0 ? `
+              <span class="old">
+                ₹${oldPrice.toLocaleString('en-IN')}
+              </span>
+            ` : ''}
           </div>
-          <button onclick="event.stopPropagation(); viewProduct('${p.id}')">
+
+          <button
+            type="button"
+            onclick="event.stopPropagation(); ${
+              typeof viewProduct === 'function'
+                ? `viewProduct('${String(product.id).replace(/'/g, "\\'")}')`
+                : `window.location.href='product.html?id=${encodeURIComponent(product.id)}'`
+            }"
+          >
             View Details
           </button>
         `;
@@ -630,7 +657,7 @@
       });
 
     } catch (error) {
-      console.error('❌ Favorites Supabase error:', error);
+      console.error('JB FAVORITES ERROR:', error);
 
       grid.innerHTML = `
         <div class="fav-empty">
