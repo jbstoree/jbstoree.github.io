@@ -600,14 +600,77 @@
     if (typeof updateCartBadge === 'function') updateCartBadge();
   });
 
-  const originalToggle = window.toggleFavorite;
-  window.toggleFavorite = function(id) {
-    originalToggle(id);
-    if (window.location.pathname.includes('favorites.html')) {
-      renderFavoritesGrid();
-    }
-  };
 </script>
+
+  <script>
+    // ==========================================
+    // SUPABASE PRODUCTS SYNC FOR FAVORITES
+    // ==========================================
+    (async function syncFavoritesProducts() {
+      try {
+        if (typeof supabase === 'undefined') {
+          console.error('❌ Supabase library not loaded.');
+          return;
+        }
+
+        const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
+        const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
+
+        const supabaseClient = supabase.createClient(
+          SUPABASE_URL,
+          SUPABASE_ANON
+        );
+
+        const { data, error } = await supabaseClient
+          .from('products')
+          .select('*')
+          .order('id', { ascending: true });
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+          console.warn('⚠️ No products found in Supabase.');
+          return;
+        }
+
+        // script.js has the same global allProducts array.
+        if (typeof allProducts !== 'undefined' && Array.isArray(allProducts)) {
+          allProducts.splice(0, allProducts.length, ...data);
+
+          console.log(
+            '✅ Favorites: loaded',
+            data.length,
+            'products from Supabase.'
+          );
+
+          // Re-render after Supabase data arrives.
+          if (typeof renderFavoritesGrid === 'function') {
+            renderFavoritesGrid();
+          }
+
+          if (typeof updateFavBadge === 'function') {
+            updateFavBadge();
+          }
+        } else {
+          console.error('❌ allProducts array was not found.');
+        }
+
+      } catch (error) {
+        console.error('❌ Favorites Supabase fetch failed:', error);
+
+        const grid = document.getElementById('favoritesGrid');
+        if (grid && getFavorites().length) {
+          grid.innerHTML = `
+            <div class="fav-empty">
+              <span class="empty-icon">⚠️</span>
+              <h2>Unable to load favorites</h2>
+              <p>Please refresh the page and try again.</p>
+              <a href="index.html" class="shop-now-btn">Browse Products</a>
+            </div>`;
+        }
+      }
+    })();
+  </script>
 </body>
 </html>
 
