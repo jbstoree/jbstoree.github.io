@@ -11,12 +11,25 @@
   <!-- =========================================================
        CART-SPECIFIC STYLES (Separated from style.css & added here)
        ========================================================= -->
+  
   <style>
-    /* ============================================================
-       CART.CSS – JB STORE 🛒
-       Only for cart.html (Now embedded directly in this file)
-       ============================================================ */
+    /* CART PAGE - ONLY CART ACTIVE */
+#bottomHome::after {
+    display: none !important;
+}
 
+#bottomHome {
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+
+#bottomCart::after {
+    display: block !important;
+}
+
+.bottom-item:not(.active)::after {
+    display: none !important;
+}
     /* ==========================================
        CART PAGE — DESKTOP (min-width: 769px)
        ========================================== */
