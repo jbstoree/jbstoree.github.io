@@ -19,7 +19,7 @@
   }
 
   function isFavorite(id) {
-    return getFavorites().includes(id);
+    return getFavorites().includes(String(id));
   }
 
   // ---------- Toast (if not already defined) ----------
@@ -41,18 +41,19 @@
   // ---------- Toggle Favorite ----------
   function toggleFavorite(productId) {
     let favs = getFavorites();
-    const idx = favs.indexOf(productId);
+    const idStr = String(productId);
+    const idx = favs.indexOf(idStr);
 
     if (idx > -1) {
       favs.splice(idx, 1);
       showToast('♡ Removed from favorites');
     } else {
-      favs.push(productId);
+      favs.push(idStr);
       showToast('❤️ Added to favorites!');
     }
     saveFavorites(favs);
 
-    // ✅ Update ALL heart buttons on the page immediately
+    // Update ALL heart buttons on the page immediately
     updateAllHeartButtons();
     updateFavBadge();
 
@@ -71,9 +72,8 @@
     });
   }
 
-  // ---------- 🆕 UPDATE EXISTING HEART BUTTONS (Without Skipping) ----------
+  // ---------- UPDATE EXISTING HEART BUTTONS ----------
   function updateAllHeartButtons() {
-    // Select ALL favorite buttons on the page (deal-cards, best-cards, product-page)
     const allButtons = document.querySelectorAll('.favorite-btn');
     
     allButtons.forEach(btn => {
@@ -82,10 +82,8 @@
 
       const isFav = isFavorite(productId);
       
-      // Toggle the 'is-fav' class
       btn.classList.toggle('is-fav', isFav);
       
-      // Update the icon
       const icon = btn.querySelector('.fa-heart');
       if (icon) {
         icon.className = `fa-${isFav ? 'solid' : 'regular'} fa-heart`;
@@ -93,7 +91,7 @@
     });
   }
 
-  // ---------- Inject Hearts into Newly Loaded Deal Cards ----------
+  // ---------- Inject Hearts into Deal Cards ----------
   function injectHearts() {
     const grid = document.getElementById('productGrid');
     if (!grid) return;
@@ -111,8 +109,8 @@
 
       if (!productId) {
         const nameEl = card.querySelector('h3');
-        if (nameEl && window.allProducts) {
-          const found = window.allProducts.find(p => p.name === nameEl.textContent.trim());
+        if (nameEl && global.allProducts) {
+          const found = global.allProducts.find(p => p.name === nameEl.textContent.trim());
           if (found) productId = found.id;
         }
       }
@@ -133,32 +131,32 @@
       card.appendChild(btn);
     });
 
-    // ✅ After injecting new hearts, ensure ALL hearts (old + new) are in sync
     updateAllHeartButtons();
   }
 
   // ---------- Override displayProducts ----------
   function setupDisplayOverride() {
-    if (typeof window.displayProducts !== 'function') {
+    if (typeof global.displayProducts !== 'function') {
       setTimeout(setupDisplayOverride, 200);
       return;
     }
 
-    const original = window.displayProducts;
-    window.displayProducts = function() {
+    const original = global.displayProducts;
+    global.displayProducts = function() {
       original();
       setTimeout(injectHearts, 50);
     };
 
     // Run once
-    window.displayProducts();
+    global.displayProducts();
   }
 
-  // ---------- Best Sellers with Hearts ----------
+  // ---------- Best Sellers with Hearts (Local Products) ----------
   function renderBestSellers() {
     const grid = document.getElementById('bestSellersGrid');
     if (!grid) return;
 
+    // ✅ Use local product arrays
     const all = [
       ...(global.mobileProducts || []),
       ...(global.refrigeratorProducts || []),
@@ -237,15 +235,15 @@
     }
   }
 
-  // ---------- 🆕 Back / Forward Cache నుండి వచ్చినప్పుడు Refresh చేయడం ----------
+  // ---------- Back / Forward Cache Refresh ----------
   function setupPageShowRefresh() {
     window.addEventListener('pageshow', function(event) {
       if (event.persisted) {
         console.log('Page restored from bfcache – updating hearts');
         setTimeout(function() {
-          updateAllHeartButtons(); 
-          renderBestSellers();  
-          updateFavBadge();     
+          updateAllHeartButtons();
+          renderBestSellers();
+          updateFavBadge();
         }, 100);
       }
     });
@@ -279,6 +277,7 @@
   global.updateFavBadge = updateFavBadge;
   global.injectHearts = injectHearts;
   global.updateAllHeartButtons = updateAllHeartButtons;
+  global.renderBestSellers = renderBestSellers;
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     setTimeout(init, 100);
