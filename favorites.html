@@ -11,475 +11,253 @@
        Favorites Page - Premium Card Fix
        ========================================== */
     
-    
-      /* ==========================================
-   FAVORITES PAGE - PERFECT FIT
-   ========================================== */
-
-.favorites-page {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 0 12px 100px;
-}
-
-/* ---------- Header ---------- */
-
-.favorites-page .page-head {
-    width: 100%;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-
-    padding: 8px 0 18px;
-    margin: 0 0 24px;
-
-    border-bottom: 2px solid rgba(212, 175, 55, 0.12);
-}
-
-.favorites-page .page-head h1 {
-    margin: 0;
-    font-size: 28px;
-    font-weight: 700;
-    color: #222;
-    text-align: center;
-    line-height: 1.2;
-    letter-spacing: 0.5px;
-}
-.favorites-page ~ .header .logo {
-        margin-left: 12px !important;
-}
-.favorites-page .page-head h1::before {
-    content: "❤️ ";
-    font-size: 28px;
-}
-
-.favorites-page .page-head .fav-count {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    min-width: 120px;
-    box-sizing: border-box;
-
-    color: #c49b18;
-    font-size: 14px;
-    font-weight: 600;
-
-    padding: 6px 18px;
-    border: 1px solid rgba(212, 175, 55, 0.25);
-    border-radius: 30px;
-    background: rgba(212, 175, 55, 0.04);
-}
-
-/* ---------- Product Grid ---------- */
-
-.fav-grid {
-    width: 100%;
-    box-sizing: border-box;
-
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 18px;
-
-    align-items: stretch;
-}
-
-/* ---------- Product Card ---------- */
-
-.fav-grid .best-card {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    box-sizing: border-box;
-
-    position: relative;
-
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-
-    padding: 12px;
-    border-radius: 16px;
-
-    background: linear-gradient(145deg, #1a1a1a, #111111);
-
-    border: 1px solid #ffd700 !important;
-
-    box-shadow: 0 0 4px rgba(255, 215, 0, 0.05) !important;
-
-    overflow: hidden;
-}
-
-/* ---------- Product Image ---------- */
-
-.fav-grid .best-card img {
-    display: block;
-
-    width: 100%;
-    height: 150px;
-
-    box-sizing: border-box;
-
-    object-fit: contain;
-
-    padding: 8px;
-
-    background: #0a0a0a;
-    border-radius: 10px;
-
-    margin: 0 0 8px;
-}
-
-/* ---------- Product Name ---------- */
-
-.fav-grid .best-card h3 {
-    width: 100%;
-    box-sizing: border-box;
-
-    margin: 3px 0 2px;
-
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.3;
-
-    color: #fff;
-
-    min-height: 36px;
-
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-
-    overflow: hidden;
-}
-
-/* ---------- Brand ---------- */
-
-.fav-grid .best-card .brand {
-    margin: 2px 0;
-
-    font-size: 12px;
-    line-height: 1.3;
-
-    color: #999;
-}
-
-/* ---------- Price ---------- */
-
-.fav-grid .best-card .price-row {
-    width: 100%;
-    box-sizing: border-box;
-
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    margin: 8px 0 8px;
-
-    flex-wrap: wrap;
-}
-
-.fav-grid .best-card .price-row .new {
-    color: #d4af37;
-    font-size: 18px;
-    font-weight: 700;
-}
-
-.fav-grid .best-card .price-row .old {
-    color: #777;
-    font-size: 13px;
-    text-decoration: line-through;
-}
-
-/* ---------- View Details ---------- */
-
-.fav-grid .best-card button:last-child {
-    width: 100%;
-    height: 40px;
-
-    box-sizing: border-box;
-
-    margin-top: auto;
-
-    border: none;
-    border-radius: 10px;
-
-    background: linear-gradient(135deg, #d4af37, #c9a030);
-
-    color: #0a0a0a;
-
-    font-family: "Poppins", sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-
-    cursor: pointer;
-}
-
-/* Hide heart inside favorite cards */
-
-.fav-grid .best-card .favorite-btn {
-    display: none !important;
-}
-
-/* ==========================================
-   EMPTY FAVORITES
-   ========================================== */
-
-.fav-grid .fav-empty {
-    width: 100%;
-    box-sizing: border-box;
-
-    grid-column: 1 / -1;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-
-    padding: 55px 20px;
-    margin: 0 auto;
-}
-
-.fav-grid .fav-empty .empty-icon {
-    display: block;
-
-    font-size: 52px;
-    line-height: 1;
-
-    margin-bottom: 18px;
-}
-
-.fav-grid .fav-empty h2 {
-    margin: 0 0 10px;
-
-    color: #222;
-
-    font-size: 25px;
-    font-weight: 700;
-
-    line-height: 1.25;
-}
-
-.fav-grid .fav-empty p {
-    max-width: 360px;
-
-    margin: 0 0 22px;
-
-    color: #555;
-
-    font-size: 15px;
-    line-height: 1.6;
-}
-
-.fav-grid .fav-empty .shop-now-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    min-width: 170px;
-    height: 42px;
-
-    padding: 0 22px;
-
-    box-sizing: border-box;
-
-    border-radius: 10px;
-
-    background: linear-gradient(135deg, #d4af37, #c9a030);
-
-    color: #111 !important;
-
-    font-size: 14px;
-    font-weight: 700;
-
-    text-decoration: none;
-
-    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
-}
-
-/* ==========================================
-   TABLET
-   ========================================== */
-
-@media (max-width: 900px) {
-
-    .fav-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 14px;
-    }
-
-}
-
-/* ==========================================
-   MOBILE
-   ========================================== */
-
-@media (max-width: 768px) {
-
     .favorites-page {
-        padding: 0 8px 95px;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 12px 100px;
     }
 
     .favorites-page .page-head {
-        padding: 6px 0 16px;
-        margin-bottom: 18px;
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 8px 0 18px;
+        margin: 0 0 24px;
+        border-bottom: 2px solid rgba(212, 175, 55, 0.12);
     }
 
     .favorites-page .page-head h1 {
-        font-size: 25px;
+        margin: 0;
+        font-size: 28px;
+        font-weight: 700;
+        color: #222;
+        text-align: center;
+        line-height: 1.2;
+        letter-spacing: 0.5px;
     }
-
-    .favorites-page .page-head h1::before {
-        font-size: 25px;
-    }
-  .favorites-page ~ .header .logo {
+    .favorites-page ~ .header .logo {
         margin-left: 12px !important;
-  }
+    }
+    .favorites-page .page-head h1::before {
+        content: "❤️ ";
+        font-size: 28px;
+    }
 
     .favorites-page .page-head .fav-count {
-        min-width: 110px;
-        padding: 5px 16px;
-        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 120px;
+        box-sizing: border-box;
+        color: #c49b18;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 6px 18px;
+        border: 1px solid rgba(212, 175, 55, 0.25);
+        border-radius: 30px;
+        background: rgba(212, 175, 55, 0.04);
     }
 
     .fav-grid {
         width: 100%;
-
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-
-        gap: 10px;
+        box-sizing: border-box;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+        align-items: stretch;
     }
 
     .fav-grid .best-card {
         width: 100%;
         min-width: 0;
-
-        padding: 8px;
-
-        border-radius: 14px;
+        max-width: 100%;
+        box-sizing: border-box;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 12px;
+        border-radius: 16px;
+        background: linear-gradient(145deg, #1a1a1a, #111111);
+        border: 1px solid #ffd700 !important;
+        box-shadow: 0 0 4px rgba(255, 215, 0, 0.05) !important;
+        overflow: hidden;
     }
 
     .fav-grid .best-card img {
+        display: block;
         width: 100%;
-        height: 115px;
-
-        padding: 6px;
-
-        border-radius: 9px;
+        height: 150px;
+        box-sizing: border-box;
+        object-fit: contain;
+        padding: 8px;
+        background: #0a0a0a;
+        border-radius: 10px;
+        margin: 0 0 8px;
     }
 
     .fav-grid .best-card h3 {
-        font-size: 12px;
-        min-height: 31px;
-
-        margin-top: 3px;
+        width: 100%;
+        box-sizing: border-box;
+        margin: 3px 0 2px;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.3;
+        color: #fff;
+        min-height: 36px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 
     .fav-grid .best-card .brand {
-        font-size: 11px;
+        margin: 2px 0;
+        font-size: 12px;
+        line-height: 1.3;
+        color: #999;
     }
 
     .fav-grid .best-card .price-row {
-        gap: 5px;
-        margin: 6px 0;
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 8px 0 8px;
+        flex-wrap: wrap;
     }
 
     .fav-grid .best-card .price-row .new {
-        font-size: 15px;
+        color: #d4af37;
+        font-size: 18px;
+        font-weight: 700;
     }
 
     .fav-grid .best-card .price-row .old {
-        font-size: 11px;
+        color: #777;
+        font-size: 13px;
+        text-decoration: line-through;
     }
 
     .fav-grid .best-card button:last-child {
-        height: 35px;
+        width: 100%;
+        height: 40px;
+        box-sizing: border-box;
+        margin-top: auto;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #d4af37, #c9a030);
+        color: #0a0a0a;
+        font-family: "Poppins", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+    }
 
-        border-radius: 9px;
-
-        font-size: 11px;
+    /* Hide heart inside favorite cards */
+    .fav-grid .best-card .favorite-btn {
+        display: none !important;
     }
 
     /* Empty state */
-
     .fav-grid .fav-empty {
-        padding: 55px 12px;
+        width: 100%;
+        box-sizing: border-box;
+        grid-column: 1 / -1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 55px 20px;
+        margin: 0 auto;
     }
 
     .fav-grid .fav-empty .empty-icon {
-        font-size: 48px;
-        margin-bottom: 16px;
+        display: block;
+        font-size: 52px;
+        line-height: 1;
+        margin-bottom: 18px;
     }
 
     .fav-grid .fav-empty h2 {
-        font-size: 23px;
+        margin: 0 0 10px;
+        color: #222;
+        font-size: 25px;
+        font-weight: 700;
+        line-height: 1.25;
     }
 
     .fav-grid .fav-empty p {
-        font-size: 14px;
-        max-width: 320px;
+        max-width: 360px;
+        margin: 0 0 22px;
+        color: #555;
+        font-size: 15px;
+        line-height: 1.6;
     }
 
     .fav-grid .fav-empty .shop-now-btn {
-        min-width: 155px;
-        height: 40px;
-        font-size: 13px;
-    }
-}
-
-/* ==========================================
-   SMALL MOBILE
-   ========================================== */
-
-@media (max-width: 450px) {
-
-    .favorites-page {
-        padding-left: 6px;
-        padding-right: 6px;
-    }
-
-    .fav-grid {
-        gap: 8px;
-    }
-
-    .fav-grid .best-card {
-        padding: 7px;
-        border-radius: 13px;
-    }
-
-    .fav-grid .best-card img {
-        height: 105px;
-        padding: 5px;
-    }
-
-    .fav-grid .best-card h3 {
-        font-size: 11.5px;
-        min-height: 30px;
-    }
-
-    .fav-grid .best-card .brand {
-        font-size: 10.5px;
-    }
-
-    .fav-grid .best-card .price-row .new {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 170px;
+        height: 42px;
+        padding: 0 22px;
+        box-sizing: border-box;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #d4af37, #c9a030);
+        color: #111 !important;
         font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
     }
 
-    .fav-grid .best-card .price-row .old {
-        font-size: 10px;
+    /* Tablet */
+    @media (max-width: 900px) {
+        .fav-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
     }
 
-    .fav-grid .best-card button:last-child {
-        height: 34px;
-        font-size: 10.5px;
+    /* Mobile */
+    @media (max-width: 768px) {
+        .favorites-page { padding: 0 8px 95px; }
+        .favorites-page .page-head { padding: 6px 0 16px; margin-bottom: 18px; }
+        .favorites-page .page-head h1 { font-size: 25px; }
+        .favorites-page .page-head h1::before { font-size: 25px; }
+        .favorites-page ~ .header .logo { margin-left: 12px !important; }
+        .favorites-page .page-head .fav-count { min-width: 110px; padding: 5px 16px; font-size: 13px; }
+        .fav-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+        .fav-grid .best-card { padding: 8px; border-radius: 14px; }
+        .fav-grid .best-card img { height: 115px; padding: 6px; border-radius: 9px; }
+        .fav-grid .best-card h3 { font-size: 12px; min-height: 31px; margin-top: 3px; }
+        .fav-grid .best-card .brand { font-size: 11px; }
+        .fav-grid .best-card .price-row { gap: 5px; margin: 6px 0; }
+        .fav-grid .best-card .price-row .new { font-size: 15px; }
+        .fav-grid .best-card .price-row .old { font-size: 11px; }
+        .fav-grid .best-card button:last-child { height: 35px; border-radius: 9px; font-size: 11px; }
+        .fav-grid .fav-empty { padding: 55px 12px; }
+        .fav-grid .fav-empty .empty-icon { font-size: 48px; margin-bottom: 16px; }
+        .fav-grid .fav-empty h2 { font-size: 23px; }
+        .fav-grid .fav-empty p { font-size: 14px; max-width: 320px; }
+        .fav-grid .fav-empty .shop-now-btn { min-width: 155px; height: 40px; font-size: 13px; }
     }
 
-}
+    @media (max-width: 450px) {
+        .favorites-page { padding-left: 6px; padding-right: 6px; }
+        .fav-grid { gap: 8px; }
+        .fav-grid .best-card { padding: 7px; border-radius: 13px; }
+        .fav-grid .best-card img { height: 105px; padding: 5px; }
+        .fav-grid .best-card h3 { font-size: 11.5px; min-height: 30px; }
+        .fav-grid .best-card .brand { font-size: 10.5px; }
+        .fav-grid .best-card .price-row .new { font-size: 14px; }
+        .fav-grid .best-card .price-row .old { font-size: 10px; }
+        .fav-grid .best-card button:last-child { height: 34px; font-size: 10.5px; }
+    }
   </style>
 </head>
 <body>
@@ -514,16 +292,16 @@
 
 <script>
   // =========================================================
-  // JB STORE - FAVORITES PAGE
-  // Loads favorite products DIRECTLY from Supabase
+  // JB STORE - FAVORITES PAGE (FIXED: Local Products)
   // =========================================================
 
-  async function renderFavoritesGrid() {
+  function renderFavoritesGrid() {
     const grid = document.getElementById('favoritesGrid');
     const countEl = document.getElementById('favCount');
 
     if (!grid || !countEl) return;
 
+    // Get saved IDs from localStorage
     const savedIds = (typeof getFavorites === 'function'
       ? getFavorites()
       : []).map(id => String(id));
@@ -542,131 +320,76 @@
       return;
     }
 
-    grid.innerHTML = `
-      <div class="fav-empty">
-        <span class="empty-icon">⏳</span>
-        <h2>Loading favorites...</h2>
-        <p>Please wait...</p>
-      </div>`;
+    // ✅ USE LOCAL PRODUCT DATA (from mobiles.js, refrigerator.js, etc.)
+    const allLocalProducts = [
+      ...(window.mobileProducts || []),
+      ...(window.refrigeratorProducts || []),
+      ...(window.washingProducts || []),
+      ...(window.acProducts || []),
+      ...(window.tvProducts || [])
+    ];
 
-    try {
-      if (typeof supabase === 'undefined') {
-        throw new Error('Supabase library did not load.');
-      }
+    // Match saved IDs with local products
+    const favorites = allLocalProducts.filter(product =>
+      savedIds.includes(String(product.id))
+    );
 
-      const client = supabase.createClient(
-        'https://iuucwxdkjqpecqwbsoyv.supabase.co',
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ'
-      );
+    console.log('✅ Favorites saved IDs:', savedIds);
+    console.log('✅ Matched favorites:', favorites);
 
-      const { data, error } = await client
-        .from('products')
-        .select('*');
-
-      if (error) throw error;
-
-      const products = Array.isArray(data) ? data : [];
-
-      console.log('JB FAVORITES saved IDs:', savedIds);
-      console.log('JB FAVORITES Supabase products:', products);
-
-      // Match exactly the same product IDs used by product.html.
-      const favorites = products.filter(product =>
-        savedIds.includes(String(product.id))
-      );
-
-      console.log('JB FAVORITES matched:', favorites);
-
-      if (favorites.length === 0) {
-        grid.innerHTML = `
-          <div class="fav-empty">
-            <span class="empty-icon">⚠️</span>
-            <h2>Favorite product not found</h2>
-            <p>Your favorite is saved, but the saved product ID does not match a product in Supabase.</p>
-            <a href="index.html" class="shop-now-btn">Browse Products</a>
-          </div>`;
-        return;
-      }
-
-      countEl.textContent =
-        favorites.length + (favorites.length === 1 ? ' item' : ' items');
-
-      grid.innerHTML = '';
-
-      favorites.forEach(product => {
-        const card = document.createElement('div');
-        card.className = 'best-card';
-        card.style.position = 'relative';
-        card.style.cursor = 'pointer';
-
-        const image =
-          product.image ||
-          (Array.isArray(product.images) && product.images.length
-            ? product.images[0]
-            : '') ||
-          'images/placeholder.png';
-
-        const price = Number(product.price || 0);
-        const oldPrice = Number(product.oldPrice || 0);
-
-        card.onclick = () => {
-          if (typeof viewProduct === 'function') {
-            viewProduct(product.id);
-          } else {
-            window.location.href = `product.html?id=${encodeURIComponent(product.id)}`;
-          }
-        };
-
-        card.innerHTML = `
-          <img
-            src="${image}"
-            alt="${product.name || 'Product'}"
-            loading="lazy"
-            onerror="this.src='images/placeholder.png'"
-          >
-
-          <h3>${product.name || 'Product'}</h3>
-
-          <p class="brand">${product.brand || ''}</p>
-
-          <div class="price-row">
-            <span class="new">
-              ₹${price.toLocaleString('en-IN')}
-            </span>
-
-            ${oldPrice > 0 ? `
-              <span class="old">
-                ₹${oldPrice.toLocaleString('en-IN')}
-              </span>
-            ` : ''}
-          </div>
-
-          <button
-            type="button"
-            onclick="event.stopPropagation(); ${
-              typeof viewProduct === 'function'
-                ? `viewProduct('${String(product.id).replace(/'/g, "\\'")}')`
-                : `window.location.href='product.html?id=${encodeURIComponent(product.id)}'`
-            }"
-          >
-            View Details
-          </button>
-        `;
-
-        grid.appendChild(card);
-      });
-
-    } catch (error) {
-      console.error('JB FAVORITES ERROR:', error);
-
+    if (favorites.length === 0) {
       grid.innerHTML = `
         <div class="fav-empty">
           <span class="empty-icon">⚠️</span>
-          <h2>Unable to load favorites</h2>
-          <p>${error.message || 'Please refresh and try again.'}</p>
+          <h2>Favorites not found</h2>
+          <p>Your saved favorites don't match any product in our catalog.</p>
           <a href="index.html" class="shop-now-btn">Browse Products</a>
         </div>`;
+      return;
     }
+
+    countEl.textContent =
+      favorites.length + (favorites.length === 1 ? ' item' : ' items');
+
+    grid.innerHTML = '';
+
+    favorites.forEach(product => {
+      const card = document.createElement('div');
+      card.className = 'best-card';
+      card.style.position = 'relative';
+      card.style.cursor = 'pointer';
+
+      const image = product.image ||
+        (Array.isArray(product.images) && product.images.length ? product.images[0] : '') ||
+        'images/placeholder.png';
+
+      const price = Number(product.price || 0);
+      const oldPrice = Number(product.oldPrice || 0);
+
+      card.onclick = () => {
+        if (typeof viewProduct === 'function') {
+          viewProduct(product.id);
+        } else {
+          window.location.href = `product.html?id=${encodeURIComponent(product.id)}`;
+        }
+      };
+
+      card.innerHTML = `
+        <img src="${image}" alt="${product.name || 'Product'}" loading="lazy"
+             onerror="this.src='images/placeholder.png'">
+        <h3>${product.name || 'Product'}</h3>
+        <p class="brand">${product.brand || ''}</p>
+        <div class="price-row">
+          <span class="new">₹${price.toLocaleString('en-IN')}</span>
+          ${oldPrice > 0 ? `<span class="old">₹${oldPrice.toLocaleString('en-IN')}</span>` : ''}
+        </div>
+        <button type="button" onclick="event.stopPropagation(); viewProduct('${product.id}')">
+          View Details
+        </button>
+      `;
+
+      grid.appendChild(card);
+    });
   }
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -677,6 +400,6 @@
     updateFavBadge();
     if (typeof updateCartBadge === 'function') updateCartBadge();
   });
-
-
-
+</script>
+</body>
+</html>
