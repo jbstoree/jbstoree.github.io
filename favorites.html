@@ -509,86 +509,137 @@
 <script src="ac.js"></script>
 <script src="tv.js"></script>
 <script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="favorites.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+  // ==========================================
+  // FAVORITES - LOAD DIRECTLY FROM SUPABASE
+  // ==========================================
   async function renderFavoritesGrid() {
     const grid = document.getElementById('favoritesGrid');
     const countEl = document.getElementById('favCount');
 
     if (!grid || !countEl) return;
 
-    const favIds = getFavorites().map(String);
+    const favIds = (typeof getFavorites === 'function' ? getFavorites() : [])
+      .map(id => String(id));
 
-    // Always show the saved favorite count immediately.
+    // Count saved favorites immediately.
     countEl.textContent =
       favIds.length + (favIds.length === 1 ? ' item' : ' items');
 
     if (!favIds.length) {
-      grid.innerHTML = `<div class="fav-empty">
-        <span class="empty-icon">💔</span>
-        <h2>No favorites yet</h2>
-        <p>Tap the heart ❤️ on any product to save it here.</p>
-        <a href="index.html" class="shop-now-btn">Browse Products</a>
-      </div>`;
+      grid.innerHTML = `
+        <div class="fav-empty">
+          <span class="empty-icon">💔</span>
+          <h2>No favorites yet</h2>
+          <p>Tap the heart ❤️ on any product to save it here.</p>
+          <a href="index.html" class="shop-now-btn">Browse Products</a>
+        </div>`;
       return;
     }
 
-    // First try products already loaded by script.js.
-    let all = Array.isArray(window.allProducts) ? window.allProducts : [];
-
-    // If products are loaded asynchronously, wait for them briefly.
-    if (!all.length) {
-      for (let i = 0; i < 30; i++) {
-        await new Promise(resolve => setTimeout(resolve, 200));
-        all = Array.isArray(window.allProducts) ? window.allProducts : [];
-        if (all.length) break;
-      }
-    }
-
-    // Match IDs as strings so numeric/string ID differences don't break favorites.
-    const favProducts = all.filter(p => favIds.includes(String(p.id)));
-
-    if (!favProducts.length) {
-      grid.innerHTML = `<div class="fav-empty">
-        <span class="empty-icon">💔</span>
+    grid.innerHTML = `
+      <div class="fav-empty">
+        <span class="empty-icon">⏳</span>
         <h2>Loading favorites...</h2>
-        <p>Your favorite products are saved, but the product data is still loading.</p>
-        <a href="index.html" class="shop-now-btn">Browse Products</a>
+        <p>Please wait...</p>
       </div>`;
 
-      // Try once more after a short delay.
-      setTimeout(() => renderFavoritesGrid(), 1000);
-      return;
+    try {
+      if (typeof supabase === 'undefined') {
+        throw new Error('Supabase library not loaded');
+      }
+
+      // SAME Supabase project used by the main product page.
+      const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
+      const SUPABASE_ANON =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
+
+      const client = supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON
+      );
+
+      const { data: products, error } = await client
+        .from('products')
+        .select('*');
+
+      if (error) throw error;
+
+      console.log('✅ Favorites: Supabase products:', products);
+
+      // IMPORTANT: compare IDs as strings.
+      // This fixes number-vs-string ID mismatch.
+      const favProducts = (products || []).filter(product =>
+        favIds.includes(String(product.id))
+      );
+
+      console.log('❤️ Favorite IDs:', favIds);
+      console.log('❤️ Matched favorite products:', favProducts);
+
+      if (!favProducts.length) {
+        grid.innerHTML = `
+          <div class="fav-empty">
+            <span class="empty-icon">⚠️</span>
+            <h2>Product not found</h2>
+            <p>The favorite is saved, but its product ID does not match the Supabase product ID.</p>
+            <a href="index.html" class="shop-now-btn">Browse Products</a>
+          </div>`;
+        return;
+      }
+
+      countEl.textContent =
+        favProducts.length +
+        (favProducts.length === 1 ? ' item' : ' items');
+
+      grid.innerHTML = '';
+
+      favProducts.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'best-card';
+        card.style.position = 'relative';
+        card.style.cursor = 'pointer';
+        card.setAttribute('onclick', `viewProduct('${p.id}')`);
+
+        const image =
+          p.image ||
+          (Array.isArray(p.images) && p.images.length ? p.images[0] : '') ||
+          'images/placeholder.png';
+
+        const price = Number(p.price || 0);
+        const oldPrice = Number(p.oldPrice || 0);
+
+        card.innerHTML = `
+          <img src="${image}" alt="${p.name || 'Product'}" loading="lazy">
+          <h3>${p.name || 'Product'}</h3>
+          <p class="brand">${p.brand || ''}</p>
+          <div class="price-row">
+            <span class="new">₹${price.toLocaleString('en-IN')}</span>
+            ${oldPrice > 0
+              ? `<span class="old">₹${oldPrice.toLocaleString('en-IN')}</span>`
+              : ''}
+          </div>
+          <button onclick="event.stopPropagation(); viewProduct('${p.id}')">
+            View Details
+          </button>
+        `;
+
+        grid.appendChild(card);
+      });
+
+    } catch (error) {
+      console.error('❌ Favorites Supabase error:', error);
+
+      grid.innerHTML = `
+        <div class="fav-empty">
+          <span class="empty-icon">⚠️</span>
+          <h2>Unable to load favorites</h2>
+          <p>${error.message || 'Please refresh and try again.'}</p>
+          <a href="index.html" class="shop-now-btn">Browse Products</a>
+        </div>`;
     }
-
-    countEl.textContent =
-      favProducts.length + (favProducts.length === 1 ? ' item' : ' items');
-
-    grid.innerHTML = '';
-
-    favProducts.forEach(p => {
-      const card = document.createElement('div');
-      card.className = 'best-card';
-      card.style.position = 'relative';
-      card.style.cursor = 'pointer';
-      card.setAttribute('onclick', `viewProduct('${p.id}')`);
-
-      card.innerHTML = `
-        <img src="${p.image || (p.images && p.images[0]) || 'images/placeholder.png'}"
-             alt="${p.name || 'Product'}" loading="lazy">
-        <h3>${p.name || 'Product'}</h3>
-        <p class="brand">${p.brand || ''}</p>
-        <div class="price-row">
-          <span class="new">₹${Number(p.price || 0).toLocaleString('en-IN')}</span>
-          ${p.oldPrice ? `<span class="old">₹${Number(p.oldPrice).toLocaleString('en-IN')}</span>` : ''}
-        </div>
-        <button onclick="event.stopPropagation(); viewProduct('${p.id}')">View Details</button>
-      `;
-
-      grid.appendChild(card);
-    });
   }
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -600,77 +651,5 @@
     if (typeof updateCartBadge === 'function') updateCartBadge();
   });
 
-</script>
 
-  <script>
-    // ==========================================
-    // SUPABASE PRODUCTS SYNC FOR FAVORITES
-    // ==========================================
-    (async function syncFavoritesProducts() {
-      try {
-        if (typeof supabase === 'undefined') {
-          console.error('❌ Supabase library not loaded.');
-          return;
-        }
-
-        const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
-        const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
-
-        const supabaseClient = supabase.createClient(
-          SUPABASE_URL,
-          SUPABASE_ANON
-        );
-
-        const { data, error } = await supabaseClient
-          .from('products')
-          .select('*')
-          .order('id', { ascending: true });
-
-        if (error) throw error;
-
-        if (!data || data.length === 0) {
-          console.warn('⚠️ No products found in Supabase.');
-          return;
-        }
-
-        // script.js has the same global allProducts array.
-        if (typeof allProducts !== 'undefined' && Array.isArray(allProducts)) {
-          allProducts.splice(0, allProducts.length, ...data);
-
-          console.log(
-            '✅ Favorites: loaded',
-            data.length,
-            'products from Supabase.'
-          );
-
-          // Re-render after Supabase data arrives.
-          if (typeof renderFavoritesGrid === 'function') {
-            renderFavoritesGrid();
-          }
-
-          if (typeof updateFavBadge === 'function') {
-            updateFavBadge();
-          }
-        } else {
-          console.error('❌ allProducts array was not found.');
-        }
-
-      } catch (error) {
-        console.error('❌ Favorites Supabase fetch failed:', error);
-
-        const grid = document.getElementById('favoritesGrid');
-        if (grid && getFavorites().length) {
-          grid.innerHTML = `
-            <div class="fav-empty">
-              <span class="empty-icon">⚠️</span>
-              <h2>Unable to load favorites</h2>
-              <p>Please refresh the page and try again.</p>
-              <a href="index.html" class="shop-now-btn">Browse Products</a>
-            </div>`;
-        }
-      }
-    })();
-  </script>
-</body>
-</html>
 
