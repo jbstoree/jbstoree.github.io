@@ -1894,10 +1894,22 @@
         transition: width 0.3s ease;
     }
 
-    .bottom-item.active::after,
-    .bottom-item:hover::after {
-        width: 60%;
-    }
+    .bottom-item::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: #D4AF37;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+.bottom-item.active::after {
+    width: 60%;
+}
 
     .bottom-icon {
         font-size: 24px;
