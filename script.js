@@ -1,5 +1,5 @@
 // ==========================================
-// JB STORE - MAIN JAVASCRIPT
+// JB STORE - MAIN JAVASCRIPT (FIXED)
 // ==========================================
 
 // ==========================================
@@ -37,15 +37,19 @@ if (slides.length > 1) {
 }
 
 // ==========================================
-// 2. ALL PRODUCTS
-// SUPABASE PRODUCTS ONLY
+// 2. ALL PRODUCTS - FROM LOCAL FILES
 // ==========================================
 
-const allProducts = [];
+// ✅ Populate allProducts from local product arrays
+const allProducts = [
+  ...(window.mobileProducts || []),
+  ...(window.refrigeratorProducts || []),
+  ...(window.washingProducts || []),
+  ...(window.acProducts || []),
+  ...(window.tvProducts || [])
+];
 
-console.log('Supabase products only. Waiting for products...');
-
-
+console.log('✅ Total products loaded:', allProducts.length);
 
 // ==========================================
 // 3. BRAND DATA
@@ -198,8 +202,8 @@ function displayProducts() {
   products.forEach(product => {
     const card = document.createElement("div");
     card.className = "deal-card";
-card.style.cursor = "pointer";
-card.addEventListener("click", () => viewProduct(product.id));
+    card.style.cursor = "pointer";
+    card.addEventListener("click", () => viewProduct(product.id));
 
     const firstVariant = getFirstVariant(product);
     let variantHTML = '';
@@ -221,11 +225,15 @@ card.addEventListener("click", () => viewProduct(product.id));
         <p class="price">₹${(product.price || 0).toLocaleString("en-IN")}</p>
         <p class="old-price">₹${(product.oldPrice || 0).toLocaleString("en-IN")}</p>
       </div>
-    
     `;
 
     productGrid.appendChild(card);
   });
+
+  // ✅ Inject hearts after rendering products
+  if (typeof injectHearts === 'function') {
+    setTimeout(injectHearts, 50);
+  }
 }
 
 // ==========================================
@@ -282,7 +290,7 @@ function clearFilters() {
 function viewProduct(id) {
   console.log('Viewing product with ID:', id);
   
-  const product = allProducts.find(item => item.id === id);
+  const product = allProducts.find(item => String(item.id) === String(id));
   
   if (!product) {
     console.error('Product not found with ID:', id);
@@ -300,7 +308,7 @@ function viewProduct(id) {
 // ==========================================
 
 function addToCart(productId, variantLabel) {
-  const product = allProducts.find(item => item.id === productId);
+  const product = allProducts.find(item => String(item.id) === String(productId));
   
   if (!product) {
     showToast('Product not found!');
@@ -747,6 +755,7 @@ window.displayProducts = displayProducts;
 window.loadBrands = loadBrands;
 window.currentCategory = currentCategory;
 window.clearFilters = clearFilters;
+window.allProducts = allProducts;
 
 // ==========================================
 // 21. HAMBURGER MENU / SLIDE-OUT DRAWER
