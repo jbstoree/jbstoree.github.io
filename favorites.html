@@ -513,23 +513,59 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-  function renderFavoritesGrid() {
+  async function renderFavoritesGrid() {
     const grid = document.getElementById('favoritesGrid');
     const countEl = document.getElementById('favCount');
-    const favIds = getFavorites();
 
-    // ✅ script.js లోని 'allProducts' ని డైరెక్ట్ గా ఉపయోగించండి
-    const all = allProducts || [];
-    
-    const favProducts = all.filter(p => favIds.includes(p.id));
+    if (!grid || !countEl) return;
 
-    if (!favProducts.length) {
-      grid.innerHTML = `<div class="fav-empty"><span class="empty-icon">💔</span><h2>No favorites yet</h2><p>Tap the heart ❤️ on any product to save it here.</p><a href="index.html" class="shop-now-btn">Browse Products</a></div>`;
-      countEl.textContent = '0 items';
+    const favIds = getFavorites().map(String);
+
+    // Always show the saved favorite count immediately.
+    countEl.textContent =
+      favIds.length + (favIds.length === 1 ? ' item' : ' items');
+
+    if (!favIds.length) {
+      grid.innerHTML = `<div class="fav-empty">
+        <span class="empty-icon">💔</span>
+        <h2>No favorites yet</h2>
+        <p>Tap the heart ❤️ on any product to save it here.</p>
+        <a href="index.html" class="shop-now-btn">Browse Products</a>
+      </div>`;
       return;
     }
 
-    countEl.textContent = favProducts.length + ' items';
+    // First try products already loaded by script.js.
+    let all = Array.isArray(window.allProducts) ? window.allProducts : [];
+
+    // If products are loaded asynchronously, wait for them briefly.
+    if (!all.length) {
+      for (let i = 0; i < 30; i++) {
+        await new Promise(resolve => setTimeout(resolve, 200));
+        all = Array.isArray(window.allProducts) ? window.allProducts : [];
+        if (all.length) break;
+      }
+    }
+
+    // Match IDs as strings so numeric/string ID differences don't break favorites.
+    const favProducts = all.filter(p => favIds.includes(String(p.id)));
+
+    if (!favProducts.length) {
+      grid.innerHTML = `<div class="fav-empty">
+        <span class="empty-icon">💔</span>
+        <h2>Loading favorites...</h2>
+        <p>Your favorite products are saved, but the product data is still loading.</p>
+        <a href="index.html" class="shop-now-btn">Browse Products</a>
+      </div>`;
+
+      // Try once more after a short delay.
+      setTimeout(() => renderFavoritesGrid(), 1000);
+      return;
+    }
+
+    countEl.textContent =
+      favProducts.length + (favProducts.length === 1 ? ' item' : ' items');
+
     grid.innerHTML = '';
 
     favProducts.forEach(p => {
@@ -539,17 +575,18 @@
       card.style.cursor = 'pointer';
       card.setAttribute('onclick', `viewProduct('${p.id}')`);
 
-      // ✅ Favorites page లో Heart button తీసేశాను (కేవలం ఇమేజ్, పేరు, ధర, View Details మాత్రమే)
       card.innerHTML = `
-        <img src="${p.image || 'images/placeholder.png'}" alt="${p.name}" loading="lazy">
-        <h3>${p.name}</h3>
-        <p class="brand">${p.brand}</p>
+        <img src="${p.image || (p.images && p.images[0]) || 'images/placeholder.png'}"
+             alt="${p.name || 'Product'}" loading="lazy">
+        <h3>${p.name || 'Product'}</h3>
+        <p class="brand">${p.brand || ''}</p>
         <div class="price-row">
-          <span class="new">₹${(p.price || 0).toLocaleString('en-IN')}</span>
-          <span class="old">₹${(p.oldPrice || 0).toLocaleString('en-IN')}</span>
+          <span class="new">₹${Number(p.price || 0).toLocaleString('en-IN')}</span>
+          ${p.oldPrice ? `<span class="old">₹${Number(p.oldPrice).toLocaleString('en-IN')}</span>` : ''}
         </div>
         <button onclick="event.stopPropagation(); viewProduct('${p.id}')">View Details</button>
       `;
+
       grid.appendChild(card);
     });
   }
@@ -573,3 +610,4 @@
 </script>
 </body>
 </html>
+
