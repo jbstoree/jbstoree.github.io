@@ -512,7 +512,7 @@
     .menu .cat.active {
     color: #FF0000;
     background: #FFFFFF;
-    border: 2px solid #000000 !important;
+    border: 1px solid #000000 !important;
     box-shadow: none !important;
 }
 
