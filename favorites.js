@@ -382,6 +382,68 @@ window.updateAllHeartButtons =
 window.injectHearts =
     injectHearts;
 
+
+// ==========================================
+// AUTO SYNC WHEN RETURNING TO FAVORITES PAGE
+// ==========================================
+
+function refreshFavoritesPage() {
+
+    // Latest count from localStorage
+    updateFavBadge();
+
+    // Update hearts
+    updateAllHeartButtons();
+
+    // Favorites HTML lo renderFavoritesGrid unte
+    // latest products ni malli render cheyyi
+    if (
+        typeof window.renderFavoritesGrid === 'function'
+    ) {
+        window.renderFavoritesGrid();
+    }
+}
+
+
+// ------------------------------------------
+// Browser BACK / FORWARD
+// ------------------------------------------
+window.addEventListener('pageshow', function () {
+
+    setTimeout(function () {
+        refreshFavoritesPage();
+    }, 100);
+
+});
+
+
+// ------------------------------------------
+// Page/tab ki malli return ayinappudu
+// ------------------------------------------
+document.addEventListener('visibilitychange', function () {
+
+    if (!document.hidden) {
+
+        setTimeout(function () {
+            refreshFavoritesPage();
+        }, 100);
+
+    }
+
+});
+
+
+// ------------------------------------------
+// Window focus
+// ------------------------------------------
+window.addEventListener('focus', function () {
+
+    setTimeout(function () {
+        refreshFavoritesPage();
+    }, 100);
+
+});
+
 // ------------------------------------------
 // Start
 // ------------------------------------------
