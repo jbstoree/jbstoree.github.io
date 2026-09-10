@@ -616,70 +616,69 @@
       grid.innerHTML = '';
 
       favorites.forEach(product => {
-        const card = document.createElement('div');
-        card.className = 'best-card';
-        card.style.position = 'relative';
-        card.style.cursor = 'pointer';
+    const card = document.createElement('div');
+    card.className = 'best-card';
+    card.style.position = 'relative';
+    card.style.cursor = 'pointer';
 
-        const image =
-          product.image ||
-          (
-            Array.isArray(product.images) && product.images.length
-              ? product.images[0]
-              : ''
-          ) ||
-          'images/placeholder.png';
+    const image =
+      product.image ||
+      (
+        Array.isArray(product.images) && product.images.length
+          ? product.images[0]
+          : ''
+      );
 
-        const price = Number(product.price || 0);
-        const oldPrice = Number(product.oldPrice || 0);
+    const price = Number(product.price || 0);
+    const oldPrice = Number(product.oldPrice || 0);
 
-        card.onclick = function () {
-          if (typeof viewProduct === 'function') {
-            viewProduct(product.id);
-          } else {
-            window.location.href =
-              `product.html?id=${encodeURIComponent(product.id)}`;
-          }
-        };
+    card.onclick = function () {
+      if (typeof viewProduct === 'function') {
+        viewProduct(product.id);
+      } else {
+        window.location.href =
+          `product.html?id=${encodeURIComponent(product.id)}`;
+      }
+    };
 
-        const safeName = String(product.name || 'Product')
-          .replace(/"/g, '&quot;');
+    const safeName = String(product.name || 'Product')
+      .replace(/"/g, '&quot;');
 
-        const safeBrand = String(product.brand || '');
+    const safeBrand = String(product.brand || '');
 
-        card.innerHTML = `
-          <img
-            src="${image}"
-            alt="${safeName}"
-            loading="lazy"
-            onerror="this.src='images/placeholder.png'"
-          >
+    card.innerHTML = `
+      <img
+        src="${image || 'images/this-image-does-not-exist.png'}"
+        alt="${safeName}"
+        loading="lazy"
+        onerror="this.onerror=null; this.alt='Image not available';"
+      >
 
-          <h3>${safeName}</h3>
+      <h3>${safeName}</h3>
 
-          <p class="brand">${safeBrand}</p>
+      <p class="brand">${safeBrand}</p>
 
-          <div class="price-row">
-            <span class="new">
-              ₹${price.toLocaleString('en-IN')}
-            </span>
+      <div class="price-row">
+        <span class="new">
+          ₹${price.toLocaleString('en-IN')}
+        </span>
 
-            ${
-              oldPrice > 0
-                ? `<span class="old">
-                     ₹${oldPrice.toLocaleString('en-IN')}
-                   </span>`
-                : ''
-            }
-          </div>
+        ${
+          oldPrice > 0
+            ? `<span class="old">
+                 ₹${oldPrice.toLocaleString('en-IN')}
+               </span>`
+            : ''
+        }
+      </div>
 
-          <button
-            type="button"
-            class="view-details-btn"
-          >
-            View Details
-          </button>
-        `;
+      <button
+        type="button"
+        class="view-details-btn"
+      >
+        View Details
+      </button>
+    `;
 
         const viewBtn = card.querySelector('.view-details-btn');
 
