@@ -723,17 +723,27 @@
 // NO REFRESH REQUIRED
 // ==========================================
 
+// ==========================================
+// AUTO UPDATE WHEN RETURNING FROM PRODUCT
+// ==========================================
+
 window.addEventListener('pageshow', function () {
 
-  // Update Favorites count immediately
-  if (typeof updateFavBadge === 'function') {
-    updateFavBadge();
-  }
+  console.log('JB STORE: Favorites page shown again');
 
-  // Reload favorite products/count
-  if (typeof renderFavoritesGrid === 'function') {
-    renderFavoritesGrid();
-  }
+  setTimeout(function () {
+
+    // 1. Update Favorites badge
+    if (typeof updateFavBadge === 'function') {
+      updateFavBadge();
+    }
+
+    // 2. Update item count + product cards
+    if (typeof window.renderFavoritesGrid === 'function') {
+      window.renderFavoritesGrid();
+    }
+
+  }, 100);
 
 });
 </script>
