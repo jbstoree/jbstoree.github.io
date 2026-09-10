@@ -2584,7 +2584,9 @@
             if (!productData) {
                 const productId = getProductIdFromURL();
                 if (productId) {
-                    productData = allProducts.find(p => p.id === productId);
+                    productData = allProducts.find(
+  p => String(p.id) === String(productId)
+);
                 }
             }
             if (!productData && allProducts.length > 0) {
