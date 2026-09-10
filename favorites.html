@@ -509,68 +509,229 @@
 <script src="ac.js"></script>
 <script src="tv.js"></script>
 <script src="script.js"></script>
+
+<!-- Supabase MUST load before favorites.js -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="favorites.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-  function renderFavoritesGrid() {
+  // =========================================================
+  // JB STORE - FAVORITES PAGE
+  // IMPORTANT:
+  // Products are loaded DIRECTLY from Supabase.
+  // localStorage stores only the favorite product IDs.
+  // =========================================================
+
+  const FAVORITES_SUPABASE_URL =
+    'https://iuucwxdkjqpecqwbsoyv.supabase.co';
+
+  const FAVORITES_SUPABASE_ANON =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
+
+  const favoritesSupabase = supabase.createClient(
+    FAVORITES_SUPABASE_URL,
+    FAVORITES_SUPABASE_ANON
+  );
+
+  function normalizeFavoriteId(id) {
+    return String(id ?? '').trim();
+  }
+
+  async function renderFavoritesGrid() {
     const grid = document.getElementById('favoritesGrid');
     const countEl = document.getElementById('favCount');
-    const favIds = getFavorites();
 
-    // ✅ script.js లోని 'allProducts' ని డైరెక్ట్ గా ఉపయోగించండి
-    const all = allProducts || [];
-    
-    const favProducts = all.filter(p => favIds.includes(p.id));
+    if (!grid) return;
 
-    if (!favProducts.length) {
-      grid.innerHTML = `<div class="fav-empty"><span class="empty-icon">💔</span><h2>No favorites yet</h2><p>Tap the heart ❤️ on any product to save it here.</p><a href="index.html" class="shop-now-btn">Browse Products</a></div>`;
-      countEl.textContent = '0 items';
+    const savedIds = typeof getFavorites === 'function'
+      ? getFavorites().map(normalizeFavoriteId).filter(Boolean)
+      : [];
+
+    if (countEl) {
+      countEl.textContent =
+        savedIds.length +
+        (savedIds.length === 1 ? ' item' : ' items');
+    }
+
+    // No saved favorites.
+    if (savedIds.length === 0) {
+      grid.innerHTML = `
+        <div class="fav-empty">
+          <span class="empty-icon">💔</span>
+          <h2>No favorites yet</h2>
+          <p>Tap the heart ❤️ on any product to save it here.</p>
+          <a href="index.html" class="shop-now-btn">Browse Products</a>
+        </div>
+      `;
       return;
     }
 
-    countEl.textContent = favProducts.length + ' items';
-    grid.innerHTML = '';
+    grid.innerHTML = `
+      <div class="fav-empty">
+        <span class="empty-icon">⏳</span>
+        <h2>Loading favorites...</h2>
+        <p>Please wait...</p>
+      </div>
+    `;
 
-    favProducts.forEach(p => {
-      const card = document.createElement('div');
-      card.className = 'best-card';
-      card.style.position = 'relative';
-      card.style.cursor = 'pointer';
-      card.setAttribute('onclick', `viewProduct('${p.id}')`);
+    try {
+      const { data, error } = await favoritesSupabase
+        .from('products')
+        .select('*');
 
-      // ✅ Favorites page లో Heart button తీసేశాను (కేవలం ఇమేజ్, పేరు, ధర, View Details మాత్రమే)
-      card.innerHTML = `
-        <img src="${p.image || 'images/placeholder.png'}" alt="${p.name}" loading="lazy">
-        <h3>${p.name}</h3>
-        <p class="brand">${p.brand}</p>
-        <div class="price-row">
-          <span class="new">₹${(p.price || 0).toLocaleString('en-IN')}</span>
-          <span class="old">₹${(p.oldPrice || 0).toLocaleString('en-IN')}</span>
+      if (error) throw error;
+
+      const products = Array.isArray(data) ? data : [];
+
+      console.log('JB FAVORITES saved IDs:', savedIds);
+      console.log('JB FAVORITES Supabase products:', products);
+
+      // IMPORTANT:
+      // Both sides are converted to String so numeric/string IDs
+      // always match correctly.
+      const favorites = products.filter(product =>
+        savedIds.includes(normalizeFavoriteId(product.id))
+      );
+
+      console.log('JB FAVORITES matched products:', favorites);
+
+      if (favorites.length === 0) {
+        grid.innerHTML = `
+          <div class="fav-empty">
+            <span class="empty-icon">⚠️</span>
+            <h2>Favorite product not found</h2>
+            <p>The favorite ID is saved, but it does not match an ID in the Supabase products table.</p>
+            <a href="index.html" class="shop-now-btn">Browse Products</a>
+          </div>
+        `;
+        return;
+      }
+
+      if (countEl) {
+        countEl.textContent =
+          favorites.length +
+          (favorites.length === 1 ? ' item' : ' items');
+      }
+
+      grid.innerHTML = '';
+
+      favorites.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'best-card';
+        card.style.position = 'relative';
+        card.style.cursor = 'pointer';
+
+        const image =
+          product.image ||
+          (
+            Array.isArray(product.images) && product.images.length
+              ? product.images[0]
+              : ''
+          ) ||
+          'images/placeholder.png';
+
+        const price = Number(product.price || 0);
+        const oldPrice = Number(product.oldPrice || 0);
+
+        card.onclick = function () {
+          if (typeof viewProduct === 'function') {
+            viewProduct(product.id);
+          } else {
+            window.location.href =
+              `product.html?id=${encodeURIComponent(product.id)}`;
+          }
+        };
+
+        const safeName = String(product.name || 'Product')
+          .replace(/"/g, '&quot;');
+
+        const safeBrand = String(product.brand || '');
+
+        card.innerHTML = `
+          <img
+            src="${image}"
+            alt="${safeName}"
+            loading="lazy"
+            onerror="this.src='images/placeholder.png'"
+          >
+
+          <h3>${safeName}</h3>
+
+          <p class="brand">${safeBrand}</p>
+
+          <div class="price-row">
+            <span class="new">
+              ₹${price.toLocaleString('en-IN')}
+            </span>
+
+            ${
+              oldPrice > 0
+                ? `<span class="old">
+                     ₹${oldPrice.toLocaleString('en-IN')}
+                   </span>`
+                : ''
+            }
+          </div>
+
+          <button
+            type="button"
+            class="view-details-btn"
+          >
+            View Details
+          </button>
+        `;
+
+        const viewBtn = card.querySelector('.view-details-btn');
+
+        if (viewBtn) {
+          viewBtn.addEventListener('click', function (event) {
+            event.stopPropagation();
+
+            if (typeof viewProduct === 'function') {
+              viewProduct(product.id);
+            } else {
+              window.location.href =
+                `product.html?id=${encodeURIComponent(product.id)}`;
+            }
+          });
+        }
+
+        grid.appendChild(card);
+      });
+
+    } catch (error) {
+      console.error('JB FAVORITES ERROR:', error);
+
+      grid.innerHTML = `
+        <div class="fav-empty">
+          <span class="empty-icon">⚠️</span>
+          <h2>Unable to load favorites</h2>
+          <p>${String(error.message || 'Please refresh and try again.')}</p>
+          <a href="index.html" class="shop-now-btn">Browse Products</a>
         </div>
-        <button onclick="event.stopPropagation(); viewProduct('${p.id}')">View Details</button>
       `;
-      grid.appendChild(card);
-    });
+    }
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
+  // Make it available to favorites.js.
+  window.renderFavoritesGrid = renderFavoritesGrid;
+
+  document.addEventListener('DOMContentLoaded', function () {
     const phone = window.STORE_PHONE || '919999999999';
-    const tel = 'tel:' + phone;
-    document.getElementById('bottomCall')?.setAttribute('href', tel);
-    renderFavoritesGrid();
-    updateFavBadge();
-    if (typeof updateCartBadge === 'function') updateCartBadge();
-  });
+    const bottomCall = document.getElementById('bottomCall');
 
-  const originalToggle = window.toggleFavorite;
-  window.toggleFavorite = function(id) {
-    originalToggle(id);
-    if (window.location.pathname.includes('favorites.html')) {
-      renderFavoritesGrid();
+    if (bottomCall) {
+      bottomCall.setAttribute('href', 'tel:' + phone);
     }
-  };
-</script>
-</body>
-</html>
 
+    renderFavoritesGrid();
+
+    if (typeof updateFavBadge === 'function') {
+      updateFavBadge();
+    }
+
+    if (typeof updateCartBadge === 'function') {
+      updateCartBadge();
+    }
+  });
+</script>
