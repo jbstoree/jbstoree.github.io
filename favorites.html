@@ -633,13 +633,9 @@
     const oldPrice = Number(product.oldPrice || 0);
 
     card.onclick = function () {
-      if (typeof viewProduct === 'function') {
-        viewProduct(product.id);
-      } else {
-        window.location.href =
-          `product.html?id=${encodeURIComponent(product.id)}`;
-      }
-    };
+  window.location.href =
+    `product.html?id=${encodeURIComponent(product.id)}`;
+};
 
     const safeName = String(product.name || 'Product')
       .replace(/"/g, '&quot;');
