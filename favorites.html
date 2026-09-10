@@ -530,13 +530,7 @@
       return;
     }
 
-    grid.innerHTML = `
-      <div class="fav-empty">
-        <span class="empty-icon">⏳</span>
-        <h2>Loading favorites...</h2>
-        <p>Please wait...</p>
-      </div>
-    `;
+    
 
     try {
       const { data, error } = await favoritesSupabase
