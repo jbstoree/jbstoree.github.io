@@ -597,68 +597,96 @@
     const oldPrice = Number(product.oldPrice || 0);
 
     card.onclick = function () {
-  window.location.href =
-    `product.html?id=${encodeURIComponent(product.id)}`;
-};
+      window.location.href =
+        `product.html?id=${encodeURIComponent(product.id)}`;
+    };
 
     const safeName = String(product.name || 'Product')
       .replace(/"/g, '&quot;');
 
     const safeBrand = String(product.brand || '');
 
-    card.innerHTML = `
-  <img
-    src="${image || 'images/this-image-does-not-exist.png'}"
-    alt="${safeName}"
-    loading="lazy"
-    onerror="this.onerror=null; this.alt='Image not available';"
-  >
+    // ==========================================
+    // SAME VARIANT AS HOME TOP DEALS
+    // ==========================================
 
-  <h3>${safeName}</h3>
+    const firstVariant =
+      product.variants &&
+      product.variants.length > 0
+        ? product.variants[0].label
+        : null;
 
-  <p class="brand">
-    Brand: ${safeBrand}
-  </p>
+    let variantHTML = '';
 
-  <p class="condition">
-    Condition: ${product.condition || 'New'}
-  </p>
-
-  ${
-    product.variant
-      ? `
-        <div class="variant-tag">
-          📱 ${product.variant}
+    if (firstVariant) {
+      variantHTML = `
+        <div
+          style="
+            display:inline-block;
+            background:rgba(212,175,55,0.12);
+            color:#D4AF37;
+            font-size:11px;
+            font-weight:600;
+            padding:2px 10px;
+            border-radius:12px;
+            margin:4px 0;
+            border:1px solid rgba(212,175,55,0.15);
+          "
+        >
+          📱 ${firstVariant}
         </div>
-      `
-      : ''
-  }
-
-  <div class="rating">
-    ⭐ ${product.rating || '0'}
-    <span>(${product.reviews || 0})</span>
-  </div>
-
-  <div class="price-row">
-    <span class="new">
-      ₹${price.toLocaleString('en-IN')}
-    </span>
-
-    ${
-      oldPrice > 0
-        ? `
-          <span class="old">
-            ₹${oldPrice.toLocaleString('en-IN')}
-          </span>
-        `
-        : ''
+      `;
     }
-  </div>
-`;
-        
 
-        grid.appendChild(card);
-      });
+    // ==========================================
+    // FAVORITES CARD
+    // SAME DETAILS AS HOME TOP DEALS
+    // ==========================================
+
+    card.innerHTML = `
+      <img
+        src="${image || 'images/this-image-does-not-exist.png'}"
+        alt="${safeName}"
+        loading="lazy"
+        onerror="this.onerror=null; this.alt='Image not available';"
+      >
+
+      <h3>${safeName}</h3>
+
+      <p class="brand">
+        Brand: ${safeBrand}
+      </p>
+
+      <p class="condition">
+        Condition: ${product.condition || 'New'}
+      </p>
+
+      ${variantHTML}
+
+      <div class="rating">
+        ⭐ ${product.rating || '4.5'}
+        <span>(${product.reviews || 0})</span>
+      </div>
+
+      <div class="price-row">
+        <span class="new">
+          ₹${price.toLocaleString('en-IN')}
+        </span>
+
+        ${
+          oldPrice > 0
+            ? `
+              <span class="old">
+                ₹${oldPrice.toLocaleString('en-IN')}
+              </span>
+            `
+            : ''
+        }
+      </div>
+    `;
+
+    grid.appendChild(card);
+});
 
     } catch (error) {
       console.error('JB FAVORITES ERROR:', error);
