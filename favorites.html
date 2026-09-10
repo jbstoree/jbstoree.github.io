@@ -607,33 +607,54 @@
     const safeBrand = String(product.brand || '');
 
     card.innerHTML = `
-      <img
-        src="${image || 'images/this-image-does-not-exist.png'}"
-        alt="${safeName}"
-        loading="lazy"
-        onerror="this.onerror=null; this.alt='Image not available';"
-      >
+  <img
+    src="${image || 'images/this-image-does-not-exist.png'}"
+    alt="${safeName}"
+    loading="lazy"
+    onerror="this.onerror=null; this.alt='Image not available';"
+  >
 
-      <h3>${safeName}</h3>
+  <h3>${safeName}</h3>
 
-      <p class="brand">${safeBrand}</p>
+  <p class="brand">
+    Brand: ${safeBrand}
+  </p>
 
-      <div class="price-row">
-        <span class="new">
-          ₹${price.toLocaleString('en-IN')}
-        </span>
+  <p class="condition">
+    Condition: ${product.condition || 'New'}
+  </p>
 
-        ${
-          oldPrice > 0
-            ? `<span class="old">
-                 ₹${oldPrice.toLocaleString('en-IN')}
-               </span>`
-            : ''
-        }
-      </div>
+  ${
+    product.variant
+      ? `
+        <div class="variant-tag">
+          📱 ${product.variant}
+        </div>
+      `
+      : ''
+  }
 
-    `;
+  <div class="rating">
+    ⭐ ${product.rating || '0'}
+    <span>(${product.reviews || 0})</span>
+  </div>
 
+  <div class="price-row">
+    <span class="new">
+      ₹${price.toLocaleString('en-IN')}
+    </span>
+
+    ${
+      oldPrice > 0
+        ? `
+          <span class="old">
+            ₹${oldPrice.toLocaleString('en-IN')}
+          </span>
+        `
+        : ''
+    }
+  </div>
+`;
         
 
         grid.appendChild(card);
