@@ -2548,62 +2548,231 @@
         // LOAD PRODUCT
         // ==========================================
         function loadProduct() {
-            if (typeof allProducts === 'undefined' || allProducts.length === 0) {
-                console.warn('allProducts not loaded, retrying...');
-                setTimeout(() => {
-                    if (typeof allProducts !== 'undefined' && allProducts.length > 0) {
-                        loadProduct();
-                    } else {
-                        document.getElementById('productPage').innerHTML = `
-                                    <div style="text-align:center;padding:60px 20px;grid-column:1/-1;background:#FFFFFF;border:1px solid #D4AF37;border-radius:16px;box-shadow:0 0 4px rgba(212,175,55,0.05);">
-                                        <div style="font-size:50px;margin-bottom:16px;">⚠️</div>
-                                        <h2 style="color:#D4AF37;font-size:24px;">Data Not Loaded</h2>
-                                        <p style="color:#4A4742;margin:8px 0 20px;font-size:14px;">Please check if all JavaScript files are loaded correctly.</p>
-                                        <p style="color:#9A958A;font-size:12px;">Check Console (F12) for errors.</p>
-                                    </div>
-                                `;
-                    }
-                }, 500);
-                return;
+
+    if (
+        typeof allProducts === 'undefined' ||
+        allProducts.length === 0
+    ) {
+        console.warn('allProducts not loaded, retrying...');
+
+        setTimeout(() => {
+
+            if (
+                typeof allProducts !== 'undefined' &&
+                allProducts.length > 0
+            ) {
+                loadProduct();
+            } else {
+
+                document.getElementById('productPage').innerHTML = `
+                    <div style="
+                        text-align:center;
+                        padding:60px 20px;
+                        grid-column:1/-1;
+                        background:#FFFFFF;
+                        border:1px solid #D4AF37;
+                        border-radius:16px;
+                        box-shadow:0 0 4px rgba(212,175,55,0.05);
+                    ">
+                        <div style="
+                            font-size:50px;
+                            margin-bottom:16px;
+                        ">
+                            ⚠️
+                        </div>
+
+                        <h2 style="
+                            color:#D4AF37;
+                            font-size:24px;
+                        ">
+                            Data Not Loaded
+                        </h2>
+
+                        <p style="
+                            color:#4A4742;
+                            margin:8px 0 20px;
+                            font-size:14px;
+                        ">
+                            Please check if all JavaScript files are loaded correctly.
+                        </p>
+
+                        <p style="
+                            color:#9A958A;
+                            font-size:12px;
+                        ">
+                            Check Console (F12) for errors.
+                        </p>
+                    </div>
+                `;
             }
 
-            const sessionData = sessionStorage.getItem('selectedProduct');
-            let productData = null;
-            if (sessionData) {
-                try {
-                    let parsed = JSON.parse(sessionData);
-                    if (typeof mergeProduct === 'function') {
-                        productData = mergeProduct(parsed);
-                        console.log('✅ Merged product from sessionStorage:', productData);
-                    } else {
-                        productData = parsed;
-                        console.log('✅ Loaded product from sessionStorage (merge not available):', productData);
-                    }
-                } catch (e) { console.warn('Failed to parse sessionStorage data'); }
-            }
-            if (!productData) {
-                const productId = getProductIdFromURL();
-                if (productId) {
-                    productData = allProducts.find(
-  p => String(p.id) === String(productId)
-);
+        }, 500);
+
+        return;
+    }
+
+
+    // ==========================================
+    // 1. FIRST PRIORITY = URL PRODUCT ID
+    // ==========================================
+
+    const productId = getProductIdFromURL();
+
+    console.log(
+        '🔎 Product ID from URL:',
+        productId
+    );
+
+    let productData = null;
+
+
+    if (productId) {
+
+        productData = allProducts.find(
+            p => String(p.id) === String(productId)
+        );
+
+        console.log(
+            '🔎 Product found from URL:',
+            productData
+                ? productData.name
+                : 'NOT FOUND'
+        );
+    }
+
+
+    // ==========================================
+    // 2. ONLY IF THERE IS NO URL ID,
+    //    USE sessionStorage
+    // ==========================================
+
+    if (!productData && !productId) {
+
+        const sessionData =
+            sessionStorage.getItem('selectedProduct');
+
+        if (sessionData) {
+
+            try {
+
+                const parsed =
+                    JSON.parse(sessionData);
+
+                if (
+                    typeof mergeProduct === 'function'
+                ) {
+
+                    productData =
+                        mergeProduct(parsed);
+
+                    console.log(
+                        '✅ Product from sessionStorage:',
+                        productData
+                    );
+
+                } else {
+
+                    productData = parsed;
+
+                    console.log(
+                        '✅ Product from sessionStorage:',
+                        productData
+                    );
                 }
+
+            } catch (e) {
+
+                console.warn(
+                    'Failed to parse sessionStorage data'
+                );
             }
-            if (!productData && allProducts.length > 0) {
-                productData = allProducts[0];
-            }
-            if (!productData) {
-                document.getElementById('productPage').innerHTML = `
-                            <div style="text-align:center;padding:60px 20px;grid-column:1/-1;background:#FFFFFF;border:1px solid #D4AF37;border-radius:16px;box-shadow:0 0 4px rgba(212,175,55,0.05);">
-                                <div style="font-size:50px;margin-bottom:16px;">🔍</div>
-                                <h2 style="color:#D4AF37;font-size:24px;">Product Not Found</h2>
-                                <p style="color:#4A4742;margin:8px 0 20px;font-size:14px;">The product you're looking for doesn't exist.</p>
-                                <a href="index.html" style="display:inline-block;padding:12px 32px;background:linear-gradient(135deg,#D4AF37,#F3CF55);color:#0A0A0A;border-radius:10px;text-decoration:none;font-weight:700;font-size:14px;">Return to Store</a>
-                            </div>
-                        `;
-                return;
-            }
-            renderProduct(productData);
+        }
+    }
+
+
+    // ==========================================
+    // 3. DO NOT OPEN FIRST PRODUCT AUTOMATICALLY
+    // ==========================================
+
+    if (!productData) {
+
+        console.error(
+            '❌ Exact product not found:',
+            productId
+        );
+
+        document.getElementById('productPage').innerHTML = `
+            <div style="
+                text-align:center;
+                padding:60px 20px;
+                grid-column:1/-1;
+                background:#FFFFFF;
+                border:1px solid #D4AF37;
+                border-radius:16px;
+                box-shadow:0 0 4px rgba(212,175,55,0.05);
+            ">
+
+                <div style="
+                    font-size:50px;
+                    margin-bottom:16px;
+                ">
+                    🔍
+                </div>
+
+                <h2 style="
+                    color:#D4AF37;
+                    font-size:24px;
+                ">
+                    Product Not Found
+                </h2>
+
+                <p style="
+                    color:#4A4742;
+                    margin:8px 0 20px;
+                    font-size:14px;
+                ">
+                    The product you're looking for doesn't exist.
+                </p>
+
+                <a
+                    href="index.html"
+                    style="
+                        display:inline-block;
+                        padding:12px 32px;
+                        background:linear-gradient(
+                            135deg,
+                            #D4AF37,
+                            #F3CF55
+                        );
+                        color:#0A0A0A;
+                        border-radius:10px;
+                        text-decoration:none;
+                        font-weight:700;
+                        font-size:14px;
+                    "
+                >
+                    Return to Store
+                </a>
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    // ==========================================
+    // 4. OPEN EXACT PRODUCT
+    // ==========================================
+
+    console.log(
+        '✅ FINAL PRODUCT:',
+        productData.name,
+        'ID:',
+        productData.id
+    );
+
+    renderProduct(productData);
         }
 
         // ==========================================
