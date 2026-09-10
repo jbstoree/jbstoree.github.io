@@ -337,9 +337,10 @@
     .favorites-page .page-head h1::before {
         font-size: 25px;
     }
-  .favorites-page ~ .header .logo {
+
+    .favorites-page ~ .header .logo {
         margin-left: 12px !important;
-  }
+    }
 
     .favorites-page .page-head .fav-count {
         min-width: 110px;
@@ -348,56 +349,57 @@
     }
 
     .fav-grid {
-    width: 100%;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
+        width: 100%;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .fav-grid .best-card {
+        width: 100%;
+        min-width: 0;
+
+        /* 10% shorter */
+        min-height: 324px;
+
+        padding: 9px;
+        border-radius: 14px;
+    }
+
+    .fav-grid .best-card img {
+        width: 100%;
+
+        /* 190px → 170px */
+        height: 170px;
+
+        padding: 5px;
+        border-radius: 9px;
+
+        object-fit: contain;
+    }
+
+    .fav-grid .best-card h3 {
+        font-size: 13px;
+        min-height: 32px;
+        margin-top: 4px;
+    }
+
+    .fav-grid .best-card .brand {
+        font-size: 12px;
+    }
+
+    .fav-grid .best-card .price-row {
+        gap: 5px;
+        margin: 7px 0;
+    }
+
+    .fav-grid .best-card .price-row .new {
+        font-size: 16px;
+    }
+
+    .fav-grid .best-card .price-row .old {
+        font-size: 12px;
+    }
 }
-
-.fav-grid .best-card {
-    width: 100%;
-    min-width: 0;
-
-    min-height: 360px;
-
-    padding: 10px;
-    border-radius: 14px;
-}
-
-.fav-grid .best-card img {
-    width: 100%;
-    height: 190px;
-
-    padding: 6px;
-    border-radius: 9px;
-
-    object-fit: contain;
-}
-
-.fav-grid .best-card h3 {
-    font-size: 13px;
-    min-height: 34px;
-
-    margin-top: 5px;
-}
-
-.fav-grid .best-card .brand {
-    font-size: 12px;
-}
-
-.fav-grid .best-card .price-row {
-    gap: 5px;
-    margin: 8px 0;
-}
-
-.fav-grid .best-card .price-row .new {
-    font-size: 16px;
-}
-
-.fav-grid .best-card .price-row .old {
-    font-size: 12px;
-}
-}
-
 /* ==========================================
    SMALL MOBILE
    ========================================== */
