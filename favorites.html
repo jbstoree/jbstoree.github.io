@@ -674,20 +674,7 @@
 
     `;
 
-        const viewBtn = card.querySelector('.view-details-btn');
-
-        if (viewBtn) {
-          viewBtn.addEventListener('click', function (event) {
-            event.stopPropagation();
-
-            if (typeof viewProduct === 'function') {
-              viewProduct(product.id);
-            } else {
-              window.location.href =
-                `product.html?id=${encodeURIComponent(product.id)}`;
-            }
-          });
-        }
+        
 
         grid.appendChild(card);
       });
