@@ -697,21 +697,43 @@
   window.renderFavoritesGrid = renderFavoritesGrid;
 
   document.addEventListener('DOMContentLoaded', function () {
-    const phone = window.STORE_PHONE || '919999999999';
-    const bottomCall = document.getElementById('bottomCall');
 
-    if (bottomCall) {
-      bottomCall.setAttribute('href', 'tel:' + phone);
-    }
+  const phone = window.STORE_PHONE || '919999999999';
+  const bottomCall = document.getElementById('bottomCall');
 
+  if (bottomCall) {
+    bottomCall.setAttribute('href', 'tel:' + phone);
+  }
+
+  renderFavoritesGrid();
+
+  if (typeof updateFavBadge === 'function') {
+    updateFavBadge();
+  }
+
+  if (typeof updateCartBadge === 'function') {
+    updateCartBadge();
+  }
+
+});
+
+
+// ==========================================
+// AUTO UPDATE WHEN RETURNING FROM PRODUCT
+// NO REFRESH REQUIRED
+// ==========================================
+
+window.addEventListener('pageshow', function () {
+
+  // Update Favorites count immediately
+  if (typeof updateFavBadge === 'function') {
+    updateFavBadge();
+  }
+
+  // Reload favorite products/count
+  if (typeof renderFavoritesGrid === 'function') {
     renderFavoritesGrid();
+  }
 
-    if (typeof updateFavBadge === 'function') {
-      updateFavBadge();
-    }
-
-    if (typeof updateCartBadge === 'function') {
-      updateCartBadge();
-    }
-  });
+});
 </script>
