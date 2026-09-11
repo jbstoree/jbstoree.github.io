@@ -12,443 +12,97 @@
     /* ==========================================
        FAVORITES PAGE STYLES
        ========================================== */
-    .favorites-page {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 0 12px 100px;
-    }
-
-    .favorites-page .page-head {
-      width: 100%;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 8px 0 18px;
-      margin: 0 0 24px;
-      border-bottom: 2px solid rgba(212, 175, 55, 0.12);
-    }
-
-    .favorites-page .page-head h1 {
-      margin: 0;
-      font-size: 28px;
-      font-weight: 700;
-      color: #222;
-      text-align: center;
-      line-height: 1.2;
-      letter-spacing: 0.5px;
-    }
-
-    .favorites-page .page-head h1::before {
-      content: "❤️ ";
-      font-size: 28px;
-    }
-
-    .favorites-page .page-head .fav-count {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 120px;
-      box-sizing: border-box;
-      color: #c49b18;
-      font-size: 14px;
-      font-weight: 600;
-      padding: 6px 18px;
-      border: 1px solid rgba(212, 175, 55, 0.25);
-      border-radius: 30px;
-      background: rgba(212, 175, 55, 0.04);
-    }
-
-    .fav-grid {
-      width: 100%;
-      box-sizing: border-box;
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 18px;
-      align-items: stretch;
-    }
-
-    .fav-grid .best-card {
-      width: 100%;
-      min-width: 0;
-      max-width: 100%;
-      box-sizing: border-box;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      padding: 12px;
-      border-radius: 16px;
-      background: #ffffff;
-      border: 1px solid #ffd700 !important;
-      box-shadow: 0 0 4px rgba(255, 215, 0, 0.05) !important;
-      overflow: hidden;
-    }
-
-    .fav-grid .best-card img {
-      display: block;
-      width: 100%;
-      height: 150px;
-      box-sizing: border-box;
-      object-fit: contain;
-      padding: 8px;
-      background: #fff;
-      border-radius: 10px;
-      margin: 0 0 8px;
-    }
-
-    .fav-grid .best-card h3 {
-      width: 100%;
-      box-sizing: border-box;
-      margin: 3px 0 2px;
-      font-size: 14px;
-      font-weight: 600;
-      line-height: 1.3;
-      color: #111111 !important;
-      min-height: 36px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .fav-grid .best-card .brand {
-      margin: 2px 0;
-      font-size: 12px;
-      line-height: 1.3;
-      color: #999;
-    }
-
-    .fav-grid .best-card .price-row {
-      width: 100%;
-      box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin: 8px 0 8px;
-      flex-wrap: wrap;
-    }
-
-    .fav-grid .best-card .price-row .new {
-      color: #d4af37;
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .fav-grid .best-card .price-row .old {
-      color: #777;
-      font-size: 13px;
-      text-decoration: line-through;
-    }
-
-    .fav-grid .best-card button:last-child {
-      width: 100%;
-      height: 40px;
-      box-sizing: border-box;
-      margin-top: auto;
-      border: none;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #d4af37, #c9a030);
-      color: #0a0a0a;
-      font-family: "Poppins", sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .fav-grid .best-card .favorite-btn {
-      display: none !important;
-    }
-
-    .fav-grid .fav-empty {
-      width: 100%;
-      box-sizing: border-box;
-      grid-column: 1 / -1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 55px 20px;
-      margin: 0 auto;
-    }
-
-    .fav-grid .fav-empty .empty-icon {
-      display: block;
-      font-size: 52px;
-      line-height: 1;
-      margin-bottom: 18px;
-    }
-
-    .fav-grid .fav-empty h2 {
-      margin: 0 0 10px;
-      color: #222;
-      font-size: 25px;
-      font-weight: 700;
-      line-height: 1.25;
-    }
-
-    .fav-grid .fav-empty p {
-      max-width: 360px;
-      margin: 0 0 22px;
-      color: #555;
-      font-size: 15px;
-      line-height: 1.6;
-    }
-
-    .fav-grid .fav-empty .shop-now-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 170px;
-      height: 42px;
-      padding: 0 22px;
-      box-sizing: border-box;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #d4af37, #c9a030);
-      color: #111 !important;
-      font-size: 14px;
-      font-weight: 700;
-      text-decoration: none;
-      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
-    }
+    .favorites-page { width: 100%; box-sizing: border-box; padding: 0 12px 100px; }
+    .favorites-page .page-head { width: 100%; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 8px 0 18px; margin: 0 0 24px; border-bottom: 2px solid rgba(212, 175, 55, 0.12); }
+    .favorites-page .page-head h1 { margin: 0; font-size: 28px; font-weight: 700; color: #222; text-align: center; line-height: 1.2; letter-spacing: 0.5px; }
+    .favorites-page .page-head h1::before { content: "❤️ "; font-size: 28px; }
+    .favorites-page .page-head .fav-count { display: inline-flex; align-items: center; justify-content: center; min-width: 120px; box-sizing: border-box; color: #c49b18; font-size: 14px; font-weight: 600; padding: 6px 18px; border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 30px; background: rgba(212, 175, 55, 0.04); }
+    .fav-grid { width: 100%; box-sizing: border-box; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; align-items: stretch; }
+    .fav-grid .best-card { width: 100%; min-width: 0; max-width: 100%; box-sizing: border-box; position: relative; display: flex; flex-direction: column; align-items: stretch; padding: 12px; border-radius: 16px; background: #ffffff; border: 1px solid #ffd700 !important; box-shadow: 0 0 4px rgba(255, 215, 0, 0.05) !important; overflow: hidden; }
+    .fav-grid .best-card img { display: block; width: 100%; height: 150px; box-sizing: border-box; object-fit: contain; padding: 8px; background: #fff; border-radius: 10px; margin: 0 0 8px; }
+    .fav-grid .best-card h3 { width: 100%; box-sizing: border-box; margin: 3px 0 2px; font-size: 14px; font-weight: 600; line-height: 1.3; color: #111111 !important; min-height: 36px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .fav-grid .best-card .brand { margin: 2px 0; font-size: 12px; line-height: 1.3; color: #999; }
+    .fav-grid .best-card .price-row { width: 100%; box-sizing: border-box; display: flex; align-items: center; gap: 8px; margin: 8px 0 8px; flex-wrap: wrap; }
+    .fav-grid .best-card .price-row .new { color: #d4af37; font-size: 18px; font-weight: 700; }
+    .fav-grid .best-card .price-row .old { color: #777; font-size: 13px; text-decoration: line-through; }
+    .fav-grid .best-card button:last-child { width: 100%; height: 40px; box-sizing: border-box; margin-top: auto; border: none; border-radius: 10px; background: linear-gradient(135deg, #d4af37, #c9a030); color: #0a0a0a; font-family: "Poppins", sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
+    .fav-grid .best-card .favorite-btn { display: none !important; }
+    .fav-grid .fav-empty { width: 100%; box-sizing: border-box; grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 55px 20px; margin: 0 auto; }
+    .fav-grid .fav-empty .empty-icon { display: block; font-size: 52px; line-height: 1; margin-bottom: 18px; }
+    .fav-grid .fav-empty h2 { margin: 0 0 10px; color: #222; font-size: 25px; font-weight: 700; line-height: 1.25; }
+    .fav-grid .fav-empty p { max-width: 360px; margin: 0 0 22px; color: #555; font-size: 15px; line-height: 1.6; }
+    .fav-grid .fav-empty .shop-now-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 170px; height: 42px; padding: 0 22px; box-sizing: border-box; border-radius: 10px; background: linear-gradient(135deg, #d4af37, #c9a030); color: #111 !important; font-size: 14px; font-weight: 700; text-decoration: none; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); }
 
     /* ==========================================
-       HEADER (matches index.html + cart.html)
-       — Search bar REMOVED
+       HEADER
        ========================================== */
-    .header {
-      position: sticky;
-      top: 0;
-      z-index: 500;
-      background: #ffffff;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-    }
-    .header-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 14px 18px;
-    }
-    .header-top .logo {
-      font-family: "Playfair Display", Georgia, serif;
-      font-weight: 700;
-      font-size: 26px;
-      text-decoration: none;
-      color: #111;
-      letter-spacing: .3px;
-      line-height: 1;
-    }
+    .header { position: sticky; top: 0; z-index: 500; background: #ffffff; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+    .header-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; }
+    .header-top .logo { font-family: "Playfair Display", Georgia, serif; font-weight: 700; font-size: 26px; text-decoration: none; color: #111; letter-spacing: .3px; line-height: 1; }
     .header-top .logo span { color: #D4AF37; }
-
-    .menu-toggle {
-      width: 42px;
-      height: 42px;
-      background: transparent;
-      border: 1px solid rgba(212,175,55,.55);
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      cursor: pointer;
-      padding: 0;
-      flex-shrink: 0;
-      transition: all .2s;
-    }
+    .menu-toggle { width: 42px; height: 42px; background: transparent; border: 1px solid rgba(212,175,55,.55); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; padding: 0; flex-shrink: 0; transition: all .2s; }
     .menu-toggle:hover { background: rgba(212,175,55,.08); }
-    .menu-toggle span {
-      display: block;
-      width: 20px;
-      height: 2px;
-      background: #111;
-      border-radius: 2px;
-      transition: all .2s;
-    }
+    .menu-toggle span { display: block; width: 20px; height: 2px; background: #111; border-radius: 2px; transition: all .2s; }
+    .account-link { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; text-decoration: none; border: 1px solid rgba(212,175,55,.55); border-radius: 50%; background: rgba(212,175,55,.08); font-size: 19px; flex-shrink: 0; }
 
-    .account-link {
-      width: 42px;
-      height: 42px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      border: 1px solid rgba(212,175,55,.55);
-      border-radius: 50%;
-      background: rgba(212,175,55,.08);
-      font-size: 19px;
-      flex-shrink: 0;
-    }
-
-    /* ============ MENU DRAWER ============ */
-    .menu-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,.45);
-      -webkit-backdrop-filter: blur(3px);
-      backdrop-filter: blur(3px);
-      opacity: 0;
-      visibility: hidden;
-      transition: all .28s ease;
-      z-index: 9998;
-    }
+    /* ============ MENU DRAWER (APP FIXED) ============ */
+    .menu-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.45); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); opacity: 0; visibility: hidden; transition: all .28s ease; z-index: 9998; }
     .menu-overlay.show { opacity: 1; visibility: visible; }
-
-    .menu-drawer {
-      position: fixed;
-      top: 0; right: 0;
-      width: 84%;
-      max-width: 330px;
-      height: 100vh;
-      height: 100dvh;
-      background: #ffffff;
-      transform: translateX(100%);
-      transition: transform .3s cubic-bezier(.22,.61,.36,1);
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      box-shadow: -6px 0 30px rgba(0,0,0,.18);
-      overflow: hidden;
-    }
+    .menu-drawer { position: fixed; top: 0; right: 0; bottom: 0; /* ✅ APP FIX */ width: 84%; max-width: 330px; background: #ffffff; transform: translateX(100%); transition: transform .3s cubic-bezier(.22,.61,.36,1); z-index: 9999; display: flex; flex-direction: column; box-shadow: -6px 0 30px rgba(0,0,0,.18); overflow: hidden; }
     .menu-drawer.open { transform: translateX(0); }
-
-    .menu-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 18px 20px;
-      border-bottom: 1px solid #f0ead6;
-      flex-shrink: 0;
-    }
-    .menu-logo {
-      font-family: "Playfair Display", Georgia, serif;
-      font-weight: 700;
-      font-size: 22px;
-      color: #111;
-      letter-spacing: .3px;
-    }
+    .menu-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid #f0ead6; flex-shrink: 0; }
+    .menu-logo { font-family: "Playfair Display", Georgia, serif; font-weight: 700; font-size: 22px; color: #111; letter-spacing: .3px; }
     .menu-logo span { color: #D4AF37; }
-
-    .menu-close {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      border: 1px solid #eee6d2;
-      background: #fff;
-      font-size: 18px;
-      color: #666;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all .2s;
-    }
+    .menu-close { width: 38px; height: 38px; border-radius: 50%; border: 1px solid #eee6d2; background: #fff; font-size: 18px; color: #666; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; }
     .menu-close:hover { background: #faf8f2; color: #d4af37; border-color: #d4af37; }
-
-    .menu-nav {
-      flex: 1;
-      overflow-y: auto;
-      padding: 10px 12px 20px;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .menu-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 16px;
-      border-radius: 12px;
-      text-decoration: none;
-      color: #222;
-      font-size: 15px;
-      font-weight: 500;
-      margin-bottom: 2px;
-      transition: all .2s;
-      font-family: 'Poppins', Arial, sans-serif;
-      border-left: 3px solid transparent;
-    }
+    .menu-nav { flex: 1; overflow-y: auto; padding: 10px 12px 20px; -webkit-overflow-scrolling: touch; }
+    .menu-item { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 12px; text-decoration: none; color: #222; font-size: 15px; font-weight: 500; margin-bottom: 2px; transition: all .2s; font-family: 'Poppins', Arial, sans-serif; border-left: 3px solid transparent; }
     .menu-item:hover { background: #faf8f2; color: #111; }
-    .menu-item.active {
-      background: #fdf7e0;
-      color: #a3801a;
-      font-weight: 700;
-      border-left: 3px solid #D4AF37;
-    }
+    .menu-item.active { background: #fdf7e0; color: #a3801a; font-weight: 700; border-left: 3px solid #D4AF37; }
     .menu-item.account-active { border-left: 3px solid #D4AF37; }
-    .item-icon {
-      font-size: 20px;
-      width: 26px;
-      text-align: center;
-      flex-shrink: 0;
-    }
-
-    .menu-footer {
-      padding: 14px 20px calc(18px + env(safe-area-inset-bottom, 0px));
-      border-top: 1px solid #f0ead6;
-      text-align: center;
-      flex-shrink: 0;
-    }
-    .menu-version {
-      font-size: 11px;
-      color: #999;
-      letter-spacing: .5px;
-    }
+    .item-icon { font-size: 20px; width: 26px; text-align: center; flex-shrink: 0; }
+    .menu-footer { padding: 14px 20px calc(18px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid #f0ead6; text-align: center; flex-shrink: 0; }
+    .menu-version { font-size: 11px; color: #999; letter-spacing: .5px; }
     .menu-version span { color: #d4af37; font-weight: 600; }
 
-    /* ==========================================
-       TABLET
-       ========================================== */
-    @media (max-width: 900px) {
-      .fav-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 14px;
-      }
-    }
+    /* ============ PROFILE MODAL (APP FIXED) ============ */
+    .jb-profile-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2147483647; background: rgba(0, 0, 0, 0.6); display: none; justify-content: center; align-items: flex-end; padding-bottom: env(safe-area-inset-bottom, 20px); box-sizing: border-box; }
+    .jb-profile-modal.show { display: flex; }
+    .jb-profile-card { width: 100%; max-width: 520px; background: #fff; color: #222; border-radius: 26px 26px 0 0; padding: 24px 20px 60px 20px; box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.22); max-height: 85%; min-height: 400px; overflow-y: auto; border-top: 3px solid #d8ad19; box-sizing: border-box; }
+    .jb-profile-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .jb-profile-head h2{margin:0;font-family:Georgia,serif;font-size:25px}
+    .jb-profile-close{border:1px solid #e4d7ad;background:#fff;border-radius:50%;width:38px;height:38px;font-size:24px;cursor:pointer;color:#777}
+    .jb-profile-avatar{width:72px;height:72px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background:#fffaf0;border:2px solid #dfbd4a;font-size:35px;}
+    .jb-profile-field{margin:0 0 14px}
+    .jb-profile-field label{display:block;font-weight:700;font-size:13px;margin-bottom:7px;color:#555}
+    .jb-profile-field input,.jb-profile-field textarea{width:100%;box-sizing:border-box;border:1px solid #ddd8ca;border-radius:13px;background:#faf9f5;padding:13px 14px;font-size:15px;outline:none;font-family:inherit;}
+    .jb-profile-field input:focus,.jb-profile-field textarea:focus{border-color:#d5ad22;box-shadow:0 0 0 3px rgba(213,173,34,.12)}
+    .jb-profile-field textarea{min-height:82px;resize:vertical}
+    .jb-profile-save{width:100%;border:0;border-radius:14px;padding:14px;background:#dfb500;color:#111;font-size:16px;font-weight:800;cursor:pointer;margin-top:5px;}
+    .jb-profile-status{text-align:center;min-height:20px;margin-top:10px;font-size:13px;color:#777}
+    .jb-profile-field input[readonly]{background:#f4f2ec;color:#666;}
+    .jb-profile-logout{width:100%;border:1px solid #e6c9c9;border-radius:14px;padding:13px;background:#fff;color:#b00020;font-size:15px;font-weight:700;cursor:pointer;margin-top:10px;font-family:inherit;}
+    .jb-profile-logout:hover{background:#fff5f5;}
 
     /* ==========================================
-       MOBILE
+       TABLET & MOBILE
        ========================================== */
+    @media (max-width: 900px) { .fav-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; } }
     @media (max-width: 768px) {
       .favorites-page { padding: 0 6px 76px; }
       .favorites-page .page-head { padding: 5px 0 13px; margin-bottom: 14px; }
       .favorites-page .page-head h1 { font-size: 20px; }
       .favorites-page .page-head h1::before { font-size: 20px; }
       .favorites-page .page-head .fav-count { min-width: 88px; padding: 4px 13px; font-size: 10px; }
-
-      .fav-grid {
-        width: 100%;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-      }
-      .fav-grid .best-card {
-        width: 100%;
-        min-width: 0;
-        min-height: 288px;
-        padding: 7px;
-        border-radius: 11px;
-      }
-      .fav-grid .best-card img {
-        width: 100%;
-        height: 152px;
-        padding: 5px;
-        border-radius: 7px;
-        object-fit: contain;
-      }
+      .fav-grid { width: 100%; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      .fav-grid .best-card { width: 100%; min-width: 0; min-height: 288px; padding: 7px; border-radius: 11px; }
+      .fav-grid .best-card img { width: 100%; height: 152px; padding: 5px; border-radius: 7px; object-fit: contain; }
       .fav-grid .best-card h3 { font-size: 10px; min-height: 27px; margin-top: 4px; }
       .fav-grid .best-card .brand { font-size: 10px; }
       .fav-grid .best-card .price-row { gap: 4px; margin: 6px 0; }
       .fav-grid .best-card .price-row .new { font-size: 13px; }
       .fav-grid .best-card .price-row .old { font-size: 10px; }
     }
-
-    /* ==========================================
-       SMALL MOBILE
-       ========================================== */
     @media (max-width: 450px) {
       .favorites-page { padding-left: 6px; padding-right: 6px; }
       .fav-grid { gap: 8px; }
@@ -461,16 +115,11 @@
     }
   </style>
 
-  <!-- ✅ Force mobile viewport -->
   <script>
     (function () {
       function forceViewport() {
         var vp = document.querySelector('meta[name="viewport"]');
-        if (!vp) {
-          vp = document.createElement('meta');
-          vp.setAttribute('name', 'viewport');
-          document.head.appendChild(vp);
-        }
+        if (!vp) { vp = document.createElement('meta'); vp.setAttribute('name', 'viewport'); document.head.appendChild(vp); }
         vp.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover');
       }
       forceViewport();
@@ -481,15 +130,13 @@
 </head>
 <body>
 
-<!-- ===== HEADER (search bar REMOVED) ===== -->
+<!-- ===== HEADER ===== -->
 <header class="header">
   <div class="header-top">
     <a href="index.html" class="logo">JB <span>STORE</span></a>
-    <a href="login.html" class="account-link" id="headerAccountLink" aria-label="Login or Account">👤</a>
+    <a href="javascript:void(0)" class="account-link" id="headerAccountLink" aria-label="Login or Account">👤</a>
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
-      <span></span>
-      <span></span>
-      <span></span>
+      <span></span><span></span><span></span>
     </button>
   </div>
 </header>
@@ -509,7 +156,7 @@
       <span class="item-icon">🏠</span> Home
     </a>
 
-    <a href="login.html" class="menu-item" id="menuAccountLink">
+    <a href="javascript:void(0)" class="menu-item" id="menuAccountLink">
       <span class="item-icon" id="menuAccountIcon">👤</span>
       <span id="menuAccountText">My Account</span>
     </a>
@@ -543,6 +190,37 @@
 
   <div class="menu-footer">
     <div class="menu-version">✦ JB STORE <span>Premium Electronics</span> ✦</div>
+  </div>
+</div>
+
+<!-- ===== PROFILE MODAL ===== -->
+<div class="jb-profile-modal" id="jbProfileModal" aria-hidden="true">
+  <div class="jb-profile-card" role="dialog" aria-modal="true">
+    <div class="jb-profile-head">
+      <h2>My Account</h2>
+      <button class="jb-profile-close" id="jbProfileClose" type="button">×</button>
+    </div>
+    <div class="jb-profile-avatar">👤</div>
+    <div class="jb-profile-provider" id="jbProfileProvider" style="text-align:center;font-size:12px;color:#a4862a;margin-bottom:18px;"></div>
+    <div class="jb-profile-field">
+      <label>Email ID</label>
+      <input id="jbProfileEmail" type="email" readonly>
+    </div>
+    <div class="jb-profile-field">
+      <label>Full Name</label>
+      <input id="jbProfileName" type="text" placeholder="Enter your name" autocomplete="name">
+    </div>
+    <div class="jb-profile-field">
+      <label>Mobile Number</label>
+      <input id="jbProfileMobile" type="tel" inputmode="numeric" maxlength="10" placeholder="Enter 10-digit mobile number" autocomplete="tel">
+    </div>
+    <div class="jb-profile-field">
+      <label>Delivery Address</label>
+      <textarea id="jbProfileAddress" placeholder="House / Flat, Street, Area, City, State, PIN" autocomplete="street-address"></textarea>
+    </div>
+    <button class="jb-profile-save" id="jbProfileSave" type="button">Save Profile</button>
+    <button class="jb-profile-logout" id="jbProfileLogout" type="button">↪ Logout</button>
+    <div class="jb-profile-status" id="jbProfileStatus"></div>
   </div>
 </div>
 
@@ -589,12 +267,11 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="favorites.js"></script>
 
-<!-- ===== MENU DRAWER + ACCOUNT LOGIC ===== -->
+<!-- ===== MENU DRAWER + ACCOUNT + PROFILE LOGIC ===== -->
 <script>
 (function () {
   const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
   const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
-
   const $ = id => document.getElementById(id);
 
   const menuToggle  = $('menuToggle');
@@ -606,42 +283,48 @@
   const menuText    = $('menuAccountText');
   const menuIcon    = $('menuAccountIcon');
 
+  let client = null;
+  if (typeof supabase !== 'undefined') { try { client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON); } catch(e){} }
+  let user = null;
+
+  /* ✅ APP FIX: Drawer Height Calculation */
+  function fitDrawerToScreen() {
+    const drawer = $('menuDrawer');
+    if (!drawer) return;
+    const h = (window.visualViewport && window.visualViewport.height) 
+              ? window.visualViewport.height 
+              : (window.innerHeight || document.documentElement.clientHeight || 0);
+    if (h > 0) { drawer.style.height = h + 'px'; drawer.style.maxHeight = h + 'px'; drawer.style.bottom = 'auto'; }
+  }
+
   function openDrawer() {
-    menuDrawer.classList.add('open');
-    menuOverlay.classList.add('show');
-    document.body.style.overflow = 'hidden';
+    fitDrawerToScreen();
+    menuDrawer.classList.add('open'); menuOverlay.classList.add('show'); document.body.style.overflow = 'hidden';
   }
   function closeDrawer() {
-    menuDrawer.classList.remove('open');
-    menuOverlay.classList.remove('show');
-    document.body.style.overflow = '';
+    menuDrawer.classList.remove('open'); menuOverlay.classList.remove('show'); document.body.style.overflow = '';
   }
 
   if (menuToggle)  menuToggle.addEventListener('click', openDrawer);
   if (menuClose)   menuClose.addEventListener('click', closeDrawer);
   if (menuOverlay) menuOverlay.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
 
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeDrawer();
-  });
+  window.addEventListener('resize', fitDrawerToScreen);
+  window.addEventListener('orientationchange', function() { setTimeout(fitDrawerToScreen, 150); setTimeout(fitDrawerToScreen, 500); });
 
   /* ---------- ACCOUNT UI ---------- */
-  let client = null;
-  if (typeof supabase !== 'undefined') {
-    try { client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON); } catch(e){}
-  }
-
   async function updateAccountUI() {
     if (!client) return;
-
     const { data } = await client.auth.getSession();
     const session = data && data.session;
+    user = session ? session.user : null;
 
-    if (session && session.user) {
-      if (menuLink) { menuLink.setAttribute('href', '#'); menuLink.classList.add('account-active'); }
+    if (user) {
+      if (menuLink) { menuLink.setAttribute('href', 'javascript:void(0)'); menuLink.classList.add('account-active'); }
       if (menuText) menuText.textContent = 'My Account';
       if (menuIcon) menuIcon.textContent = '👤';
-      if (headerLink) { headerLink.setAttribute('href', '#'); headerLink.setAttribute('aria-label', 'My Account'); }
+      if (headerLink) { headerLink.setAttribute('href', 'javascript:void(0)'); headerLink.setAttribute('aria-label', 'My Account'); }
     } else {
       if (menuLink) { menuLink.setAttribute('href', 'login.html'); menuLink.classList.remove('account-active'); }
       if (menuText) menuText.textContent = 'Login / Account';
@@ -649,28 +332,74 @@
       if (headerLink) { headerLink.setAttribute('href', 'login.html'); headerLink.setAttribute('aria-label', 'Login'); }
     }
   }
-
-  if (headerLink) {
-    headerLink.addEventListener('click', function (e) {
-      if (headerLink.getAttribute('aria-label') === 'My Account') {
-        e.preventDefault();
-        window.location.href = 'index.html#account';
-      }
-    });
-  }
-
-  if (menuLink) {
-    menuLink.addEventListener('click', function (e) {
-      if (menuLink.getAttribute('href') === '#') {
-        e.preventDefault();
-        closeDrawer();
-        setTimeout(() => { window.location.href = 'index.html#account'; }, 200);
-      }
-    });
-  }
-
   updateAccountUI();
   if (client) client.auth.onAuthStateChange(() => setTimeout(updateAccountUI, 0));
+
+  /* ---------- PROFILE MODAL ---------- */
+  function friendlyName(u) {
+    const meta = u.user_metadata || {};
+    let n = meta.full_name || meta.name || meta.display_name || '';
+    if (!n && u.is_anonymous) n = 'Guest User';
+    if (!n && u.email) { const l = u.email.split('@')[0].replace(/[._-]+/g,' ').trim(); n = l.replace(/\b\w/g, c => c.toUpperCase()); }
+    return n;
+  }
+  function providerText(u) {
+    if (u.is_anonymous) return 'Guest account';
+    const p = (u.app_metadata && u.app_metadata.provider) || '';
+    if (p === 'google') return 'Signed in with Google';
+    if (p === 'phone')  return 'Signed in with Mobile OTP';
+    return 'Signed in with Email & Password';
+  }
+
+  async function openProfile() {
+    if (!user) { window.location.href = 'login.html'; return; }
+    const meta = user.user_metadata || {};
+    $('jbProfileEmail').value = user.is_anonymous ? 'Guest account' : (user.email || '');
+    $('jbProfileName').value = friendlyName(user);
+    $('jbProfileMobile').value = meta.mobile || meta.phone || '';
+    $('jbProfileAddress').value = meta.address || '';
+    $('jbProfileProvider').textContent = providerText(user);
+    $('jbProfileStatus').textContent = '';
+    $('jbProfileModal').classList.add('show');
+    $('jbProfileModal').setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeProfile() {
+    $('jbProfileModal').classList.remove('show');
+    $('jbProfileModal').setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  if (headerLink) headerLink.addEventListener('click', function(e) { e.preventDefault(); if (!user) { window.location.href='login.html'; return; } openProfile(); });
+  if (menuLink) menuLink.addEventListener('click', function(e) { e.preventDefault(); if (!user) { window.location.href='login.html'; return; } closeDrawer(); setTimeout(openProfile, 300); });
+  if ($('jbProfileClose')) $('jbProfileClose').addEventListener('click', closeProfile);
+  if ($('jbProfileModal')) $('jbProfileModal').addEventListener('click', function(e) { if (e.target === $('jbProfileModal')) closeProfile(); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeProfile(); });
+
+  if ($('jbProfileSave')) {
+    $('jbProfileSave').addEventListener('click', async function() {
+      const n = $('jbProfileName').value.trim();
+      const m = $('jbProfileMobile').value.trim();
+      const a = $('jbProfileAddress').value.trim();
+      if (m && !/^[0-9]{10}$/.test(m)) { $('jbProfileStatus').textContent = 'Please enter a valid 10-digit mobile number.'; return; }
+      $('jbProfileSave').disabled = true; $('jbProfileSave').textContent = 'Saving...';
+      const { data, error } = await client.auth.updateUser({ data: { full_name: n, name: n, mobile: m, address: a, profile_completed: true } });
+      $('jbProfileSave').disabled = false; $('jbProfileSave').textContent = 'Save Profile';
+      if (error) { $('jbProfileStatus').textContent = error.message; return; }
+      if (data && data.user) user = data.user;
+      $('jbProfileStatus').textContent = '✓ Profile saved successfully';
+      setTimeout(closeProfile, 700);
+    });
+  }
+
+  if ($('jbProfileLogout')) {
+    $('jbProfileLogout').addEventListener('click', async function() {
+      await client.auth.signOut();
+      closeProfile();
+      window.location.href = 'login.html';
+    });
+  }
 
   /* ---------- Badges from localStorage ---------- */
   function refreshBadges() {
@@ -679,29 +408,17 @@
       let cartQty = 0;
       for (const k of cartKeys) {
         const raw = localStorage.getItem(k);
-        if (raw) {
-          const v = JSON.parse(raw);
-          if (Array.isArray(v)) { cartQty = v.reduce((s,i)=>s+(Number(i.qty||i.quantity||1)),0); break; }
-        }
+        if (raw) { const v = JSON.parse(raw); if (Array.isArray(v)) { cartQty = v.reduce((s,i)=>s+(Number(i.qty||i.quantity||1)),0); break; } }
       }
-      document.querySelectorAll('.cart-badge,#cartBadge,#menuCartBadge').forEach(el => {
-        el.textContent = cartQty;
-        el.style.display = cartQty > 0 ? 'flex' : 'none';
-      });
+      document.querySelectorAll('.cart-badge,#cartBadge,#menuCartBadge').forEach(el => { el.textContent = cartQty; el.style.display = cartQty > 0 ? 'flex' : 'none'; });
 
       const favKeys = ['favorites','jb_favorites','favoritesList','jbFav'];
       let favCount = 0;
       for (const k of favKeys) {
         const raw = localStorage.getItem(k);
-        if (raw) {
-          const v = JSON.parse(raw);
-          if (Array.isArray(v)) { favCount = v.length; break; }
-        }
+        if (raw) { const v = JSON.parse(raw); if (Array.isArray(v)) { favCount = v.length; break; } }
       }
-      document.querySelectorAll('.fav-badge,#favBadge,#menuFavBadge').forEach(el => {
-        el.textContent = favCount;
-        el.style.display = favCount > 0 ? 'flex' : 'none';
-      });
+      document.querySelectorAll('.fav-badge,#favBadge,#menuFavBadge').forEach(el => { el.textContent = favCount; el.style.display = favCount > 0 ? 'flex' : 'none'; });
     } catch(e){}
   }
   refreshBadges();
@@ -711,37 +428,20 @@
 
 <!-- ===== FAVORITES RENDER LOGIC ===== -->
 <script>
-  // =========================================================
-  // JB STORE - FAVORITES PAGE
-  // Products are loaded DIRECTLY from Supabase.
-  // localStorage stores only the favorite product IDs.
-  // =========================================================
-
   const FAVORITES_SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
   const FAVORITES_SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
 
-  const favoritesSupabase = supabase.createClient(
-    FAVORITES_SUPABASE_URL,
-    FAVORITES_SUPABASE_ANON
-  );
+  const favoritesSupabase = supabase.createClient(FAVORITES_SUPABASE_URL, FAVORITES_SUPABASE_ANON);
 
-  function normalizeFavoriteId(id) {
-    return String(id ?? '').trim();
-  }
+  function normalizeFavoriteId(id) { return String(id ?? '').trim(); }
 
   async function renderFavoritesGrid() {
     const grid = document.getElementById('favoritesGrid');
     const countEl = document.getElementById('favCount');
-
     if (!grid) return;
 
-    const savedIds = typeof getFavorites === 'function'
-      ? getFavorites().map(normalizeFavoriteId).filter(Boolean)
-      : [];
-
-    if (countEl) {
-      countEl.textContent = savedIds.length + (savedIds.length === 1 ? ' item' : ' items');
-    }
+    const savedIds = typeof getFavorites === 'function' ? getFavorites().map(normalizeFavoriteId).filter(Boolean) : [];
+    if (countEl) countEl.textContent = savedIds.length + (savedIds.length === 1 ? ' item' : ' items');
 
     if (savedIds.length === 0) {
       grid.innerHTML = `
@@ -760,15 +460,7 @@
       if (error) throw error;
 
       const products = Array.isArray(data) ? data : [];
-
-      console.log('JB FAVORITES saved IDs:', savedIds);
-      console.log('JB FAVORITES Supabase products:', products);
-
-      const favorites = products.filter(product =>
-        savedIds.includes(normalizeFavoriteId(product.id))
-      );
-
-      console.log('JB FAVORITES matched products:', favorites);
+      const favorites = products.filter(product => savedIds.includes(normalizeFavoriteId(product.id)));
 
       if (favorites.length === 0) {
         grid.innerHTML = `
@@ -782,82 +474,45 @@
         return;
       }
 
-      if (countEl) {
-        countEl.textContent = favorites.length + (favorites.length === 1 ? ' item' : ' items');
-      }
-
+      if (countEl) countEl.textContent = favorites.length + (favorites.length === 1 ? ' item' : ' items');
       grid.innerHTML = '';
 
       favorites.forEach(product => {
         const card = document.createElement('div');
         card.className = 'best-card';
-        card.style.position = 'relative';
-        card.style.cursor = 'pointer';
+        card.style.position = 'relative'; card.style.cursor = 'pointer';
 
-        const image =
-          product.image ||
-          (Array.isArray(product.images) && product.images.length ? product.images[0] : '');
-
+        const image = product.image || (Array.isArray(product.images) && product.images.length ? product.images[0] : '');
         const price = Number(product.price || 0);
         const oldPrice = Number(product.oldPrice || 0);
 
-        card.onclick = function () {
-          window.location.href = `product.html?id=${encodeURIComponent(product.id)}`;
-        };
+        card.onclick = function () { window.location.href = `product.html?id=${encodeURIComponent(product.id)}`; };
 
         const safeName = String(product.name || 'Product').replace(/"/g, '&quot;');
         const safeBrand = String(product.brand || '');
-
-        const firstVariant =
-          product.variants && product.variants.length > 0
-            ? product.variants[0].label
-            : null;
-
+        const firstVariant = product.variants && product.variants.length > 0 ? product.variants[0].label : null;
         let variantHTML = '';
         if (firstVariant) {
-          variantHTML = `
-            <div style="
-              display:inline-block;
-              background:rgba(212,175,55,0.12);
-              color:#D4AF37;
-              font-size:11px;
-              font-weight:600;
-              padding:2px 10px;
-              border-radius:12px;
-              margin:4px 0;
-              border:1px solid rgba(212,175,55,0.15);
-            ">
-              📱 ${firstVariant}
-            </div>
-          `;
+          variantHTML = `<div style="display:inline-block; background:rgba(212,175,55,0.12); color:#D4AF37; font-size:11px; font-weight:600; padding:2px 10px; border-radius:12px; margin:4px 0; border:1px solid rgba(212,175,55,0.15);">📱 ${firstVariant}</div>`;
         }
 
         card.innerHTML = `
-          <img
-            src="${image || 'images/this-image-does-not-exist.png'}"
-            alt="${safeName}"
-            loading="lazy"
-            onerror="this.onerror=null; this.alt='Image not available';"
-          >
-
+          <img src="${image || 'images/this-image-does-not-exist.png'}" alt="${safeName}" loading="lazy" onerror="this.onerror=null; this.alt='Image not available';">
           <h3>${safeName}</h3>
           <p class="brand">Brand: ${safeBrand}</p>
           <p class="condition">Condition: ${product.condition || 'New'}</p>
           ${variantHTML}
           <div class="rating">⭐ ${product.rating || '4.5'} <span>(${product.reviews || 0})</span></div>
-
           <div class="price-row">
             <span class="new">₹${price.toLocaleString('en-IN')}</span>
             ${oldPrice > 0 ? `<span class="old">₹${oldPrice.toLocaleString('en-IN')}</span>` : ''}
           </div>
         `;
-
         grid.appendChild(card);
       });
 
     } catch (error) {
       console.error('JB FAVORITES ERROR:', error);
-
       grid.innerHTML = `
         <div class="fav-empty">
           <span class="empty-icon">⚠️</span>
@@ -877,13 +532,11 @@
     if (bottomCall) bottomCall.setAttribute('href', 'tel:' + phone);
 
     renderFavoritesGrid();
-
     if (typeof updateFavBadge === 'function') updateFavBadge();
     if (typeof updateCartBadge === 'function') updateCartBadge();
   });
 
   window.addEventListener('pageshow', function () {
-    console.log('JB STORE: Favorites page shown again');
     setTimeout(function () {
       if (typeof updateFavBadge === 'function') updateFavBadge();
       if (typeof window.renderFavoritesGrid === 'function') window.renderFavoritesGrid();
