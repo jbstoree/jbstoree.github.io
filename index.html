@@ -20,8 +20,40 @@
     .menu-item.account-active{border-left:2px solid #D4AF37;}
   </style>
 
+<style>
+  html.auth-pending body { visibility: hidden !important; }
+</style>
+<script>
+  document.documentElement.classList.add('auth-pending');
+</script>
 </head>
 <body>
+
+<!-- ===== JBSTORE_AUTH_GUARD ===== -->
+<script>
+(function () {
+  const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
+
+  if (typeof supabase === 'undefined') {
+    window.location.replace('login.html');
+    return;
+  }
+
+  const authClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+  authClient.auth.getSession().then(function ({ data }) {
+    if (!data || !data.session) {
+      window.location.replace('login.html');
+      return;
+    }
+    document.documentElement.classList.remove('auth-pending');
+  }).catch(function () {
+    window.location.replace('login.html');
+  });
+})();
+</script>
+
 
 <!-- ===== NEW HEADER ===== -->
 <header class="header">
@@ -337,3 +369,4 @@
 
 </body>
 </html>
+
