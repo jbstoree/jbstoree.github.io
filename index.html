@@ -28,26 +28,39 @@
 </script>
 
 <style>
-  /* ✅ APP FIX: z-index పెంచడం & Safe Area */
-  .jb-profile-modal{
-    position:fixed; inset:0; z-index:2147483647; display:none;
-    background:rgba(0,0,0,.42); backdrop-filter:blur(4px);
-    align-items:flex-end; justify-content:center;
-    padding-bottom: env(safe-area-inset-bottom); /* యాప్ కింద నావిగేషన్ బార్ ఉన్నా మోడల్ పైకి వస్తుంది */
+  /* ✅ APP FIX: యాప్ WebView లో మోడల్ సరిగ్గా ఓపెన్ అవ్వడానికి అవసరమైన CSS */
+  .jb-profile-modal {
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0; /* inset:0 కంటే ఇది యాప్ లో సేఫ్ */
+    z-index: 2147483647;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: none;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: env(safe-area-inset-bottom, 20px); /* యాప్ కింద నావిగేషన్ బార్ ఉన్నా మోడల్ పైకి వస్తుంది */
+    box-sizing: border-box;
   }
-  .jb-profile-modal.show{display:flex;}
+  .jb-profile-modal.show {
+    display: flex;
+  }
   
-  /* ✅ APP FIX: dvh వాడటం వల్ల యాప్ లో స్క్రీన్ హైట్ సరిగ్గా లెక్కిస్తుంది */
-  .jb-profile-card{
-    width:min(100%,520px); background:#fff; color:#222;
-    border-radius:26px 26px 0 0; padding:24px 20px 28px;
-    box-shadow:0 -12px 40px rgba(0,0,0,.22);
-    max-height: 85dvh; 
-    max-height: 85vh; /* పాత వెర్షన్స్ కోసం fallback */
-    min-height: 50dvh; /* మోడల్ కనీసం సగం స్క్రీన్ ఆక్రమించేలా */
-    overflow:auto;
-    border-top:3px solid #d8ad19;
+  .jb-profile-card {
+    width: 100%;
+    max-width: 520px;
+    background: #fff;
+    color: #222;
+    border-radius: 26px 26px 0 0;
+    padding: 24px 20px 60px 20px; /* కింద ఎక్కువ పాడింగ్ ఇచ్చాను, యాప్ బాటమ్ బార్ కవర్ చేయదు */
+    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.22);
+    /* vh/dvh బదులుగా % వాడాను, ఇది యాప్ లో పర్ఫెక్ట్‌గా పనిచేస్తుంది */
+    max-height: 85%; 
+    min-height: 400px; /* కార్డ్ కనీసం 400px హైట్ ఉండేలా ఫోర్స్ చేస్తుంది */
+    overflow-y: auto;
+    border-top: 3px solid #d8ad19;
+    box-sizing: border-box;
   }
+
   .jb-profile-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
   .jb-profile-head h2{margin:0;font-family:Georgia,serif;font-size:25px}
   .jb-profile-close{border:1px solid #e4d7ad;background:#fff;border-radius:50%;width:38px;height:38px;font-size:24px;cursor:pointer;color:#777}
