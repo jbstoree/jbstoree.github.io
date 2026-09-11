@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>My Account • JB STORE</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+body{margin:0;background:#080808;color:#fff;font-family:Poppins,Arial,sans-serif;padding:24px}
+.card{max-width:520px;margin:30px auto;background:#141414;border:1px solid #333;border-radius:20px;padding:24px}
+h1{margin-top:0}.gold{color:#D4AF37}.btn{width:100%;height:48px;margin-top:12px;border-radius:11px;border:1px solid #444;background:#191919;color:#fff;font-weight:700}
+</style>
+</head><body><div class="card">
+<h1>My <span class="gold">Account</span></h1>
+<p id="user">Loading…</p>
+<button class="btn" id="logout">Logout</button>
+<button class="btn" onclick="location.href='index.html'">← Back to JB STORE</button>
+</div>
+<script>
+const client=supabase.createClient('https://iuucwxdkjqpecqwbsoyv.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ');
+(async()=>{const {data:{session}}=await client.auth.getSession();if(!session){location.href='login.html';return;}
+const u=session.user;document.getElementById('user').textContent=u.email||'Guest account';})();
+document.getElementById('logout').onclick=async()=>{await client.auth.signOut();location.href='login.html';};
+</script></body></html>

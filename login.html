@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login • JB STORE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;background:#080808;color:#fff;font-family:Poppins,Arial,sans-serif;display:flex;align-items:center;justify-content:center;padding:22px}
+    .wrap{width:100%;max-width:430px}
+    .brand{text-align:center;margin-bottom:22px}
+    .brand-logo{font-size:31px;font-weight:800;letter-spacing:1px}
+    .brand-logo span{color:#D4AF37}
+    .sub{margin:7px 0 0;color:#aaa;font-size:13px}
+    .card{background:linear-gradient(145deg,#151515,#0d0d0d);border:1px solid rgba(212,175,55,.28);border-radius:24px;padding:26px;box-shadow:0 18px 60px rgba(0,0,0,.5)}
+    h1{font-size:25px;margin:0 0 7px}
+    .hint{color:#999;font-size:13px;margin:0 0 22px}
+    button,input{font:inherit}
+    .google{width:100%;height:52px;border:0;border-radius:13px;background:#fff;color:#111;font-weight:700;cursor:pointer}
+    .google i{margin-right:9px}
+    .or{display:flex;align-items:center;gap:10px;color:#777;font-size:12px;margin:20px 0}
+    .or:before,.or:after{content:"";height:1px;background:#292929;flex:1}
+    label{display:block;color:#bbb;font-size:12px;margin:13px 0 7px}
+    input{width:100%;height:48px;border-radius:12px;border:1px solid #303030;background:#111;color:#fff;padding:0 14px;outline:none}
+    input:focus{border-color:#D4AF37}
+    .primary{width:100%;height:50px;border:0;border-radius:12px;background:#D4AF37;color:#080808;font-weight:800;cursor:pointer;margin-top:17px}
+    .secondary{width:100%;height:48px;border:1px solid #444;border-radius:12px;background:#161616;color:#fff;font-weight:600;cursor:pointer;margin-top:10px}
+    .row{display:flex;justify-content:space-between;gap:10px;margin-top:13px}
+    .link{background:none;border:0;color:#D4AF37;cursor:pointer;font-size:12px;padding:0}
+    .status{min-height:20px;text-align:center;font-size:12px;margin:14px 0 0;color:#bbb}
+    .back{display:block;text-align:center;margin-top:18px;color:#aaa;text-decoration:none;font-size:13px}
+    .guest-note{font-size:11px;color:#777;text-align:center;margin-top:15px;line-height:1.5}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="brand">
+      <div class="brand-logo">JB <span>STORE</span></div>
+      <p class="sub">Premium Electronics</p>
+    </div>
+
+    <section class="card">
+      <h1 id="title">Welcome to JB STORE</h1>
+      <p class="hint" id="hint">Login or create your account. Mobile number is not required here.</p>
+
+      <button class="google" id="googleBtn"><i class="fa-brands fa-google"></i> Continue with Google</button>
+
+      <div class="or">OR</div>
+
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="email" placeholder="you@example.com">
+
+      <label for="password">Password</label>
+      <input id="password" type="password" autocomplete="current-password" placeholder="Enter password">
+
+      <button class="primary" id="loginBtn">Login</button>
+      <button class="secondary" id="signupBtn">Create Account</button>
+
+      <div class="row">
+        <button class="link" id="resetBtn">Forgot password?</button>
+        <button class="link" id="guestBtn">Continue as Guest</button>
+      </div>
+
+      <div class="status" id="status"></div>
+      <p class="guest-note">Guest accounts can browse and shop. You can add permanent account features later.</p>
+    </section>
+
+    <a class="back" href="index.html">← Back to JB STORE</a>
+  </main>
+
+<script>
+const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
+
+const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const $ = id => document.getElementById(id);
+const status = (msg, ok=false) => {
+  $('status').textContent = msg;
+  $('status').style.color = ok ? '#6ee7a8' : '#bbb';
+};
+
+$('googleBtn').onclick = async () => {
+  status('Opening Google…');
+  const { error } = await client.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + '/index.html' }
+  });
+  if (error) status(error.message);
+};
+
+$('loginBtn').onclick = async () => {
+  const email = $('email').value.trim();
+  const password = $('password').value;
+  if (!email || !password) return status('Enter email and password.');
+  status('Logging in…');
+  const { error } = await client.auth.signInWithPassword({ email, password });
+  if (error) return status(error.message);
+  window.location.href = 'index.html';
+};
+
+$('signupBtn').onclick = async () => {
+  const email = $('email').value.trim();
+  const password = $('password').value;
+  if (!email || !password) return status('Enter email and password.');
+  if (password.length < 6) return status('Password must be at least 6 characters.');
+  status('Creating account…');
+  const { data, error } = await client.auth.signUp({
+    email,
+    password,
+    options: { emailRedirectTo: window.location.origin + '/index.html' }
+  });
+  if (error) return status(error.message);
+  if (data.session) {
+    window.location.href = 'index.html';
+  } else {
+    status('Account created. Check your email and confirm it before logging in.', true);
+  }
+};
+
+$('resetBtn').onclick = async () => {
+  const email = $('email').value.trim();
+  if (!email) return status('Enter your email first.');
+  status('Sending reset email…');
+  const { error } = await client.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/login.html'
+  });
+  if (error) return status(error.message);
+  status('Password reset email sent. Check your inbox.', true);
+};
+
+$('guestBtn').onclick = async () => {
+  status('Starting guest session…');
+  const { error } = await client.auth.signInAnonymously();
+  if (error) return status(error.message);
+  window.location.href = 'index.html';
+};
+</script>
+</body>
+</html>
