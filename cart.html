@@ -2,16 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
   <title>Your Cart | JB STORE</title>
 
   <link rel="stylesheet" href="style.css" />
 
-  <!-- ✅ Supabase CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    /* ============ EXISTING CART STYLES (unchanged) ============ */
+    /* ============ CART STYLES ============ */
     .cart-page { max-width:1000px; margin:40px auto; padding:0 24px; min-height:60vh; }
     .cart-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:32px; padding-bottom:20px; border-bottom:1px solid rgba(212,175,55,.1); }
     .cart-header h1 { color:#000; font-size:32px; font-weight:700; margin:0; letter-spacing:.5px; }
@@ -52,39 +51,76 @@
     .empty-cart h2 { color:#000; font-size:28px; font-weight:700; margin:0 0 10px; }
     .empty-cart p { color:#666; font-size:15px; margin:0 0 28px; }
     .shop-now-btn { display:inline-flex; align-items:center; gap:10px; background:linear-gradient(135deg,#D4AF37,#F3CF55); color:#000; padding:16px 40px; border-radius:30px; text-decoration:none; font-weight:700; font-size:16px; transition:all .3s ease; }
-    .shop-now-btn:hover { transform:translateY(-3px); box-shadow:0 8px 30px rgba(212,175,55,.3); }
 
-    /* ============ CHECKOUT MODAL ============ */
-    .ck-modal { position:fixed; inset:0; z-index:99999; display:none; background:rgba(0,0,0,.55); backdrop-filter:blur(5px); align-items:flex-end; justify-content:center; }
-    .ck-modal.show { display:flex; }
-    .ck-card { width:min(100%,540px); background:#fff; border-radius:26px 26px 0 0; padding:24px 20px 26px; max-height:92vh; overflow:auto; border-top:4px solid #d4af37; animation:ckUp .3s ease; font-family:'Poppins',Arial,sans-serif; }
+    /* ============ CHECKOUT MODAL — WEBVIEW SAFE ============ */
+    .ck-modal {
+      position:fixed;
+      top:0; left:0; right:0; bottom:0;   /* ✅ inset:0 badulu — WebView support */
+      width:100vw; height:100vh;
+      z-index:99999;
+      display:none;
+      background:rgba(0,0,0,.55);
+      -webkit-backdrop-filter:blur(5px);   /* ✅ iOS WebView */
+      backdrop-filter:blur(5px);
+      align-items:flex-end; justify-content:center;
+      overflow-y:auto;
+      -webkit-overflow-scrolling:touch;
+    }
+    .ck-modal.show { display:flex !important; }
+    .ck-card {
+      width:min(100%,540px);
+      background:#fff;
+      border-radius:26px 26px 0 0;
+      padding:24px 20px 26px;
+      max-height:92vh;
+      overflow:auto;
+      border-top:4px solid #d4af37;
+      -webkit-animation:ckUp .3s ease;
+      animation:ckUp .3s ease;
+      font-family:'Poppins',Arial,sans-serif;
+      position:relative;
+      z-index:100000;
+    }
+    @-webkit-keyframes ckUp { from{-webkit-transform:translateY(40px);opacity:.3} to{-webkit-transform:translateY(0);opacity:1} }
     @keyframes ckUp { from{transform:translateY(40px);opacity:.3} to{transform:translateY(0);opacity:1} }
     .ck-card h2 { margin:0 0 4px; font-size:21px; font-family:Georgia,serif; color:#222; }
     .ck-card .sub { font-size:12.5px; color:#999; margin-bottom:20px; }
     .ck-field { margin-bottom:14px; }
     .ck-field label { display:block; font-size:12.5px; font-weight:700; color:#555; margin-bottom:7px; }
     .ck-field label b { color:#c00; }
-    .ck-field input,.ck-field textarea { width:100%; box-sizing:border-box; border:1px solid #ddd8ca; border-radius:13px; background:#faf9f5; padding:13px 14px; font-size:15px; font-family:inherit; outline:none; }
+    .ck-field input,.ck-field textarea {
+      width:100%; box-sizing:border-box;
+      border:1px solid #ddd8ca; border-radius:13px;
+      background:#faf9f5; padding:13px 14px;
+      font-size:15px; font-family:inherit; outline:none;
+      -webkit-appearance:none; appearance:none;
+    }
     .ck-field input:focus,.ck-field textarea:focus { border-color:#d5ad22; box-shadow:0 0 0 3px rgba(213,173,34,.13); background:#fff; }
     .ck-field textarea { min-height:82px; resize:vertical; }
     .ck-err { color:#c00; font-size:12.5px; min-height:18px; margin-bottom:8px; text-align:center; font-weight:600; }
     .ck-actions { display:flex; gap:10px; margin-top:4px; }
-    .ck-actions button { flex:1; border-radius:14px; padding:14px; font-size:15px; font-weight:800; cursor:pointer; font-family:inherit; border:0; }
+    .ck-actions button { flex:1; border-radius:14px; padding:14px; font-size:15px; font-weight:800; cursor:pointer; font-family:inherit; border:0; -webkit-appearance:none; }
     .ck-cancel { background:#f0eee7; color:#555; }
     .ck-go { background:linear-gradient(135deg,#25D366,#128C7E); color:#fff; box-shadow:0 8px 22px rgba(37,211,102,.35); }
     .ck-go:disabled { opacity:.6; cursor:wait; }
 
     /* ============ SUCCESS MODAL ============ */
-    .ok-modal { position:fixed; inset:0; z-index:100000; display:none; background:rgba(0,0,0,.55); align-items:center; justify-content:center; padding:20px; }
-    .ok-modal.show { display:flex; }
-    .ok-card { background:#fff; border-radius:22px; padding:30px 24px; text-align:center; max-width:380px; width:100%; font-family:'Poppins',Arial,sans-serif; animation:ckUp .3s ease; }
+    .ok-modal {
+      position:fixed; top:0; left:0; right:0; bottom:0;
+      width:100vw; height:100vh;
+      z-index:100001; display:none;
+      background:rgba(0,0,0,.55);
+      align-items:center; justify-content:center; padding:20px;
+    }
+    .ok-modal.show { display:flex !important; }
+    .ok-card { background:#fff; border-radius:22px; padding:30px 24px; text-align:center; max-width:380px; width:100%; font-family:'Poppins',Arial,sans-serif; -webkit-animation:ckUp .3s ease; animation:ckUp .3s ease; }
     .ok-card .tick { width:74px; height:74px; border-radius:50%; background:#e8f7ee; color:#25D366; font-size:40px; display:flex; align-items:center; justify-content:center; margin:0 auto 14px; }
     .ok-card h3 { margin:0 0 8px; font-size:20px; color:#111; }
     .ok-card p { margin:0 0 6px; font-size:13px; color:#777; }
     .ok-card .code { font-weight:800; color:#a3801a; letter-spacing:1px; font-size:16px; }
     .ok-card button { margin-top:20px; width:100%; border:0; border-radius:14px; padding:14px; background:#111; color:#d4af37; font-weight:800; font-size:15px; cursor:pointer; font-family:inherit; }
 
-    /* ============ MOBILE CART (unchanged) ============ */
+    /* ============ MOBILE ============ */
     @media (max-width:768px){
       .cart-page{padding:0 12px;margin:16px auto;min-height:50vh}
       .cart-header{flex-direction:column;align-items:flex-start;gap:6px;margin-bottom:18px;padding-bottom:14px}
@@ -119,6 +155,20 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+  <!-- ✅ Force mobile viewport -->
+  <script>
+  (function () {
+    function forceViewport() {
+      var vp = document.querySelector('meta[name="viewport"]');
+      if (!vp) { vp = document.createElement('meta'); vp.setAttribute('name','viewport'); document.head.appendChild(vp); }
+      vp.setAttribute('content','width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover');
+    }
+    forceViewport();
+    window.addEventListener('pageshow', forceViewport);
+    window.addEventListener('load', forceViewport);
+  })();
+  </script>
 </head>
 <body>
 
@@ -151,7 +201,7 @@
       <div class="summary-divider"></div>
       <div class="summary-row total"><span>Total</span><strong id="cartTotalPrice">₹0</strong></div>
       <div class="cart-actions">
-        <button class="checkout-btn" onclick="checkout()">
+        <button class="checkout-btn" id="proceedCheckoutBtn" type="button">
           <span>Proceed to Checkout</span><span>→</span>
         </button>
         <button class="clear-cart-btn" onclick="clearCart()">🗑️ Clear Cart</button>
@@ -201,8 +251,8 @@
     <div class="ck-err" id="ckErr"></div>
 
     <div class="ck-actions">
-      <button class="ck-cancel" id="ckCancel">Cancel</button>
-      <button class="ck-go" id="ckGo">📲 Place Order on WhatsApp</button>
+      <button class="ck-cancel" id="ckCancel" type="button">Cancel</button>
+      <button class="ck-go" id="ckGo" type="button">📲 Place Order on WhatsApp</button>
     </div>
   </div>
 </div>
@@ -215,7 +265,7 @@
     <p>Order ID:</p>
     <p class="code" id="okCode">JB000000</p>
     <p style="margin-top:12px">WhatsApp lo order details pampinchi — confirm cheyyandi.</p>
-    <button id="okBtn">Continue Shopping</button>
+    <button id="okBtn" type="button">Continue Shopping</button>
   </div>
 </div>
 
@@ -229,12 +279,12 @@
 <script src="script.js"></script>
 <script src="favorites.js"></script>
 
-<!-- ===== CHECKOUT + ORDER LOGIC ===== -->
+<!-- ===== CHECKOUT + ORDER LOGIC (WEBVIEW SAFE) ===== -->
 <script>
 (function () {
   const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
   const SUPABASE_ANON= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
-  const WA_NUMBER = '919999999999';   // 👈 MEE WHATSAPP NUMBER (country code, no +)
+  const WA_NUMBER = '919999999999';   // 👈 MEE WHATSAPP NUMBER
 
   if (typeof supabase === 'undefined') { console.warn('Supabase not loaded'); return; }
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
@@ -242,9 +292,11 @@
 
   let currentUser = null;
 
-  /* ---------- CART FROM DOM (script.js renders items here) ---------- */
+  /* ---------- CART READER (DOM + localStorage fallback) ---------- */
   function readCartFromDOM() {
     const items = [];
+
+    // 1) Try reading from rendered DOM
     document.querySelectorAll('#cartItems .cart-item').forEach(el => {
       const name  = (el.querySelector('.cart-item-info h3')?.textContent || '').trim();
       const brand = (el.querySelector('.cart-item-brand')?.textContent || '').trim();
@@ -256,7 +308,8 @@
       const qty = parseInt(qtyTxt, 10) || 1;
       if (name) items.push({ name, brand, price, qty, image });
     });
-    // fallback: localStorage
+
+    // 2) Fallback: localStorage
     if (!items.length) {
       const KEYS = ['cart','jb_cart','jbstore_cart','jbCart','cartItems'];
       for (const k of KEYS) {
@@ -277,40 +330,119 @@
         } catch(e){}
       }
     }
+
     return items;
   }
 
-  /* ---------- CHECKOUT BUTTON ---------- */
-  window.checkout = async function () {
-    const items = readCartFromDOM();
-    if (!items.length) { alert('Cart khali undi!'); return; }
-
-    const { data } = await sb.auth.getUser();
-    if (!data || !data.user) { window.location.href = 'login.html'; return; }
-    currentUser = data.user;
-
-    const meta = currentUser.user_metadata || {};
-    let nm = meta.full_name || meta.name || meta.display_name || '';
-    if (!nm && currentUser.email) {
-      const l = currentUser.email.split('@')[0].replace(/[._-]+/g,' ').trim();
-      nm = l.replace(/\b\w/g, c => c.toUpperCase());
+  /* ---------- HELPER: safe error display (WebView lo alert work avvadu) ---------- */
+  function showErr(msg) {
+    const el = $('ckErr');
+    if (el) {
+      el.textContent = msg;
+      el.style.color = '#c00';
     }
+    console.warn('[checkout]', msg);
+  }
 
-    $('ckName').value    = nm;
-    $('ckMobile').value  = meta.mobile || meta.phone || '';
-    $('ckAddress').value = meta.address || '';
-    $('ckErr').textContent = '';
+  /* ---------- PROCEED TO CHECKOUT ---------- */
+  async function openCheckout() {
+    try {
+      console.log('[checkout] clicked');
 
-    $('ckModal').classList.add('show');
-    document.body.style.overflow = 'hidden';
-  };
+      const items = readCartFromDOM();
+      console.log('[checkout] items found:', items.length);
 
-  $('ckCancel').onclick = () => {
+      if (!items.length) {
+        // ✅ alert() vaddu — WebView lo silent ga fail avutundi
+        // Modal open chesi error chupistamu
+        $('ckModal').classList.add('show');
+        document.body.style.overflow = 'hidden';
+        showErr('⚠️ Cart khali undi. Products add cheyyandi.');
+        setTimeout(() => {
+          $('ckModal').classList.remove('show');
+          document.body.style.overflow = '';
+        }, 2000);
+        return;
+      }
+
+      // ✅ getUser() fail aithe getSession() use cheyyi (WebView lo network issues)
+      let user = null;
+      try {
+        const { data } = await sb.auth.getUser();
+        user = data && data.user ? data.user : null;
+      } catch (e) {
+        console.warn('[checkout] getUser failed, trying getSession:', e);
+      }
+
+      if (!user) {
+        try {
+          const { data } = await sb.auth.getSession();
+          user = data && data.session ? data.session.user : null;
+        } catch (e) {
+          console.warn('[checkout] getSession failed:', e);
+        }
+      }
+
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+      currentUser = user;
+
+      const meta = user.user_metadata || {};
+      let nm = meta.full_name || meta.name || meta.display_name || '';
+      if (!nm && user.email) {
+        const l = user.email.split('@')[0].replace(/[._-]+/g,' ').trim();
+        nm = l.replace(/\b\w/g, c => c.toUpperCase());
+      }
+
+      $('ckName').value    = nm;
+      $('ckMobile').value  = meta.mobile || meta.phone || '';
+      $('ckAddress').value = meta.address || '';
+      $('ckErr').textContent = '';
+
+      // ✅ Open modal
+      $('ckModal').classList.add('show');
+      document.body.style.overflow = 'hidden';
+      console.log('[checkout] modal opened');
+    } catch (err) {
+      console.error('[checkout] error:', err);
+      // Fallback — modal open chesi error chupinchandi
+      $('ckModal').classList.add('show');
+      showErr('⚠️ Error: ' + (err.message || 'unknown'));
+    }
+  }
+
+  // ✅ Button click bind (DOMContentLoaded taruvata, guaranteed)
+  function bindProceedBtn() {
+    const btn = $('proceedCheckoutBtn');
+    if (btn) {
+      btn.addEventListener('click', openCheckout);
+      console.log('[checkout] Proceed button bound');
+    } else {
+      console.warn('[checkout] Proceed button NOT found yet, retrying...');
+      setTimeout(bindProceedBtn, 400);
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindProceedBtn);
+  } else {
+    bindProceedBtn();
+  }
+  // Also expose global (backup)
+  window.checkout = openCheckout;
+
+  /* ---------- MODAL CLOSE ---------- */
+  const cancelBtn = $('ckCancel');
+  if (cancelBtn) cancelBtn.addEventListener('click', () => {
     $('ckModal').classList.remove('show');
     document.body.style.overflow = '';
-  };
+  });
   $('ckModal').addEventListener('click', e => {
-    if (e.target === $('ckModal')) { $('ckModal').classList.remove('show'); document.body.style.overflow = ''; }
+    if (e.target === $('ckModal')) {
+      $('ckModal').classList.remove('show');
+      document.body.style.overflow = '';
+    }
   });
 
   /* ---------- PLACE ORDER ---------- */
@@ -319,11 +451,11 @@
     const mob  = $('ckMobile').value.trim();
     const addr = $('ckAddress').value.trim();
 
-    if (!/^[0-9]{10}$/.test(mob)) { $('ckErr').textContent = '⚠️ Valid 10-digit mobile number enter cheyyandi'; $('ckMobile').focus(); return; }
-    if (addr.length < 10) { $('ckErr').textContent = '⚠️ Full delivery address enter cheyyandi'; $('ckAddress').focus(); return; }
+    if (!/^[0-9]{10}$/.test(mob)) { showErr('⚠️ Valid 10-digit mobile number enter cheyyandi'); $('ckMobile').focus(); return; }
+    if (addr.length < 10) { showErr('⚠️ Full delivery address enter cheyyandi'); $('ckAddress').focus(); return; }
 
     const items = readCartFromDOM();
-    if (!items.length) { $('ckErr').textContent = '⚠️ Cart khali undi'; return; }
+    if (!items.length) { showErr('⚠️ Cart khali undi'); return; }
 
     $('ckGo').disabled = true; $('ckGo').textContent = 'Placing order...';
     $('ckErr').textContent = '';
@@ -368,10 +500,22 @@
     msg += `━━━━━━━━━━━━━━━\n💰 *TOTAL: ₹${subtotal}*\n`;
     msg += `📅 ${new Date().toLocaleString('en-IN')}\n\nPlease confirm my order 🙏`;
 
-    window.open('https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg), '_blank');
+    const waURL = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg);
+
+    // ✅ WebView lo window.open fail avutundi — location.href use cheyyi
+    try {
+      const w = window.open(waURL, '_blank');
+      if (!w || w.closed || typeof w.closed === 'undefined') {
+        window.location.href = waURL;
+      }
+    } catch (e) {
+      window.location.href = waURL;
+    }
 
     /* 4️⃣ Clear cart */
-    ['cart','jb_cart','jbstore_cart','jbCart','cartItems'].forEach(k => localStorage.removeItem(k));
+    ['cart','jb_cart','jbstore_cart','jbCart','cartItems'].forEach(k => {
+      try { localStorage.removeItem(k); } catch(e){}
+    });
     const itemsBox = $('cartItems'); if (itemsBox) itemsBox.innerHTML = '';
     $('cartSummary').style.display = 'none';
     $('emptyCart').style.display = 'block';
