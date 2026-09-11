@@ -401,6 +401,28 @@
         gap: 6px;
         flex: 1;
     }
+/* ==========================================
+   SIDEBAR FAVORITES & CART BADGE FIX
+========================================== */
+
+.menu-nav .menu-item .fav-badge,
+.menu-nav .menu-item .cart-badge {
+    position: static !important;
+    margin-left: 18px !important;
+    flex-shrink: 0 !important;
+
+    width: 20px !important;
+    height: 20px !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-radius: 50% !important;
+}
+
+
+
     .menu-item {
         display: flex;
         align-items: center;
