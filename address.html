@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Address • JB STORE</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+  html.auth-pending body{visibility:hidden!important;}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{margin:0;font-family:'Poppins',Arial,sans-serif;background:#f6f4ee;color:#1a1a1a;padding-bottom:40px;}
+
+  .top-bar{
+    position:sticky;top:0;z-index:50;background:#fff;color:#111;
+    padding:14px 16px;display:flex;align-items:center;gap:14px;
+    border-bottom:1px solid rgba(212,175,55,.25);
+    box-shadow:0 2px 12px rgba(0,0,0,.04);
+  }
+  .top-bar a{color:#111;font-size:22px;text-decoration:none;line-height:1;}
+  .top-bar h1{margin:0;font-size:19px;font-weight:700;font-family:Georgia,serif;letter-spacing:.3px;}
+  .top-bar h1 span{color:#d4af37;}
+
+  .wrap{padding:16px;max-width:640px;margin:0 auto;}
+
+  .addr-card{
+    background:#fff;border-radius:18px;padding:22px 20px;
+    box-shadow:0 6px 24px rgba(0,0,0,.06);
+    border:1px solid rgba(212,175,55,.18);
+    border-top:4px solid #d4af37;
+  }
+  .addr-head{
+    display:flex;align-items:center;gap:12px;
+    margin-bottom:20px;padding-bottom:16px;
+    border-bottom:1px dashed #eee;
+  }
+  .addr-avatar{
+    width:60px;height:60px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:#fffaf0;border:2px solid #dfbd4a;
+    font-size:28px;flex-shrink:0;
+  }
+  .addr-head-info{flex:1;min-width:0;}
+  .addr-head-info .ttl{font-weight:800;font-size:16px;color:#111;letter-spacing:.3px;}
+  .addr-head-info .sub{font-size:12px;color:#999;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+  .field{margin-bottom:16px;}
+  .field label{
+    display:block;font-size:12.5px;font-weight:700;
+    color:#555;margin-bottom:7px;letter-spacing:.2px;
+  }
+  .field label b{color:#c00;}
+  .field input, .field textarea{
+    width:100%;box-sizing:border-box;
+    border:1.5px solid #ddd8ca;border-radius:13px;
+    background:#faf9f5;padding:14px 15px;
+    font-size:15px;font-family:inherit;outline:none;
+    transition:.2s;color:#111;
+  }
+  .field input:focus, .field textarea:focus{
+    border-color:#d5ad22;background:#fff;
+    box-shadow:0 0 0 4px rgba(213,173,34,.13);
+  }
+  .field input[readonly]{background:#f4f2ec;color:#777;cursor:not-allowed;}
+  .field textarea{min-height:110px;resize:vertical;line-height:1.5;}
+
+  .save-btn{
+    width:100%;border:0;border-radius:14px;
+    padding:16px;font-size:16px;font-weight:800;
+    background:linear-gradient(135deg,#f0c419,#d4af37);
+    color:#111;cursor:pointer;font-family:inherit;
+    box-shadow:0 8px 22px rgba(212,175,55,.35);
+    margin-top:6px;transition:.25s;
+    letter-spacing:.3px;
+  }
+  .save-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 28px rgba(212,175,55,.45);}
+  .save-btn:disabled{opacity:.6;cursor:wait;transform:none;}
+
+  .status{
+    text-align:center;font-size:13.5px;margin-top:14px;
+    font-weight:600;min-height:20px;transition:.2s;
+  }
+  .status.ok{color:#1e8e4a;}
+  .status.err{color:#c00;}
+
+  .hint{
+    text-align:center;font-size:11.5px;color:#999;
+    margin-top:12px;line-height:1.5;
+  }
+
+  .loading{
+    text-align:center;padding:80px 20px;color:#999;font-size:14px;
+  }
+  .spinner{
+    display:inline-block;width:32px;height:32px;border-radius:50%;
+    border:3px solid #f0ead6;border-top-color:#d4af37;
+    animation:spin .8s linear infinite;margin-bottom:12px;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<script>
+(function () {
+  document.documentElement.classList.add('auth-pending');
+  const U='https://iuucwxdkjqpecqwbsoyv.supabase.co';
+  const A='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
+  if (typeof supabase === 'undefined') { location.replace('login.html'); return; }
+  const c = supabase.createClient(U,A);
+  c.auth.getSession().then(function({data}){
+    if(!data || !data.session){ location.replace('login.html'); return; }
+    document.documentElement.classList.remove('auth-pending');
+  }).catch(function(){ location.replace('login.html'); });
+})();
+</script>
+
+<div class="top-bar">
+  <a href="index.html"><i class="fas fa-arrow-left"></i></a>
+  <h1>My <span>Address</span></h1>
+</div>
+
+<div class="wrap" id="addrWrap">
+  <div class="loading"><div class="spinner"></div><div>Loading…</div></div>
+</div>
+
+<script>
+(function () {
+  const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
+  const SUPABASE_ANON= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
+  if (typeof supabase === 'undefined') return;
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+  const wrap = document.getElementById('addrWrap');
+
+  let currentUser = null;
+
+  function friendlyName(u) {
+    const meta = u.user_metadata || {};
+    let n = meta.full_name || meta.name || meta.display_name || '';
+    if (!n && u.email) {
+      const local = u.email.split('@')[0].replace(/[._-]+/g,' ').trim();
+      n = local.replace(/\b\w/g, c => c.toUpperCase());
+    }
+    return n;
+  }
+
+  async function render() {
+    const { data: { user } } = await sb.auth.getUser();
+    if (!user) { location.href = 'login.html'; return; }
+    currentUser = user;
+
+    const meta = user.user_metadata || {};
+    const email = user.is_anonymous ? 'Guest account' : (user.email || '');
+    const name = friendlyName(user);
+    const mobile = meta.mobile || meta.phone || '';
+    const address = meta.address || '';
+
+    wrap.innerHTML = `
+      <div class="addr-card">
+        <div class="addr-head">
+          <div class="addr-avatar">👤</div>
+          <div class="addr-head-info">
+            <div class="ttl">Delivery Information</div>
+            <div class="sub">${email}</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Full Name</label>
+          <input id="fName" type="text" value="${name.replace(/"/g,'&quot;')}" placeholder="Enter your full name" autocomplete="name">
+        </div>
+
+        <div class="field">
+          <label>Mobile Number <b>*</b></label>
+          <input id="fMobile" type="tel" inputmode="numeric" maxlength="10"
+                 value="${mobile.replace(/"/g,'&quot;')}" placeholder="10-digit mobile number" autocomplete="tel">
+        </div>
+
+        <div class="field">
+          <label>Full Delivery Address <b>*</b></label>
+          <textarea id="fAddress" placeholder="House / Flat No., Building, Street, Area, City, State, PIN code" autocomplete="street-address">${address}</textarea>
+        </div>
+
+        <div class="field">
+          <label>Email ID</label>
+          <input type="email" value="${email}" readonly>
+        </div>
+
+        <button class="save-btn" id="saveBtn">💾 Save Address</button>
+        <div class="status" id="statusMsg"></div>
+        <div class="hint">Ee details checkout lo automatic ga fill avutai.</div>
+      </div>`;
+
+    document.getElementById('saveBtn').addEventListener('click', saveAddress);
+  }
+
+  async function saveAddress() {
+    const name = document.getElementById('fName').value.trim();
+    const mobile = document.getElementById('fMobile').value.trim();
+    const address = document.getElementById('fAddress').value.trim();
+    const btn = document.getElementById('saveBtn');
+    const status = document.getElementById('statusMsg');
+
+    if (!mobile || !/^[0-9]{10}$/.test(mobile)) {
+      status.textContent = '⚠️ Valid 10-digit mobile number enter cheyyandi';
+      status.className = 'status err';
+      document.getElementById('fMobile').focus();
+      return;
+    }
+    if (!address || address.length < 10) {
+      status.textContent = '⚠️ Full delivery address enter cheyyandi';
+      status.className = 'status err';
+      document.getElementById('fAddress').focus();
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Saving…';
+    status.textContent = '';
+    status.className = 'status';
+
+    const { data, error } = await sb.auth.updateUser({
+      data: {
+        full_name: name,
+        name: name,
+        mobile: mobile,
+        address: address,
+        profile_completed: true
+      }
+    });
+
+    btn.disabled = false;
+    btn.textContent = '💾 Save Address';
+
+    if (error) {
+      status.textContent = '❌ ' + error.message;
+      status.className = 'status err';
+      return;
+    }
+
+    if (data && data.user) currentUser = data.user;
+    status.textContent = '✓ Address saved successfully';
+    status.className = 'status ok';
+
+    setTimeout(() => {
+      status.textContent = '';
+      status.className = 'status';
+    }, 2500);
+  }
+
+  render();
+})();
+</script>
+
+</body>
+</html>
