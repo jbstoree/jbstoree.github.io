@@ -63,12 +63,35 @@
         gap: 10px;
     }
 
-    .header-top {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-    }
+    /* =========================================
+   HEADER - PROFILE & MENU POSITION
+   ☰ Menu  →  👤 Profile
+========================================= */
+
+.header-top {
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Logo left */
+.header-top .logo {
+    order: 1 !important;
+}
+
+/* Three-lines menu BEFORE profile */
+.header-top .menu-toggle {
+  transform: scale(0.9) !important;
+    order: 2 !important;
+    margin-left: auto !important;
+    margin-right: 10px !important;
+}
+
+/* Profile icon AFTER menu */
+.header-top .account-link {
+  transform: scale(0.9) !important;
+    order: 3 !important;
+    margin-left: 0 !important;
+}
 
     .logo {
         font-size: 22px;
