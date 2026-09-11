@@ -28,17 +28,24 @@
 </script>
 
 <style>
+  /* ✅ APP FIX: z-index పెంచడం & Safe Area */
   .jb-profile-modal{
-    position:fixed; inset:0; z-index:100000; display:none;
+    position:fixed; inset:0; z-index:2147483647; display:none;
     background:rgba(0,0,0,.42); backdrop-filter:blur(4px);
     align-items:flex-end; justify-content:center;
+    padding-bottom: env(safe-area-inset-bottom); /* యాప్ కింద నావిగేషన్ బార్ ఉన్నా మోడల్ పైకి వస్తుంది */
   }
   .jb-profile-modal.show{display:flex;}
+  
+  /* ✅ APP FIX: dvh వాడటం వల్ల యాప్ లో స్క్రీన్ హైట్ సరిగ్గా లెక్కిస్తుంది */
   .jb-profile-card{
     width:min(100%,520px); background:#fff; color:#222;
     border-radius:26px 26px 0 0; padding:24px 20px 28px;
     box-shadow:0 -12px 40px rgba(0,0,0,.22);
-    max-height:88vh; overflow:auto;
+    max-height: 85dvh; 
+    max-height: 85vh; /* పాత వెర్షన్స్ కోసం fallback */
+    min-height: 50dvh; /* మోడల్ కనీసం సగం స్క్రీన్ ఆక్రమించేలా */
+    overflow:auto;
     border-top:3px solid #d8ad19;
   }
   .jb-profile-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
@@ -70,7 +77,6 @@
     .jb-profile-card{border-radius:24px;max-height:90vh;width:480px}
   }
 
-  /* ✅ NEW: readonly email + logout button */
   .jb-profile-field input[readonly]{background:#f4f2ec;color:#666;}
   .jb-profile-logout{
     width:100%;border:1px solid #e6c9c9;border-radius:14px;padding:13px;background:#fff;
@@ -101,7 +107,6 @@
   authClient.auth.getSession().then(function ({ data }) {
     if (data && data.session) { unlock(); return; }
 
-    // Google OAuth redirect ke baad session thoda late aa sakta hai — wait karo
     let sub = null;
     sub = authClient.auth.onAuthStateChange(function (_event, session) {
       if (session) {
@@ -123,10 +128,10 @@
 
 <!-- ===== NEW HEADER ===== -->
 <header class="header">
-  <!-- top row: logo + hamburger -->
+  <!-- ✅ APP FIX: href="#" బదులుగా javascript:void(0) వాడటం వల్ల యాప్ లో లింక్ బ్లాక్ అవ్వదు -->
   <div class="header-top">
     <a href="index.html" class="logo">JB <span>STORE</span></a>
-    <a href="login.html" class="account-link" id="headerAccountLink" aria-label="Login or Account">👤</a>
+    <a href="javascript:void(0)" class="account-link" id="headerAccountLink" aria-label="Login or Account">👤</a>
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
       <span></span>
       <span></span>
@@ -158,7 +163,8 @@
     <span class="item-icon">🏠</span> Home
   </a>
 
-  <a href="login.html" class="menu-item" id="menuAccountLink">
+  <!-- ✅ APP FIX: href="#" బదులుగా javascript:void(0) -->
+  <a href="javascript:void(0)" class="menu-item" id="menuAccountLink">
     <span class="item-icon" id="menuAccountIcon">👤</span>
     <span id="menuAccountText">My Account</span>
   </a>
@@ -544,7 +550,7 @@
 
   function closeDrawer() {
     const btn = $('menuClose');
-    if (btn) btn.click();   // script.js ka apna close handler chal jayega
+    if (btn) btn.click();
   }
 
   /* ---------- UI state ---------- */
@@ -557,20 +563,19 @@
   }
 
   function setLoggedInUI() {
-    if (menuLink) { menuLink.setAttribute('href', '#'); menuLink.classList.add('account-active'); }
+    if (menuLink) { menuLink.setAttribute('href', 'javascript:void(0)'); menuLink.classList.add('account-active'); }
     if (menuText) menuText.textContent = 'My Account';
     if (menuIcon) menuIcon.textContent = '👤';
-    if (headerLink) { headerLink.setAttribute('href', '#'); headerLink.setAttribute('aria-label', 'My Account'); }
+    if (headerLink) { headerLink.setAttribute('href', 'javascript:void(0)'); headerLink.setAttribute('aria-label', 'My Account'); }
   }
 
   /* ---------- modal ---------- */
 
   async function openProfile() {
-    // fresh user data (Google name / saved profile)
     try {
       const { data } = await client.auth.getUser();
       if (data && data.user) user = data.user;
-    } catch (e) { /* offline — session user use karo */ }
+    } catch (e) { }
 
     if (!user) { window.location.href = 'login.html'; return; }
 
@@ -597,16 +602,22 @@
 
   if (headerLink) {
     headerLink.addEventListener('click', function (e) {
-      if (!user) return;              // login.html par normal navigation
-      e.preventDefault();
+      e.preventDefault(); // ✅ యాప్ లో లింక్ ఓపెన్ అవ్వకుండా ఆపడం
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
       openProfile();
     });
   }
 
   if (menuLink) {
     menuLink.addEventListener('click', function (e) {
-      if (!user) return;              // login.html par normal navigation
-      e.preventDefault();
+      e.preventDefault(); // ✅ యాప్ లో లింక్ ఓపెన్ అవ్వకుండా ఆపడం
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
       closeDrawer();
       openProfile();
     });
