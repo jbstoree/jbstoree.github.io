@@ -347,7 +347,7 @@
       box-shadow: 0 8px 30px rgba(212, 175, 55, 0.3);
     }
 
-    /* ============ CHECKOUT MODAL — FIXED SCROLL & SAFE-AREA ============ */
+    /* ============ CHECKOUT MODAL — WEBVIEW FIXED ============ */
     .ck-modal {
       position: fixed;
       top: 0;
@@ -355,7 +355,8 @@
       right: 0;
       bottom: 0;
       width: 100%;
-      height: 100%;
+      height: 100vh;
+      height: 100dvh;             /* ✅ modern browsers */
       z-index: 99999;
       display: none;
       background: rgba(0, 0, 0, 0.55);
@@ -475,7 +476,7 @@
       flex-shrink: 0;
     }
 
-    /* ——— STICKY ACTIONS (buttons always visible) ——— */
+    /* ——— STICKY ACTIONS ——— */
     .ck-actions {
       position: sticky;
       bottom: 0;
@@ -526,7 +527,8 @@
       right: 0;
       bottom: 0;
       width: 100%;
-      height: 100%;
+      height: 100vh;
+      height: 100dvh;
       z-index: 100001;
       display: none;
       background: rgba(0, 0, 0, 0.55);
@@ -640,7 +642,6 @@
       .empty-cart p { font-size: 13px; }
       .shop-now-btn { padding: 12px 28px; font-size: 14px; }
 
-      /* Modal smaller on mobile */
       .ck-card {
         padding: 18px 16px 0;
         max-height: 95vh;
@@ -766,7 +767,7 @@
 
 <!-- ================= CHECKOUT MODAL ================= -->
 <div class="ck-modal" id="ckModal">
-  <div class="ck-card">
+  <div class="ck-card" id="ckCard">
     <h2>Delivery Details</h2>
     <div class="sub">Order confirm cheyyadaniki details fill cheyyandi</div>
 
@@ -818,7 +819,7 @@
 <script src="script.js"></script>
 <script src="favorites.js"></script>
 
-<!-- ===== CHECKOUT + ORDER LOGIC ===== -->
+<!-- ===== CHECKOUT + ORDER LOGIC (WEBVIEW SAFE + JS HEIGHT FIX) ===== -->
 <script>
 (function () {
   const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
@@ -827,16 +828,53 @@
 
   const $ = id => document.getElementById(id);
 
-  /* ✅ Supabase optional — lekapote modal still opens */
   let sb = null;
   if (typeof supabase !== 'undefined') {
     try { sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON); }
     catch(e) { console.warn('Supabase init failed:', e); }
-  } else {
-    console.warn('Supabase not loaded — order save skip ayyedi');
   }
 
   let currentUser = null;
+
+  /* ✅✅✅ WEBVIEW HEIGHT FIX ✅✅✅
+     WebView lo 100vh / 100dvh correct ga calculate avvadu.
+     So JS tho exact ga window.innerHeight set chestamu. */
+  function fitModalToScreen() {
+    const m = $('ckModal');
+    if (!m) return;
+    const h = (window.visualViewport && window.visualViewport.height)
+              ? window.visualViewport.height
+              : (window.innerHeight || document.documentElement.clientHeight || 0);
+
+    if (h > 0) {
+      m.style.height = h + 'px';
+      m.style.maxHeight = h + 'px';
+      m.style.top = '0px';
+      m.style.bottom = 'auto';
+
+      const c = $('ckCard');
+      if (c) {
+        // Card max height = 92% of screen height
+        c.style.maxHeight = Math.round(h * 0.92) + 'px';
+      }
+    }
+  }
+
+  /* Anni events ki bind cheyyi */
+  function bindFitEvents() {
+    window.addEventListener('resize', fitModalToScreen);
+    window.addEventListener('orientationchange', function () {
+      setTimeout(fitModalToScreen, 150);
+      setTimeout(fitModalToScreen, 500);
+    });
+    window.addEventListener('pageshow', fitModalToScreen);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', fitModalToScreen);
+      window.visualViewport.addEventListener('scroll', fitModalToScreen);
+    }
+    // WebView specific
+    document.addEventListener('scroll', fitModalToScreen, { passive: true });
+  }
 
   /* ---------- CART READER ---------- */
   function readCartFromDOM() {
@@ -884,23 +922,26 @@
     console.warn('[checkout]', msg);
   }
 
-  /* ---------- OPEN MODAL (SYNCHRONOUS — app lo instant open) ---------- */
+  /* ---------- OPEN MODAL ---------- */
   function openCheckout() {
     console.log('[checkout] clicked');
 
-    // ✅ Step 1: Modal ni INSTANT open cheyyi (Supabase wait cheyyakunda)
+    // ✅ Modal open BEFORE fitting (visibility kavali height calculate kosam)
     $('ckModal').classList.add('show');
     document.body.style.overflow = 'hidden';
     $('ckErr').textContent = '';
 
-    // ✅ Step 2: Cart check — instant
+    // ✅✅ Height fix — chala important for WebView
+    fitModalToScreen();
+    setTimeout(fitModalToScreen, 50);
+    setTimeout(fitModalToScreen, 250);
+
     const items = readCartFromDOM();
     if (!items.length) {
       showErr('⚠️ Cart khali undi. Products add cheyyandi.');
       return;
     }
 
-    // ✅ Step 3: Auth prefill — background lo (fail aithe modal continue)
     prefillUserData();
   }
 
@@ -908,21 +949,16 @@
     if (!sb) return;
     try {
       let user = null;
-
       try {
         const { data } = await sb.auth.getUser();
         user = data && data.user ? data.user : null;
-      } catch (e) {
-        console.warn('[checkout] getUser failed:', e);
-      }
+      } catch (e) { console.warn('[checkout] getUser failed:', e); }
 
       if (!user) {
         try {
           const { data } = await sb.auth.getSession();
           user = data && data.session ? data.session.user : null;
-        } catch (e) {
-          console.warn('[checkout] getSession failed:', e);
-        }
+        } catch (e) { console.warn('[checkout] getSession failed:', e); }
       }
 
       if (user) {
@@ -938,11 +974,11 @@
         if (!$('ckAddress').value) $('ckAddress').value = meta.address || '';
       }
     } catch (e) {
-      console.warn('[checkout] prefill failed (ok, continue):', e);
+      console.warn('[checkout] prefill failed:', e);
     }
   }
 
-  /* ---------- BIND PROCEED BUTTON ---------- */
+  /* ---------- BIND PROCEED ---------- */
   function bindProceedBtn() {
     const btn = $('proceedCheckoutBtn');
     if (btn) {
@@ -953,9 +989,13 @@
     }
   }
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', bindProceedBtn);
+    document.addEventListener('DOMContentLoaded', function () {
+      bindProceedBtn();
+      bindFitEvents();
+    });
   } else {
     bindProceedBtn();
+    bindFitEvents();
   }
   window.checkout = openCheckout;
 
@@ -994,7 +1034,6 @@
     const items = readCartFromDOM();
     if (!items.length) { showErr('⚠️ Cart khali undi'); return; }
 
-    // ✅ User session check (optional — profile save kosam)
     if (!currentUser && sb) {
       try {
         const { data } = await sb.auth.getUser();
@@ -1011,7 +1050,6 @@
     const userName  = name || (currentUser && currentUser.email ? currentUser.email.split('@')[0] : 'Customer');
     const userEmail = currentUser ? (currentUser.is_anonymous ? 'guest@jbstore' : (currentUser.email || '')) : 'guest@jbstore';
 
-    /* 1️⃣ Save to Supabase (optional — fail aithe continue) */
     if (sb && currentUser) {
       try {
         const { error } = await sb.from('orders').insert([{
@@ -1027,10 +1065,7 @@
         }]);
         if (error) console.error('Order save error:', error);
       } catch(e) { console.error('Order save failed:', e); }
-    }
 
-    /* 2️⃣ Profile save (next time prefill kosam) */
-    if (sb && currentUser) {
       try {
         await sb.auth.updateUser({
           data: {
@@ -1042,7 +1077,6 @@
       } catch(e){}
     }
 
-    /* 3️⃣ WhatsApp message */
     let msg = `🛒 *JB STORE - NEW ORDER*\n`;
     msg += `🆔 Order ID: *${orderCode}*\n`;
     msg += `👤 Name: ${userName}\n`;
@@ -1058,7 +1092,6 @@
 
     const waURL = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg);
 
-    // ✅ WebView safe open
     try {
       const w = window.open(waURL, '_blank');
       if (!w || w.closed || typeof w.closed === 'undefined') {
@@ -1068,7 +1101,6 @@
       window.location.href = waURL;
     }
 
-    /* 4️⃣ Clear cart */
     ['cart','jb_cart','jbstore_cart','jbCart','cartItems'].forEach(k => {
       try { localStorage.removeItem(k); } catch(e){}
     });
@@ -1080,7 +1112,6 @@
       el.textContent = '0'; el.style.display = 'none';
     });
 
-    /* 5️⃣ Success */
     $('ckModal').classList.remove('show');
     document.body.style.overflow = '';
     $('ckGo').disabled = false;
