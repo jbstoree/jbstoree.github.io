@@ -10,6 +10,16 @@
 
   <!-- ✅ Supabase CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    .account-link{
+      width:42px;height:42px;display:flex;align-items:center;justify-content:center;
+      text-decoration:none;border:1px solid rgba(212,175,55,.55);border-radius:50%;
+      background:rgba(212,175,55,.08);font-size:19px;flex-shrink:0;
+    }
+    .menu-item.account-active{border-left:2px solid #D4AF37;}
+  </style>
+
 </head>
 <body>
 
@@ -18,6 +28,7 @@
   <!-- top row: logo + hamburger -->
   <div class="header-top">
     <a href="index.html" class="logo">JB <span>STORE</span></a>
+    <a href="login.html" class="account-link" id="headerAccountLink" aria-label="Login or Account">👤</a>
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
       <span></span>
       <span></span>
@@ -55,6 +66,10 @@
       <span class="item-icon">🛒</span> Cart
       <span class="cart-badge" id="menuCartBadge" style="margin-left:auto;background:#D4AF37;color:#000;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 12px rgba(212,175,55,0.3);">0</span>
     </a>
+    <a href="login.html" class="menu-item" id="menuAccountLink">
+      <span class="item-icon">👤</span> Login / Account
+    </a>
+
     <a href="#" class="menu-item">
       <span class="item-icon">ℹ️</span> About Us
     </a>
