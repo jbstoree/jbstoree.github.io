@@ -151,6 +151,68 @@
       .suggestion-category { font-size: 11px; }
     }
   </style>
+
+  <!-- ✅ TOP DEALS PAGINATION CSS -->
+  <style>
+    .top-deals-pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 30px;
+      padding: 20px 0 5px;
+      flex-wrap: wrap;
+    }
+    .top-deals-pagination button {
+      min-width: 42px;
+      height: 42px;
+      padding: 0 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      background: #ffffff;
+      color: #111;
+      font-family: "Poppins", sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .top-deals-pagination button:hover:not(:disabled) {
+      background: rgba(212, 175, 55, 0.1);
+      border-color: #D4AF37;
+      transform: translateY(-2px);
+    }
+    .top-deals-pagination button.active {
+      background: linear-gradient(135deg, #D4AF37, #C9A030);
+      color: #111;
+      border-color: #D4AF37;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+    .top-deals-pagination button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .top-deals-pagination .page-info {
+      color: #999;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 0 4px;
+    }
+    @media (max-width: 768px) {
+      .top-deals-pagination { gap: 6px; margin-top: 20px; padding: 14px 0 4px; }
+      .top-deals-pagination button {
+        min-width: 36px;
+        height: 36px;
+        padding: 0 10px;
+        font-size: 12px;
+        border-radius: 8px;
+      }
+      .top-deals-pagination .page-info { font-size: 12px; }
+    }
+  </style>
 </head>
 <body>
 
@@ -203,7 +265,7 @@
   </div>
 </header>
 
-<!-- ✅ SUGGESTIONS PANEL — OUTSIDE .search so position:fixed works -->
+<!-- ✅ SUGGESTIONS PANEL -->
 <div id="searchSuggestions"></div>
 
 <!-- ===== OVERLAY ===== -->
@@ -311,6 +373,7 @@
     <a href="#" class="view-all">View All →</a>
   </div>
   <div id="productGrid" class="deal-grid"></div>
+  <div id="topDealsPagination" class="top-deals-pagination"></div>
 </section>
 
 <!-- ===== EXCHANGE OFFER ===== -->
@@ -456,8 +519,8 @@
           if (typeof updateCartBadge === 'function') updateCartBadge();
           if (typeof updateFavBadge === 'function') updateFavBadge();
 
-          // 🔁 Refresh suggestions if open
           if (window.__refreshSuggestions) window.__refreshSuggestions();
+          if (window.__applyTopDealsPagination) window.__applyTopDealsPagination();
         }
       } catch (err) {
         console.error('❌ Failed to fetch products:', err);
@@ -700,7 +763,6 @@
     tv:      ['tv','tvs','television','televisions','smart tv','smart tvs']
   };
 
-  /* Safe accessor for allProducts (loaded by script.js / Supabase) */
   function getProducts() {
     try {
       if (typeof allProducts !== 'undefined' && Array.isArray(allProducts) && allProducts.length) {
@@ -821,7 +883,6 @@
     suggestEl.classList.add('show');
   }
 
-  /* Expose refresh for Supabase updates */
   window.__refreshSuggestions = function () {
     if (suggestEl.classList.contains('show') && inputEl.value.trim()) {
       showPanel();
@@ -861,6 +922,116 @@
   }, true);
 
   console.log('✅ [index-search] Suggestions ready.');
+})();
+</script>
+
+<!-- ===== ✅ TOP DEALS PAGINATION ===== -->
+<script>
+(function () {
+  'use strict';
+
+  var PER_PAGE = 20;
+  var currentPage = 1;
+  var gridEl = document.getElementById('productGrid');
+  var pagEl  = document.getElementById('topDealsPagination');
+  if (!gridEl || !pagEl) return;
+
+  function applyPagination() {
+    var cards = gridEl.querySelectorAll('.deal-card');
+    var total = cards.length;
+
+    if (total <= PER_PAGE) {
+      pagEl.innerHTML = '';
+      cards.forEach(function (c) { c.style.display = ''; });
+      return;
+    }
+
+    var totalPages = Math.ceil(total / PER_PAGE);
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+
+    cards.forEach(function (card, idx) {
+      var page = Math.floor(idx / PER_PAGE) + 1;
+      card.style.display = (page === currentPage) ? '' : 'none';
+    });
+
+    renderPagination(totalPages);
+  }
+
+  function renderPagination(totalPages) {
+    var html = '';
+    html += '<button type="button" data-page="prev" ' + (currentPage === 1 ? 'disabled' : '') + '>‹ Prev</button>';
+
+    var startP = Math.max(1, currentPage - 2);
+    var endP   = Math.min(totalPages, startP + 4);
+    if (endP - startP < 4) startP = Math.max(1, endP - 4);
+
+    if (startP > 1) {
+      html += '<button type="button" data-page="1">1</button>';
+      if (startP > 2) html += '<span class="page-info">…</span>';
+    }
+
+    for (var i = startP; i <= endP; i++) {
+      html += '<button type="button" data-page="' + i + '" class="' + (i === currentPage ? 'active' : '') + '">' + i + '</button>';
+    }
+
+    if (endP < totalPages) {
+      if (endP < totalPages - 1) html += '<span class="page-info">…</span>';
+      html += '<button type="button" data-page="' + totalPages + '">' + totalPages + '</button>';
+    }
+
+    html += '<button type="button" data-page="next" ' + (currentPage === totalPages ? 'disabled' : '') + '>Next ›</button>';
+    pagEl.innerHTML = html;
+  }
+
+  pagEl.addEventListener('click', function (e) {
+    var btn = e.target.closest('button[data-page]');
+    if (!btn || btn.disabled) return;
+
+    var p = btn.getAttribute('data-page');
+    var cards = gridEl.querySelectorAll('.deal-card');
+    var totalPages = Math.ceil(cards.length / PER_PAGE);
+
+    if (p === 'prev') {
+      if (currentPage > 1) currentPage--;
+    } else if (p === 'next') {
+      if (currentPage < totalPages) currentPage++;
+    } else {
+      currentPage = parseInt(p, 10);
+    }
+
+    applyPagination();
+
+    var section = document.getElementById('products');
+    if (section) {
+      var y = section.getBoundingClientRect().top + window.pageYOffset - 80;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  });
+
+  /* Reset on filter / category change */
+  var observeTimeout;
+  var observer = new MutationObserver(function () {
+    clearTimeout(observeTimeout);
+    observeTimeout = setTimeout(function () {
+      currentPage = 1;
+      applyPagination();
+    }, 80);
+  });
+  observer.observe(gridEl, { childList: true });
+
+  /* Expose for Supabase update */
+  window.__applyTopDealsPagination = function () {
+    currentPage = 1;
+    applyPagination();
+  };
+
+  /* Initial runs */
+  setTimeout(applyPagination, 400);
+  setTimeout(applyPagination, 1200);
+  window.addEventListener('load', function () { setTimeout(applyPagination, 300); });
+
+  console.log('✅ [top-deals] Pagination ready.');
 })();
 </script>
 
