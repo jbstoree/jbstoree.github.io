@@ -21,36 +21,6 @@
   </style>
 
 <style>
-  .account-dropdown{
-    position:fixed;
-    top:72px;
-    right:12px;
-    min-width:180px;
-    background:#fff;
-    border:1px solid rgba(212,175,55,.55);
-    border-radius:14px;
-    box-shadow:0 12px 35px rgba(0,0,0,.22);
-    padding:7px;
-    z-index:99999;
-    display:none;
-  }
-  .account-dropdown.show{display:block;}
-  .account-dropdown button{
-    width:100%;
-    border:0;
-    background:transparent;
-    padding:12px 14px;
-    border-radius:10px;
-    text-align:left;
-    font:600 14px Poppins,Arial,sans-serif;
-    color:#222;
-    cursor:pointer;
-  }
-  .account-dropdown button:hover{background:#f7f1dc;}
-  .account-dropdown .logout-btn{color:#a00000;}
-</style>
-
-<style>
   html.auth-pending body { visibility: hidden !important; }
 </style>
 <script>
@@ -99,6 +69,15 @@
     .jb-profile-modal{align-items:center}
     .jb-profile-card{border-radius:24px;max-height:90vh;width:480px}
   }
+
+  /* ✅ NEW: readonly email + logout button */
+  .jb-profile-field input[readonly]{background:#f4f2ec;color:#666;}
+  .jb-profile-logout{
+    width:100%;border:1px solid #e6c9c9;border-radius:14px;padding:13px;background:#fff;
+    color:#b00020;font-size:15px;font-weight:700;cursor:pointer;margin-top:10px;
+    font-family:inherit;
+  }
+  .jb-profile-logout:hover{background:#fff5f5;}
 </style>
 
 </head>
@@ -110,22 +89,34 @@
   const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
   const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
 
-  if (typeof supabase === 'undefined') {
-    window.location.replace('login.html');
-    return;
-  }
+  const unlock  = function(){ document.documentElement.classList.remove('auth-pending'); };
+  const goLogin = function(){ window.location.replace('login.html'); };
+
+  if (typeof supabase === 'undefined') { goLogin(); return; }
 
   const authClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+  let redirected = false;
+  const fail = function(){ if (!redirected) { redirected = true; goLogin(); } };
 
   authClient.auth.getSession().then(function ({ data }) {
-    if (!data || !data.session) {
-      window.location.replace('login.html');
-      return;
-    }
-    document.documentElement.classList.remove('auth-pending');
-  }).catch(function () {
-    window.location.replace('login.html');
-  });
+    if (data && data.session) { unlock(); return; }
+
+    // Google OAuth redirect ke baad session thoda late aa sakta hai — wait karo
+    let sub = null;
+    sub = authClient.auth.onAuthStateChange(function (_event, session) {
+      if (session) {
+        unlock();
+        if (sub && sub.data && sub.data.subscription) sub.data.subscription.unsubscribe();
+      }
+    });
+
+    setTimeout(function () {
+      authClient.auth.getSession().then(function ({ data }) {
+        if (data && data.session) unlock(); else fail();
+      }).catch(fail);
+    }, 1500);
+
+  }).catch(fail);
 })();
 </script>
 
@@ -150,10 +141,6 @@
     <div id="searchSuggestions" class="search-suggestions"></div>
   </div>
 </header>
-<div class="account-dropdown" id="accountDropdown">
-  <button type="button" id="accountOpenBtn">👤 My Account</button>
-  <button type="button" class="logout-btn" id="accountLogoutBtn">↪ Logout</button>
-</div>
 
 
 <!-- ===== OVERLAY (for closing drawer) ===== -->
@@ -376,85 +363,6 @@
 <script src="script.js"></script>
 <script src="favorites.js"></script>
 
-
-  <!-- ===== AUTH ACCOUNT UI ===== -->
-  <script>
-    (function () {
-      const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
-      const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
-
-      if (typeof supabase === 'undefined') return;
-
-      const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-
-      const accountDropdown = document.getElementById('accountDropdown');
-      const accountOpenBtn = document.getElementById('accountOpenBtn');
-      const accountLogoutBtn = document.getElementById('accountLogoutBtn');
-
-      async function updateAccountUI() {
-        const { data } = await client.auth.getSession();
-        const session = data && data.session;
-
-        const menuLink = document.getElementById('menuAccountLink');
-        const menuText = document.getElementById('menuAccountText');
-        const menuIcon = document.getElementById('menuAccountIcon');
-        const headerLink = document.getElementById('headerAccountLink');
-
-        if (!menuLink || !menuText || !menuIcon || !headerLink) return;
-
-        if (session) {
-          menuLink.href = 'account.html';
-          menuText.textContent = 'Logout / Account';
-          menuIcon.textContent = '👤';
-          menuLink.classList.add('account-active');
-
-          headerLink.href = '#';
-          headerLink.setAttribute('aria-label', 'Account menu');
-        } else {
-          menuLink.href = 'login.html';
-          menuText.textContent = 'Login / Account';
-          menuIcon.textContent = '👤';
-          menuLink.classList.remove('account-active');
-
-          headerLink.href = 'login.html';
-          headerLink.setAttribute('aria-label', 'Login or Account');
-        }
-      }
-
-      headerLink.addEventListener('click', async function (e) {
-        const { data } = await client.auth.getSession();
-        if (!data || !data.session) {
-          return; // normal navigation to login.html
-        }
-        e.preventDefault();
-        accountDropdown.classList.toggle('show');
-      });
-
-      accountOpenBtn.addEventListener('click', function () {
-        window.location.href = 'account.html';
-      });
-
-      accountLogoutBtn.addEventListener('click', async function () {
-        await client.auth.signOut();
-        accountDropdown.classList.remove('show');
-        window.location.href = 'login.html';
-      });
-
-      document.addEventListener('click', function (e) {
-        if (!e.target.closest('#headerAccountLink') &&
-            !e.target.closest('#accountDropdown')) {
-          accountDropdown.classList.remove('show');
-        }
-      });
-
-      updateAccountUI();
-
-      client.auth.onAuthStateChange(function () {
-        setTimeout(updateAccountUI, 0);
-      });
-    })();
-  </script>
-
 <!-- ✅ REALTIME SYNC + SUPABASE FETCH -->
 <script>
   (function() {
@@ -478,11 +386,11 @@
         if (error) throw error;
 
         if (!data || data.length === 0) {
-  allProducts.splice(0, allProducts.length);
-  displayProducts();
-  console.warn('⚠️ No products found in Supabase.');
-  return;
-}
+          allProducts.splice(0, allProducts.length);
+          displayProducts();
+          console.warn('⚠️ No products found in Supabase.');
+          return;
+        }
 
         if (typeof allProducts !== 'undefined' && Array.isArray(allProducts)) {
           allProducts.splice(0, allProducts.length, ...data);
@@ -527,15 +435,22 @@
 </script>
 
 
+<!-- ===== MY ACCOUNT / PROFILE MODAL ===== -->
 <div class="jb-profile-modal" id="jbProfileModal" aria-hidden="true">
   <div class="jb-profile-card" role="dialog" aria-modal="true" aria-labelledby="jbProfileTitle">
     <div class="jb-profile-head">
-      <h2 id="jbProfileTitle">My Profile</h2>
+      <h2 id="jbProfileTitle">My Account</h2>
       <button class="jb-profile-close" id="jbProfileClose" type="button" aria-label="Close">×</button>
     </div>
+
     <div class="jb-profile-avatar">👤</div>
-    <div class="jb-profile-email" id="jbProfileEmail">Account</div>
-    <div class="jb-profile-provider" id="jbProfileProvider" style="text-align:center;font-size:11px;color:#a4862a;margin-top:-14px;margin-bottom:18px;"></div>
+    <div class="jb-profile-provider" id="jbProfileProvider"
+         style="text-align:center;font-size:12px;color:#a4862a;margin-bottom:18px;"></div>
+
+    <div class="jb-profile-field">
+      <label for="jbProfileEmail">Email ID</label>
+      <input id="jbProfileEmail" type="email" readonly>
+    </div>
 
     <div class="jb-profile-field">
       <label for="jbProfileName">Full Name</label>
@@ -554,125 +469,203 @@
     </div>
 
     <button class="jb-profile-save" id="jbProfileSave" type="button">Save Profile</button>
+    <button class="jb-profile-logout" id="jbProfileLogout" type="button">↪ Logout</button>
+
     <div class="jb-profile-status" id="jbProfileStatus"></div>
     <div class="jb-profile-note">These details can be used automatically when you place an order.</div>
   </div>
 </div>
 
 
+<!-- ===== ACCOUNT + PROFILE LOGIC (single script) ===== -->
 <script>
-(function(){
-  function bootProfile(){
-    if(typeof supabase === 'undefined') return;
-    const client = supabase.createClient(
-      'https://iuucwxdkjqpecqwbsoyv.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ'
-    );
+(function () {
+  const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
 
-    const modal=document.getElementById('jbProfileModal');
-    const close=document.getElementById('jbProfileClose');
-    const save=document.getElementById('jbProfileSave');
-    const name=document.getElementById('jbProfileName');
-    const mobile=document.getElementById('jbProfileMobile');
-    const address=document.getElementById('jbProfileAddress');
-    const email=document.getElementById('jbProfileEmail');
-    const providerLabel=document.getElementById('jbProfileProvider');
-    const status=document.getElementById('jbProfileStatus');
+  if (typeof supabase === 'undefined') return;
 
-    async function openProfile(){
-      const {data,error}=await client.auth.getUser();
-      if(error || !data || !data.user){
-        window.location.href='login.html';
-        return;
-      }
-      const u=data.user, meta=u.user_metadata||{};
-      const provider = (u.app_metadata && u.app_metadata.provider) || '';
+  const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+  const $ = function (id) { return document.getElementById(id); };
 
-      // Name defaults:
-      // Google -> Google account name
-      // Email/password -> saved signup name, otherwise a friendly email-based name
-      // Guest -> Guest User
-      let defaultName =
-        meta.full_name ||
-        meta.name ||
-        meta.display_name ||
-        '';
+  /* header */
+  const headerLink = $('headerAccountLink');
+  /* drawer menu */
+  const menuLink   = $('menuAccountLink');
+  const menuText   = $('menuAccountText');
+  const menuIcon   = $('menuAccountIcon');
+  /* modal */
+  const modal       = $('jbProfileModal');
+  const closeBtn    = $('jbProfileClose');
+  const saveBtn     = $('jbProfileSave');
+  const logoutBtn   = $('jbProfileLogout');
+  const nameInput   = $('jbProfileName');
+  const mobileInput = $('jbProfileMobile');
+  const addressInput= $('jbProfileAddress');
+  const emailInput  = $('jbProfileEmail');
+  const providerEl  = $('jbProfileProvider');
+  const statusEl    = $('jbProfileStatus');
 
-      if (!defaultName && u.is_anonymous) {
-        defaultName = 'Guest User';
-      } else if (!defaultName && u.email) {
-        const local = u.email.split('@')[0].replace(/[._-]+/g, ' ').trim();
-        defaultName = local ? local.replace(/\b\w/g, c => c.toUpperCase()) : '';
-      }
+  let user = null;
 
-      name.value = defaultName;
-      mobile.value = meta.mobile || meta.phone || '';
-      address.value = meta.address || '';
-      email.textContent = u.is_anonymous ? 'Guest account' : (u.email || 'Account');
-      if (u.is_anonymous) {
-        providerLabel.textContent = 'Guest account';
-      } else if (provider === 'google') {
-        providerLabel.textContent = 'Signed in with Google';
-      } else {
-        providerLabel.textContent = 'Signed in with Email & Password';
-      }
-      status.textContent='';
-      modal.classList.add('show');
-      modal.setAttribute('aria-hidden','false');
+  /* ---------- helpers ---------- */
+
+  function friendlyName(u) {
+    const meta = u.user_metadata || {};
+    let n = meta.full_name || meta.name || meta.display_name || '';
+    if (!n && u.is_anonymous) n = 'Guest User';
+    if (!n && u.email) {
+      const local = u.email.split('@')[0].replace(/[._-]+/g, ' ').trim();
+      n = local ? local.replace(/\b\w/g, function (c) { return c.toUpperCase(); }) : '';
     }
-
-    function closeProfile(){
-      modal.classList.remove('show');
-      modal.setAttribute('aria-hidden','true');
-    }
-
-    const header=document.getElementById('headerAccountLink');
-    if(header){
-      header.addEventListener('click',function(e){
-        if(header.getAttribute('aria-label')==='Account menu'){
-          e.preventDefault();
-          openProfile();
-          const dd=document.getElementById('accountDropdown');
-          if(dd) dd.classList.remove('show');
-        }
-      });
-    }
-
-    if(close) close.addEventListener('click',closeProfile);
-    if(modal) modal.addEventListener('click',e=>{if(e.target===modal)closeProfile();});
-
-    if(save) save.addEventListener('click',async function(){
-      const n=name.value.trim(), m=mobile.value.trim(), a=address.value.trim();
-      if(m && !/^[0-9]{10}$/.test(m)){
-        status.textContent='Please enter a valid 10-digit mobile number.';
-        return;
-      }
-      save.disabled=true; save.textContent='Saving...'; status.textContent='';
-      const {error}=await client.auth.updateUser({
-        data:{
-          full_name:n,
-          mobile:m,
-          address:a,
-          profile_completed:true
-        }
-      });
-      save.disabled=false; save.textContent='Save Profile';
-      if(error){
-        status.textContent=error.message;
-        return;
-      }
-      status.textContent='✓ Profile saved successfully';
-      setTimeout(closeProfile,700);
-    });
-
-    document.addEventListener('keydown',e=>{if(e.key==='Escape') closeProfile();});
+    return n;
   }
 
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bootProfile);
-  else bootProfile();
+  function providerText(u) {
+    if (u.is_anonymous) return 'Guest account';
+    const p = (u.app_metadata && u.app_metadata.provider) || '';
+    if (p === 'google') return 'Signed in with Google';
+    if (p === 'phone')  return 'Signed in with Mobile OTP';
+    return 'Signed in with Email & Password';
+  }
+
+  function closeDrawer() {
+    const btn = $('menuClose');
+    if (btn) btn.click();   // script.js ka apna close handler chal jayega
+  }
+
+  /* ---------- UI state ---------- */
+
+  function setLoggedOutUI() {
+    if (menuLink) { menuLink.setAttribute('href', 'login.html'); menuLink.classList.remove('account-active'); }
+    if (menuText) menuText.textContent = 'Login / Account';
+    if (menuIcon) menuIcon.textContent = '👤';
+    if (headerLink) { headerLink.setAttribute('href', 'login.html'); headerLink.setAttribute('aria-label', 'Login'); }
+  }
+
+  function setLoggedInUI() {
+    if (menuLink) { menuLink.setAttribute('href', '#'); menuLink.classList.add('account-active'); }
+    if (menuText) menuText.textContent = 'My Account';
+    if (menuIcon) menuIcon.textContent = '👤';
+    if (headerLink) { headerLink.setAttribute('href', '#'); headerLink.setAttribute('aria-label', 'My Account'); }
+  }
+
+  /* ---------- modal ---------- */
+
+  async function openProfile() {
+    // fresh user data (Google name / saved profile)
+    try {
+      const { data } = await client.auth.getUser();
+      if (data && data.user) user = data.user;
+    } catch (e) { /* offline — session user use karo */ }
+
+    if (!user) { window.location.href = 'login.html'; return; }
+
+    const meta = user.user_metadata || {};
+    emailInput.value   = user.is_anonymous ? 'Guest account' : (user.email || '');
+    nameInput.value    = friendlyName(user);
+    mobileInput.value  = meta.mobile || meta.phone || '';
+    addressInput.value = meta.address || '';
+    providerEl.textContent = providerText(user);
+    statusEl.textContent = '';
+
+    modal.classList.add('show');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeProfile() {
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  /* ---------- clicks ---------- */
+
+  if (headerLink) {
+    headerLink.addEventListener('click', function (e) {
+      if (!user) return;              // login.html par normal navigation
+      e.preventDefault();
+      openProfile();
+    });
+  }
+
+  if (menuLink) {
+    menuLink.addEventListener('click', function (e) {
+      if (!user) return;              // login.html par normal navigation
+      e.preventDefault();
+      closeDrawer();
+      openProfile();
+    });
+  }
+
+  if (closeBtn) closeBtn.addEventListener('click', closeProfile);
+  if (modal) modal.addEventListener('click', function (e) { if (e.target === modal) closeProfile(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeProfile(); });
+
+  /* ---------- save ---------- */
+
+  if (saveBtn) {
+    saveBtn.addEventListener('click', async function () {
+      const n = nameInput.value.trim();
+      const m = mobileInput.value.trim();
+      const a = addressInput.value.trim();
+
+      if (m && !/^[0-9]{10}$/.test(m)) {
+        statusEl.textContent = 'Please enter a valid 10-digit mobile number.';
+        return;
+      }
+
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving...';
+      statusEl.textContent = '';
+
+      const { data, error } = await client.auth.updateUser({
+        data: {
+          full_name: n,
+          name: n,
+          mobile: m,
+          address: a,
+          profile_completed: true
+        }
+      });
+
+      saveBtn.disabled = false;
+      saveBtn.textContent = 'Save Profile';
+
+      if (error) { statusEl.textContent = error.message; return; }
+
+      if (data && data.user) user = data.user;
+      statusEl.textContent = '✓ Profile saved successfully';
+      setTimeout(closeProfile, 700);
+    });
+  }
+
+  /* ---------- logout ---------- */
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', async function () {
+      await client.auth.signOut();
+      closeProfile();
+      window.location.href = 'login.html';
+    });
+  }
+
+  /* ---------- init ---------- */
+
+  async function refresh() {
+    const { data } = await client.auth.getSession();
+    const session = data ? data.session : null;
+    user = session ? session.user : null;
+
+    if (user) setLoggedInUI(); else setLoggedOutUI();
+  }
+
+  refresh();
+  window.addEventListener('load', refresh);
+  client.auth.onAuthStateChange(function () { setTimeout(refresh, 0); });
 })();
 </script>
 
 </body>
 </html>
-
