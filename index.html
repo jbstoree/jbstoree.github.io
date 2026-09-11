@@ -21,11 +21,86 @@
   </style>
 
 <style>
+  .account-dropdown{
+    position:fixed;
+    top:72px;
+    right:12px;
+    min-width:180px;
+    background:#fff;
+    border:1px solid rgba(212,175,55,.55);
+    border-radius:14px;
+    box-shadow:0 12px 35px rgba(0,0,0,.22);
+    padding:7px;
+    z-index:99999;
+    display:none;
+  }
+  .account-dropdown.show{display:block;}
+  .account-dropdown button{
+    width:100%;
+    border:0;
+    background:transparent;
+    padding:12px 14px;
+    border-radius:10px;
+    text-align:left;
+    font:600 14px Poppins,Arial,sans-serif;
+    color:#222;
+    cursor:pointer;
+  }
+  .account-dropdown button:hover{background:#f7f1dc;}
+  .account-dropdown .logout-btn{color:#a00000;}
+</style>
+
+<style>
   html.auth-pending body { visibility: hidden !important; }
 </style>
 <script>
   document.documentElement.classList.add('auth-pending');
 </script>
+
+<style>
+  .jb-profile-modal{
+    position:fixed; inset:0; z-index:100000; display:none;
+    background:rgba(0,0,0,.42); backdrop-filter:blur(4px);
+    align-items:flex-end; justify-content:center;
+  }
+  .jb-profile-modal.show{display:flex;}
+  .jb-profile-card{
+    width:min(100%,520px); background:#fff; color:#222;
+    border-radius:26px 26px 0 0; padding:24px 20px 28px;
+    box-shadow:0 -12px 40px rgba(0,0,0,.22);
+    max-height:88vh; overflow:auto;
+    border-top:3px solid #d8ad19;
+  }
+  .jb-profile-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+  .jb-profile-head h2{margin:0;font-family:Georgia,serif;font-size:25px}
+  .jb-profile-close{border:1px solid #e4d7ad;background:#fff;border-radius:50%;width:38px;height:38px;font-size:24px;cursor:pointer;color:#777}
+  .jb-profile-avatar{
+    width:72px;height:72px;border-radius:50%;margin:0 auto 12px;
+    display:flex;align-items:center;justify-content:center;
+    background:#fffaf0;border:2px solid #dfbd4a;font-size:35px;
+  }
+  .jb-profile-email{text-align:center;color:#777;font-size:13px;margin-bottom:22px}
+  .jb-profile-field{margin:0 0 14px}
+  .jb-profile-field label{display:block;font-weight:700;font-size:13px;margin-bottom:7px;color:#555}
+  .jb-profile-field input,.jb-profile-field textarea{
+    width:100%;box-sizing:border-box;border:1px solid #ddd8ca;border-radius:13px;
+    background:#faf9f5;padding:13px 14px;font-size:15px;outline:none;
+    font-family:inherit;
+  }
+  .jb-profile-field input:focus,.jb-profile-field textarea:focus{border-color:#d5ad22;box-shadow:0 0 0 3px rgba(213,173,34,.12)}
+  .jb-profile-field textarea{min-height:82px;resize:vertical}
+  .jb-profile-save{
+    width:100%;border:0;border-radius:14px;padding:14px;background:#dfb500;color:#111;
+    font-size:16px;font-weight:800;cursor:pointer;margin-top:5px;
+  }
+  .jb-profile-status{text-align:center;min-height:20px;margin-top:10px;font-size:13px;color:#777}
+  .jb-profile-note{text-align:center;font-size:11px;color:#999;margin-top:9px}
+  @media(min-width:600px){
+    .jb-profile-modal{align-items:center}
+    .jb-profile-card{border-radius:24px;max-height:90vh;width:480px}
+  }
+</style>
+
 </head>
 <body>
 
@@ -75,6 +150,11 @@
     <div id="searchSuggestions" class="search-suggestions"></div>
   </div>
 </header>
+<div class="account-dropdown" id="accountDropdown">
+  <button type="button" id="accountOpenBtn">👤 My Account</button>
+  <button type="button" class="logout-btn" id="accountLogoutBtn">↪ Logout</button>
+</div>
+
 
 <!-- ===== OVERLAY (for closing drawer) ===== -->
 <div class="menu-overlay" id="menuOverlay"></div>
@@ -99,7 +179,7 @@
       <span class="cart-badge" id="menuCartBadge" style="margin-left:auto;background:#D4AF37;color:#000;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 12px rgba(212,175,55,0.3);">0</span>
     </a>
     <a href="login.html" class="menu-item" id="menuAccountLink">
-      <span class="item-icon">👤</span> Login / Account
+      <span class="item-icon" id="menuAccountIcon">👤</span> <span id="menuAccountText">Login / Account</span>
     </a>
 
     <a href="#" class="menu-item">
@@ -296,6 +376,85 @@
 <script src="script.js"></script>
 <script src="favorites.js"></script>
 
+
+  <!-- ===== AUTH ACCOUNT UI ===== -->
+  <script>
+    (function () {
+      const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
+      const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
+
+      if (typeof supabase === 'undefined') return;
+
+      const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+      const accountDropdown = document.getElementById('accountDropdown');
+      const accountOpenBtn = document.getElementById('accountOpenBtn');
+      const accountLogoutBtn = document.getElementById('accountLogoutBtn');
+
+      async function updateAccountUI() {
+        const { data } = await client.auth.getSession();
+        const session = data && data.session;
+
+        const menuLink = document.getElementById('menuAccountLink');
+        const menuText = document.getElementById('menuAccountText');
+        const menuIcon = document.getElementById('menuAccountIcon');
+        const headerLink = document.getElementById('headerAccountLink');
+
+        if (!menuLink || !menuText || !menuIcon || !headerLink) return;
+
+        if (session) {
+          menuLink.href = 'account.html';
+          menuText.textContent = 'My Account';
+          menuIcon.textContent = '👤';
+          menuLink.classList.add('account-active');
+
+          headerLink.href = '#';
+          headerLink.setAttribute('aria-label', 'Account menu');
+        } else {
+          menuLink.href = 'login.html';
+          menuText.textContent = 'Login / Account';
+          menuIcon.textContent = '👤';
+          menuLink.classList.remove('account-active');
+
+          headerLink.href = 'login.html';
+          headerLink.setAttribute('aria-label', 'Login or Account');
+        }
+      }
+
+      headerLink.addEventListener('click', async function (e) {
+        const { data } = await client.auth.getSession();
+        if (!data || !data.session) {
+          return; // normal navigation to login.html
+        }
+        e.preventDefault();
+        accountDropdown.classList.toggle('show');
+      });
+
+      accountOpenBtn.addEventListener('click', function () {
+        window.location.href = 'account.html';
+      });
+
+      accountLogoutBtn.addEventListener('click', async function () {
+        await client.auth.signOut();
+        accountDropdown.classList.remove('show');
+        window.location.href = 'login.html';
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!e.target.closest('#headerAccountLink') &&
+            !e.target.closest('#accountDropdown')) {
+          accountDropdown.classList.remove('show');
+        }
+      });
+
+      updateAccountUI();
+
+      client.auth.onAuthStateChange(function () {
+        setTimeout(updateAccountUI, 0);
+      });
+    })();
+  </script>
+
 <!-- ✅ REALTIME SYNC + SUPABASE FETCH -->
 <script>
   (function() {
@@ -365,6 +524,128 @@
 
     window.refreshProducts = fetchAndUpdateProducts;
   })();
+</script>
+
+
+<div class="jb-profile-modal" id="jbProfileModal" aria-hidden="true">
+  <div class="jb-profile-card" role="dialog" aria-modal="true" aria-labelledby="jbProfileTitle">
+    <div class="jb-profile-head">
+      <h2 id="jbProfileTitle">My Profile</h2>
+      <button class="jb-profile-close" id="jbProfileClose" type="button" aria-label="Close">×</button>
+    </div>
+    <div class="jb-profile-avatar">👤</div>
+    <div class="jb-profile-email" id="jbProfileEmail">Account</div>
+
+    <div class="jb-profile-field">
+      <label for="jbProfileName">Full Name</label>
+      <input id="jbProfileName" type="text" placeholder="Enter your name" autocomplete="name">
+    </div>
+
+    <div class="jb-profile-field">
+      <label for="jbProfileMobile">Mobile Number</label>
+      <input id="jbProfileMobile" type="tel" inputmode="numeric" maxlength="10"
+             placeholder="Enter 10-digit mobile number" autocomplete="tel">
+    </div>
+
+    <div class="jb-profile-field">
+      <label for="jbProfileAddress">Delivery Address</label>
+      <textarea id="jbProfileAddress" placeholder="House / Flat, Street, Area, City, State, PIN" autocomplete="street-address"></textarea>
+    </div>
+
+    <button class="jb-profile-save" id="jbProfileSave" type="button">Save Profile</button>
+    <div class="jb-profile-status" id="jbProfileStatus"></div>
+    <div class="jb-profile-note">These details can be used automatically when you place an order.</div>
+  </div>
+</div>
+
+
+<script>
+(function(){
+  function bootProfile(){
+    if(typeof supabase === 'undefined') return;
+    const client = supabase.createClient(
+      'https://iuucwxdkjqpecqwbsoyv.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ'
+    );
+
+    const modal=document.getElementById('jbProfileModal');
+    const close=document.getElementById('jbProfileClose');
+    const save=document.getElementById('jbProfileSave');
+    const name=document.getElementById('jbProfileName');
+    const mobile=document.getElementById('jbProfileMobile');
+    const address=document.getElementById('jbProfileAddress');
+    const email=document.getElementById('jbProfileEmail');
+    const status=document.getElementById('jbProfileStatus');
+
+    async function openProfile(){
+      const {data,error}=await client.auth.getUser();
+      if(error || !data || !data.user){
+        window.location.href='login.html';
+        return;
+      }
+      const u=data.user, meta=u.user_metadata||{};
+      // Google normally returns the account holder's name in full_name/name.
+      // Use it as the default profile name; only leave blank if no name was returned.
+      const googleName =
+        meta.full_name ||
+        meta.name ||
+        meta.display_name ||
+        (u.app_metadata && u.app_metadata.full_name) ||
+        '';
+      name.value = googleName;
+      mobile.value=meta.mobile || meta.phone || '';
+      address.value=meta.address || '';
+      email.textContent=u.email || (u.is_anonymous ? 'Guest account' : 'Account');
+      status.textContent='';
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden','false');
+    }
+
+    function closeProfile(){
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden','true');
+    }
+
+    const header=document.getElementById('headerAccountLink');
+    if(header){
+      header.addEventListener('click',function(e){
+        if(header.getAttribute('aria-label')==='Account menu'){
+          e.preventDefault();
+          openProfile();
+          const dd=document.getElementById('accountDropdown');
+          if(dd) dd.classList.remove('show');
+        }
+      });
+    }
+
+    if(close) close.addEventListener('click',closeProfile);
+    if(modal) modal.addEventListener('click',e=>{if(e.target===modal)closeProfile();});
+
+    if(save) save.addEventListener('click',async function(){
+      const n=name.value.trim(), m=mobile.value.trim(), a=address.value.trim();
+      if(m && !/^[0-9]{10}$/.test(m)){
+        status.textContent='Please enter a valid 10-digit mobile number.';
+        return;
+      }
+      save.disabled=true; save.textContent='Saving...'; status.textContent='';
+      const {error}=await client.auth.updateUser({
+        data:{full_name:n,mobile:m,address:a}
+      });
+      save.disabled=false; save.textContent='Save Profile';
+      if(error){
+        status.textContent=error.message;
+        return;
+      }
+      status.textContent='✓ Profile saved successfully';
+      setTimeout(closeProfile,700);
+    });
+
+    document.addEventListener('keydown',e=>{if(e.key==='Escape') closeProfile();});
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bootProfile);
+  else bootProfile();
+})();
 </script>
 
 </body>
