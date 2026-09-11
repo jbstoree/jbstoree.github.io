@@ -404,7 +404,7 @@
 
         if (session) {
           menuLink.href = 'account.html';
-          menuText.textContent = 'My Account';
+          menuText.textContent = 'Logout / Account';
           menuIcon.textContent = '👤';
           menuLink.classList.add('account-active');
 
@@ -535,6 +535,7 @@
     </div>
     <div class="jb-profile-avatar">👤</div>
     <div class="jb-profile-email" id="jbProfileEmail">Account</div>
+    <div class="jb-profile-provider" id="jbProfileProvider" style="text-align:center;font-size:11px;color:#a4862a;margin-top:-14px;margin-bottom:18px;"></div>
 
     <div class="jb-profile-field">
       <label for="jbProfileName">Full Name</label>
@@ -575,6 +576,7 @@
     const mobile=document.getElementById('jbProfileMobile');
     const address=document.getElementById('jbProfileAddress');
     const email=document.getElementById('jbProfileEmail');
+    const providerLabel=document.getElementById('jbProfileProvider');
     const status=document.getElementById('jbProfileStatus');
 
     async function openProfile(){
@@ -584,18 +586,36 @@
         return;
       }
       const u=data.user, meta=u.user_metadata||{};
-      // Google normally returns the account holder's name in full_name/name.
-      // Use it as the default profile name; only leave blank if no name was returned.
-      const googleName =
+      const provider = (u.app_metadata && u.app_metadata.provider) || '';
+
+      // Name defaults:
+      // Google -> Google account name
+      // Email/password -> saved signup name, otherwise a friendly email-based name
+      // Guest -> Guest User
+      let defaultName =
         meta.full_name ||
         meta.name ||
         meta.display_name ||
-        (u.app_metadata && u.app_metadata.full_name) ||
         '';
-      name.value = googleName;
-      mobile.value=meta.mobile || meta.phone || '';
-      address.value=meta.address || '';
-      email.textContent=u.email || (u.is_anonymous ? 'Guest account' : 'Account');
+
+      if (!defaultName && u.is_anonymous) {
+        defaultName = 'Guest User';
+      } else if (!defaultName && u.email) {
+        const local = u.email.split('@')[0].replace(/[._-]+/g, ' ').trim();
+        defaultName = local ? local.replace(/\b\w/g, c => c.toUpperCase()) : '';
+      }
+
+      name.value = defaultName;
+      mobile.value = meta.mobile || meta.phone || '';
+      address.value = meta.address || '';
+      email.textContent = u.is_anonymous ? 'Guest account' : (u.email || 'Account');
+      if (u.is_anonymous) {
+        providerLabel.textContent = 'Guest account';
+      } else if (provider === 'google') {
+        providerLabel.textContent = 'Signed in with Google';
+      } else {
+        providerLabel.textContent = 'Signed in with Email & Password';
+      }
       status.textContent='';
       modal.classList.add('show');
       modal.setAttribute('aria-hidden','false');
@@ -629,7 +649,12 @@
       }
       save.disabled=true; save.textContent='Saving...'; status.textContent='';
       const {error}=await client.auth.updateUser({
-        data:{full_name:n,mobile:m,address:a}
+        data:{
+          full_name:n,
+          mobile:m,
+          address:a,
+          profile_completed:true
+        }
       });
       save.disabled=false; save.textContent='Save Profile';
       if(error){
