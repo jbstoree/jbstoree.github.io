@@ -399,7 +399,7 @@ $('googleBtn').addEventListener('click', async () => {
   const { error } = await client.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: window.location.origin + '/index.html'
+      redirectTo: 'https://jbstoree.github.io/index.html'
     }
   });
   if (error) showStatus(error.message);
