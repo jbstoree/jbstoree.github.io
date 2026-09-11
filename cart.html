@@ -17,7 +17,225 @@
       min-height: 60vh;
     }
 
-    /* ——— HEADER ——— */
+    /* ——— HEADER (matches index.html) ——— */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      background: #ffffff;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 18px 8px;
+    }
+    .logo {
+      font-family: "Playfair Display", Georgia, serif;
+      font-weight: 700;
+      font-size: 26px;
+      text-decoration: none;
+      color: #111;
+      letter-spacing: .3px;
+      line-height: 1;
+    }
+    .logo span { color: #D4AF37; }
+
+    .menu-toggle {
+      width: 42px;
+      height: 42px;
+      background: transparent;
+      border: 1px solid rgba(212,175,55,.55);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+      transition: all .2s;
+    }
+    .menu-toggle:hover { background: rgba(212,175,55,.08); }
+    .menu-toggle span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: #111;
+      border-radius: 2px;
+      transition: all .2s;
+    }
+
+    .account-link {
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border: 1px solid rgba(212,175,55,.55);
+      border-radius: 50%;
+      background: rgba(212,175,55,.08);
+      font-size: 19px;
+      flex-shrink: 0;
+    }
+
+    .header .search {
+      display: flex;
+      align-items: center;
+      background: #f7f5ef;
+      border: 1px solid #eee6d2;
+      border-radius: 12px;
+      margin: 0 18px 14px;
+      padding: 0 4px 0 14px;
+      position: relative;
+    }
+    .header .search input {
+      flex: 1;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      padding: 12px 8px;
+      font-size: 14px;
+      font-family: inherit;
+      color: #111;
+    }
+    .header .search button {
+      background: linear-gradient(135deg,#f0c419,#d4af37);
+      border: 0;
+      border-radius: 9px;
+      width: 38px;
+      height: 38px;
+      font-size: 16px;
+      cursor: pointer;
+      color: #111;
+    }
+
+    /* ============ MENU DRAWER ============ */
+    .menu-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,.45);
+      -webkit-backdrop-filter: blur(3px);
+      backdrop-filter: blur(3px);
+      opacity: 0;
+      visibility: hidden;
+      transition: all .28s ease;
+      z-index: 9998;
+    }
+    .menu-overlay.show { opacity: 1; visibility: visible; }
+
+    .menu-drawer {
+      position: fixed;
+      top: 0; right: 0;
+      width: 84%;
+      max-width: 330px;
+      height: 100vh;
+      height: 100dvh;
+      background: #ffffff;
+      transform: translateX(100%);
+      transition: transform .3s cubic-bezier(.22,.61,.36,1);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      box-shadow: -6px 0 30px rgba(0,0,0,.18);
+      overflow: hidden;
+    }
+    .menu-drawer.open { transform: translateX(0); }
+
+    .menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      border-bottom: 1px solid #f0ead6;
+      flex-shrink: 0;
+    }
+    .menu-logo {
+      font-family: "Playfair Display", Georgia, serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: #111;
+      letter-spacing: .3px;
+    }
+    .menu-logo span { color: #D4AF37; }
+
+    .menu-close {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid #eee6d2;
+      background: #fff;
+      font-size: 18px;
+      color: #666;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s;
+    }
+    .menu-close:hover { background: #faf8f2; color: #d4af37; border-color: #d4af37; }
+
+    .menu-nav {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px 12px 20px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: #222;
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 2px;
+      transition: all .2s;
+      font-family: 'Poppins', Arial, sans-serif;
+      border-left: 3px solid transparent;
+    }
+    .menu-item:hover {
+      background: #faf8f2;
+      color: #111;
+    }
+    .menu-item.active {
+      background: #fdf7e0;
+      color: #a3801a;
+      font-weight: 700;
+      border-left: 3px solid #D4AF37;
+    }
+    .menu-item.account-active {
+      border-left: 3px solid #D4AF37;
+    }
+    .item-icon {
+      font-size: 20px;
+      width: 26px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .menu-footer {
+      padding: 14px 20px calc(18px + env(safe-area-inset-bottom, 0px));
+      border-top: 1px solid #f0ead6;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .menu-version {
+      font-size: 11px;
+      color: #999;
+      letter-spacing: .5px;
+    }
+    .menu-version span { color: #d4af37; font-weight: 600; }
+
+    /* ============ CART HEADER ============ */
     .cart-header {
       display: flex;
       justify-content: space-between;
@@ -73,7 +291,6 @@
       margin-bottom: 32px;
     }
 
-    /* ——— SINGLE CART ITEM ——— */
     .cart-item {
       display: flex;
       align-items: center;
@@ -110,10 +327,7 @@
       object-fit: contain;
     }
 
-    .cart-item-info {
-      flex: 1;
-      min-width: 0;
-    }
+    .cart-item-info { flex: 1; min-width: 0; }
 
     .cart-item-info h3 {
       color: #000000;
@@ -136,7 +350,6 @@
       margin: 0;
     }
 
-    /* ——— QUANTITY ——— */
     .cart-item-qty {
       display: flex;
       align-items: center;
@@ -158,10 +371,7 @@
       transition: all 0.3s ease;
       font-weight: 600;
     }
-
-    .qty-btn:hover {
-      background: rgba(212, 175, 55, 0.1);
-    }
+    .qty-btn:hover { background: rgba(212, 175, 55, 0.1); }
 
     .qty-number {
       color: #000000;
@@ -179,7 +389,6 @@
       text-align: right;
     }
 
-    /* ——— REMOVE BUTTON ——— */
     .remove-btn {
       background: rgba(255, 0, 0, 0.06);
       border: 1px solid rgba(255, 0, 0, 0.1);
@@ -195,7 +404,6 @@
       justify-content: center;
       flex-shrink: 0;
     }
-
     .remove-btn:hover {
       background: rgba(255, 0, 0, 0.15);
       transform: scale(1.05);
@@ -219,32 +427,11 @@
       padding: 10px 0;
     }
 
-    .summary-row span {
-      color: #000000;
-      font-size: 15px;
-    }
-
-    .summary-row strong {
-      color: #000000;
-      font-size: 17px;
-      font-weight: 600;
-    }
-
-    .summary-row.total {
-      padding-top: 14px;
-    }
-
-    .summary-row.total span {
-      font-size: 17px;
-      font-weight: 600;
-      color: #000000;
-    }
-
-    .summary-row.total strong {
-      color: #a3801a;
-      font-size: 26px;
-      font-weight: 700;
-    }
+    .summary-row span { color: #000000; font-size: 15px; }
+    .summary-row strong { color: #000000; font-size: 17px; font-weight: 600; }
+    .summary-row.total { padding-top: 14px; }
+    .summary-row.total span { font-size: 17px; font-weight: 600; color: #000000; }
+    .summary-row.total strong { color: #a3801a; font-size: 26px; font-weight: 700; }
 
     .summary-divider {
       height: 1px;
@@ -252,7 +439,6 @@
       margin: 10px 0 14px;
     }
 
-    /* ——— ACTIONS ——— */
     .cart-actions {
       margin-top: 18px;
       display: flex;
@@ -276,7 +462,6 @@
       transition: all 0.3s ease;
       padding: 0 28px;
     }
-
     .checkout-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 30px rgba(212, 175, 55, 0.3);
@@ -294,7 +479,6 @@
       cursor: pointer;
       transition: all 0.3s ease;
     }
-
     .clear-cart-btn:hover {
       background: rgba(255, 0, 0, 0.05);
       border-color: rgba(255, 0, 0, 0.25);
@@ -309,24 +493,9 @@
       border: 1px solid rgba(255, 255, 255, 0.04);
     }
 
-    .empty-icon {
-      font-size: 72px;
-      margin-bottom: 20px;
-      display: block;
-    }
-
-    .empty-cart h2 {
-      color: #000000;
-      font-size: 28px;
-      font-weight: 700;
-      margin: 0 0 10px 0;
-    }
-
-    .empty-cart p {
-      color: #666666;
-      font-size: 15px;
-      margin: 0 0 28px 0;
-    }
+    .empty-icon { font-size: 72px; margin-bottom: 20px; display: block; }
+    .empty-cart h2 { color: #000000; font-size: 28px; font-weight: 700; margin: 0 0 10px 0; }
+    .empty-cart p { color: #666666; font-size: 15px; margin: 0 0 28px 0; }
 
     .shop-now-btn {
       display: inline-flex;
@@ -341,7 +510,6 @@
       font-size: 16px;
       transition: all 0.3s ease;
     }
-
     .shop-now-btn:hover {
       transform: translateY(-3px);
       box-shadow: 0 8px 30px rgba(212, 175, 55, 0.3);
@@ -350,13 +518,8 @@
     /* ============ CHECKOUT MODAL — WEBVIEW FIXED ============ */
     .ck-modal {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100vh;
-      height: 100dvh;             /* ✅ modern browsers */
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%; height: 100vh; height: 100dvh;
       z-index: 99999;
       display: none;
       background: rgba(0, 0, 0, 0.55);
@@ -364,16 +527,11 @@
       backdrop-filter: blur(5px);
       overflow: hidden;
     }
-
-    .ck-modal.show {
-      display: block !important;
-    }
+    .ck-modal.show { display: block !important; }
 
     .ck-card {
       position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      left: 0; right: 0; bottom: 0;
       width: 100%;
       max-width: 540px;
       margin: 0 auto;
@@ -397,7 +555,6 @@
       from { -webkit-transform: translateY(40px); opacity: 0.3; }
       to { -webkit-transform: translateY(0); opacity: 1; }
     }
-
     @keyframes ckUp {
       from { transform: translateY(40px); opacity: 0.3; }
       to { transform: translateY(0); opacity: 1; }
@@ -410,7 +567,6 @@
       color: #222222;
       flex-shrink: 0;
     }
-
     .ck-card .sub {
       font-size: 12px;
       color: #999999;
@@ -418,14 +574,9 @@
       flex-shrink: 0;
     }
 
-    .ck-fields {
-      flex: 1;
-      min-height: 0;
-    }
+    .ck-fields { flex: 1; min-height: 0; }
 
-    .ck-field {
-      margin-bottom: 12px;
-    }
+    .ck-field { margin-bottom: 12px; }
 
     .ck-field label {
       display: block;
@@ -434,10 +585,7 @@
       color: #555555;
       margin-bottom: 6px;
     }
-
-    .ck-field label b {
-      color: #cc0000;
-    }
+    .ck-field label b { color: #cc0000; }
 
     .ck-field input,
     .ck-field textarea {
@@ -453,18 +601,13 @@
       -webkit-appearance: none;
       appearance: none;
     }
-
     .ck-field input:focus,
     .ck-field textarea:focus {
       border-color: #d5ad22;
       box-shadow: 0 0 0 3px rgba(213, 173, 34, 0.13);
       background: #ffffff;
     }
-
-    .ck-field textarea {
-      min-height: 66px;
-      resize: vertical;
-    }
+    .ck-field textarea { min-height: 66px; resize: vertical; }
 
     .ck-err {
       color: #cc0000;
@@ -476,7 +619,6 @@
       flex-shrink: 0;
     }
 
-    /* ——— STICKY ACTIONS ——— */
     .ck-actions {
       position: sticky;
       bottom: 0;
@@ -502,33 +644,19 @@
       -webkit-appearance: none;
       line-height: 1.2;
     }
-
-    .ck-cancel {
-      background: #f0eee7;
-      color: #555555;
-    }
-
+    .ck-cancel { background: #f0eee7; color: #555555; }
     .ck-go {
       background: linear-gradient(135deg, #25D366, #128C7E);
       color: #ffffff;
       box-shadow: 0 8px 22px rgba(37, 211, 102, 0.35);
     }
-
-    .ck-go:disabled {
-      opacity: 0.6;
-      cursor: wait;
-    }
+    .ck-go:disabled { opacity: 0.6; cursor: wait; }
 
     /* ============ SUCCESS MODAL ============ */
     .ok-modal {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100vh;
-      height: 100dvh;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%; height: 100vh; height: 100dvh;
       z-index: 100001;
       display: none;
       background: rgba(0, 0, 0, 0.55);
@@ -537,10 +665,7 @@
       padding: 20px;
       box-sizing: border-box;
     }
-
-    .ok-modal.show {
-      display: flex !important;
-    }
+    .ok-modal.show { display: flex !important; }
 
     .ok-card {
       background: #ffffff;
@@ -566,26 +691,9 @@
       justify-content: center;
       margin: 0 auto 14px;
     }
-
-    .ok-card h3 {
-      margin: 0 0 8px;
-      font-size: 20px;
-      color: #111111;
-    }
-
-    .ok-card p {
-      margin: 0 0 6px;
-      font-size: 13px;
-      color: #777777;
-    }
-
-    .ok-card .code {
-      font-weight: 800;
-      color: #a3801a;
-      letter-spacing: 1px;
-      font-size: 16px;
-    }
-
+    .ok-card h3 { margin: 0 0 8px; font-size: 20px; color: #111111; }
+    .ok-card p { margin: 0 0 6px; font-size: 13px; color: #777777; }
+    .ok-card .code { font-weight: 800; color: #a3801a; letter-spacing: 1px; font-size: 16px; }
     .ok-card button {
       margin-top: 20px;
       width: 100%;
@@ -602,7 +710,6 @@
 
     /* ============ MOBILE ============ */
     @media (max-width: 768px) {
-
       .cart-page { padding: 0 12px; margin: 16px auto; min-height: 50vh; }
 
       .cart-header {
@@ -612,7 +719,6 @@
         margin-bottom: 18px;
         padding-bottom: 14px;
       }
-
       .cart-header h1 { font-size: 22px; }
       .cart-header h1::before { height: 22px; width: 3px; margin-right: 10px; }
       .cart-subtitle { font-size: 12px; margin: 2px 0 0 13px; }
@@ -661,7 +767,7 @@
     }
   </style>
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
   <!-- ✅ Force mobile viewport -->
@@ -684,9 +790,17 @@
 </head>
 <body>
 
-<!-- ===== HEADER ===== -->
+<!-- ===== HEADER (same as index.html) ===== -->
 <header class="header">
-  <a href="index.html" class="logo">JB <span>STORE</span></a>
+  <div class="header-top">
+    <a href="index.html" class="logo">JB <span>STORE</span></a>
+    <a href="login.html" class="account-link" id="headerAccountLink" aria-label="Login or Account">👤</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
   <div class="search">
     <input type="text" id="searchInput" placeholder="Search products..." autocomplete="off">
     <button type="button" id="searchButton">🔍</button>
@@ -694,9 +808,60 @@
   </div>
 </header>
 
+<!-- ===== MENU OVERLAY ===== -->
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<!-- ===== SLIDE-IN MENU DRAWER ===== -->
+<div class="menu-drawer" id="menuDrawer">
+  <div class="menu-header">
+    <span class="menu-logo">JB <span>STORE</span></span>
+    <button class="menu-close" id="menuClose" aria-label="Close menu">✕</button>
+  </div>
+
+  <nav class="menu-nav">
+    <a href="index.html" class="menu-item">
+      <span class="item-icon">🏠</span> Home
+    </a>
+
+    <a href="login.html" class="menu-item" id="menuAccountLink">
+      <span class="item-icon" id="menuAccountIcon">👤</span>
+      <span id="menuAccountText">My Account</span>
+    </a>
+
+    <a href="orders.html" class="menu-item">
+      <span class="item-icon">📦</span> My Orders
+    </a>
+
+    <a href="favorites.html" class="menu-item">
+      <span class="item-icon">❤️</span> My Favorites
+      <span class="fav-badge" id="menuFavBadge" style="margin-left:auto;display:none;background:#ff1744;color:#fff;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 15px rgba(255,23,68,0.4);">0</span>
+    </a>
+
+    <a href="address.html" class="menu-item">
+      <span class="item-icon">📍</span> My Address
+    </a>
+
+    <a href="cart.html" class="menu-item active">
+      <span class="item-icon">🛒</span> Cart
+      <span class="cart-badge" id="menuCartBadge" style="margin-left:auto;background:#D4AF37;color:#000;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 12px rgba(212,175,55,0.3);">0</span>
+    </a>
+
+    <a href="#" class="menu-item">
+      <span class="item-icon">ℹ️</span> About Us
+    </a>
+
+    <a href="#" class="menu-item">
+      <span class="item-icon">📞</span> Contact Us
+    </a>
+  </nav>
+
+  <div class="menu-footer">
+    <div class="menu-version">✦ JB STORE <span>Premium Electronics</span> ✦</div>
+  </div>
+</div>
+
 <!-- ===== CART PAGE ===== -->
 <main class="cart-page">
-
   <div class="cart-header">
     <div>
       <h1>🛒 Your Cart</h1>
@@ -738,7 +903,6 @@
     <p>Browse our collection and add items you love</p>
     <a href="index.html" class="shop-now-btn">Start Shopping →</a>
   </div>
-
 </main>
 
 <!-- ===== BOTTOM BAR ===== -->
@@ -819,7 +983,131 @@
 <script src="script.js"></script>
 <script src="favorites.js"></script>
 
-<!-- ===== CHECKOUT + ORDER LOGIC (WEBVIEW SAFE + JS HEIGHT FIX) ===== -->
+<!-- ===== MENU DRAWER + ACCOUNT LOGIC ===== -->
+<script>
+(function () {
+  const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
+
+  const $ = id => document.getElementById(id);
+
+  const menuToggle  = $('menuToggle');
+  const menuDrawer  = $('menuDrawer');
+  const menuOverlay = $('menuOverlay');
+  const menuClose   = $('menuClose');
+  const headerLink  = $('headerAccountLink');
+  const menuLink    = $('menuAccountLink');
+  const menuText    = $('menuAccountText');
+  const menuIcon    = $('menuAccountIcon');
+
+  /* ---------- DRAWER OPEN/CLOSE ---------- */
+  function openDrawer() {
+    menuDrawer.classList.add('open');
+    menuOverlay.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    menuDrawer.classList.remove('open');
+    menuOverlay.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  if (menuToggle)  menuToggle.addEventListener('click', openDrawer);
+  if (menuClose)   menuClose.addEventListener('click', closeDrawer);
+  if (menuOverlay) menuOverlay.addEventListener('click', closeDrawer);
+
+  // Escape key close
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeDrawer();
+  });
+
+  /* ---------- ACCOUNT UI ---------- */
+  let client = null;
+  if (typeof supabase !== 'undefined') {
+    try { client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON); } catch(e){}
+  }
+
+  async function updateAccountUI() {
+    if (!client) return;
+
+    const { data } = await client.auth.getSession();
+    const session = data && data.session;
+
+    if (session && session.user) {
+      if (menuLink) { menuLink.setAttribute('href', '#'); menuLink.classList.add('account-active'); }
+      if (menuText) menuText.textContent = 'My Account';
+      if (menuIcon) menuIcon.textContent = '👤';
+      if (headerLink) { headerLink.setAttribute('href', '#'); headerLink.setAttribute('aria-label', 'My Account'); }
+    } else {
+      if (menuLink) { menuLink.setAttribute('href', 'login.html'); menuLink.classList.remove('account-active'); }
+      if (menuText) menuText.textContent = 'Login / Account';
+      if (menuIcon) menuIcon.textContent = '👤';
+      if (headerLink) { headerLink.setAttribute('href', 'login.html'); headerLink.setAttribute('aria-label', 'Login'); }
+    }
+  }
+
+  // Account link click — logged in aithe profile modal open (index.html ni redirect)
+  if (headerLink) {
+    headerLink.addEventListener('click', function (e) {
+      if (headerLink.getAttribute('aria-label') === 'My Account') {
+        e.preventDefault();
+        // Index.html profile modal ni open cheyyadam kosam index.html ki velladam
+        window.location.href = 'index.html#account';
+      }
+    });
+  }
+
+  if (menuLink) {
+    menuLink.addEventListener('click', function (e) {
+      if (menuLink.getAttribute('href') === '#') {
+        e.preventDefault();
+        closeDrawer();
+        setTimeout(() => { window.location.href = 'index.html#account'; }, 200);
+      }
+    });
+  }
+
+  updateAccountUI();
+  if (client) client.auth.onAuthStateChange(() => setTimeout(updateAccountUI, 0));
+
+  // Update cart/fav badges on drawer open (from localStorage)
+  function refreshBadges() {
+    try {
+      const cartKeys = ['cart','jb_cart','jbstore_cart','jbCart','cartItems'];
+      let cartQty = 0;
+      for (const k of cartKeys) {
+        const raw = localStorage.getItem(k);
+        if (raw) {
+          const v = JSON.parse(raw);
+          if (Array.isArray(v)) { cartQty = v.reduce((s,i)=>s+(Number(i.qty||i.quantity||1)),0); break; }
+        }
+      }
+      document.querySelectorAll('.cart-badge,#cartBadge,#menuCartBadge').forEach(el => {
+        el.textContent = cartQty;
+        el.style.display = cartQty > 0 ? 'flex' : 'none';
+      });
+
+      const favKeys = ['favorites','jb_favorites','favoritesList','jbFav'];
+      let favCount = 0;
+      for (const k of favKeys) {
+        const raw = localStorage.getItem(k);
+        if (raw) {
+          const v = JSON.parse(raw);
+          if (Array.isArray(v)) { favCount = v.length; break; }
+        }
+      }
+      document.querySelectorAll('.fav-badge,#favBadge,#menuFavBadge').forEach(el => {
+        el.textContent = favCount;
+        el.style.display = favCount > 0 ? 'flex' : 'none';
+      });
+    } catch(e){}
+  }
+  refreshBadges();
+  setInterval(refreshBadges, 1500);
+})();
+</script>
+
+<!-- ===== CHECKOUT + ORDER LOGIC (WEBVIEW SAFE) ===== -->
 <script>
 (function () {
   const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
@@ -836,9 +1124,7 @@
 
   let currentUser = null;
 
-  /* ✅✅✅ WEBVIEW HEIGHT FIX ✅✅✅
-     WebView lo 100vh / 100dvh correct ga calculate avvadu.
-     So JS tho exact ga window.innerHeight set chestamu. */
+  /* ✅ WebView height fix */
   function fitModalToScreen() {
     const m = $('ckModal');
     if (!m) return;
@@ -853,14 +1139,10 @@
       m.style.bottom = 'auto';
 
       const c = $('ckCard');
-      if (c) {
-        // Card max height = 92% of screen height
-        c.style.maxHeight = Math.round(h * 0.92) + 'px';
-      }
+      if (c) c.style.maxHeight = Math.round(h * 0.92) + 'px';
     }
   }
 
-  /* Anni events ki bind cheyyi */
   function bindFitEvents() {
     window.addEventListener('resize', fitModalToScreen);
     window.addEventListener('orientationchange', function () {
@@ -872,14 +1154,11 @@
       window.visualViewport.addEventListener('resize', fitModalToScreen);
       window.visualViewport.addEventListener('scroll', fitModalToScreen);
     }
-    // WebView specific
-    document.addEventListener('scroll', fitModalToScreen, { passive: true });
   }
 
   /* ---------- CART READER ---------- */
   function readCartFromDOM() {
     const items = [];
-
     document.querySelectorAll('#cartItems .cart-item').forEach(el => {
       const name  = (el.querySelector('.cart-item-info h3')?.textContent || '').trim();
       const brand = (el.querySelector('.cart-item-brand')?.textContent || '').trim();
@@ -912,26 +1191,19 @@
         } catch(e){}
       }
     }
-
     return items;
   }
 
   function showErr(msg) {
     const el = $('ckErr');
     if (el) { el.textContent = msg; el.style.color = '#c00'; }
-    console.warn('[checkout]', msg);
   }
 
-  /* ---------- OPEN MODAL ---------- */
+  /* ---------- OPEN CHECKOUT ---------- */
   function openCheckout() {
-    console.log('[checkout] clicked');
-
-    // ✅ Modal open BEFORE fitting (visibility kavali height calculate kosam)
     $('ckModal').classList.add('show');
     document.body.style.overflow = 'hidden';
     $('ckErr').textContent = '';
-
-    // ✅✅ Height fix — chala important for WebView
     fitModalToScreen();
     setTimeout(fitModalToScreen, 50);
     setTimeout(fitModalToScreen, 250);
@@ -949,17 +1221,8 @@
     if (!sb) return;
     try {
       let user = null;
-      try {
-        const { data } = await sb.auth.getUser();
-        user = data && data.user ? data.user : null;
-      } catch (e) { console.warn('[checkout] getUser failed:', e); }
-
-      if (!user) {
-        try {
-          const { data } = await sb.auth.getSession();
-          user = data && data.session ? data.session.user : null;
-        } catch (e) { console.warn('[checkout] getSession failed:', e); }
-      }
+      try { const { data } = await sb.auth.getUser(); user = data && data.user ? data.user : null; } catch(e){}
+      if (!user) { try { const { data } = await sb.auth.getSession(); user = data && data.session ? data.session.user : null; } catch(e){} }
 
       if (user) {
         currentUser = user;
@@ -973,26 +1236,16 @@
         if (!$('ckMobile').value) $('ckMobile').value = meta.mobile || meta.phone || '';
         if (!$('ckAddress').value) $('ckAddress').value = meta.address || '';
       }
-    } catch (e) {
-      console.warn('[checkout] prefill failed:', e);
-    }
+    } catch(e){}
   }
 
-  /* ---------- BIND PROCEED ---------- */
   function bindProceedBtn() {
     const btn = $('proceedCheckoutBtn');
-    if (btn) {
-      btn.addEventListener('click', openCheckout);
-      console.log('[checkout] Proceed button bound');
-    } else {
-      setTimeout(bindProceedBtn, 300);
-    }
+    if (btn) btn.addEventListener('click', openCheckout);
+    else setTimeout(bindProceedBtn, 300);
   }
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-      bindProceedBtn();
-      bindFitEvents();
-    });
+    document.addEventListener('DOMContentLoaded', function () { bindProceedBtn(); bindFitEvents(); });
   } else {
     bindProceedBtn();
     bindFitEvents();
@@ -1035,10 +1288,7 @@
     if (!items.length) { showErr('⚠️ Cart khali undi'); return; }
 
     if (!currentUser && sb) {
-      try {
-        const { data } = await sb.auth.getUser();
-        if (data && data.user) currentUser = data.user;
-      } catch(e){}
+      try { const { data } = await sb.auth.getUser(); if (data && data.user) currentUser = data.user; } catch(e){}
     }
 
     $('ckGo').disabled = true;
@@ -1067,13 +1317,11 @@
       } catch(e) { console.error('Order save failed:', e); }
 
       try {
-        await sb.auth.updateUser({
-          data: {
-            full_name: userName, name: userName,
-            mobile: mob, address: addr,
-            profile_completed: true
-          }
-        });
+        await sb.auth.updateUser({ data:{
+          full_name: userName, name: userName,
+          mobile: mob, address: addr,
+          profile_completed: true
+        }});
       } catch(e){}
     }
 
@@ -1091,15 +1339,10 @@
     msg += `📅 ${new Date().toLocaleString('en-IN')}\n\nPlease confirm my order 🙏`;
 
     const waURL = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg);
-
     try {
       const w = window.open(waURL, '_blank');
-      if (!w || w.closed || typeof w.closed === 'undefined') {
-        window.location.href = waURL;
-      }
-    } catch (e) {
-      window.location.href = waURL;
-    }
+      if (!w || w.closed || typeof w.closed === 'undefined') window.location.href = waURL;
+    } catch (e) { window.location.href = waURL; }
 
     ['cart','jb_cart','jbstore_cart','jbCart','cartItems'].forEach(k => {
       try { localStorage.removeItem(k); } catch(e){}
