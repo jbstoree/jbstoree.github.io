@@ -10,236 +10,114 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    .search-page {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 0 16px 100px;
-      margin: 20px auto;
-      max-width: 1400px;
-    }
-
-    .search-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid rgba(212, 175, 55, 0.15);
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .search-small {
-      color: #D4AF37;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      margin: 0 0 4px;
-      text-transform: uppercase;
-    }
-    .search-heading h1 {
-      color: #111;
-      font-size: 26px;
-      font-weight: 700;
-      margin: 0;
-      letter-spacing: .3px;
-    }
-    #resultCount {
-      color: #a3801a;
-      font-size: 13px;
-      font-weight: 600;
-      padding: 6px 16px;
-      border-radius: 20px;
-      background: rgba(212, 175, 55, 0.08);
-      border: 1px solid rgba(212, 175, 55, 0.2);
-      white-space: nowrap;
-    }
+    .search-page { width: 100%; box-sizing: border-box; padding: 0 16px 100px; margin: 20px auto; max-width: 1400px; }
+    .search-heading { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(212, 175, 55, 0.15); flex-wrap: wrap; gap: 10px; }
+    .search-small { color: #D4AF37; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; margin: 0 0 4px; text-transform: uppercase; }
+    .search-heading h1 { color: #111; font-size: 26px; font-weight: 700; margin: 0; letter-spacing: .3px; }
+    #resultCount { color: #a3801a; font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; background: rgba(212, 175, 55, 0.08); border: 1px solid rgba(212, 175, 55, 0.2); white-space: nowrap; }
 
     .search-layout { display: block; width: 100%; }
     .search-results { width: 100%; }
-    .search-product-grid {
-      width: 100%;
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 20px;
-    }
+    .search-product-grid { width: 100%; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
 
-    .search-product-card {
-      background: #fff;
-      border-radius: 16px;
-      border: 1px solid #FFD700 !important;
-      box-shadow: 0 0 4px rgba(255, 215, 0, 0.05) !important;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      cursor: pointer;
-      transition: all .3s ease;
-      position: relative;
-    }
-    .search-product-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 8px 30px rgba(212, 175, 55, 0.1) !important;
-    }
-
-    .search-product-image {
-      position: relative;
-      width: 100%;
-      height: 180px;
-      background: #faf8f2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px;
-    }
-    .search-product-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-    .search-offer {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: linear-gradient(135deg, #D4AF37, #C9A030);
-      color: #111;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 12px;
-      z-index: 2;
-    }
+    .search-product-card { background: #fff; border-radius: 16px; border: 1px solid #FFD700 !important; box-shadow: 0 0 4px rgba(255, 215, 0, 0.05) !important; overflow: hidden; display: flex; flex-direction: column; cursor: pointer; transition: all .3s ease; position: relative; }
+    .search-product-card:hover { transform: translateY(-6px); box-shadow: 0 8px 30px rgba(212, 175, 55, 0.1) !important; }
+    .search-product-image { position: relative; width: 100%; height: 180px; background: #faf8f2; display: flex; align-items: center; justify-content: center; padding: 12px; }
+    .search-product-image img { width: 100%; height: 100%; object-fit: contain; }
+    .search-offer { position: absolute; top: 10px; left: 10px; background: linear-gradient(135deg, #D4AF37, #C9A030); color: #111; font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 12px; z-index: 2; }
     .search-offer:empty { display: none; }
-
-    .search-product-info {
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-    .search-brand {
-      color: #a3801a;
-      font-size: 11px;
-      font-weight: 700;
-      margin: 0 0 4px;
-      text-transform: uppercase;
-      letter-spacing: .5px;
-    }
-    .search-product-info h3 {
-      color: #111;
-      font-size: 14px;
-      font-weight: 600;
-      margin: 0 0 6px;
-      line-height: 1.35;
-      min-height: 38px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    .search-variant-tag {
-      display: inline-block;
-      background: rgba(212, 175, 55, 0.12);
-      color: #a3801a;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 2px 10px;
-      border-radius: 12px;
-      margin: 0 0 6px;
-      border: 1px solid rgba(212, 175, 55, 0.15);
-      align-self: flex-start;
-    }
-    .search-rating {
-      color: #333;
-      font-size: 12px;
-      margin: 0 0 4px;
-      font-weight: 500;
-    }
+    .search-product-info { padding: 14px; display: flex; flex-direction: column; flex: 1; }
+    .search-brand { color: #a3801a; font-size: 11px; font-weight: 700; margin: 0 0 4px; text-transform: uppercase; letter-spacing: .5px; }
+    .search-product-info h3 { color: #111; font-size: 14px; font-weight: 600; margin: 0 0 6px; line-height: 1.35; min-height: 38px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .search-variant-tag { display: inline-block; background: rgba(212, 175, 55, 0.12); color: #a3801a; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 12px; margin: 0 0 6px; border: 1px solid rgba(212, 175, 55, 0.15); align-self: flex-start; }
+    .search-rating { color: #333; font-size: 12px; margin: 0 0 4px; font-weight: 500; }
     .search-rating span { color: #888; font-size: 11px; }
-    .search-condition {
-      color: #666;
-      font-size: 11px;
-      margin: 0 0 8px;
-      font-weight: 500;
-    }
-    .search-price {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      margin: 4px 0 12px;
-      flex-wrap: wrap;
-    }
-    .search-price strong {
-      color: #111;
-      font-size: 18px;
-      font-weight: 700;
-    }
-    .search-price del {
-      color: #999;
-      font-size: 12px;
-    }
+    .search-condition { color: #666; font-size: 11px; margin: 0 0 8px; font-weight: 500; }
+    .search-price { display: flex; align-items: baseline; gap: 8px; margin: 4px 0 12px; flex-wrap: wrap; }
+    .search-price strong { color: #111; font-size: 18px; font-weight: 700; }
+    .search-price del { color: #999; font-size: 12px; }
+    .search-product-card .deal-actions { display: flex; gap: 10px; margin-top: auto; width: 100%; }
+    .search-product-card .deal-actions button { flex: 1; height: 40px; border: none; border-radius: 10px; font-weight: 700; font-size: 12px; cursor: pointer; transition: all .3s ease; font-family: "Poppins", sans-serif; }
+    .search-product-card .view-details-btn { background: linear-gradient(135deg, #D4AF37, #C9A030); color: #0A0A0A; box-shadow: 0 2px 15px rgba(212, 175, 55, 0.2); }
+    .search-product-card .view-details-btn:hover { background: linear-gradient(135deg, #E8C84A, #D4AF37); transform: translateY(-2px); }
 
-    .search-product-card .deal-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: auto;
-      width: 100%;
-    }
-    .search-product-card .deal-actions button {
-      flex: 1;
-      height: 40px;
-      border: none;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 12px;
-      cursor: pointer;
-      transition: all .3s ease;
-      font-family: "Poppins", sans-serif;
-    }
-    .search-product-card .view-details-btn {
-      background: linear-gradient(135deg, #D4AF37, #C9A030);
-      color: #0A0A0A;
-      box-shadow: 0 2px 15px rgba(212, 175, 55, 0.2);
-    }
-    .search-product-card .view-details-btn:hover {
-      background: linear-gradient(135deg, #E8C84A, #D4AF37);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.35);
-    }
-
-    .search-empty {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 60px 20px;
-      background: #fff;
-      border-radius: 20px;
-      border: 1px solid rgba(212, 175, 55, 0.15);
-    }
+    .search-empty { grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: #fff; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.15); }
     .search-empty div { font-size: 60px; margin-bottom: 14px; }
     .search-empty h2 { color: #111; font-size: 22px; font-weight: 700; margin: 0 0 8px; }
     .search-empty p { color: #777; font-size: 14px; margin: 0; }
 
-    /* ============ PROFILE MODAL ============ */
-    .jb-profile-modal {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      z-index: 2147483647;
-      background: rgba(0, 0, 0, 0.6);
-      display: none;
-      justify-content: center;
-      align-items: flex-end;
-      padding-bottom: env(safe-area-inset-bottom, 20px);
-      box-sizing: border-box;
-    }
-    .jb-profile-modal.show { display: flex; }
-    .jb-profile-card {
-      width: 100%; max-width: 520px;
-      background: #fff; color: #222;
-      border-radius: 26px 26px 0 0;
-      padding: 24px 20px 60px 20px;
-      box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.22);
-      max-height: 85%; min-height: 400px;
+    /* ============ SUGGESTIONS (brand + category combos) ============ */
+    .search-suggestions {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border: 1px solid rgba(212, 175, 55, 0.18);
+      border-radius: 16px;
+      max-height: 380px;
       overflow-y: auto;
-      border-top: 3px solid #d8ad19;
-      box-sizing: border-box;
+      display: none;
+      z-index: 9999;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+      padding: 8px 0;
+      -webkit-overflow-scrolling: touch;
     }
+    .search-suggestions.show { display: block; }
+
+    .search-suggestion {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 18px;
+      cursor: pointer;
+      transition: background .2s ease;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    }
+    .search-suggestion:last-child { border-bottom: none; }
+    .search-suggestion:active { background: rgba(212, 175, 55, 0.1); }
+    .search-suggestion:hover { background: rgba(212, 175, 55, 0.06); }
+
+    .search-suggestion img {
+      width: 44px; height: 44px;
+      object-fit: contain;
+      border-radius: 10px;
+      background: #f2efe9;
+      padding: 5px;
+      flex-shrink: 0;
+    }
+    .suggestion-info { flex: 1; min-width: 0; }
+    .suggestion-name {
+      color: #111;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .suggestion-name strong { color: #D4AF37; font-weight: 800; }
+    .suggestion-category {
+      color: #8a8580;
+      font-size: 11.5px;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .suggestion-arrow {
+      color: #D4AF37;
+      font-size: 16px;
+      font-weight: 700;
+      flex-shrink: 0;
+      opacity: .7;
+    }
+    .search-no-result { padding: 24px 20px; color: #8a8580; text-align: center; font-size: 14px; }
+
+    /* ============ PROFILE MODAL ============ */
+    .jb-profile-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2147483647; background: rgba(0, 0, 0, 0.6); display: none; justify-content: center; align-items: flex-end; padding-bottom: env(safe-area-inset-bottom, 20px); box-sizing: border-box; }
+    .jb-profile-modal.show { display: flex; }
+    .jb-profile-card { width: 100%; max-width: 520px; background: #fff; color: #222; border-radius: 26px 26px 0 0; padding: 24px 20px 60px 20px; box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.22); max-height: 85%; min-height: 400px; overflow-y: auto; border-top: 3px solid #d8ad19; box-sizing: border-box; }
     .jb-profile-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
     .jb-profile-head h2{margin:0;font-family:Georgia,serif;font-size:25px}
     .jb-profile-close{border:1px solid #e4d7ad;background:#fff;border-radius:50%;width:38px;height:38px;font-size:24px;cursor:pointer;color:#777}
@@ -253,7 +131,6 @@
     .jb-profile-status{text-align:center;min-height:20px;margin-top:10px;font-size:13px;color:#777}
     .jb-profile-field input[readonly]{background:#f4f2ec;color:#666;}
     .jb-profile-logout{width:100%;border:1px solid #e6c9c9;border-radius:14px;padding:13px;background:#fff;color:#b00020;font-size:15px;font-weight:700;cursor:pointer;margin-top:10px;font-family:inherit;}
-    .jb-profile-logout:hover{background:#fff5f5;}
 
     @media (max-width: 768px) {
       .search-page { padding: 0 12px 90px; margin: 12px auto; }
@@ -272,6 +149,11 @@
       .search-price del { font-size: 10px; }
       .search-product-card .deal-actions button { height: 34px; font-size: 11px; }
       .search-variant-tag { font-size: 9.5px; padding: 1px 8px; }
+      .search-suggestions { max-height: 320px; border-radius: 14px; }
+      .search-suggestion { padding: 10px 14px; gap: 12px; }
+      .search-suggestion img { width: 40px; height: 40px; }
+      .suggestion-name { font-size: 13px; }
+      .suggestion-category { font-size: 11px; }
     }
     @media (max-width: 450px) {
       .search-product-grid { gap: 8px; }
@@ -290,7 +172,6 @@
       <span></span><span></span><span></span>
     </button>
   </div>
-
   <div class="search">
     <input type="text" id="searchInput" placeholder="Search products..." autocomplete="off">
     <button type="button" id="searchButton">🔍</button>
@@ -298,16 +179,12 @@
   </div>
 </header>
 
-<!-- ===== MENU OVERLAY ===== -->
 <div class="menu-overlay" id="menuOverlay"></div>
-
-<!-- ===== MENU DRAWER ===== -->
 <div class="menu-drawer" id="menuDrawer">
   <div class="menu-header">
     <span class="menu-logo">JB <span>STORE</span></span>
     <button class="menu-close" id="menuClose" aria-label="Close menu">✕</button>
   </div>
-
   <nav class="menu-nav">
     <a href="index.html" class="menu-item"><span class="item-icon">🏠</span> Home</a>
     <a href="javascript:void(0)" class="menu-item" id="menuAccountLink">
@@ -317,23 +194,21 @@
     <a href="orders.html" class="menu-item"><span class="item-icon">📦</span> My Orders</a>
     <a href="favorites.html" class="menu-item">
       <span class="item-icon">❤️</span> My Favorites
-      <span class="fav-badge" id="menuFavBadge" style="margin-left:auto;display:none;background:#ff1744;color:#fff;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 15px rgba(255,23,68,0.4);">0</span>
+      <span class="fav-badge" id="menuFavBadge" style="margin-left:auto;display:none;background:#ff1744;color:#fff;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;">0</span>
     </a>
     <a href="address.html" class="menu-item"><span class="item-icon">📍</span> My Address</a>
     <a href="cart.html" class="menu-item">
       <span class="item-icon">🛒</span> Cart
-      <span class="cart-badge" id="menuCartBadge" style="margin-left:auto;background:#D4AF37;color:#000;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 12px rgba(212,175,55,0.3);">0</span>
+      <span class="cart-badge" id="menuCartBadge" style="margin-left:auto;background:#D4AF37;color:#000;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;">0</span>
     </a>
     <a href="#" class="menu-item"><span class="item-icon">ℹ️</span> About Us</a>
     <a href="#" class="menu-item"><span class="item-icon">📞</span> Contact Us</a>
   </nav>
-
   <div class="menu-footer">
     <div class="menu-version">✦ JB STORE <span>Premium Electronics</span> ✦</div>
   </div>
 </div>
 
-<!-- ===== PROFILE MODAL ===== -->
 <div class="jb-profile-modal" id="jbProfileModal" aria-hidden="true">
   <div class="jb-profile-card" role="dialog" aria-modal="true">
     <div class="jb-profile-head">
@@ -352,7 +227,6 @@
   </div>
 </div>
 
-<!-- ===== SEARCH PAGE ===== -->
 <main class="search-page">
   <div class="search-heading">
     <div>
@@ -361,7 +235,6 @@
     </div>
     <span id="resultCount">0 Products</span>
   </div>
-
   <div class="search-layout">
     <section class="search-results">
       <div id="searchProductGrid" class="search-product-grid"></div>
@@ -369,20 +242,15 @@
   </div>
 </main>
 
-<!-- ===== BOTTOM BAR ===== -->
 <div class="bottom-bar">
   <div class="bottom-container">
-    <a href="index.html" class="bottom-item" id="bottomHome">
-      <span class="bottom-icon">🏠</span><span class="bottom-label">Home</span>
-    </a>
+    <a href="index.html" class="bottom-item" id="bottomHome"><span class="bottom-icon">🏠</span><span class="bottom-label">Home</span></a>
     <a href="favorites.html" class="bottom-item" id="bottomFav">
       <span class="bottom-icon" style="color:#ff1744;">❤️</span>
       <span class="fav-badge" id="favBadge">0</span>
       <span class="bottom-label" style="color:#ff1744;font-weight:700;">Favorites</span>
     </a>
-    <a href="tel:919999999999" class="bottom-item call-item" id="bottomCall">
-      <span class="bottom-icon">📞</span><span class="bottom-label">Call</span>
-    </a>
+    <a href="tel:919999999999" class="bottom-item call-item" id="bottomCall"><span class="bottom-icon">📞</span><span class="bottom-label">Call</span></a>
     <a href="cart.html" class="bottom-item cart-item" id="bottomCart">
       <span class="bottom-icon">🛒</span>
       <span class="cart-badge" id="cartBadge">0</span>
@@ -391,7 +259,7 @@
   </div>
 </div>
 
-<!-- ===== EXISTING SCRIPTS ===== -->
+<!-- ===== LOCAL SCRIPTS ===== -->
 <script src="config.js"></script>
 <script src="mobiles.js"></script>
 <script src="refrigerator.js"></script>
@@ -401,31 +269,26 @@
 <script src="script.js"></script>
 <script src="favorites.js"></script>
 
-<!-- ===== SEARCH PAGE MAIN LOGIC (SAFE VERSION) ===== -->
+<!-- ================= SEARCH PAGE MAIN LOGIC ================= -->
 <script>
 (function () {
   'use strict';
 
-  /* ✅ Step 1: Collect local products (script.js nunchi conflict rakunda) */
-  var localProducts = [];
-  function collect(name) {
-    try {
-      var arr = window[name];
-      if (Array.isArray(arr)) { localProducts = localProducts.concat(arr); }
-    } catch(e) {}
-  }
-  collect('mobileProducts');
-  collect('refrigeratorProducts');
-  collect('washingProducts');
-  collect('acProducts');
-  collect('tvProducts');
+  /* =============================================================
+     STEP 1: Collect ALL products (local + Supabase) — global store
+     NOTE: do NOT name it "allProducts" (script.js already uses it)
+     ============================================================= */
+  window.__searchProducts = [];
 
-  console.log('[search] Local products:', localProducts.length);
+  // Collect local products
+  ['mobileProducts','refrigeratorProducts','washingProducts','acProducts','tvProducts'].forEach(function (n) {
+    try { if (Array.isArray(window[n])) window.__searchProducts = window.__searchProducts.concat(window[n]); } catch(e){}
+  });
+  console.log('[search] Local products loaded:', window.__searchProducts.length);
 
-  /* ✅ Step 2: Global store for this page — do NOT name it `allProducts` */
-  window.__searchProducts = localProducts.slice();
-
-  /* ✅ Step 3: Params */
+  /* =============================================================
+     STEP 2: Params + DOM
+     ============================================================= */
   var params = new URLSearchParams(window.location.search);
   var term  = (params.get('q') || '').trim();
   var brand = (params.get('brand') || '').trim();
@@ -437,7 +300,8 @@
   var countEl   = document.getElementById('resultCount');
   var suggestEl = document.getElementById('searchSuggestions');
 
-  var catNames = {
+  // Category display names
+  var CAT_NAMES = {
     mobiles: 'Mobiles',
     fridge:  'Refrigerators',
     washing: 'Washing Machines',
@@ -445,9 +309,20 @@
     tv:      'TV'
   };
 
-  /* Set input + title */
+  // Category aliases — helps match "fridge", "tv", "ac", etc.
+  var CAT_ALIASES = {
+    mobiles: ['mobiles','mobile','phone','smartphone','smartphones'],
+    fridge:  ['fridge','fridges','refrigerator','refrigerators'],
+    washing: ['washing','washer','washing machine','washing machines'],
+    ac:      ['ac','a/c','air conditioner','air conditioners'],
+    tv:      ['tv','tvs','television','televisions','smart tv','smart tvs']
+  };
+
+  /* =============================================================
+     STEP 3: Set input + title from URL params
+     ============================================================= */
   if (brand && cat) {
-    var cName = catNames[cat] || cat;
+    var cName = CAT_NAMES[cat] || cat;
     if (inputEl) inputEl.value = brand + ' ' + cName;
     if (titleEl) titleEl.textContent = brand + ' ' + cName;
   } else if (term) {
@@ -458,7 +333,9 @@
     if (titleEl) titleEl.textContent = 'All Products';
   }
 
-  /* Filter */
+  /* =============================================================
+     STEP 4: Filter products for grid
+     ============================================================= */
   function filterProducts() {
     var list = window.__searchProducts || [];
 
@@ -482,21 +359,33 @@
     });
   }
 
-  /* View product */
-  window.__viewProduct = function (id) {
-    try { localStorage.setItem('selectedProduct', JSON.stringify({ id: id })); } catch(e) {}
-    window.location.href = 'product.html?id=' + encodeURIComponent(id);
-  };
-
-  /* Escape HTML */
+  /* =============================================================
+     STEP 5: Helpers
+     ============================================================= */
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
       return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
     });
   }
 
-  /* Render */
-  function render() {
+  function highlight(text, q) {
+    var safe = esc(text);
+    if (!q) return safe;
+    try {
+      var escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return safe.replace(new RegExp('(' + escaped + ')', 'ig'), '<strong>$1</strong>');
+    } catch(e) { return safe; }
+  }
+
+  window.__viewProduct = function (id) {
+    try { localStorage.setItem('selectedProduct', JSON.stringify({ id: id })); } catch(e){}
+    window.location.href = 'product.html?id=' + encodeURIComponent(id);
+  };
+
+  /* =============================================================
+     STEP 6: Render product grid
+     ============================================================= */
+  function renderGrid() {
     if (!gridEl) return;
     var products = filterProducts();
     gridEl.innerHTML = '';
@@ -554,33 +443,134 @@
         if (e.target.closest('button')) return;
         window.__viewProduct(product.id);
       });
-
       var btn = card.querySelector('.view-details-btn');
-      if (btn) {
-        btn.addEventListener('click', function (e) {
-          e.stopPropagation();
-          window.__viewProduct(product.id);
-        });
-      }
+      if (btn) btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        window.__viewProduct(product.id);
+      });
 
       gridEl.appendChild(card);
     });
   }
 
-  /* Expose for Supabase */
-  window.__renderSearch = render;
+  /* =============================================================
+     STEP 7: Build suggestions — brand + category combos
+     ============================================================= */
+  function buildSuggestions(text) {
+    text = String(text || '').trim().toLowerCase();
+    if (!text) return [];
+
+    var all = window.__searchProducts || [];
+    var combos = {};   // key = brand|category
+
+    all.forEach(function (p) {
+      var b = String(p.brand || '').trim();
+      var c = String(p.category || '').trim().toLowerCase();
+      if (!b || !c) return;
+
+      var bLower = b.toLowerCase();
+      var cName  = CAT_NAMES[c] || c;
+      var cAlias = CAT_ALIASES[c] || [c];
+      var nameLower = String(p.name || '').toLowerCase();
+
+      // Match conditions
+      var matchBrandStarts    = bLower.indexOf(text) === 0;
+      var matchBrandContains  = bLower.indexOf(text) !== -1;
+      var matchCat            = cAlias.some(function (a) { return a.indexOf(text) !== -1; });
+      var matchName           = nameLower.indexOf(text) !== -1;
+
+      if (!(matchBrandContains || matchCat || matchName)) return;
+
+      var key = bLower + '|' + c;
+      if (!combos[key]) {
+        combos[key] = {
+          brand: b,
+          category: c,
+          categoryName: cName,
+          image: p.image || (Array.isArray(p.images) ? p.images[0] : '') || '',
+          productName: p.name,
+          score: 0
+        };
+      }
+
+      // Score for sorting
+      var s = combos[key].score;
+      if (matchBrandStarts)   s += 100;
+      else if (matchBrandContains) s += 60;
+      if (matchCat)  s += 40;
+      if (matchName) s += 20;
+      combos[key].score = s;
+    });
+
+    return Object.keys(combos).map(function (k) { return combos[k]; })
+      .sort(function (a, b) { return b.score - a.score || a.brand.localeCompare(b.brand); })
+      .slice(0, 12);
+  }
+
+  function showSuggestions() {
+    if (!inputEl || !suggestEl) return;
+    var text = inputEl.value.trim();
+    suggestEl.innerHTML = '';
+
+    if (!text) { suggestEl.classList.remove('show'); return; }
+
+    var results = buildSuggestions(text);
+
+    if (!results.length) {
+      suggestEl.innerHTML = '<div class="search-no-result">No products found for "' + esc(text) + '"</div>';
+      suggestEl.classList.add('show');
+      return;
+    }
+
+    results.forEach(function (item) {
+      var row = document.createElement('div');
+      row.className = 'search-suggestion';
+
+      row.innerHTML =
+        '<img src="' + esc(item.image) + '" alt="" ' +
+             'onerror="this.style.background=\'#f2efe9\'">' +
+        '<div class="suggestion-info">' +
+          '<div class="suggestion-name">' +
+            highlight(item.brand, text) + ' ' + esc(item.categoryName) +
+          '</div>' +
+          '<div class="suggestion-category">' +
+            esc(item.productName || (item.brand + ' ' + item.categoryName)) +
+          '</div>' +
+        '</div>' +
+        '<span class="suggestion-arrow">↗</span>';
+
+      row.addEventListener('click', function () {
+        window.location.href =
+          'search.html?brand=' + encodeURIComponent(item.brand) +
+          '&category=' + encodeURIComponent(item.category);
+      });
+
+      suggestEl.appendChild(row);
+    });
+
+    suggestEl.classList.add('show');
+  }
+
+  /* =============================================================
+     STEP 8: Expose setter for Supabase data
+     ============================================================= */
   window.__setAllProducts = function (data) {
     if (Array.isArray(data) && data.length) {
       window.__searchProducts = data;
       console.log('[search] Supabase products set:', data.length);
-      render();
+      renderGrid();
     }
   };
+  window.__renderSearch = renderGrid;
 
-  /* Initial render with local products */
-  render();
+  /* =============================================================
+     STEP 9: Initial render
+     ============================================================= */
+  renderGrid();
 
-  /* ========== SUPABASE FETCH (background, no blocking) ========== */
+  /* =============================================================
+     STEP 10: Supabase background fetch
+     ============================================================= */
   try {
     if (typeof supabase !== 'undefined') {
       var SUPABASE_URL  = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
@@ -590,14 +580,11 @@
       sb.from('products').select('*').order('id', { ascending: true })
         .then(function (res) {
           if (res.error) { console.warn('[search] fetch error:', res.error.message); return; }
-          if (res.data && res.data.length) {
-            window.__setAllProducts(res.data);
-          }
+          if (res.data && res.data.length) window.__setAllProducts(res.data);
         })
         .catch(function (e) { console.warn('[search] fetch failed:', e); });
 
-      // Realtime
-      sb.channel('search-products-rt')
+      sb.channel('search-rt')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, function () {
           sb.from('products').select('*').order('id', { ascending: true })
             .then(function (res) {
@@ -608,86 +595,18 @@
     }
   } catch (e) { console.warn('[search] Supabase init error:', e); }
 
-  /* ========== SUGGESTIONS ========== */
-  function highlight(text, q) {
-    var safe = esc(text);
-    if (!q) return safe;
-    var escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    return safe.replace(new RegExp('(' + escaped + ')', 'ig'), '<strong>$1</strong>');
-  }
-
-  function showSuggestions() {
-    if (!inputEl || !suggestEl) return;
-    var text = inputEl.value.trim().toLowerCase();
-    suggestEl.innerHTML = '';
-
-    if (!text) { suggestEl.classList.remove('show'); return; }
-
-    var all = window.__searchProducts || [];
-    var map = {};
-    all.forEach(function (p) {
-      var b = String(p.brand || '').trim();
-      var c = String(p.category || '').trim();
-      if (!b || !c) return;
-      if (b.toLowerCase().indexOf(text) !== -1 ||
-          c.toLowerCase().indexOf(text) !== -1 ||
-          String(p.name || '').toLowerCase().indexOf(text) !== -1) {
-        var key = b.toLowerCase() + '|' + c.toLowerCase();
-        if (!map[key]) {
-          map[key] = {
-            brand: b, category: c,
-            image: p.image || (p.images && p.images[0]) || '',
-            name: p.name
-          };
-        }
-      }
-    });
-
-    var arr = Object.keys(map).map(function (k) { return map[k]; });
-    arr.sort(function (a, b) {
-      var as = a.brand.toLowerCase().indexOf(text) === 0 ? 0 : 1;
-      var bs = b.brand.toLowerCase().indexOf(text) === 0 ? 0 : 1;
-      return as - bs || a.brand.localeCompare(b.brand);
-    });
-    arr = arr.slice(0, 10);
-
-    if (!arr.length) {
-      suggestEl.innerHTML = '<div class="search-no-result">No products found</div>';
-      suggestEl.classList.add('show');
-      return;
-    }
-
-    arr.forEach(function (item) {
-      var row = document.createElement('div');
-      row.className = 'search-suggestion';
-      var cName = catNames[item.category] || item.category;
-      row.innerHTML =
-        '<img src="' + esc(item.image) + '" alt="" ' +
-             'onerror="this.style.background=\'#f2efe9\'">' +
-        '<div class="suggestion-info">' +
-          '<div class="suggestion-name">' + highlight(item.brand, text) + ' ' + esc(cName) + '</div>' +
-          '<div class="suggestion-category">' + esc(item.name || '') + '</div>' +
-        '</div>' +
-        '<span class="suggestion-arrow">↗</span>';
-
-      row.addEventListener('click', function () {
-        window.location.href =
-          'search.html?brand=' + encodeURIComponent(item.brand) +
-          '&category=' + encodeURIComponent(item.category);
-      });
-      suggestEl.appendChild(row);
-    });
-
-    suggestEl.classList.add('show');
-  }
-
+  /* =============================================================
+     STEP 11: Input event bindings
+     ============================================================= */
   if (inputEl) {
     inputEl.addEventListener('input', showSuggestions);
+    inputEl.addEventListener('focus', function () { if (inputEl.value.trim()) showSuggestions(); });
     inputEl.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') {
         var v = inputEl.value.trim();
         if (v) window.location.href = 'search.html?q=' + encodeURIComponent(v);
       }
+      if (e.key === 'Escape') suggestEl.classList.remove('show');
     });
   }
 
@@ -699,6 +618,7 @@
     });
   }
 
+  // Close suggestions on outside click
   document.addEventListener('click', function (e) {
     if (inputEl && suggestEl &&
         !inputEl.contains(e.target) && !suggestEl.contains(e.target)) {
@@ -706,11 +626,11 @@
     }
   });
 
-  console.log('[search] ready. Products:', (window.__searchProducts || []).length);
+  console.log('[search] Ready. Total products:', (window.__searchProducts || []).length);
 })();
 </script>
 
-<!-- ===== MENU DRAWER + ACCOUNT + PROFILE LOGIC ===== -->
+<!-- ================= MENU DRAWER + ACCOUNT + PROFILE ================= -->
 <script>
 (function () {
   const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
@@ -730,18 +650,8 @@
   if (typeof supabase !== 'undefined') { try { client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON); } catch(e){} }
   let user = null;
 
-  function openDrawer() {
-    menuDrawer.classList.add('open');
-    menuOverlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
-    document.body.classList.add('menu-open');
-  }
-  function closeDrawer() {
-    menuDrawer.classList.remove('open');
-    menuOverlay.classList.remove('open');
-    document.body.style.overflow = '';
-    document.body.classList.remove('menu-open');
-  }
+  function openDrawer() { menuDrawer.classList.add('open'); menuOverlay.classList.add('open'); document.body.style.overflow='hidden'; document.body.classList.add('menu-open'); }
+  function closeDrawer() { menuDrawer.classList.remove('open'); menuOverlay.classList.remove('open'); document.body.style.overflow=''; document.body.classList.remove('menu-open'); }
 
   if (menuToggle)  menuToggle.addEventListener('click', openDrawer);
   if (menuClose)   menuClose.addEventListener('click', closeDrawer);
@@ -756,12 +666,10 @@
     if (user) {
       if (menuLink) { menuLink.setAttribute('href', 'javascript:void(0)'); menuLink.classList.add('account-active'); }
       if (menuText) menuText.textContent = 'My Account';
-      if (menuIcon) menuIcon.textContent = '👤';
       if (headerLink) { headerLink.setAttribute('href', 'javascript:void(0)'); headerLink.setAttribute('aria-label', 'My Account'); }
     } else {
       if (menuLink) { menuLink.setAttribute('href', 'login.html'); menuLink.classList.remove('account-active'); }
       if (menuText) menuText.textContent = 'Login / Account';
-      if (menuIcon) menuIcon.textContent = '👤';
       if (headerLink) { headerLink.setAttribute('href', 'login.html'); headerLink.setAttribute('aria-label', 'Login'); }
     }
   }
@@ -796,22 +704,10 @@
     $('jbProfileModal').classList.add('show');
     document.body.style.overflow = 'hidden';
   }
-  function closeProfile() {
-    $('jbProfileModal').classList.remove('show');
-    document.body.style.overflow = '';
-  }
+  function closeProfile() { $('jbProfileModal').classList.remove('show'); document.body.style.overflow = ''; }
 
-  if (headerLink) headerLink.addEventListener('click', e => {
-    e.preventDefault();
-    if (!user) { window.location.href = 'login.html'; return; }
-    openProfile();
-  });
-  if (menuLink) menuLink.addEventListener('click', e => {
-    e.preventDefault();
-    if (!user) { window.location.href = 'login.html'; return; }
-    closeDrawer();
-    setTimeout(openProfile, 300);
-  });
+  if (headerLink) headerLink.addEventListener('click', e => { e.preventDefault(); if (!user) { window.location.href='login.html'; return; } openProfile(); });
+  if (menuLink) menuLink.addEventListener('click', e => { e.preventDefault(); if (!user) { window.location.href='login.html'; return; } closeDrawer(); setTimeout(openProfile, 300); });
   if ($('jbProfileClose')) $('jbProfileClose').addEventListener('click', closeProfile);
   if ($('jbProfileModal')) $('jbProfileModal').addEventListener('click', e => { if (e.target === $('jbProfileModal')) closeProfile(); });
 
@@ -832,9 +728,7 @@
   }
   if ($('jbProfileLogout')) {
     $('jbProfileLogout').addEventListener('click', async function() {
-      await client.auth.signOut();
-      closeProfile();
-      window.location.href = 'login.html';
+      await client.auth.signOut(); closeProfile(); window.location.href = 'login.html';
     });
   }
 
