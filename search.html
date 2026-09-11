@@ -698,5 +698,35 @@
 })();
 </script>
 
+
+
+
+  <div id="jbDebug" style="position:fixed;bottom:80px;left:8px;right:8px;max-height:35vh;overflow:auto;background:rgba(0,0,0,.92);color:#0f0;font-family:monospace;font-size:11px;padding:10px;border-radius:10px;z-index:999999;line-height:1.5;white-space:pre-wrap;">
+  <div style="color:#ff0;font-weight:bold;margin-bottom:6px;">🐛 LOGS (tap to close)</div>
+  <div id="jbLog"></div>
+</div>
+<script>
+(function(){
+  var l = document.getElementById('jbLog');
+  var d = document.getElementById('jbDebug');
+  d.onclick = function(){ d.style.display = 'none'; };
+  function add(c, a) {
+    if (!l) return;
+    var t = Array.prototype.slice.call(a).map(function(x){
+      try { return typeof x === 'object' ? JSON.stringify(x) : String(x); } catch(e){ return String(x); }
+    }).join(' ');
+    var el = document.createElement('div');
+    el.style.color = c;
+    el.textContent = '> ' + t;
+    l.appendChild(el);
+    l.scrollTop = l.scrollHeight;
+  }
+  var ol = console.log, oe = console.error, ow = console.warn;
+  console.log = function(){ ol.apply(console, arguments); add('#0f0', arguments); };
+  console.error = function(){ oe.apply(console, arguments); add('#f66', arguments); };
+  console.warn = function(){ ow.apply(console, arguments); add('#fc6', arguments); };
+  window.addEventListener('error', function(e){ add('#f66', ['JS ERROR: ' + e.message]); });
+})();
+</script>
 </body>
 </html>
