@@ -8,7 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-  <!-- ✅ Supabase CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -20,84 +19,138 @@
     .menu-item.account-active{border-left:2px solid #D4AF37;}
   </style>
 
-<style>
-  html.auth-pending body { visibility: hidden !important; }
-</style>
-<script>
-  document.documentElement.classList.add('auth-pending');
-</script>
+  <style>
+    html.auth-pending body { visibility: hidden !important; }
+  </style>
+  <script>
+    document.documentElement.classList.add('auth-pending');
+  </script>
 
-<style>
-  /* ✅ APP FIX: యాప్ WebView కోసం అత్యంత బలమైన మోడల్ CSS */
-  .jb-profile-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2147483647;
-    background: rgba(0, 0, 0, 0.6);
-    display: none; /* డిఫాల్ట్‌గా దాచి ఉంచుతుంది */
-    justify-content: center;
-    align-items: flex-end; /* కింద నుండి పైకి వచ్చేలా */
-  }
-  
-  .jb-profile-modal.show {
-    display: flex; /* JS ద్వారా ఈ క్లాస్ యాడ్ అయినప్పుడు మాత్రమే కనిపిస్తుంది */
-  }
-  
-  .jb-profile-card {
-    width: 100%;
-    max-width: 520px;
-    background: #fff;
-    color: #222;
-    border-radius: 26px 26px 0 0;
-    padding: 24px 20px;
-    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.22);
-    /* యాప్ లో హైట్ సరిగ్గా లెక్కించడానికి % వాడటం మంచిది */
-    max-height: 90%;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch; /* iOS యాప్ లో స్మూత్ స్క్రోల్ కోసం */
-    border-top: 3px solid #d8ad19;
-    box-sizing: border-box;
-    /* యాప్ కింద ఉండే నావిగేషన్ బార్ కవర్ చేయకుండా */
-    padding-bottom: calc(30px + env(safe-area-inset-bottom, 20px)); 
-  }
+  <style>
+    .jb-profile-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2147483647;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: flex-end;
+    }
+    .jb-profile-modal.show { display: flex; }
+    .jb-profile-card {
+      width: 100%;
+      max-width: 520px;
+      background: #fff;
+      color: #222;
+      border-radius: 26px 26px 0 0;
+      padding: 24px 20px;
+      box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.22);
+      max-height: 90%;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      border-top: 3px solid #d8ad19;
+      box-sizing: border-box;
+      padding-bottom: calc(30px + env(safe-area-inset-bottom, 20px));
+    }
+    .jb-profile-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .jb-profile-head h2{margin:0;font-family:Georgia,serif;font-size:25px}
+    .jb-profile-close{border:1px solid #e4d7ad;background:#fff;border-radius:50%;width:38px;height:38px;font-size:24px;cursor:pointer;color:#777}
+    .jb-profile-avatar{width:72px;height:72px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background:#fffaf0;border:2px solid #dfbd4a;font-size:35px;}
+    .jb-profile-email{text-align:center;color:#777;font-size:13px;margin-bottom:22px}
+    .jb-profile-field{margin:0 0 14px}
+    .jb-profile-field label{display:block;font-weight:700;font-size:13px;margin-bottom:7px;color:#555}
+    .jb-profile-field input,.jb-profile-field textarea{width:100%;box-sizing:border-box;border:1px solid #ddd8ca;border-radius:13px;background:#faf9f5;padding:13px 14px;font-size:15px;outline:none;font-family:inherit;}
+    .jb-profile-field input:focus,.jb-profile-field textarea:focus{border-color:#d5ad22;box-shadow:0 0 0 3px rgba(213,173,34,.12)}
+    .jb-profile-field textarea{min-height:82px;resize:vertical}
+    .jb-profile-save{width:100%;border:0;border-radius:14px;padding:14px;background:#dfb500;color:#111;font-size:16px;font-weight:800;cursor:pointer;margin-top:5px;}
+    .jb-profile-status{text-align:center;min-height:20px;margin-top:10px;font-size:13px;color:#777}
+    .jb-profile-note{text-align:center;font-size:11px;color:#999;margin-top:9px}
+    .jb-profile-field input[readonly]{background:#f4f2ec;color:#666;}
+    .jb-profile-logout{width:100%;border:1px solid #e6c9c9;border-radius:14px;padding:13px;background:#fff;color:#b00020;font-size:15px;font-weight:700;cursor:pointer;margin-top:10px;font-family:inherit;}
+    .jb-profile-logout:hover{background:#fff5f5;}
+  </style>
 
-  .jb-profile-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-  .jb-profile-head h2{margin:0;font-family:Georgia,serif;font-size:25px}
-  .jb-profile-close{border:1px solid #e4d7ad;background:#fff;border-radius:50%;width:38px;height:38px;font-size:24px;cursor:pointer;color:#777}
-  .jb-profile-avatar{
-    width:72px;height:72px;border-radius:50%;margin:0 auto 12px;
-    display:flex;align-items:center;justify-content:center;
-    background:#fffaf0;border:2px solid #dfbd4a;font-size:35px;
-  }
-  .jb-profile-email{text-align:center;color:#777;font-size:13px;margin-bottom:22px}
-  .jb-profile-field{margin:0 0 14px}
-  .jb-profile-field label{display:block;font-weight:700;font-size:13px;margin-bottom:7px;color:#555}
-  .jb-profile-field input,.jb-profile-field textarea{
-    width:100%;box-sizing:border-box;border:1px solid #ddd8ca;border-radius:13px;
-    background:#faf9f5;padding:13px 14px;font-size:15px;outline:none;
-    font-family:inherit;
-  }
-  .jb-profile-field input:focus,.jb-profile-field textarea:focus{border-color:#d5ad22;box-shadow:0 0 0 3px rgba(213,173,34,.12)}
-  .jb-profile-field textarea{min-height:82px;resize:vertical}
-  .jb-profile-save{
-    width:100%;border:0;border-radius:14px;padding:14px;background:#dfb500;color:#111;
-    font-size:16px;font-weight:800;cursor:pointer;margin-top:5px;
-  }
-  .jb-profile-status{text-align:center;min-height:20px;margin-top:10px;font-size:13px;color:#777}
-  .jb-profile-note{text-align:center;font-size:11px;color:#999;margin-top:9px}
-  
-  .jb-profile-field input[readonly]{background:#f4f2ec;color:#666;}
-  .jb-profile-logout{
-    width:100%;border:1px solid #e6c9c9;border-radius:14px;padding:13px;background:#fff;
-    color:#b00020;font-size:15px;font-weight:700;cursor:pointer;margin-top:10px;
-    font-family:inherit;
-  }
-  .jb-profile-logout:hover{background:#fff5f5;}
-</style>
-
+  <!-- ✅ SEARCH SUGGESTIONS CSS -->
+  <style>
+    #searchSuggestions {
+      position: fixed;
+      display: none;
+      background: #ffffff;
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 16px;
+      max-height: 60vh;
+      overflow-y: auto;
+      z-index: 2147483646;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+      padding: 8px 0;
+      -webkit-overflow-scrolling: touch;
+      box-sizing: border-box;
+      font-family: 'Poppins', Arial, sans-serif;
+    }
+    #searchSuggestions.show { display: block !important; }
+    .search-suggestion {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 18px;
+      cursor: pointer;
+      transition: background 0.2s;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    }
+    .search-suggestion:last-child { border-bottom: none; }
+    .search-suggestion:hover,
+    .search-suggestion:active { background: rgba(212, 175, 55, 0.08); }
+    .search-suggestion img {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      border-radius: 10px;
+      background: #f2efe9;
+      padding: 5px;
+      flex-shrink: 0;
+    }
+    .suggestion-info { flex: 1; min-width: 0; }
+    .suggestion-name {
+      color: #111;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .suggestion-name strong { color: #D4AF37; font-weight: 800; }
+    .suggestion-category {
+      color: #8a8580;
+      font-size: 11.5px;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .suggestion-arrow {
+      color: #D4AF37;
+      font-size: 16px;
+      font-weight: 700;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+    .search-no-result {
+      padding: 24px 20px;
+      color: #8a8580;
+      text-align: center;
+      font-size: 14px;
+    }
+    @media (max-width: 768px) {
+      .search-suggestion { padding: 10px 14px; gap: 12px; }
+      .search-suggestion img { width: 40px; height: 40px; }
+      .suggestion-name { font-size: 13px; }
+      .suggestion-category { font-size: 11px; }
+    }
+  </style>
 </head>
 <body>
 
@@ -118,7 +171,6 @@
 
   authClient.auth.getSession().then(function ({ data }) {
     if (data && data.session) { unlock(); return; }
-
     let sub = null;
     sub = authClient.auth.onAuthStateChange(function (_event, session) {
       if (session) {
@@ -126,19 +178,16 @@
         if (sub && sub.data && sub.data.subscription) sub.data.subscription.unsubscribe();
       }
     });
-
     setTimeout(function () {
       authClient.auth.getSession().then(function ({ data }) {
         if (data && data.session) unlock(); else fail();
       }).catch(fail);
     }, 1500);
-
   }).catch(fail);
 })();
 </script>
 
-
-<!-- ===== NEW HEADER ===== -->
+<!-- ===== HEADER ===== -->
 <header class="header">
   <div class="header-top">
     <a href="index.html" class="logo">JB <span>STORE</span></a>
@@ -151,12 +200,13 @@
   <div class="search">
     <input type="text" id="searchInput" placeholder="Search products..." autocomplete="off">
     <button type="button" id="searchButton">🔍</button>
-    <div id="searchSuggestions" class="search-suggestions"></div>
   </div>
 </header>
 
+<!-- ✅ SUGGESTIONS PANEL — OUTSIDE .search so position:fixed works -->
+<div id="searchSuggestions"></div>
 
-<!-- ===== OVERLAY (for closing drawer) ===== -->
+<!-- ===== OVERLAY ===== -->
 <div class="menu-overlay" id="menuOverlay"></div>
 
 <!-- ===== SLIDE-IN MENU DRAWER ===== -->
@@ -165,45 +215,25 @@
     <span class="menu-logo">JB <span>STORE</span></span>
     <button class="menu-close" id="menuClose" aria-label="Close menu">✕</button>
   </div>
-
   <nav class="menu-nav">
-  <a href="index.html" class="menu-item active">
-    <span class="item-icon">🏠</span> Home
-  </a>
-
-  <!-- ✅ యాప్ లో లింక్ బ్లాక్ అవ్వకుండా javascript:void(0) -->
-  <a href="javascript:void(0)" class="menu-item" id="menuAccountLink">
-    <span class="item-icon" id="menuAccountIcon">👤</span>
-    <span id="menuAccountText">My Account</span>
-  </a>
-
-  <a href="orders.html" class="menu-item">
-    <span class="item-icon">📦</span> My Orders
-  </a>
-
-  <a href="favorites.html" class="menu-item">
-    <span class="item-icon">❤️</span> My Favorites
-    <span class="fav-badge" id="menuFavBadge" style="margin-left:auto;display:none;background:#ff1744;color:#fff;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 15px rgba(255,23,68,0.4);">0</span>
-  </a>
-
-  <a href="address.html" class="menu-item">
-    <span class="item-icon">📍</span> My Address
-  </a>
-
-  <a href="cart.html" class="menu-item">
-    <span class="item-icon">🛒</span> Cart
-    <span class="cart-badge" id="menuCartBadge" style="margin-left:auto;background:#D4AF37;color:#000;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 12px rgba(212,175,55,0.3);">0</span>
-  </a>
-
-  <a href="#" class="menu-item">
-    <span class="item-icon">ℹ️</span> About Us
-  </a>
-
-  <a href="#" class="menu-item">
-    <span class="item-icon">📞</span> Contact Us
-  </a>
+    <a href="index.html" class="menu-item active"><span class="item-icon">🏠</span> Home</a>
+    <a href="javascript:void(0)" class="menu-item" id="menuAccountLink">
+      <span class="item-icon" id="menuAccountIcon">👤</span>
+      <span id="menuAccountText">My Account</span>
+    </a>
+    <a href="orders.html" class="menu-item"><span class="item-icon">📦</span> My Orders</a>
+    <a href="favorites.html" class="menu-item">
+      <span class="item-icon">❤️</span> My Favorites
+      <span class="fav-badge" id="menuFavBadge" style="margin-left:auto;display:none;background:#ff1744;color:#fff;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 15px rgba(255,23,68,0.4);">0</span>
+    </a>
+    <a href="address.html" class="menu-item"><span class="item-icon">📍</span> My Address</a>
+    <a href="cart.html" class="menu-item">
+      <span class="item-icon">🛒</span> Cart
+      <span class="cart-badge" id="menuCartBadge" style="margin-left:auto;background:#D4AF37;color:#000;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 12px rgba(212,175,55,0.3);">0</span>
+    </a>
+    <a href="#" class="menu-item"><span class="item-icon">ℹ️</span> About Us</a>
+    <a href="#" class="menu-item"><span class="item-icon">📞</span> Contact Us</a>
   </nav>
-
   <div class="menu-footer">
     <div class="menu-version">✦ JB STORE <span>Premium Electronics</span> ✦</div>
   </div>
@@ -360,8 +390,7 @@
 <div class="bottom-bar">
   <div class="bottom-container">
     <a href="index.html" class="bottom-item active" id="bottomHome">
-      <span class="bottom-icon">🏠</span>
-      <span class="bottom-label">Home</span>
+      <span class="bottom-icon">🏠</span><span class="bottom-label">Home</span>
     </a>
     <a href="favorites.html" class="bottom-item" id="bottomFav">
       <span class="bottom-icon" style="color:#ff1744;">❤️</span>
@@ -369,8 +398,7 @@
       <span class="bottom-label" style="color:#ff1744;font-weight:700;">Favorites</span>
     </a>
     <a href="#" class="bottom-item call-item" id="bottomCall">
-      <span class="bottom-icon">📞</span>
-      <span class="bottom-label">Call</span>
+      <span class="bottom-icon">📞</span><span class="bottom-label">Call</span>
     </a>
     <a href="cart.html" class="bottom-item cart-item">
       <span class="bottom-icon">🛒</span>
@@ -406,33 +434,30 @@
     async function fetchAndUpdateProducts() {
       try {
         const { data, error } = await supabaseClient
-          .from('products')
-          .select('*')
-          .order('id', { ascending: true });
-
+          .from('products').select('*').order('id', { ascending: true });
         if (error) throw error;
 
         if (!data || data.length === 0) {
-          allProducts.splice(0, allProducts.length);
-          displayProducts();
-          console.warn('⚠️ No products found in Supabase.');
+          if (typeof allProducts !== 'undefined') {
+            allProducts.splice(0, allProducts.length);
+            if (typeof displayProducts === 'function') displayProducts();
+          }
           return;
         }
 
         if (typeof allProducts !== 'undefined' && Array.isArray(allProducts)) {
           allProducts.splice(0, allProducts.length, ...data);
-          console.log(`✅ Updated allProducts with ${data.length} products from Supabase.`);
+          console.log('✅ Updated allProducts:', data.length);
 
-          if (typeof displayProducts === 'function') {
-            displayProducts();
-          }
+          if (typeof displayProducts === 'function') displayProducts();
           if (typeof loadBrands === 'function' && typeof currentCategory !== 'undefined') {
             loadBrands(currentCategory);
           }
           if (typeof updateCartBadge === 'function') updateCartBadge();
           if (typeof updateFavBadge === 'function') updateFavBadge();
-        } else {
-          console.warn('⚠️ allProducts not found or not an array.');
+
+          // 🔁 Refresh suggestions if open
+          if (window.__refreshSuggestions) window.__refreshSuggestions();
         }
       } catch (err) {
         console.error('❌ Failed to fetch products:', err);
@@ -443,24 +468,14 @@
 
     const channel = supabaseClient
       .channel('products-changes')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'products' },
-        (payload) => {
-          console.log('📦 Product changed in Supabase:', payload);
-          fetchAndUpdateProducts();
-        }
-      )
-      .subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-          console.log('✅ Realtime subscription active.');
-        }
-      });
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, () => {
+        fetchAndUpdateProducts();
+      })
+      .subscribe();
 
     window.refreshProducts = fetchAndUpdateProducts;
   })();
 </script>
-
 
 <!-- ===== MY ACCOUNT / PROFILE MODAL ===== -->
 <div class="jb-profile-modal" id="jbProfileModal" aria-hidden="true">
@@ -469,42 +484,32 @@
       <h2 id="jbProfileTitle">My Account</h2>
       <button class="jb-profile-close" id="jbProfileClose" type="button" aria-label="Close">×</button>
     </div>
-
     <div class="jb-profile-avatar">👤</div>
-    <div class="jb-profile-provider" id="jbProfileProvider"
-         style="text-align:center;font-size:12px;color:#a4862a;margin-bottom:18px;"></div>
-
+    <div class="jb-profile-provider" id="jbProfileProvider" style="text-align:center;font-size:12px;color:#a4862a;margin-bottom:18px;"></div>
     <div class="jb-profile-field">
       <label for="jbProfileEmail">Email ID</label>
       <input id="jbProfileEmail" type="email" readonly>
     </div>
-
     <div class="jb-profile-field">
       <label for="jbProfileName">Full Name</label>
       <input id="jbProfileName" type="text" placeholder="Enter your name" autocomplete="name">
     </div>
-
     <div class="jb-profile-field">
       <label for="jbProfileMobile">Mobile Number</label>
-      <input id="jbProfileMobile" type="tel" inputmode="numeric" maxlength="10"
-             placeholder="Enter 10-digit mobile number" autocomplete="tel">
+      <input id="jbProfileMobile" type="tel" inputmode="numeric" maxlength="10" placeholder="Enter 10-digit mobile number" autocomplete="tel">
     </div>
-
     <div class="jb-profile-field">
       <label for="jbProfileAddress">Delivery Address</label>
       <textarea id="jbProfileAddress" placeholder="House / Flat, Street, Area, City, State, PIN" autocomplete="street-address"></textarea>
     </div>
-
     <button class="jb-profile-save" id="jbProfileSave" type="button">Save Profile</button>
     <button class="jb-profile-logout" id="jbProfileLogout" type="button">↪ Logout</button>
-
     <div class="jb-profile-status" id="jbProfileStatus"></div>
     <div class="jb-profile-note">These details can be used automatically when you place an order.</div>
   </div>
 </div>
 
-
-<!-- ===== ACCOUNT + PROFILE LOGIC (single script) ===== -->
+<!-- ===== ACCOUNT + PROFILE LOGIC ===== -->
 <script>
 (function () {
   const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
@@ -519,7 +524,7 @@
   const menuLink   = $('menuAccountLink');
   const menuText   = $('menuAccountText');
   const menuIcon   = $('menuAccountIcon');
-  
+
   const modal       = $('jbProfileModal');
   const closeBtn    = $('jbProfileClose');
   const saveBtn     = $('jbProfileSave');
@@ -587,10 +592,9 @@
     providerEl.textContent = providerText(user);
     statusEl.textContent = '';
 
-    // ✅ మోడల్ ఓపెన్ చేయడం
     modal.classList.add('show');
     modal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden'; // బ్యాక్‌గ్రౌండ్ స్క్రోల్ ఆపడానికి
+    document.body.style.overflow = 'hidden';
   }
 
   function closeProfile() {
@@ -601,25 +605,18 @@
 
   if (headerLink) {
     headerLink.addEventListener('click', function (e) {
-      e.preventDefault(); // ✅ యాప్ లో లింక్ ఓపెన్ అవ్వకుండా ఆపడం
-      if (!user) {
-        window.location.href = 'login.html';
-        return;
-      }
+      e.preventDefault();
+      if (!user) { window.location.href = 'login.html'; return; }
       openProfile();
     });
   }
 
   if (menuLink) {
     menuLink.addEventListener('click', function (e) {
-      e.preventDefault(); // ✅ యాప్ లో లింక్ ఓపెన్ అవ్వకుండా ఆపడం
-      if (!user) {
-        window.location.href = 'login.html';
-        return;
-      }
+      e.preventDefault();
+      if (!user) { window.location.href = 'login.html'; return; }
       closeDrawer();
-      // డ్రాయర్ మూసుకున్న తర్వాత మోడల్ ఓపెన్ చేయడానికి చిన్న డిలే
-      setTimeout(openProfile, 300); 
+      setTimeout(openProfile, 300);
     });
   }
 
@@ -669,13 +666,201 @@
     const { data } = await client.auth.getSession();
     const session = data ? data.session : null;
     user = session ? session.user : null;
-
     if (user) setLoggedInUI(); else setLoggedOutUI();
   }
 
   refresh();
   window.addEventListener('load', refresh);
   client.auth.onAuthStateChange(function () { setTimeout(refresh, 0); });
+})();
+</script>
+
+<!-- ===== ✅ SEARCH SUGGESTIONS LOGIC ===== -->
+<script>
+(function () {
+  'use strict';
+
+  var inputEl   = document.getElementById('searchInput');
+  var suggestEl = document.getElementById('searchSuggestions');
+  var searchBtn = document.getElementById('searchButton');
+  if (!inputEl || !suggestEl) return;
+
+  var CAT_NAMES = {
+    mobiles: 'Mobiles',
+    fridge:  'Refrigerators',
+    washing: 'Washing Machines',
+    ac:      'AC',
+    tv:      'TV'
+  };
+  var CAT_ALIASES = {
+    mobiles: ['mobiles','mobile','phone','smartphone','smartphones'],
+    fridge:  ['fridge','fridges','refrigerator','refrigerators'],
+    washing: ['washing','washer','washing machine','washing machines'],
+    ac:      ['ac','a/c','air conditioner','air conditioners'],
+    tv:      ['tv','tvs','television','televisions','smart tv','smart tvs']
+  };
+
+  /* Safe accessor for allProducts (loaded by script.js / Supabase) */
+  function getProducts() {
+    try {
+      if (typeof allProducts !== 'undefined' && Array.isArray(allProducts) && allProducts.length) {
+        return allProducts;
+      }
+    } catch (e) {}
+    return [];
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
+  }
+  function highlight(text, q) {
+    var safe = esc(text);
+    if (!q) return safe;
+    try {
+      var escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return safe.replace(new RegExp('(' + escaped + ')', 'ig'), '<strong>$1</strong>');
+    } catch (e) { return safe; }
+  }
+
+  function buildSuggestions(text) {
+    text = String(text || '').trim().toLowerCase();
+    if (!text) return [];
+
+    var all = getProducts();
+    var combos = {};
+
+    all.forEach(function (p) {
+      var b = String(p.brand || '').trim();
+      var c = String(p.category || '').trim().toLowerCase();
+      if (!b || !c) return;
+
+      var bLower = b.toLowerCase();
+      var cName  = CAT_NAMES[c] || c;
+      var cAlias = CAT_ALIASES[c] || [c];
+      var nameLower = String(p.name || '').toLowerCase();
+
+      var mBS = bLower.indexOf(text) === 0;
+      var mBC = bLower.indexOf(text) !== -1;
+      var mC  = cAlias.some(function (a) { return a.indexOf(text) !== -1; });
+      var mN  = nameLower.indexOf(text) !== -1;
+
+      if (!(mBC || mC || mN)) return;
+
+      var key = bLower + '|' + c;
+      if (!combos[key]) {
+        combos[key] = {
+          brand: b, category: c, categoryName: cName,
+          image: p.image || (Array.isArray(p.images) ? p.images[0] : '') || '',
+          productName: p.name, score: 0
+        };
+      }
+      var s = combos[key].score;
+      if (mBS) s += 100; else if (mBC) s += 60;
+      if (mC) s += 40;
+      if (mN) s += 20;
+      combos[key].score = s;
+    });
+
+    return Object.keys(combos).map(function (k) { return combos[k]; })
+      .sort(function (a, b) { return b.score - a.score || a.brand.localeCompare(b.brand); })
+      .slice(0, 12);
+  }
+
+  function positionPanel() {
+    var rect = inputEl.getBoundingClientRect();
+    var top = rect.bottom + 6;
+    var left = Math.max(8, rect.left - 4);
+    var width = Math.min(window.innerWidth - left - 8, rect.width + 8);
+    var maxH = Math.min(380, window.innerHeight - top - 20);
+    suggestEl.style.top = top + 'px';
+    suggestEl.style.left = left + 'px';
+    suggestEl.style.width = width + 'px';
+    suggestEl.style.maxHeight = maxH + 'px';
+  }
+
+  function hidePanel() {
+    suggestEl.classList.remove('show');
+    suggestEl.style.setProperty('display', 'none', 'important');
+  }
+
+  function showPanel() {
+    var text = inputEl.value.trim();
+    suggestEl.innerHTML = '';
+    if (!text) { hidePanel(); return; }
+
+    var results = buildSuggestions(text);
+    console.log('[index-search] query:', text, '| found:', results.length);
+
+    if (!results.length) {
+      suggestEl.innerHTML = '<div class="search-no-result">No products found for "' + esc(text) + '"</div>';
+    } else {
+      results.forEach(function (item) {
+        var row = document.createElement('div');
+        row.className = 'search-suggestion';
+        row.innerHTML =
+          '<img src="' + esc(item.image) + '" alt="" onerror="this.style.background=\'#f2efe9\'">' +
+          '<div class="suggestion-info">' +
+            '<div class="suggestion-name">' + highlight(item.brand, text) + ' ' + esc(item.categoryName) + '</div>' +
+            '<div class="suggestion-category">' + esc(item.productName || (item.brand + ' ' + item.categoryName)) + '</div>' +
+          '</div>' +
+          '<span class="suggestion-arrow">↗</span>';
+
+        row.addEventListener('click', function () {
+          window.location.href =
+            'search.html?brand=' + encodeURIComponent(item.brand) +
+            '&category=' + encodeURIComponent(item.category);
+        });
+        suggestEl.appendChild(row);
+      });
+    }
+
+    positionPanel();
+    suggestEl.style.setProperty('display', 'block', 'important');
+    suggestEl.classList.add('show');
+  }
+
+  /* Expose refresh for Supabase updates */
+  window.__refreshSuggestions = function () {
+    if (suggestEl.classList.contains('show') && inputEl.value.trim()) {
+      showPanel();
+    }
+  };
+
+  inputEl.addEventListener('input', showPanel);
+  inputEl.addEventListener('focus', function () {
+    if (inputEl.value.trim()) showPanel();
+  });
+  inputEl.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      var v = inputEl.value.trim();
+      if (v) window.location.href = 'search.html?q=' + encodeURIComponent(v);
+    }
+    if (e.key === 'Escape') hidePanel();
+  });
+
+  if (searchBtn) {
+    searchBtn.addEventListener('click', function () {
+      var v = inputEl.value.trim();
+      if (v) window.location.href = 'search.html?q=' + encodeURIComponent(v);
+    });
+  }
+
+  document.addEventListener('click', function (e) {
+    if (!inputEl.contains(e.target) && !suggestEl.contains(e.target)) {
+      hidePanel();
+    }
+  });
+
+  window.addEventListener('resize', function () {
+    if (suggestEl.classList.contains('show')) positionPanel();
+  });
+  window.addEventListener('scroll', function () {
+    if (suggestEl.classList.contains('show')) positionPanel();
+  }, true);
+
+  console.log('✅ [index-search] Suggestions ready.');
 })();
 </script>
 
