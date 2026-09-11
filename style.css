@@ -476,9 +476,9 @@
     .menu {
         background: #FFFFFF;
         border-bottom: 2px solid rgba(212, 175, 55, 0.15);
-        padding: 12px 5%;
+        padding: 12px 20px !important;
         display: flex;
-        justify-content: center;
+        justify-content: flex-start !important;
         align-items: center;
         gap: 6px;
         width: 100%;
