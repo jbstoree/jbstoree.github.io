@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>JB STORE</title>
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -28,21 +28,22 @@
 </script>
 
 <style>
-  /* ✅ APP FIX: యాప్ WebView లో మోడల్ సరిగ్గా ఓపెన్ అవ్వడానికి అవసరమైన CSS */
+  /* ✅ APP FIX: యాప్ WebView కోసం అత్యంత బలమైన మోడల్ CSS */
   .jb-profile-modal {
     position: fixed;
-    top: 0; right: 0; bottom: 0; left: 0; /* inset:0 కంటే ఇది యాప్ లో సేఫ్ */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     z-index: 2147483647;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
-    display: none;
+    background: rgba(0, 0, 0, 0.6);
+    display: none; /* డిఫాల్ట్‌గా దాచి ఉంచుతుంది */
     justify-content: center;
-    align-items: flex-end;
-    padding-bottom: env(safe-area-inset-bottom, 20px); /* యాప్ కింద నావిగేషన్ బార్ ఉన్నా మోడల్ పైకి వస్తుంది */
-    box-sizing: border-box;
+    align-items: flex-end; /* కింద నుండి పైకి వచ్చేలా */
   }
+  
   .jb-profile-modal.show {
-    display: flex;
+    display: flex; /* JS ద్వారా ఈ క్లాస్ యాడ్ అయినప్పుడు మాత్రమే కనిపిస్తుంది */
   }
   
   .jb-profile-card {
@@ -51,14 +52,16 @@
     background: #fff;
     color: #222;
     border-radius: 26px 26px 0 0;
-    padding: 24px 20px 60px 20px; /* కింద ఎక్కువ పాడింగ్ ఇచ్చాను, యాప్ బాటమ్ బార్ కవర్ చేయదు */
+    padding: 24px 20px;
     box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.22);
-    /* vh/dvh బదులుగా % వాడాను, ఇది యాప్ లో పర్ఫెక్ట్‌గా పనిచేస్తుంది */
-    max-height: 85%; 
-    min-height: 400px; /* కార్డ్ కనీసం 400px హైట్ ఉండేలా ఫోర్స్ చేస్తుంది */
+    /* యాప్ లో హైట్ సరిగ్గా లెక్కించడానికి % వాడటం మంచిది */
+    max-height: 90%;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* iOS యాప్ లో స్మూత్ స్క్రోల్ కోసం */
     border-top: 3px solid #d8ad19;
     box-sizing: border-box;
+    /* యాప్ కింద ఉండే నావిగేషన్ బార్ కవర్ చేయకుండా */
+    padding-bottom: calc(30px + env(safe-area-inset-bottom, 20px)); 
   }
 
   .jb-profile-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
@@ -85,11 +88,7 @@
   }
   .jb-profile-status{text-align:center;min-height:20px;margin-top:10px;font-size:13px;color:#777}
   .jb-profile-note{text-align:center;font-size:11px;color:#999;margin-top:9px}
-  @media(min-width:600px){
-    .jb-profile-modal{align-items:center}
-    .jb-profile-card{border-radius:24px;max-height:90vh;width:480px}
-  }
-
+  
   .jb-profile-field input[readonly]{background:#f4f2ec;color:#666;}
   .jb-profile-logout{
     width:100%;border:1px solid #e6c9c9;border-radius:14px;padding:13px;background:#fff;
@@ -141,18 +140,14 @@
 
 <!-- ===== NEW HEADER ===== -->
 <header class="header">
-  <!-- ✅ APP FIX: href="#" బదులుగా javascript:void(0) వాడటం వల్ల యాప్ లో లింక్ బ్లాక్ అవ్వదు -->
   <div class="header-top">
     <a href="index.html" class="logo">JB <span>STORE</span></a>
     <a href="javascript:void(0)" class="account-link" id="headerAccountLink" aria-label="Login or Account">👤</a>
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
-      <span></span>
-      <span></span>
-      <span></span>
+      <span></span><span></span><span></span>
     </button>
   </div>
 
-  <!-- search bar (full width, below logo) -->
   <div class="search">
     <input type="text" id="searchInput" placeholder="Search products..." autocomplete="off">
     <button type="button" id="searchButton">🔍</button>
@@ -176,7 +171,7 @@
     <span class="item-icon">🏠</span> Home
   </a>
 
-  <!-- ✅ APP FIX: href="#" బదులుగా javascript:void(0) -->
+  <!-- ✅ యాప్ లో లింక్ బ్లాక్ అవ్వకుండా javascript:void(0) -->
   <a href="javascript:void(0)" class="menu-item" id="menuAccountLink">
     <span class="item-icon" id="menuAccountIcon">👤</span>
     <span id="menuAccountText">My Account</span>
@@ -520,13 +515,11 @@
   const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
   const $ = function (id) { return document.getElementById(id); };
 
-  /* header */
   const headerLink = $('headerAccountLink');
-  /* drawer menu */
   const menuLink   = $('menuAccountLink');
   const menuText   = $('menuAccountText');
   const menuIcon   = $('menuAccountIcon');
-  /* modal */
+  
   const modal       = $('jbProfileModal');
   const closeBtn    = $('jbProfileClose');
   const saveBtn     = $('jbProfileSave');
@@ -539,8 +532,6 @@
   const statusEl    = $('jbProfileStatus');
 
   let user = null;
-
-  /* ---------- helpers ---------- */
 
   function friendlyName(u) {
     const meta = u.user_metadata || {};
@@ -566,8 +557,6 @@
     if (btn) btn.click();
   }
 
-  /* ---------- UI state ---------- */
-
   function setLoggedOutUI() {
     if (menuLink) { menuLink.setAttribute('href', 'login.html'); menuLink.classList.remove('account-active'); }
     if (menuText) menuText.textContent = 'Login / Account';
@@ -581,8 +570,6 @@
     if (menuIcon) menuIcon.textContent = '👤';
     if (headerLink) { headerLink.setAttribute('href', 'javascript:void(0)'); headerLink.setAttribute('aria-label', 'My Account'); }
   }
-
-  /* ---------- modal ---------- */
 
   async function openProfile() {
     try {
@@ -600,9 +587,10 @@
     providerEl.textContent = providerText(user);
     statusEl.textContent = '';
 
+    // ✅ మోడల్ ఓపెన్ చేయడం
     modal.classList.add('show');
     modal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden'; // బ్యాక్‌గ్రౌండ్ స్క్రోల్ ఆపడానికి
   }
 
   function closeProfile() {
@@ -610,8 +598,6 @@
     modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
   }
-
-  /* ---------- clicks ---------- */
 
   if (headerLink) {
     headerLink.addEventListener('click', function (e) {
@@ -632,15 +618,14 @@
         return;
       }
       closeDrawer();
-      openProfile();
+      // డ్రాయర్ మూసుకున్న తర్వాత మోడల్ ఓపెన్ చేయడానికి చిన్న డిలే
+      setTimeout(openProfile, 300); 
     });
   }
 
   if (closeBtn) closeBtn.addEventListener('click', closeProfile);
   if (modal) modal.addEventListener('click', function (e) { if (e.target === modal) closeProfile(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeProfile(); });
-
-  /* ---------- save ---------- */
 
   if (saveBtn) {
     saveBtn.addEventListener('click', async function () {
@@ -658,13 +643,7 @@
       statusEl.textContent = '';
 
       const { data, error } = await client.auth.updateUser({
-        data: {
-          full_name: n,
-          name: n,
-          mobile: m,
-          address: a,
-          profile_completed: true
-        }
+        data: { full_name: n, name: n, mobile: m, address: a, profile_completed: true }
       });
 
       saveBtn.disabled = false;
@@ -678,8 +657,6 @@
     });
   }
 
-  /* ---------- logout ---------- */
-
   if (logoutBtn) {
     logoutBtn.addEventListener('click', async function () {
       await client.auth.signOut();
@@ -687,8 +664,6 @@
       window.location.href = 'login.html';
     });
   }
-
-  /* ---------- init ---------- */
 
   async function refresh() {
     const { data } = await client.auth.getSession();
