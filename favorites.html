@@ -217,6 +217,7 @@
 
     /* ==========================================
        HEADER (matches index.html + cart.html)
+       — Search bar REMOVED
        ========================================== */
     .header {
       position: sticky;
@@ -230,7 +231,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      padding: 14px 18px 8px;
+      padding: 14px 18px;
     }
     .header-top .logo {
       font-family: "Playfair Display", Georgia, serif;
@@ -281,37 +282,6 @@
       background: rgba(212,175,55,.08);
       font-size: 19px;
       flex-shrink: 0;
-    }
-
-    .header .search {
-      display: flex;
-      align-items: center;
-      background: #f7f5ef;
-      border: 1px solid #eee6d2;
-      border-radius: 12px;
-      margin: 0 18px 14px;
-      padding: 0 4px 0 14px;
-      position: relative;
-    }
-    .header .search input {
-      flex: 1;
-      border: 0;
-      outline: 0;
-      background: transparent;
-      padding: 12px 8px;
-      font-size: 14px;
-      font-family: inherit;
-      color: #111;
-    }
-    .header .search button {
-      background: linear-gradient(135deg,#f0c419,#d4af37);
-      border: 0;
-      border-radius: 9px;
-      width: 38px;
-      height: 38px;
-      font-size: 16px;
-      cursor: pointer;
-      color: #111;
     }
 
     /* ============ MENU DRAWER ============ */
@@ -511,7 +481,7 @@
 </head>
 <body>
 
-<!-- ===== HEADER (same as index.html) ===== -->
+<!-- ===== HEADER (search bar REMOVED) ===== -->
 <header class="header">
   <div class="header-top">
     <a href="index.html" class="logo">JB <span>STORE</span></a>
@@ -521,11 +491,6 @@
       <span></span>
       <span></span>
     </button>
-  </div>
-  <div class="search">
-    <input type="text" id="searchInput" placeholder="Search products..." autocomplete="off">
-    <button type="button" id="searchButton">🔍</button>
-    <div id="searchSuggestions" class="search-suggestions"></div>
   </div>
 </header>
 
