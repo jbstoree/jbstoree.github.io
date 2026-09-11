@@ -10,7 +10,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    /* ============ SEARCH PAGE ============ */
     .search-page {
       width: 100%;
       box-sizing: border-box;
@@ -43,7 +42,6 @@
       font-weight: 700;
       margin: 0;
       letter-spacing: .3px;
-      font-family: "Poppins", sans-serif;
     }
     #resultCount {
       color: #a3801a;
@@ -56,7 +54,6 @@
       white-space: nowrap;
     }
 
-    /* ============ PRODUCT GRID ============ */
     .search-layout { display: block; width: 100%; }
     .search-results { width: 100%; }
     .search-product-grid {
@@ -66,7 +63,6 @@
       gap: 20px;
     }
 
-    /* ============ SEARCH PRODUCT CARD ============ */
     .search-product-card {
       background: #fff;
       border-radius: 16px;
@@ -209,7 +205,6 @@
       box-shadow: 0 8px 25px rgba(212, 175, 55, 0.35);
     }
 
-    /* ============ EMPTY ============ */
     .search-empty {
       grid-column: 1 / -1;
       text-align: center;
@@ -218,21 +213,9 @@
       border-radius: 20px;
       border: 1px solid rgba(212, 175, 55, 0.15);
     }
-    .search-empty div {
-      font-size: 60px;
-      margin-bottom: 14px;
-    }
-    .search-empty h2 {
-      color: #111;
-      font-size: 22px;
-      font-weight: 700;
-      margin: 0 0 8px;
-    }
-    .search-empty p {
-      color: #777;
-      font-size: 14px;
-      margin: 0;
-    }
+    .search-empty div { font-size: 60px; margin-bottom: 14px; }
+    .search-empty h2 { color: #111; font-size: 22px; font-weight: 700; margin: 0 0 8px; }
+    .search-empty p { color: #777; font-size: 14px; margin: 0; }
 
     /* ============ PROFILE MODAL ============ */
     .jb-profile-modal {
@@ -272,18 +255,13 @@
     .jb-profile-logout{width:100%;border:1px solid #e6c9c9;border-radius:14px;padding:13px;background:#fff;color:#b00020;font-size:15px;font-weight:700;cursor:pointer;margin-top:10px;font-family:inherit;}
     .jb-profile-logout:hover{background:#fff5f5;}
 
-    /* ============ MOBILE ============ */
     @media (max-width: 768px) {
       .search-page { padding: 0 12px 90px; margin: 12px auto; }
       .search-heading { margin-bottom: 16px; padding-bottom: 12px; }
       .search-heading h1 { font-size: 18px; }
       .search-small { font-size: 10px; }
       #resultCount { font-size: 11px; padding: 4px 12px; }
-
-      .search-product-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-      }
+      .search-product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
       .search-product-image { height: 140px; padding: 8px; }
       .search-product-info { padding: 10px; }
       .search-product-info h3 { font-size: 12.5px; min-height: 32px; }
@@ -331,23 +309,17 @@
   </div>
 
   <nav class="menu-nav">
-    <a href="index.html" class="menu-item">
-      <span class="item-icon">🏠</span> Home
-    </a>
+    <a href="index.html" class="menu-item"><span class="item-icon">🏠</span> Home</a>
     <a href="javascript:void(0)" class="menu-item" id="menuAccountLink">
       <span class="item-icon" id="menuAccountIcon">👤</span>
       <span id="menuAccountText">My Account</span>
     </a>
-    <a href="orders.html" class="menu-item">
-      <span class="item-icon">📦</span> My Orders
-    </a>
+    <a href="orders.html" class="menu-item"><span class="item-icon">📦</span> My Orders</a>
     <a href="favorites.html" class="menu-item">
       <span class="item-icon">❤️</span> My Favorites
       <span class="fav-badge" id="menuFavBadge" style="margin-left:auto;display:none;background:#ff1744;color:#fff;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 15px rgba(255,23,68,0.4);">0</span>
     </a>
-    <a href="address.html" class="menu-item">
-      <span class="item-icon">📍</span> My Address
-    </a>
+    <a href="address.html" class="menu-item"><span class="item-icon">📍</span> My Address</a>
     <a href="cart.html" class="menu-item">
       <span class="item-icon">🛒</span> Cart
       <span class="cart-badge" id="menuCartBadge" style="margin-left:auto;background:#D4AF37;color:#000;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 12px rgba(212,175,55,0.3);">0</span>
@@ -419,7 +391,7 @@
   </div>
 </div>
 
-<!-- ===== SCRIPT LOADS ===== -->
+<!-- ===== EXISTING SCRIPTS ===== -->
 <script src="config.js"></script>
 <script src="mobiles.js"></script>
 <script src="refrigerator.js"></script>
@@ -429,311 +401,313 @@
 <script src="script.js"></script>
 <script src="favorites.js"></script>
 
-<!-- ===== SUPABASE PRODUCT SYNC (like index.html) ===== -->
+<!-- ===== SEARCH PAGE MAIN LOGIC (SAFE VERSION) ===== -->
 <script>
 (function () {
-  const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
-  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
-  if (typeof supabase === 'undefined') return;
-  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+  'use strict';
 
-  async function fetchAndUpdateProducts() {
+  /* ✅ Step 1: Collect local products (script.js nunchi conflict rakunda) */
+  var localProducts = [];
+  function collect(name) {
     try {
-      const { data, error } = await supabaseClient
-        .from('products').select('*').order('id', { ascending: true });
-      if (error) throw error;
-      if (!data || !data.length) return;
+      var arr = window[name];
+      if (Array.isArray(arr)) { localProducts = localProducts.concat(arr); }
+    } catch(e) {}
+  }
+  collect('mobileProducts');
+  collect('refrigeratorProducts');
+  collect('washingProducts');
+  collect('acProducts');
+  collect('tvProducts');
 
-      // global allProducts ni replace cheyyi
-      if (typeof window.__setAllProducts === 'function') {
-        window.__setAllProducts(data);
-      }
-    } catch (err) {
-      console.error('❌ Failed to fetch products:', err);
+  console.log('[search] Local products:', localProducts.length);
+
+  /* ✅ Step 2: Global store for this page — do NOT name it `allProducts` */
+  window.__searchProducts = localProducts.slice();
+
+  /* ✅ Step 3: Params */
+  var params = new URLSearchParams(window.location.search);
+  var term  = (params.get('q') || '').trim();
+  var brand = (params.get('brand') || '').trim();
+  var cat   = (params.get('category') || '').trim();
+
+  var inputEl   = document.getElementById('searchInput');
+  var gridEl    = document.getElementById('searchProductGrid');
+  var titleEl   = document.getElementById('searchTitle');
+  var countEl   = document.getElementById('resultCount');
+  var suggestEl = document.getElementById('searchSuggestions');
+
+  var catNames = {
+    mobiles: 'Mobiles',
+    fridge:  'Refrigerators',
+    washing: 'Washing Machines',
+    ac:      'AC',
+    tv:      'TV'
+  };
+
+  /* Set input + title */
+  if (brand && cat) {
+    var cName = catNames[cat] || cat;
+    if (inputEl) inputEl.value = brand + ' ' + cName;
+    if (titleEl) titleEl.textContent = brand + ' ' + cName;
+  } else if (term) {
+    if (inputEl) inputEl.value = term;
+    if (titleEl) titleEl.textContent = '"' + term + '"';
+  } else {
+    if (inputEl) inputEl.value = '';
+    if (titleEl) titleEl.textContent = 'All Products';
+  }
+
+  /* Filter */
+  function filterProducts() {
+    var list = window.__searchProducts || [];
+
+    if (brand && cat) {
+      var bl = brand.toLowerCase(), cl = cat.toLowerCase();
+      return list.filter(function (p) {
+        return String(p.brand || '').trim().toLowerCase() === bl &&
+               String(p.category || '').trim().toLowerCase() === cl;
+      });
     }
-  }
-  fetchAndUpdateProducts();
 
-  // Realtime
-  supabaseClient.channel('search-products')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, () => {
-      fetchAndUpdateProducts();
-    })
-    .subscribe();
-})();
-</script>
+    if (!term) return list;
 
-<!-- ===== SEARCH PAGE MAIN LOGIC ===== -->
-<script>
-// ==========================================
-// LOCAL PRODUCTS (initial fallback)
-// ==========================================
-let allProducts = [];
-try {
-  if (typeof mobileProducts !== 'undefined') allProducts.push(...mobileProducts);
-  if (typeof refrigeratorProducts !== 'undefined') allProducts.push(...refrigeratorProducts);
-  if (typeof washingProducts !== 'undefined') allProducts.push(...washingProducts);
-  if (typeof acProducts !== 'undefined') allProducts.push(...acProducts);
-  if (typeof tvProducts !== 'undefined') allProducts.push(...tvProducts);
-} catch(e) {
-  console.warn('Local products not loaded', e);
-}
-
-// Expose setter so Supabase can replace products
-window.__setAllProducts = function(data) {
-  allProducts = Array.isArray(data) ? data : [];
-  console.log('✅ Products set from Supabase:', allProducts.length);
-  displaySearchPageProducts(getSearchPageProducts());
-};
-
-console.log('Total products loaded (initial):', allProducts.length);
-
-// ==========================================
-// SEARCH PARAMS
-// ==========================================
-const searchPageParams = new URLSearchParams(window.location.search);
-let searchPageTerm = (searchPageParams.get("q") || "").trim();
-let searchPageBrand = (searchPageParams.get("brand") || "").trim();
-let searchPageCategory = (searchPageParams.get("category") || "").trim();
-
-const searchPageInput = document.getElementById("searchInput");
-const searchPageGrid = document.getElementById("searchProductGrid");
-const searchPageTitle = document.getElementById("searchTitle");
-const searchPageCount = document.getElementById("resultCount");
-
-const searchPageCategoryNames = {
-  mobiles: "Mobiles",
-  fridge: "Refrigerators",
-  washing: "Washing Machines",
-  ac: "AC",
-  tv: "TV"
-};
-
-// ==========================================
-// SET SEARCH BOX + TITLE
-// ==========================================
-if (searchPageBrand && searchPageCategory) {
-  const categoryName = searchPageCategoryNames[searchPageCategory] || searchPageCategory;
-  searchPageInput.value = `${searchPageBrand} ${categoryName}`;
-  searchPageTitle.innerText = `${searchPageBrand} ${categoryName}`;
-} else if (searchPageTerm) {
-  searchPageInput.value = searchPageTerm;
-  searchPageTitle.innerText = `"${searchPageTerm}"`;
-} else {
-  searchPageInput.value = "";
-  searchPageTitle.innerText = "All Products";
-}
-
-// ==========================================
-// GET SEARCH RESULTS
-// ==========================================
-function getSearchPageProducts() {
-  if (searchPageBrand && searchPageCategory) {
-    return allProducts.filter(product => {
-      const pb = String(product.brand || "").trim().toLowerCase();
-      const pc = String(product.category || "").trim().toLowerCase();
-      return pb === searchPageBrand.toLowerCase() && pc === searchPageCategory.toLowerCase();
+    var t = term.toLowerCase();
+    return list.filter(function (p) {
+      return String(p.name      || '').toLowerCase().indexOf(t) !== -1 ||
+             String(p.brand     || '').toLowerCase().indexOf(t) !== -1 ||
+             String(p.id        || '').toLowerCase().indexOf(t) !== -1 ||
+             String(p.category  || '').toLowerCase().indexOf(t) !== -1 ||
+             String(p.condition || '').toLowerCase().indexOf(t) !== -1;
     });
   }
 
-  const text = searchPageTerm.toLowerCase();
-  if (!text) return allProducts;
+  /* View product */
+  window.__viewProduct = function (id) {
+    try { localStorage.setItem('selectedProduct', JSON.stringify({ id: id })); } catch(e) {}
+    window.location.href = 'product.html?id=' + encodeURIComponent(id);
+  };
 
-  return allProducts.filter(product => {
-    return (
-      String(product.name || "").toLowerCase().includes(text) ||
-      String(product.brand || "").toLowerCase().includes(text) ||
-      String(product.id || "").toLowerCase().includes(text) ||
-      String(product.category || "").toLowerCase().includes(text) ||
-      String(product.condition || "").toLowerCase().includes(text)
-    );
-  });
-}
-
-// ==========================================
-// FIRST VARIANT
-// ==========================================
-function getFirstVariant(product) {
-  if (product.variants && product.variants.length > 0) return product.variants[0].label;
-  return null;
-}
-
-// ==========================================
-// DISPLAY PRODUCTS
-// ==========================================
-function displaySearchPageProducts(products) {
-  searchPageGrid.innerHTML = "";
-  searchPageCount.innerText = `${products.length} Products`;
-
-  if (!products.length) {
-    searchPageGrid.innerHTML = `
-      <div class="search-empty">
-        <div>🔍</div>
-        <h2>No products found</h2>
-        <p>Try another product or brand.</p>
-      </div>
-    `;
-    return;
-  }
-
-  products.forEach(product => {
-    const card = document.createElement("div");
-    card.className = "search-product-card";
-    card.addEventListener("click", e => {
-      if (e.target.closest("button")) return;
-      viewProduct(product.id);
+  /* Escape HTML */
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
     });
-
-    const image = product.image || product.images?.[0] || "images/placeholder.png";
-    const firstVariant = getFirstVariant(product);
-    const variantHTML = firstVariant ? `<div class="search-variant-tag">📱 ${firstVariant}</div>` : "";
-
-    card.innerHTML = `
-      <div class="search-product-image">
-        <span class="search-offer">${product.discount || ""}</span>
-        <img src="${image}" alt="${product.name || 'Product'}" onerror="this.onerror=null;this.style.opacity=.3">
-      </div>
-      <div class="search-product-info">
-        <p class="search-brand">${product.brand || ""}</p>
-        <h3>${product.name || ""}</h3>
-        ${variantHTML}
-        <div class="search-rating">⭐ ${product.rating || "4.5"} <span>(${product.reviews || 0})</span></div>
-        <p class="search-condition">${product.condition || "New"}</p>
-        <div class="search-price">
-          <strong>₹${Number(product.price || 0).toLocaleString("en-IN")}</strong>
-          ${product.oldPrice ? `<del>₹${Number(product.oldPrice).toLocaleString("en-IN")}</del>` : ""}
-        </div>
-        <div class="deal-actions">
-          <button type="button" class="view-details-btn" onclick="event.stopPropagation();viewProduct('${product.id}')">
-            🔍 View Details
-          </button>
-        </div>
-      </div>
-    `;
-    searchPageGrid.appendChild(card);
-  });
-}
-
-// ==========================================
-// VIEW PRODUCT
-// ==========================================
-function viewProduct(id) {
-  localStorage.setItem('selectedProduct', JSON.stringify({ id: id }));
-  window.location.href = `product.html?id=${encodeURIComponent(id)}`;
-}
-
-// ==========================================
-// SEARCH SUGGESTIONS
-// ==========================================
-const searchInput = document.getElementById('searchInput');
-const searchSuggestions = document.getElementById('searchSuggestions');
-
-function createSearchSuggestions() {
-  if (!searchInput || !searchSuggestions) return;
-  const text = searchInput.value.trim().toLowerCase();
-  searchSuggestions.innerHTML = "";
-
-  if (text === "") {
-    searchSuggestions.classList.remove("show");
-    return;
   }
 
-  const combinations = new Map();
-  allProducts.forEach(product => {
-    const brand = String(product.brand || "").trim();
-    const category = String(product.category || "").trim();
-    if (!brand || !category) return;
+  /* Render */
+  function render() {
+    if (!gridEl) return;
+    var products = filterProducts();
+    gridEl.innerHTML = '';
+    if (countEl) countEl.textContent = products.length + ' Products';
 
-    const brandLower = brand.toLowerCase();
-    const categoryLower = category.toLowerCase();
+    if (!products.length) {
+      gridEl.innerHTML =
+        '<div class="search-empty">' +
+          '<div>🔍</div>' +
+          '<h2>No products found</h2>' +
+          '<p>Try another product or brand.</p>' +
+        '</div>';
+      return;
+    }
 
-    if (brandLower.includes(text) || categoryLower.includes(text) || String(product.name||"").toLowerCase().includes(text)) {
-      const key = `${brandLower}|${categoryLower}`;
-      if (!combinations.has(key)) {
-        combinations.set(key, {
-          brand: brand,
-          category: category,
-          image: product.image || product.images?.[0] || '',
-          productName: product.name,
-          productId: product.id
+    products.forEach(function (product) {
+      var card = document.createElement('div');
+      card.className = 'search-product-card';
+
+      var image = product.image ||
+                  (Array.isArray(product.images) && product.images[0]) ||
+                  'images/placeholder.png';
+
+      var firstVariant = (Array.isArray(product.variants) && product.variants.length)
+                          ? product.variants[0].label : null;
+      var variantHTML = firstVariant
+        ? '<div class="search-variant-tag">📱 ' + esc(firstVariant) + '</div>'
+        : '';
+
+      card.innerHTML =
+        '<div class="search-product-image">' +
+          '<span class="search-offer">' + esc(product.discount || '') + '</span>' +
+          '<img src="' + esc(image) + '" alt="' + esc(product.name || '') + '" ' +
+               'onerror="this.onerror=null;this.style.opacity=0.3">' +
+        '</div>' +
+        '<div class="search-product-info">' +
+          '<p class="search-brand">' + esc(product.brand || '') + '</p>' +
+          '<h3>' + esc(product.name || '') + '</h3>' +
+          variantHTML +
+          '<div class="search-rating">⭐ ' + esc(product.rating || '4.5') +
+            ' <span>(' + esc(product.reviews || 0) + ')</span></div>' +
+          '<p class="search-condition">' + esc(product.condition || 'New') + '</p>' +
+          '<div class="search-price">' +
+            '<strong>₹' + Number(product.price || 0).toLocaleString('en-IN') + '</strong>' +
+            (product.oldPrice
+              ? '<del>₹' + Number(product.oldPrice).toLocaleString('en-IN') + '</del>'
+              : '') +
+          '</div>' +
+          '<div class="deal-actions">' +
+            '<button type="button" class="view-details-btn">🔍 View Details</button>' +
+          '</div>' +
+        '</div>';
+
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('button')) return;
+        window.__viewProduct(product.id);
+      });
+
+      var btn = card.querySelector('.view-details-btn');
+      if (btn) {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          window.__viewProduct(product.id);
         });
       }
-    }
-  });
 
-  const suggestions = Array.from(combinations.values());
-  suggestions.sort((a, b) => {
-    const aStarts = a.brand.toLowerCase().startsWith(text);
-    const bStarts = b.brand.toLowerCase().startsWith(text);
-    if (aStarts && !bStarts) return -1;
-    if (!aStarts && bStarts) return 1;
-    return a.brand.localeCompare(b.brand);
-  });
-
-  const finalResults = suggestions.slice(0, 10);
-
-  if (finalResults.length === 0) {
-    searchSuggestions.innerHTML = `<div class="search-no-result">No products found</div>`;
-    searchSuggestions.classList.add("show");
-    return;
+      gridEl.appendChild(card);
+    });
   }
 
-  finalResults.forEach(item => {
-    const row = document.createElement("div");
-    row.className = "search-suggestion";
-    const displayCategory = searchPageCategoryNames[item.category] || item.category;
+  /* Expose for Supabase */
+  window.__renderSearch = render;
+  window.__setAllProducts = function (data) {
+    if (Array.isArray(data) && data.length) {
+      window.__searchProducts = data;
+      console.log('[search] Supabase products set:', data.length);
+      render();
+    }
+  };
 
-    row.innerHTML = `
-      <img src="${item.image}" alt="">
-      <div class="suggestion-info">
-        <div class="suggestion-name">
-          ${highlightSearch(item.brand, text)} ${displayCategory}
-        </div>
-        <div class="suggestion-category">${item.productName || item.brand + ' ' + displayCategory}</div>
-      </div>
-      <span class="suggestion-arrow">↗</span>
-    `;
+  /* Initial render with local products */
+  render();
 
-    row.addEventListener("click", () => {
-      window.location.href = "search.html?brand=" + encodeURIComponent(item.brand) + "&category=" + encodeURIComponent(item.category);
+  /* ========== SUPABASE FETCH (background, no blocking) ========== */
+  try {
+    if (typeof supabase !== 'undefined') {
+      var SUPABASE_URL  = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
+      var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
+      var sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+      sb.from('products').select('*').order('id', { ascending: true })
+        .then(function (res) {
+          if (res.error) { console.warn('[search] fetch error:', res.error.message); return; }
+          if (res.data && res.data.length) {
+            window.__setAllProducts(res.data);
+          }
+        })
+        .catch(function (e) { console.warn('[search] fetch failed:', e); });
+
+      // Realtime
+      sb.channel('search-products-rt')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, function () {
+          sb.from('products').select('*').order('id', { ascending: true })
+            .then(function (res) {
+              if (res.data && res.data.length) window.__setAllProducts(res.data);
+            });
+        })
+        .subscribe();
+    }
+  } catch (e) { console.warn('[search] Supabase init error:', e); }
+
+  /* ========== SUGGESTIONS ========== */
+  function highlight(text, q) {
+    var safe = esc(text);
+    if (!q) return safe;
+    var escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return safe.replace(new RegExp('(' + escaped + ')', 'ig'), '<strong>$1</strong>');
+  }
+
+  function showSuggestions() {
+    if (!inputEl || !suggestEl) return;
+    var text = inputEl.value.trim().toLowerCase();
+    suggestEl.innerHTML = '';
+
+    if (!text) { suggestEl.classList.remove('show'); return; }
+
+    var all = window.__searchProducts || [];
+    var map = {};
+    all.forEach(function (p) {
+      var b = String(p.brand || '').trim();
+      var c = String(p.category || '').trim();
+      if (!b || !c) return;
+      if (b.toLowerCase().indexOf(text) !== -1 ||
+          c.toLowerCase().indexOf(text) !== -1 ||
+          String(p.name || '').toLowerCase().indexOf(text) !== -1) {
+        var key = b.toLowerCase() + '|' + c.toLowerCase();
+        if (!map[key]) {
+          map[key] = {
+            brand: b, category: c,
+            image: p.image || (p.images && p.images[0]) || '',
+            name: p.name
+          };
+        }
+      }
     });
 
-    searchSuggestions.appendChild(row);
-  });
+    var arr = Object.keys(map).map(function (k) { return map[k]; });
+    arr.sort(function (a, b) {
+      var as = a.brand.toLowerCase().indexOf(text) === 0 ? 0 : 1;
+      var bs = b.brand.toLowerCase().indexOf(text) === 0 ? 0 : 1;
+      return as - bs || a.brand.localeCompare(b.brand);
+    });
+    arr = arr.slice(0, 10);
 
-  searchSuggestions.classList.add("show");
-}
+    if (!arr.length) {
+      suggestEl.innerHTML = '<div class="search-no-result">No products found</div>';
+      suggestEl.classList.add('show');
+      return;
+    }
 
-function highlightSearch(text, search) {
-  const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return text.replace(new RegExp(`(${escaped})`, "ig"), "<strong>$1</strong>");
-}
+    arr.forEach(function (item) {
+      var row = document.createElement('div');
+      row.className = 'search-suggestion';
+      var cName = catNames[item.category] || item.category;
+      row.innerHTML =
+        '<img src="' + esc(item.image) + '" alt="" ' +
+             'onerror="this.style.background=\'#f2efe9\'">' +
+        '<div class="suggestion-info">' +
+          '<div class="suggestion-name">' + highlight(item.brand, text) + ' ' + esc(cName) + '</div>' +
+          '<div class="suggestion-category">' + esc(item.name || '') + '</div>' +
+        '</div>' +
+        '<span class="suggestion-arrow">↗</span>';
 
-if (searchInput) {
-  searchInput.addEventListener("input", createSearchSuggestions);
-  searchInput.addEventListener("keydown", event => {
-    if (event.key === "Enter") {
-      const value = searchInput.value.trim();
-      if (value) window.location.href = "search.html?q=" + encodeURIComponent(value);
+      row.addEventListener('click', function () {
+        window.location.href =
+          'search.html?brand=' + encodeURIComponent(item.brand) +
+          '&category=' + encodeURIComponent(item.category);
+      });
+      suggestEl.appendChild(row);
+    });
+
+    suggestEl.classList.add('show');
+  }
+
+  if (inputEl) {
+    inputEl.addEventListener('input', showSuggestions);
+    inputEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        var v = inputEl.value.trim();
+        if (v) window.location.href = 'search.html?q=' + encodeURIComponent(v);
+      }
+    });
+  }
+
+  var searchBtn = document.getElementById('searchButton');
+  if (searchBtn) {
+    searchBtn.addEventListener('click', function () {
+      var v = inputEl ? inputEl.value.trim() : '';
+      if (v) window.location.href = 'search.html?q=' + encodeURIComponent(v);
+    });
+  }
+
+  document.addEventListener('click', function (e) {
+    if (inputEl && suggestEl &&
+        !inputEl.contains(e.target) && !suggestEl.contains(e.target)) {
+      suggestEl.classList.remove('show');
     }
   });
-}
 
-document.getElementById("searchButton")?.addEventListener("click", () => {
-  const value = searchInput.value.trim();
-  if (value) window.location.href = "search.html?q=" + encodeURIComponent(value);
-});
-
-document.addEventListener("click", event => {
-  if (searchInput && searchSuggestions && !searchInput.contains(event.target) && !searchSuggestions.contains(event.target)) {
-    searchSuggestions.classList.remove("show");
-  }
-});
-
-// ==========================================
-// INITIAL RENDER
-// ==========================================
-displaySearchPageProducts(getSearchPageProducts());
+  console.log('[search] ready. Products:', (window.__searchProducts || []).length);
+})();
 </script>
 
 <!-- ===== MENU DRAWER + ACCOUNT + PROFILE LOGIC ===== -->
