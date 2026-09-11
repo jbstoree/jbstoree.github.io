@@ -17,7 +17,7 @@
       min-height: 60vh;
     }
 
-    /* ——— HEADER (matches index.html) ——— */
+    /* ——— HEADER (search bar REMOVED) ——— */
     .header {
       position: sticky;
       top: 0;
@@ -30,7 +30,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      padding: 14px 18px 8px;
+      padding: 14px 18px;
     }
     .logo {
       font-family: "Playfair Display", Georgia, serif;
@@ -81,37 +81,6 @@
       background: rgba(212,175,55,.08);
       font-size: 19px;
       flex-shrink: 0;
-    }
-
-    .header .search {
-      display: flex;
-      align-items: center;
-      background: #f7f5ef;
-      border: 1px solid #eee6d2;
-      border-radius: 12px;
-      margin: 0 18px 14px;
-      padding: 0 4px 0 14px;
-      position: relative;
-    }
-    .header .search input {
-      flex: 1;
-      border: 0;
-      outline: 0;
-      background: transparent;
-      padding: 12px 8px;
-      font-size: 14px;
-      font-family: inherit;
-      color: #111;
-    }
-    .header .search button {
-      background: linear-gradient(135deg,#f0c419,#d4af37);
-      border: 0;
-      border-radius: 9px;
-      width: 38px;
-      height: 38px;
-      font-size: 16px;
-      cursor: pointer;
-      color: #111;
     }
 
     /* ============ MENU DRAWER ============ */
@@ -202,19 +171,14 @@
       font-family: 'Poppins', Arial, sans-serif;
       border-left: 3px solid transparent;
     }
-    .menu-item:hover {
-      background: #faf8f2;
-      color: #111;
-    }
+    .menu-item:hover { background: #faf8f2; color: #111; }
     .menu-item.active {
       background: #fdf7e0;
       color: #a3801a;
       font-weight: 700;
       border-left: 3px solid #D4AF37;
     }
-    .menu-item.account-active {
-      border-left: 3px solid #D4AF37;
-    }
+    .menu-item.account-active { border-left: 3px solid #D4AF37; }
     .item-icon {
       font-size: 20px;
       width: 26px;
@@ -790,7 +754,7 @@
 </head>
 <body>
 
-<!-- ===== HEADER (same as index.html) ===== -->
+<!-- ===== HEADER (search bar REMOVED) ===== -->
 <header class="header">
   <div class="header-top">
     <a href="index.html" class="logo">JB <span>STORE</span></a>
@@ -800,11 +764,6 @@
       <span></span>
       <span></span>
     </button>
-  </div>
-  <div class="search">
-    <input type="text" id="searchInput" placeholder="Search products..." autocomplete="off">
-    <button type="button" id="searchButton">🔍</button>
-    <div id="searchSuggestions" class="search-suggestions"></div>
   </div>
 </header>
 
@@ -1000,7 +959,6 @@
   const menuText    = $('menuAccountText');
   const menuIcon    = $('menuAccountIcon');
 
-  /* ---------- DRAWER OPEN/CLOSE ---------- */
   function openDrawer() {
     menuDrawer.classList.add('open');
     menuOverlay.classList.add('show');
@@ -1016,7 +974,6 @@
   if (menuClose)   menuClose.addEventListener('click', closeDrawer);
   if (menuOverlay) menuOverlay.addEventListener('click', closeDrawer);
 
-  // Escape key close
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeDrawer();
   });
@@ -1046,12 +1003,10 @@
     }
   }
 
-  // Account link click — logged in aithe profile modal open (index.html ni redirect)
   if (headerLink) {
     headerLink.addEventListener('click', function (e) {
       if (headerLink.getAttribute('aria-label') === 'My Account') {
         e.preventDefault();
-        // Index.html profile modal ni open cheyyadam kosam index.html ki velladam
         window.location.href = 'index.html#account';
       }
     });
@@ -1070,7 +1025,7 @@
   updateAccountUI();
   if (client) client.auth.onAuthStateChange(() => setTimeout(updateAccountUI, 0));
 
-  // Update cart/fav badges on drawer open (from localStorage)
+  /* ---------- Badges from localStorage ---------- */
   function refreshBadges() {
     try {
       const cartKeys = ['cart','jb_cart','jbstore_cart','jbCart','cartItems'];
