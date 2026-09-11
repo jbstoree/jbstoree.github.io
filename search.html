@@ -38,7 +38,7 @@
     .search-price del { color: #999; font-size: 12px; }
     .search-product-card .deal-actions { display: flex; gap: 10px; margin-top: auto; width: 100%; }
     .search-product-card .deal-actions button { flex: 1; height: 40px; border: none; border-radius: 10px; font-weight: 700; font-size: 12px; cursor: pointer; transition: all .3s ease; font-family: "Poppins", sans-serif; }
-    .search-product-card .view-details-btn { background: linear-gradient(135deg, #D4AF37, #C9A030); color: #0A0A0A; box-shadow: 0 2px 15px rgba(212, 175, 55, 0.2); }
+    .search-product-card .view-details-btn { background: linear-gradient(135deg, #D4AF37, #C9A030); color: #0A0A0A; }
     .search-product-card .view-details-btn:hover { background: linear-gradient(135deg, #E8C84A, #D4AF37); transform: translateY(-2px); }
 
     .search-empty { grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: #fff; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.15); }
@@ -46,72 +46,33 @@
     .search-empty h2 { color: #111; font-size: 22px; font-weight: 700; margin: 0 0 8px; }
     .search-empty p { color: #777; font-size: 14px; margin: 0; }
 
-    /* ============ SUGGESTIONS (brand + category combos) ============ */
+    /* ============ SUGGESTIONS ============ */
     .search-suggestions {
       position: absolute;
       top: calc(100% + 6px);
-      left: 0;
-      right: 0;
+      left: 0; right: 0;
       background: #ffffff;
       border: 1px solid rgba(212, 175, 55, 0.18);
       border-radius: 16px;
       max-height: 380px;
       overflow-y: auto;
       display: none;
-      z-index: 9999;
+      z-index: 99999;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
       padding: 8px 0;
       -webkit-overflow-scrolling: touch;
     }
     .search-suggestions.show { display: block; }
 
-    .search-suggestion {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 12px 18px;
-      cursor: pointer;
-      transition: background .2s ease;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.03);
-    }
+    .search-suggestion { display: flex; align-items: center; gap: 14px; padding: 12px 18px; cursor: pointer; transition: background .2s ease; border-bottom: 1px solid rgba(0, 0, 0, 0.03); }
     .search-suggestion:last-child { border-bottom: none; }
-    .search-suggestion:active { background: rgba(212, 175, 55, 0.1); }
-    .search-suggestion:hover { background: rgba(212, 175, 55, 0.06); }
-
-    .search-suggestion img {
-      width: 44px; height: 44px;
-      object-fit: contain;
-      border-radius: 10px;
-      background: #f2efe9;
-      padding: 5px;
-      flex-shrink: 0;
-    }
+    .search-suggestion:hover, .search-suggestion:active { background: rgba(212, 175, 55, 0.08); }
+    .search-suggestion img { width: 44px; height: 44px; object-fit: contain; border-radius: 10px; background: #f2efe9; padding: 5px; flex-shrink: 0; }
     .suggestion-info { flex: 1; min-width: 0; }
-    .suggestion-name {
-      color: #111;
-      font-size: 14px;
-      font-weight: 600;
-      line-height: 1.3;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    .suggestion-name { color: #111; font-size: 14px; font-weight: 600; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .suggestion-name strong { color: #D4AF37; font-weight: 800; }
-    .suggestion-category {
-      color: #8a8580;
-      font-size: 11.5px;
-      margin-top: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .suggestion-arrow {
-      color: #D4AF37;
-      font-size: 16px;
-      font-weight: 700;
-      flex-shrink: 0;
-      opacity: .7;
-    }
+    .suggestion-category { color: #8a8580; font-size: 11.5px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .suggestion-arrow { color: #D4AF37; font-size: 16px; font-weight: 700; flex-shrink: 0; opacity: .7; }
     .search-no-result { padding: 24px 20px; color: #8a8580; text-align: center; font-size: 14px; }
 
     /* ============ PROFILE MODAL ============ */
@@ -155,15 +116,10 @@
       .suggestion-name { font-size: 13px; }
       .suggestion-category { font-size: 11px; }
     }
-    @media (max-width: 450px) {
-      .search-product-grid { gap: 8px; }
-      .search-product-image { height: 130px; }
-    }
   </style>
 </head>
 <body>
 
-<!-- ===== HEADER ===== -->
 <header class="header">
   <div class="header-top">
     <a href="index.html" class="logo">JB <span>STORE</span></a>
@@ -274,21 +230,23 @@
 (function () {
   'use strict';
 
-  /* =============================================================
-     STEP 1: Collect ALL products (local + Supabase) — global store
-     NOTE: do NOT name it "allProducts" (script.js already uses it)
-     ============================================================= */
+  /* ============================================================
+     ✅ STEP 1: Collect ALL local products (with correct check)
+     ============================================================ */
   window.__searchProducts = [];
 
-  // Collect local products
-  ['mobileProducts','refrigeratorProducts','washingProducts','acProducts','tvProducts'].forEach(function (n) {
-    try { if (Array.isArray(window[n])) window.__searchProducts = window.__searchProducts.concat(window[n]); } catch(e){}
-  });
-  console.log('[search] Local products loaded:', window.__searchProducts.length);
+  // Direct references (typeof check works for const/let/var)
+  try { if (typeof mobileProducts !== 'undefined' && Array.isArray(mobileProducts)) window.__searchProducts = window.__searchProducts.concat(mobileProducts); } catch(e){ console.warn('mobileProducts err:', e); }
+  try { if (typeof refrigeratorProducts !== 'undefined' && Array.isArray(refrigeratorProducts)) window.__searchProducts = window.__searchProducts.concat(refrigeratorProducts); } catch(e){ console.warn('refrigeratorProducts err:', e); }
+  try { if (typeof washingProducts !== 'undefined' && Array.isArray(washingProducts)) window.__searchProducts = window.__searchProducts.concat(washingProducts); } catch(e){ console.warn('washingProducts err:', e); }
+  try { if (typeof acProducts !== 'undefined' && Array.isArray(acProducts)) window.__searchProducts = window.__searchProducts.concat(acProducts); } catch(e){ console.warn('acProducts err:', e); }
+  try { if (typeof tvProducts !== 'undefined' && Array.isArray(tvProducts)) window.__searchProducts = window.__searchProducts.concat(tvProducts); } catch(e){ console.warn('tvProducts err:', e); }
 
-  /* =============================================================
-     STEP 2: Params + DOM
-     ============================================================= */
+  console.log('✅ [search] Local products loaded:', window.__searchProducts.length);
+
+  /* ============================================================
+     ✅ STEP 2: Params + DOM
+     ============================================================ */
   var params = new URLSearchParams(window.location.search);
   var term  = (params.get('q') || '').trim();
   var brand = (params.get('brand') || '').trim();
@@ -300,7 +258,6 @@
   var countEl   = document.getElementById('resultCount');
   var suggestEl = document.getElementById('searchSuggestions');
 
-  // Category display names
   var CAT_NAMES = {
     mobiles: 'Mobiles',
     fridge:  'Refrigerators',
@@ -309,7 +266,6 @@
     tv:      'TV'
   };
 
-  // Category aliases — helps match "fridge", "tv", "ac", etc.
   var CAT_ALIASES = {
     mobiles: ['mobiles','mobile','phone','smartphone','smartphones'],
     fridge:  ['fridge','fridges','refrigerator','refrigerators'],
@@ -318,9 +274,9 @@
     tv:      ['tv','tvs','television','televisions','smart tv','smart tvs']
   };
 
-  /* =============================================================
-     STEP 3: Set input + title from URL params
-     ============================================================= */
+  /* ============================================================
+     ✅ STEP 3: Set input + title
+     ============================================================ */
   if (brand && cat) {
     var cName = CAT_NAMES[cat] || cat;
     if (inputEl) inputEl.value = brand + ' ' + cName;
@@ -333,9 +289,32 @@
     if (titleEl) titleEl.textContent = 'All Products';
   }
 
-  /* =============================================================
-     STEP 4: Filter products for grid
-     ============================================================= */
+  /* ============================================================
+     ✅ STEP 4: Helpers
+     ============================================================ */
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
+  }
+
+  function highlight(text, q) {
+    var safe = esc(text);
+    if (!q) return safe;
+    try {
+      var escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return safe.replace(new RegExp('(' + escaped + ')', 'ig'), '<strong>$1</strong>');
+    } catch(e) { return safe; }
+  }
+
+  window.__viewProduct = function (id) {
+    try { localStorage.setItem('selectedProduct', JSON.stringify({ id: id })); } catch(e){}
+    window.location.href = 'product.html?id=' + encodeURIComponent(id);
+  };
+
+  /* ============================================================
+     ✅ STEP 5: Filter for grid
+     ============================================================ */
   function filterProducts() {
     var list = window.__searchProducts || [];
 
@@ -359,32 +338,9 @@
     });
   }
 
-  /* =============================================================
-     STEP 5: Helpers
-     ============================================================= */
-  function esc(s) {
-    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
-      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
-    });
-  }
-
-  function highlight(text, q) {
-    var safe = esc(text);
-    if (!q) return safe;
-    try {
-      var escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      return safe.replace(new RegExp('(' + escaped + ')', 'ig'), '<strong>$1</strong>');
-    } catch(e) { return safe; }
-  }
-
-  window.__viewProduct = function (id) {
-    try { localStorage.setItem('selectedProduct', JSON.stringify({ id: id })); } catch(e){}
-    window.location.href = 'product.html?id=' + encodeURIComponent(id);
-  };
-
-  /* =============================================================
-     STEP 6: Render product grid
-     ============================================================= */
+  /* ============================================================
+     ✅ STEP 6: Render grid
+     ============================================================ */
   function renderGrid() {
     if (!gridEl) return;
     var products = filterProducts();
@@ -453,15 +409,15 @@
     });
   }
 
-  /* =============================================================
-     STEP 7: Build suggestions — brand + category combos
-     ============================================================= */
+  /* ============================================================
+     ✅ STEP 7: Suggestions (brand + category combos)
+     ============================================================ */
   function buildSuggestions(text) {
     text = String(text || '').trim().toLowerCase();
     if (!text) return [];
 
     var all = window.__searchProducts || [];
-    var combos = {};   // key = brand|category
+    var combos = {};
 
     all.forEach(function (p) {
       var b = String(p.brand || '').trim();
@@ -473,11 +429,10 @@
       var cAlias = CAT_ALIASES[c] || [c];
       var nameLower = String(p.name || '').toLowerCase();
 
-      // Match conditions
-      var matchBrandStarts    = bLower.indexOf(text) === 0;
-      var matchBrandContains  = bLower.indexOf(text) !== -1;
-      var matchCat            = cAlias.some(function (a) { return a.indexOf(text) !== -1; });
-      var matchName           = nameLower.indexOf(text) !== -1;
+      var matchBrandStarts   = bLower.indexOf(text) === 0;
+      var matchBrandContains = bLower.indexOf(text) !== -1;
+      var matchCat           = cAlias.some(function (a) { return a.indexOf(text) !== -1; });
+      var matchName          = nameLower.indexOf(text) !== -1;
 
       if (!(matchBrandContains || matchCat || matchName)) return;
 
@@ -493,12 +448,11 @@
         };
       }
 
-      // Score for sorting
       var s = combos[key].score;
-      if (matchBrandStarts)   s += 100;
-      else if (matchBrandContains) s += 60;
-      if (matchCat)  s += 40;
-      if (matchName) s += 20;
+      if (matchBrandStarts)         s += 100;
+      else if (matchBrandContains)  s += 60;
+      if (matchCat)                 s += 40;
+      if (matchName)                s += 20;
       combos[key].score = s;
     });
 
@@ -513,6 +467,8 @@
     suggestEl.innerHTML = '';
 
     if (!text) { suggestEl.classList.remove('show'); return; }
+
+    console.log('[search] Suggestion query:', text, '| pool:', (window.__searchProducts||[]).length);
 
     var results = buildSuggestions(text);
 
@@ -551,26 +507,25 @@
     suggestEl.classList.add('show');
   }
 
-  /* =============================================================
-     STEP 8: Expose setter for Supabase data
-     ============================================================= */
+  /* ============================================================
+     ✅ STEP 8: Expose setter for Supabase
+     ============================================================ */
   window.__setAllProducts = function (data) {
     if (Array.isArray(data) && data.length) {
       window.__searchProducts = data;
-      console.log('[search] Supabase products set:', data.length);
+      console.log('✅ [search] Supabase products set:', data.length);
       renderGrid();
     }
   };
-  window.__renderSearch = renderGrid;
 
-  /* =============================================================
-     STEP 9: Initial render
-     ============================================================= */
+  /* ============================================================
+     ✅ STEP 9: Initial render
+     ============================================================ */
   renderGrid();
 
-  /* =============================================================
-     STEP 10: Supabase background fetch
-     ============================================================= */
+  /* ============================================================
+     ✅ STEP 10: Supabase background fetch
+     ============================================================ */
   try {
     if (typeof supabase !== 'undefined') {
       var SUPABASE_URL  = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
@@ -583,21 +538,12 @@
           if (res.data && res.data.length) window.__setAllProducts(res.data);
         })
         .catch(function (e) { console.warn('[search] fetch failed:', e); });
-
-      sb.channel('search-rt')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, function () {
-          sb.from('products').select('*').order('id', { ascending: true })
-            .then(function (res) {
-              if (res.data && res.data.length) window.__setAllProducts(res.data);
-            });
-        })
-        .subscribe();
     }
   } catch (e) { console.warn('[search] Supabase init error:', e); }
 
-  /* =============================================================
-     STEP 11: Input event bindings
-     ============================================================= */
+  /* ============================================================
+     ✅ STEP 11: Input bindings
+     ============================================================ */
   if (inputEl) {
     inputEl.addEventListener('input', showSuggestions);
     inputEl.addEventListener('focus', function () { if (inputEl.value.trim()) showSuggestions(); });
@@ -618,7 +564,6 @@
     });
   }
 
-  // Close suggestions on outside click
   document.addEventListener('click', function (e) {
     if (inputEl && suggestEl &&
         !inputEl.contains(e.target) && !suggestEl.contains(e.target)) {
@@ -626,7 +571,7 @@
     }
   });
 
-  console.log('[search] Ready. Total products:', (window.__searchProducts || []).length);
+  console.log('✅ [search] Ready. Total products:', (window.__searchProducts || []).length);
 })();
 </script>
 
@@ -644,19 +589,17 @@
   const headerLink  = $('headerAccountLink');
   const menuLink    = $('menuAccountLink');
   const menuText    = $('menuAccountText');
-  const menuIcon    = $('menuAccountIcon');
 
   let client = null;
   if (typeof supabase !== 'undefined') { try { client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON); } catch(e){} }
   let user = null;
 
-  function openDrawer() { menuDrawer.classList.add('open'); menuOverlay.classList.add('open'); document.body.style.overflow='hidden'; document.body.classList.add('menu-open'); }
-  function closeDrawer() { menuDrawer.classList.remove('open'); menuOverlay.classList.remove('open'); document.body.style.overflow=''; document.body.classList.remove('menu-open'); }
+  function openDrawer() { menuDrawer.classList.add('open'); menuOverlay.classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeDrawer() { menuDrawer.classList.remove('open'); menuOverlay.classList.remove('open'); document.body.style.overflow=''; }
 
   if (menuToggle)  menuToggle.addEventListener('click', openDrawer);
   if (menuClose)   menuClose.addEventListener('click', closeDrawer);
   if (menuOverlay) menuOverlay.addEventListener('click', closeDrawer);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
 
   async function updateAccountUI() {
     if (!client) return;
@@ -664,9 +607,9 @@
     const session = data && data.session;
     user = session ? session.user : null;
     if (user) {
-      if (menuLink) { menuLink.setAttribute('href', 'javascript:void(0)'); menuLink.classList.add('account-active'); }
+      if (menuLink) menuLink.classList.add('account-active');
       if (menuText) menuText.textContent = 'My Account';
-      if (headerLink) { headerLink.setAttribute('href', 'javascript:void(0)'); headerLink.setAttribute('aria-label', 'My Account'); }
+      if (headerLink) headerLink.setAttribute('aria-label', 'My Account');
     } else {
       if (menuLink) { menuLink.setAttribute('href', 'login.html'); menuLink.classList.remove('account-active'); }
       if (menuText) menuText.textContent = 'Login / Account';
@@ -674,7 +617,6 @@
     }
   }
   updateAccountUI();
-  if (client) client.auth.onAuthStateChange(() => setTimeout(updateAccountUI, 0));
 
   function friendlyName(u) {
     const meta = u.user_metadata || {};
