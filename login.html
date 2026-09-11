@@ -294,6 +294,22 @@ input:focus{
   .trust{padding-top:11px}
 }
 </style>
+
+<!-- ✅ Force mobile viewport script (before body loads) -->
+<script>
+(function () {
+  function forceViewport() {
+    var vp = document.querySelector('meta[name="viewport"]');
+    if (!vp) {
+      vp = document.createElement('meta');
+      vp.setAttribute('name', 'viewport');
+      document.head.appendChild(vp);
+    }
+    vp.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover');
+  }
+  forceViewport();
+})();
+</script>
 </head>
 
 <body>
@@ -386,6 +402,24 @@ function showStatus(message, success=false) {
   $('status').style.color = success ? '#4d8a55' : '#777';
 }
 
+/* ✅ Force mobile viewport — Google OAuth redirect varaku kuda apply avutundi */
+function forceViewport() {
+  var vp = document.querySelector('meta[name="viewport"]');
+  if (!vp) {
+    vp = document.createElement('meta');
+    vp.setAttribute('name', 'viewport');
+    document.head.appendChild(vp);
+  }
+  vp.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover');
+}
+forceViewport();
+window.addEventListener('pageshow', forceViewport);
+window.addEventListener('load', forceViewport);
+window.addEventListener('orientationchange', function () { setTimeout(forceViewport, 100); });
+document.addEventListener('visibilitychange', function () {
+  if (!document.hidden) forceViewport();
+});
+
 $('togglePassword').addEventListener('click', () => {
   const input = $('password');
   const icon = $('togglePassword').querySelector('i');
@@ -395,6 +429,9 @@ $('togglePassword').addEventListener('click', () => {
 });
 
 $('googleBtn').addEventListener('click', async () => {
+  // ✅ Force viewport reset BEFORE OAuth redirect
+  forceViewport();
+
   showStatus('Opening Google…');
   const { error } = await client.auth.signInWithOAuth({
     provider: 'google',
@@ -502,4 +539,3 @@ $('guestBtn').addEventListener('click', async () => {
 </script>
 </body>
 </html>
-
