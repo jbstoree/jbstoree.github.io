@@ -363,7 +363,7 @@
       height: 100dvh !important;
       z-index: 2147483647 !important;
       display: none;
-      background: rgba(0, 0, 0, 0.85) !important; /* Darker background for app visibility */
+      background: rgba(0, 0, 0, 0.85) !important;
       padding: 20px;
       box-sizing: border-box;
       justify-content: center !important;
@@ -633,16 +633,7 @@
 </div>
 
 <!-- ================= SUCCESS MODAL ================= -->
-<div class="ok-modal" id="okModal">
-  <div class="ok-card">
-    <div class="tick">✓</div>
-    <h3>Order Confirmed!</h3>
-    <p>Order ID:</p>
-    <p class="code" id="okCode">JB000000</p>
-    <p style="margin-top:12px">WhatsApp lo order details pampinchi — confirm cheyyandi.</p>
-    <button id="okBtn" type="button">Continue Shopping</button>
-  </div>
-</div>
+<!-- Note: The static success modal HTML is removed. We will create it dynamically using JS. -->
 
 <!-- ===== EXISTING SCRIPTS ===== -->
 <script src="config.js"></script>
@@ -989,26 +980,36 @@
     document.body.style.overflow = 'hidden'; // Prevent background scrolling
     
     $('ckGo').disabled = false; $('ckGo').textContent = '📲 Place Order';
-    $('okCode').textContent = orderCode; 
-    $('okModal').classList.add('show');
 
-    // --- Webview Fix: Force modal styles ---
-    var okModalEl = document.getElementById('okModal');
-    if (okModalEl) {
-        okModalEl.style.cssText = "display: flex !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(0,0,0,0.85) !important; z-index: 2147483647 !important; justify-content: center !important; align-items: center !important; flex-direction: column !important;";
-    }
-    var okCardEl = document.querySelector('.ok-card');
-    if (okCardEl) {
-        okCardEl.style.cssText = "background: #fff !important; border-radius: 22px !important; padding: 30px 24px !important; text-align: center !important; max-width: 380px !important; width: 90% !important; margin: auto !important; max-height: 85vh !important; overflow-y: auto !important; box-shadow: 0 10px 40px rgba(0,0,0,0.3) !important; position: relative !important; z-index: 2147483648 !important;";
-    }
-    // --------------------------------------
+    // --- APP FIX: Dynamically inject Success Modal with strict inline styles ---
+    var existingModal = document.getElementById('appSuccessModal');
+    if (existingModal) existingModal.remove();
+
+    var modalHTML = `
+      <div id="appSuccessModal" style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(0,0,0,0.85) !important; z-index: 999999999 !important; display: flex !important; justify-content: center !important; align-items: center !important; padding: 20px !important; box-sizing: border-box !important; margin: 0 !important; flex-direction: column !important; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);">
+        <div style="background: #ffffff !important; border-radius: 22px !important; padding: 30px 24px !important; text-align: center !important; max-width: 380px !important; width: 100% !important; box-shadow: 0 10px 40px rgba(0,0,0,0.3) !important; margin: auto !important; position: relative !important; z-index: 999999999 !important; font-family: 'Poppins', Arial, sans-serif !important;">
+          <div style="width: 74px; height: 74px; border-radius: 50%; background: #e8f7ee; color: #25D366; font-size: 40px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; font-family: sans-serif !important;">✓</div>
+          <h3 style="margin: 0 0 8px; font-size: 20px; color: #111111; font-family: sans-serif !important;">Order Confirmed!</h3>
+          <p style="margin: 0 0 6px; font-size: 13px; color: #777777; font-family: sans-serif !important;">Order ID:</p>
+          <p style="font-weight: 800; color: #a3801a; letter-spacing: 1px; font-size: 16px; margin: 0 0 6px; font-family: sans-serif !important;">${orderCode}</p>
+          <p style="margin: 0 0 6px; font-size: 13px; color: #777777; font-family: sans-serif !important; margin-top:12px;">WhatsApp lo order details pampinchi — confirm cheyyandi.</p>
+          <button id="appSuccessBtn" style="margin-top: 20px; width: 100%; border: 0; border-radius: 14px; padding: 14px; background: #111111; color: #d4af37; font-weight: 800; font-size: 15px; cursor: pointer; font-family: sans-serif !important;">Continue Shopping</button>
+        </div>
+      </div>
+    `;
+    
+    // Inject into the body
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Bind click event for the new button
+    document.getElementById('appSuccessBtn').onclick = function() {
+      var m = document.getElementById('appSuccessModal');
+      if(m) m.remove();
+      document.body.style.overflow = '';
+      window.location.href = 'index.html';
+    };
+    // -------------------------------------------------------------------------
   });
-
-  $('okBtn').onclick = () => {
-    $('okModal').classList.remove('show');
-    document.body.style.overflow = '';
-    window.location.href = 'index.html';
-  };
 })();
 </script>
 
