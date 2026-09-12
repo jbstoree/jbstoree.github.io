@@ -2470,17 +2470,21 @@
                         <span style="font-weight:800;font-size:19px;color:#a3801a;">${money(o.total)}</span>
                     </div>
 
-                    <div style="margin-top:12px;">
+                    <div style="margin-top:12px; display:flex; gap:10px; align-items:center;">
                         <select data-order="${esc(o.id)}" class="statusSel"
-                            style="width:100%;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:600;background:#f8f9fb;font-family:'Inter',sans-serif;color:#1a1a2e;cursor:pointer;outline:none;">
+                            style="flex:1; border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:600;background:#f8f9fb;font-family:'Inter',sans-serif;color:#1a1a2e;cursor:pointer;outline:none;">
                             ${['pending','confirmed','shipped','delivered','cancelled'].map(s =>
                                 `<option value="${s}" ${o.status===s?'selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`
                             ).join('')}
                         </select>
+                        <button class="deleteOrderBtn" data-order="${esc(o.id)}" style="background:#fde8e8; color:#d32f2f; border:none; border-radius:10px; padding:10px 16px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; font-size:13.5px; transition:0.2s; white-space:nowrap;" title="Delete Order">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
                     </div>
                 </div>`;
             }).join('');
 
+            // Handle Status Change
             document.querySelectorAll('.statusSel').forEach(sel => {
                 sel.addEventListener('change', async function () {
                     const id = this.dataset.order, val = this.value;
@@ -2490,6 +2494,30 @@
                     if (error) { alert('❌ ' + error.message); return; }
                     if (typeof showToast === 'function') showToast('✅ Status updated to ' + val, 'success');
                     loadOrders();
+                });
+            });
+
+            // Handle Delete Order
+            document.querySelectorAll('.deleteOrderBtn').forEach(btn => {
+                btn.addEventListener('click', async function () {
+                    const id = this.dataset.order;
+                    if (!confirm('⚠️ Are you sure you want to permanently delete this order? This action cannot be undone.')) return;
+                    
+                    this.disabled = true;
+                    const originalHtml = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+                    
+                    const { error } = await sb.from('orders').delete().eq('id', id);
+                    
+                    this.disabled = false;
+                    this.innerHTML = originalHtml;
+                    
+                    if (error) {
+                        alert('❌ Failed to delete order: ' + error.message);
+                    } else {
+                        if (typeof showToast === 'function') showToast('🗑️ Order deleted successfully', 'success');
+                        loadOrders(); // Reload the list immediately
+                    }
                 });
             });
         }
