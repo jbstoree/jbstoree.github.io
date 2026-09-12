@@ -403,6 +403,54 @@ const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
   }
 });
 
+// =====================================================
+// GOOGLE OAUTH CALLBACK / EXISTING SESSION
+// =====================================================
+// Android returns to:
+// jbstore://auth/callback#access_token=...
+//
+// MainActivity sends that callback to this login.html.
+// Because detectSessionInUrl=true, Supabase processes the
+// access token here and persists the session.
+// Then move the user to the main website automatically.
+// =====================================================
+
+let __jbRedirectingToHome = false;
+
+function goToHomeAfterLogin() {
+  if (__jbRedirectingToHome) return;
+  __jbRedirectingToHome = true;
+
+  setTimeout(() => {
+    window.location.replace('index.html');
+  }, 0);
+}
+
+client.auth.onAuthStateChange((event, session) => {
+  if (
+    session &&
+    (
+      event === 'SIGNED_IN' ||
+      event === 'INITIAL_SESSION'
+    )
+  ) {
+    goToHomeAfterLogin();
+  }
+});
+
+// Also handle an already-persisted session when login.html opens.
+(async () => {
+  try {
+    const { data } = await client.auth.getSession();
+
+    if (data && data.session) {
+      goToHomeAfterLogin();
+    }
+  } catch (error) {
+    console.error('Supabase session check failed:', error);
+  }
+})();
+
 const $ = id => document.getElementById(id);
 
 function showStatus(message, success=false) {
@@ -557,4 +605,5 @@ $('guestBtn').addEventListener('click', async () => {
 </script>
 </body>
 </html>
+
 
