@@ -112,6 +112,12 @@
             padding: 0;
             border: none !important;
             box-shadow: none !important;
+            /* ── mobile smoothness ── */
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         .product-image-box.dragging {
@@ -127,6 +133,10 @@
             transform: translate3d(0, 0, 0);
             transition: transform 320ms cubic-bezier(0.22, 0.61, 0.36, 1);
             user-select: none;
+            -webkit-user-select: none;
+            /* ── mobile GPU layer ── */
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         .gallery-track.is-dragging {
@@ -146,6 +156,9 @@
             overflow: hidden;
             padding: 0;
             background: transparent;
+            /* ── mobile GPU layer ── */
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         .gallery-slide img {
@@ -156,10 +169,17 @@
             transition: transform 0.25s ease;
             pointer-events: none;
             user-select: none;
+            -webkit-user-select: none;
+            -webkit-user-drag: none;
+            /* ── decode/scroll smoothness ── */
+            image-rendering: auto;
         }
 
-        .product-image-box:hover .gallery-slide img {
-            transform: scale(1.01);
+        /* hover scale ONLY on real desktop pointers (mobile lo stuck hover = jank) */
+        @media (hover: hover) and (pointer: fine) {
+            .product-image-box:hover .gallery-slide img {
+                transform: scale(1.01);
+            }
         }
 
         .product-offer {
@@ -1806,7 +1826,7 @@
         }
 
         // ==========================================
-        // GALLERY
+        // GALLERY  (⚡ MOBILE-SMOOTH VERSION)
         // ==========================================
         function updateGallery(images) {
             const box = document.getElementById('galleryContainer');
@@ -1816,6 +1836,12 @@
 
             if (!box || !track || !strip || !dots) return;
 
+            /* ── purana gallery listeners clean cheyyi (leak avoid) ── */
+            if (typeof box._galleryCleanup === 'function') {
+                box._galleryCleanup();
+                box._galleryCleanup = null;
+            }
+
             strip.innerHTML = '';
             dots.innerHTML = '';
             track.innerHTML = '';
@@ -1823,166 +1849,241 @@
             let validImages = (images || []).filter(src =>
                 typeof src === 'string' && src.trim() !== ''
             );
-            if (validImages.length === 0) {
-                validImages = ['#'];
-            }
+            if (validImages.length === 0) validImages = ['#'];
 
-            dots.style.display = 'flex';
-            strip.style.display = 'flex';
+            const count = validImages.length;
 
-            let currentIndex = 0;
-            let startX = 0,
-                startY = 0;
-            let currentTranslate = 0,
-                dragStartTranslate = 0;
-            let isDragging = false,
-                moved = false;
-
-            validImages.forEach((src, index) => {
+            /* ── BUILD SLIDES (fragment = fast) ── */
+            const slideFrag = document.createDocumentFragment();
+            validImages.forEach((src, i) => {
                 const slide = document.createElement('div');
                 slide.className = 'gallery-slide';
+
                 const img = document.createElement('img');
                 img.src = src;
-                img.alt = `Product image ${index + 1}`;
+                img.alt = 'Product image ' + (i + 1);
                 img.draggable = false;
+                img.decoding = 'async';
+
                 slide.appendChild(img);
-                track.appendChild(slide);
+                slideFrag.appendChild(slide);
             });
+            track.appendChild(slideFrag);
 
-            function getSlideWidth() {
-                const cs = getComputedStyle(box);
-                const padX = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
-                return Math.max(1, box.clientWidth - padX);
-            }
+            /* ── STATE ── */
+            let currentIndex = 0;
+            let slideWidth = 1;          // ⚡ CACHED — drag madhyalo layout chadavamu
+            let currentTranslate = 0;
+            let dragStartTranslate = 0;
+            let startX = 0;
+            let startY = 0;
+            let isDragging = false;
+            let moved = false;
+            let isHorizontal = null;     // null = inka decide kaledu
+            let rafId = null;
+            let pendingX = 0;
+            let resizeTimer = null;
 
-            function syncGalleryGeometry() {
-                const slideWidth = getSlideWidth();
-                const count = validImages.length;
-                track.style.width = `${slideWidth * count}px`;
-                track.style.height = '100%';
-                const slides = track.querySelectorAll('.gallery-slide');
-                slides.forEach((slide) => {
-                    slide.style.width = `${slideWidth}px`;
-                    slide.style.minWidth = `${slideWidth}px`;
-                    slide.style.maxWidth = `${slideWidth}px`;
-                    slide.style.height = '100%';
-                    slide.style.flex = '0 0 auto';
+            /* ── ⚡ rAF BATCHED TRANSFORM (no layout thrash) ── */
+            function applyTransform(px) {
+                pendingX = px;
+                if (rafId) return;
+                rafId = requestAnimationFrame(function() {
+                    rafId = null;
+                    track.style.transform = 'translate3d(' + pendingX + 'px, 0, 0)';
                 });
-                if (currentIndex >= 0 && currentIndex < count) {
-                    currentTranslate = -currentIndex * slideWidth;
-                    track.style.transform = `translate3d(${currentTranslate}px, 0, 0)`;
-                }
             }
 
-            function showImage(index, animate = true) {
-                if (index < 0) index = 0;
-                if (index > validImages.length - 1) index = validImages.length - 1;
-                currentIndex = index;
-                const slideWidth = getSlideWidth();
-                currentTranslate = -index * slideWidth;
-                track.classList.toggle('is-dragging', !animate);
-                track.classList.toggle('is-snapping', animate);
-                track.style.transform = `translate3d(${currentTranslate}px, 0, 0)`;
-                const thumbs = strip.querySelectorAll('.thumb-item');
-                thumbs.forEach((el, i) => el.classList.toggle('active-thumb', i === currentIndex));
-                const dotEls = dots.querySelectorAll('.image-dot');
-                dotEls.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
+            function setTransformNow(px) {
+                if (rafId) {
+                    cancelAnimationFrame(rafId);
+                    rafId = null;
+                }
+                pendingX = px;
+                track.style.transform = 'translate3d(' + px + 'px, 0, 0)';
+            }
 
-                const activeThumb = strip.querySelector('.active-thumb');
+            /* ── ⚡ MEASURE ONLY HERE (drag lo kaadu) ── */
+            function measure() {
+                const cs = getComputedStyle(box);
+                const pad = (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
+                const w = box.clientWidth - pad;
+                slideWidth = w > 0 ? w : 1;
+
+                track.style.width = (slideWidth * count) + 'px';
+
+                const slides = track.children;
+                for (let i = 0; i < slides.length; i++) {
+                    const s = slides[i].style;
+                    s.width = slideWidth + 'px';
+                    s.minWidth = slideWidth + 'px';
+                    s.maxWidth = slideWidth + 'px';
+                    s.height = '100%';
+                    s.flex = '0 0 auto';
+                }
+
+                currentTranslate = -currentIndex * slideWidth;
+                setTransformNow(currentTranslate);
+            }
+
+            /* ── SHOW SLIDE ── */
+            function showImage(index, animate) {
+                if (index < 0) index = 0;
+                if (index > count - 1) index = count - 1;
+
+                currentIndex = index;
+                currentTranslate = -index * slideWidth;
+
+                const anim = animate !== false;
+
+                track.classList.toggle('is-dragging', !anim);
+                track.classList.toggle('is-snapping', anim);
+
+                if (anim) {
+                    /* force reflow → transition pakka ga apply avutundi */
+                    void track.offsetWidth;
+                }
+                setTransformNow(currentTranslate);
+
+                const thumbs = strip.children;
+                for (let i = 0; i < thumbs.length; i++) {
+                    thumbs[i].classList.toggle('active-thumb', i === currentIndex);
+                }
+                const dotEls = dots.children;
+                for (let i = 0; i < dotEls.length; i++) {
+                    dotEls[i].classList.toggle('active', i === currentIndex);
+                }
+
+                const activeThumb = thumbs[currentIndex];
                 if (activeThumb) {
-                    const container = document.getElementById('thumbnailStrip');
-                    const thumbOffsetLeft = activeThumb.offsetLeft;
-                    const containerWidth = container.clientWidth;
-                    const thumbWidth = activeThumb.offsetWidth;
-                    const scrollTarget = thumbOffsetLeft - (containerWidth / 2) + (thumbWidth / 2);
-                    container.scrollTo({
-                        left: Math.max(0, scrollTarget),
-                        behavior: animate ? 'smooth' : 'auto'
+                    const target = activeThumb.offsetLeft -
+                        (strip.clientWidth / 2) +
+                        (activeThumb.offsetWidth / 2);
+                    strip.scrollTo({
+                        left: Math.max(0, target),
+                        behavior: anim ? 'smooth' : 'auto'
                     });
                 }
             }
 
+            /* ── BUILD THUMBS ── */
+            const thumbFrag = document.createDocumentFragment();
             validImages.forEach((src, index) => {
                 const item = document.createElement('div');
                 item.className = 'thumb-item' + (index === 0 ? ' active-thumb' : '');
+
                 const img = document.createElement('img');
                 img.src = src;
-                img.alt = `Thumbnail ${index + 1}`;
+                img.alt = 'Thumbnail ' + (index + 1);
                 img.loading = 'lazy';
-                item.appendChild(img);
-                item.addEventListener('click', () => showImage(index, true));
-                strip.appendChild(item);
-            });
 
+                item.appendChild(img);
+                item.addEventListener('click', function() {
+                    showImage(index, true);
+                });
+                thumbFrag.appendChild(item);
+            });
+            strip.appendChild(thumbFrag);
+
+            /* ── BUILD DOTS ── */
+            const dotFrag = document.createDocumentFragment();
             validImages.forEach((_, index) => {
                 const dot = document.createElement('button');
                 dot.type = 'button';
                 dot.className = 'image-dot' + (index === 0 ? ' active' : '');
-                dot.setAttribute('aria-label', `Image ${index + 1}`);
-                dot.addEventListener('click', () => showImage(index, true));
-                dots.appendChild(dot);
+                dot.setAttribute('aria-label', 'Image ' + (index + 1));
+                dot.addEventListener('click', function() {
+                    showImage(index, true);
+                });
+                dotFrag.appendChild(dot);
             });
+            dots.appendChild(dotFrag);
 
-            syncGalleryGeometry();
+            measure();
             showImage(0, false);
 
-            let resizeTimer;
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(() => {
-                    syncGalleryGeometry();
-                    showImage(currentIndex, false);
-                }, 80);
-            });
-
-            // Touch events
+            /* ═══════════════ TOUCH ═══════════════ */
             function onTouchStart(e) {
                 if (!e.touches || !e.touches[0]) return;
-                startX = e.touches[0].clientX;
-                startY = e.touches[0].clientY;
+                const t = e.touches[0];
+                startX = t.clientX;
+                startY = t.clientY;
                 dragStartTranslate = currentTranslate;
                 isDragging = true;
                 moved = false;
+                isHorizontal = null;
                 box.classList.add('dragging');
                 track.classList.add('is-dragging');
             }
 
             function onTouchMove(e) {
                 if (!isDragging || !e.touches || !e.touches[0]) return;
-                const dx = e.touches[0].clientX - startX;
-                const dy = e.touches[0].clientY - startY;
-                if (Math.abs(dy) > Math.abs(dx) && Math.abs(dx) < 10) return;
+
+                const t = e.touches[0];
+                const dx = t.clientX - startX;
+                const dy = t.clientY - startY;
+
+                /* ── direction decide (chinna jitter ignore) ── */
+                if (isHorizontal === null) {
+                    if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+                    isHorizontal = Math.abs(dx) > Math.abs(dy);
+
+                    if (!isHorizontal) {
+                        /* vertical scroll → gallery drag cancel */
+                        isDragging = false;
+                        box.classList.remove('dragging');
+                        track.classList.remove('is-dragging');
+                        showImage(currentIndex, true);
+                        return;
+                    }
+                }
+
+                /* ⚡ horizontal aithe page scroll ni aapi — idi KEY fix */
+                if (e.cancelable) e.preventDefault();
+
                 moved = true;
+
                 let next = dragStartTranslate + dx;
-                const slideWidth = getSlideWidth();
-                const maxTranslate = -(validImages.length - 1) * slideWidth;
+                const maxTranslate = -(count - 1) * slideWidth;
+
                 if (currentIndex === 0 && dx > 0) next = dragStartTranslate + dx * 0.28;
-                if (currentIndex === validImages.length - 1 && dx < 0) next = dragStartTranslate + dx * 0.28;
+                if (currentIndex === count - 1 && dx < 0) next = dragStartTranslate + dx * 0.28;
+
                 if (next > 0) next = 0;
                 if (next < maxTranslate) next = maxTranslate;
-                track.style.transform = `translate3d(${next}px, 0, 0)`;
+
+                applyTransform(next);
             }
 
             function onTouchEnd(e) {
                 if (!isDragging) return;
-                const dx = e.changedTouches[0].clientX - startX;
-                const slideWidth = getSlideWidth();
-                const threshold = Math.max(40, slideWidth * 0.18);
                 isDragging = false;
                 box.classList.remove('dragging');
-                if (moved && Math.abs(dx) >= threshold) {
-                    if (dx < 0 && currentIndex < validImages.length - 1) { showImage(currentIndex + 1, true); return; }
-                    if (dx > 0 && currentIndex > 0) { showImage(currentIndex - 1, true); return; }
+
+                let dx = 0;
+                if (e.changedTouches && e.changedTouches[0]) {
+                    dx = e.changedTouches[0].clientX - startX;
+                }
+
+                const threshold = Math.max(30, slideWidth * 0.15);
+
+                if (moved && isHorizontal && Math.abs(dx) >= threshold) {
+                    if (dx < 0 && currentIndex < count - 1) {
+                        showImage(currentIndex + 1, true);
+                        return;
+                    }
+                    if (dx > 0 && currentIndex > 0) {
+                        showImage(currentIndex - 1, true);
+                        return;
+                    }
                 }
                 showImage(currentIndex, true);
             }
 
-            box.addEventListener('touchstart', onTouchStart, { passive: true });
-            box.addEventListener('touchmove', onTouchMove, { passive: true });
-            box.addEventListener('touchend', onTouchEnd, { passive: true });
-
+            /* ═══════════════ MOUSE (desktop) ═══════════════ */
             let mouseDown = false;
-            box.addEventListener('mousedown', e => {
+
+            function onMouseDown(e) {
                 if (e.button !== 0) return;
                 mouseDown = true;
                 startX = e.clientX;
@@ -1990,33 +2091,84 @@
                 moved = false;
                 box.classList.add('dragging');
                 track.classList.add('is-dragging');
-            });
-            window.addEventListener('mousemove', e => {
+            }
+
+            function onMouseMove(e) {
                 if (!mouseDown) return;
                 const dx = e.clientX - startX;
                 if (Math.abs(dx) > 4) moved = true;
+
                 let next = dragStartTranslate + dx;
-                const slideWidth = getSlideWidth();
-                const maxTranslate = -(validImages.length - 1) * slideWidth;
+                const maxTranslate = -(count - 1) * slideWidth;
+
                 if (currentIndex === 0 && dx > 0) next = dragStartTranslate + dx * 0.28;
-                if (currentIndex === validImages.length - 1 && dx < 0) next = dragStartTranslate + dx * 0.28;
+                if (currentIndex === count - 1 && dx < 0) next = dragStartTranslate + dx * 0.28;
+
                 if (next > 0) next = 0;
                 if (next < maxTranslate) next = maxTranslate;
-                track.style.transform = `translate3d(${next}px, 0, 0)`;
-            });
-            window.addEventListener('mouseup', e => {
+
+                applyTransform(next);
+            }
+
+            function onMouseUp(e) {
                 if (!mouseDown) return;
                 mouseDown = false;
                 box.classList.remove('dragging');
+
                 const dx = e.clientX - startX;
-                const slideWidth = getSlideWidth();
-                const threshold = Math.max(40, slideWidth * 0.18);
+                const threshold = Math.max(30, slideWidth * 0.15);
+
                 if (moved && Math.abs(dx) >= threshold) {
-                    if (dx < 0 && currentIndex < validImages.length - 1) { showImage(currentIndex + 1, true); return; }
-                    if (dx > 0 && currentIndex > 0) { showImage(currentIndex - 1, true); return; }
+                    if (dx < 0 && currentIndex < count - 1) {
+                        showImage(currentIndex + 1, true);
+                        return;
+                    }
+                    if (dx > 0 && currentIndex > 0) {
+                        showImage(currentIndex - 1, true);
+                        return;
+                    }
                 }
                 showImage(currentIndex, true);
-            });
+            }
+
+            /* ═══════════════ RESIZE / ROTATE ═══════════════ */
+            function onResize() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    measure();
+                    showImage(currentIndex, false);
+                }, 120);
+            }
+
+            /* ═══════════════ LISTENERS ═══════════════ */
+            box.addEventListener('touchstart', onTouchStart, { passive: true });
+            /* ⚡ MUST be passive:false — preventDefault kosam */
+            box.addEventListener('touchmove', onTouchMove, { passive: false });
+            box.addEventListener('touchend', onTouchEnd, { passive: true });
+            box.addEventListener('touchcancel', onTouchEnd, { passive: true });
+
+            box.addEventListener('mousedown', onMouseDown);
+            window.addEventListener('mousemove', onMouseMove);
+            window.addEventListener('mouseup', onMouseUp);
+
+            window.addEventListener('resize', onResize);
+            window.addEventListener('orientationchange', onResize);
+
+            /* ── CLEANUP (next updateGallery call lo run avutundi) ── */
+            box._galleryCleanup = function() {
+                box.removeEventListener('touchstart', onTouchStart);
+                box.removeEventListener('touchmove', onTouchMove);
+                box.removeEventListener('touchend', onTouchEnd);
+                box.removeEventListener('touchcancel', onTouchEnd);
+                box.removeEventListener('mousedown', onMouseDown);
+                window.removeEventListener('mousemove', onMouseMove);
+                window.removeEventListener('mouseup', onMouseUp);
+                window.removeEventListener('resize', onResize);
+                window.removeEventListener('orientationchange', onResize);
+                clearTimeout(resizeTimer);
+                if (rafId) cancelAnimationFrame(rafId);
+                rafId = null;
+            };
         }
 
         // ==========================================
