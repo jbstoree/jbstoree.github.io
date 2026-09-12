@@ -2285,7 +2285,7 @@
             btn.disabled = false;
         }
 
-        // ───────── DELETE ─────────
+        // ───────── DELETE PRODUCT ─────────
         async function deleteProduct(id) {
             if (!confirm('Delete this product permanently?')) return;
             try {
@@ -2346,6 +2346,7 @@
         });
 
         // ───────── EXPOSE TO GLOBAL ─────────
+        window.supabaseClient = supabaseClient; // ← IMPORTANT: Orders script ki access ivvadaniki
         window.switchTab = switchTab;
         window.toggleSidebar = toggleSidebar;
         window.openAddModal = openAddModal;
@@ -2383,10 +2384,8 @@
     <!-- ═══════════════════════════════════════════════════════════ -->
     <script>
     (function () {
-        const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
-        const SUPABASE_ANON= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
-        if (typeof supabase === 'undefined') return;
-        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+        // Use the global supabaseClient so the admin login session is shared
+        const sb = window.supabaseClient;
 
         const STATUS_COLORS = {
             pending:   { bg:'#fff4d6', c:'#a3801a' },
@@ -2403,35 +2402,94 @@
             if (!box) return;
             box.innerHTML = '<p style="text-align:center;color:#8c8f94;padding:30px;">Loading orders…</p>';
 
-            const { data, error } = await sb.from('orders').select('*').order('created_at', { ascending:false });
+            try {
+                if (!sb) {
+                    box.innerHTML = '<p style="text-align:center;color:#c00;padding:30px;">❌ Supabase client not initialized.</p>';
+                    return;
+                }
 
-            if (error) {
-                box.innerHTML = '<p style="text-align:center;color:#c00;padding:30px;">❌ ' + esc(error.message) + '</p>';
-                return;
-            }
-            if (!data || !data.length) {
-                box.innerHTML = '<p style="text-align:center;color:#8c8f94;padding:40px;">Inka orders levu.</p>';
-                return;
-            }
+                // Try to sort by created_at, fallback to id if column missing
+                let { data, error } = await sb.from('orders').select('*').order('created_at', { ascending: false });
 
-            box.innerHTML = data.map(o => {
-                const st = STATUS_COLORS[o.status] || STATUS_COLORS.pending;
-                const itemsHtml = (o.items || []).map(it => `
-                    <div style="display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px dashed #eee;">
-                        <img src="${esc(it.image||'')}" onerror="this.style.background='#f1f3f6';this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2246%22 height=%2246%22><rect width=%2246%22 height=%2246%22 fill=%22%23f1f3f6%22/><text x=%2223%22 y=%2227%22 text-anchor=%22middle%22 font-size=%2216%22 fill=%22%23aaa%22>📦</text></svg>'"
-                             style="width:46px;height:46px;object-fit:contain;border-radius:8px;background:#faf8f2;padding:4px;flex-shrink:0;">
-                        <div style="flex:1;min-width:0;">
-                            <div style="font-weight:600;font-size:13.5px;color:#1a1a2e;">${esc(it.name)}</div>
-                            <div style="font-size:11px;color:#8c8f94;">${esc(it.brand||'')}</div>
+                if (error && (error.message.includes('created_at') || error.code === '42703')) {
+                    console.warn('created_at column not found, sorting by id instead.');
+                    const fallback = await sb.from('orders').select('*').order('id', { ascending: false });
+                    data = fallback.data;
+                    error = fallback.error;
+                }
+
+                if (error) {
+                    console.error('Supabase query error:', error);
+                    box.innerHTML = '<p style="text-align:center;color:#c00;padding:30px;">❌ ' + esc(error.message) + '</p>';
+                    return;
+                }
+
+                if (!data || !data.length) {
+                    box.innerHTML = '<p style="text-align:center;color:#8c8f94;padding:40px;">Inka orders levu.</p>';
+                    return;
+                }
+
+                box.innerHTML = data.map(o => {
+                    const st = STATUS_COLORS[o.status] || STATUS_COLORS.pending;
+                    const itemsHtml = (o.items || []).map(it => `
+                        <div style="display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px dashed #eee;">
+                            <img src="${esc(it.image||'')}" onerror="this.style.background='#f1f3f6';this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2246%22 height=%2246%22><rect width=%2246%22 height=%2246%22 fill=%22%23f1f3f6%22/><text x=%2223%22 y=%2227%22 text-anchor=%22middle%22 font-size=%2216%22 fill=%22%23aaa%22>📦</text></svg>'"
+                                 style="width:46px;height:46px;object-fit:contain;border-radius:8px;background:#faf8f2;padding:4px;flex-shrink:0;">
+                            <div style="flex:1;min-width:0;">
+                                <div style="font-weight:600;font-size:13.5px;color:#1a1a2e;">${esc(it.name)}</div>
+                                <div style="font-size:11px;color:#8c8f94;">${esc(it.brand||'')}</div>
+                            </div>
+                            <div style="text-align:right;font-size:12.5px;">
+                                <div style="font-weight:600;color:#1a1a2e;">${it.qty} × ${money(it.price)}</div>
+                                <div style="color:#a3801a;font-weight:700;">${money(it.qty*it.price)}</div>
+                            </div>
+                        </div>`).join('');
+
+                    let dt = 'N/A';
+                    if (o.created_at) {
+                        try { dt = new Date(o.created_at).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'}); } catch(e){}
+                    }
+
+                    return `
+                    <div style="background:#fff;border:1px solid #e8ecf1;border-radius:14px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.04);">
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+                            <div>
+                                <div style="font-weight:800;font-size:15px;color:#a3801a;letter-spacing:.5px;">${esc(o.order_code)}</div>
+                                <div style="font-size:11.5px;color:#8c8f94;margin-top:2px;"><i class="far fa-clock"></i> ${esc(dt)}</div>
+                            </div>
+                            <span style="background:${st.bg};color:${st.c};font-size:11px;font-weight:800;padding:5px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.4px;">${esc(o.status)}</span>
                         </div>
-                        <div style="text-align:right;font-size:12.5px;">
-                            <div style="font-weight:600;color:#1a1a2e;">${it.qty} × ${money(it.price)}</div>
-                            <div style="color:#a3801a;font-weight:700;">${money(it.qty*it.price)}</div>
+
+                        <div style="background:#f8f9fb;border-radius:12px;padding:14px;margin-bottom:12px;border-left:3px solid #2874f0;">
+                            <div style="font-size:11px;color:#8c8f94;margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">👤 Customer Details</div>
+                            <div style="font-size:13.5px;line-height:1.85;color:#1a1a2e;">
+                                <div style="font-weight:700;font-size:14.5px;">${esc(o.customer_name||'—')}</div>
+                                <div>📱 <a href="tel:${esc(o.mobile)}" style="color:#2874f0;text-decoration:none;font-weight:600;">${esc(o.mobile||'—')}</a></div>
+                                <div>📧 ${esc(o.user_email||'—')}</div>
+                                <div style="color:#4a4a5a;">📍 ${esc(o.address||'—')}</div>
+                            </div>
+                            <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+                                <a href="https://wa.me/91${esc(o.mobile)}" target="_blank"
+                                   style="background:#25D366;color:#fff;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;">
+                                   <i class="fab fa-whatsapp"></i> WhatsApp
+                                </a>
+                                <a href="tel:${esc(o.mobile)}"
+                                   style="background:#1a1a2e;color:#fff;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;">
+                                   <i class="fas fa-phone"></i> Call
+                                </a>
+                            </div>
                         </div>
-                    </div>`).join('');
 
-                const dt = new Date(o.created_at).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'});
+                        <div style="font-size:11px;color:#8c8f94;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">🛍 Items (${(o.items||[]).length})</div>
+                        ${itemsHtml}
 
-                return `
-                <div style="background:#fff;border:1px solid #e8ecf1;border-radius:14px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.04);">
-                    <div
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:2px solid #f0ead6;">
+                            <span style="font-weight:700;font-size:13px;color:#1a1a2e;">TOTAL</span>
+                            <span style="font-weight:800;font-size:19px;color:#a3801a;">${money(o.total)}</span>
+                        </div>
+
+                        <div style="margin-top:12px; display:flex; gap:10px; align-items:center;">
+                            <select data-order="${esc(o.id)}" class="statusSel"
+                                style="flex:1; border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:600;background:#f8f9fb;font-family:'Inter',sans-serif;color:#1a1a2e;cursor:pointer;outline:none;">
+                                ${['pending','confirmed','shipped','delivered','cancelled'].map(s =>
+                                    `<option value="${s}" ${o.status===s?'selected
