@@ -261,6 +261,71 @@ input:focus{
 }
 .back:hover{color:#a27e1c}
 
+/* ================= MODAL / POPUP STYLES ================= */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(23, 23, 23, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+.modal-box {
+  background: #fff;
+  border: 1px solid #e4d8ae;
+  border-radius: 20px;
+  padding: 30px 24px;
+  width: 90%;
+  max-width: 380px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+  transform: translateY(20px) scale(0.95);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.modal-overlay.active .modal-box {
+  transform: translateY(0) scale(1);
+}
+.modal-icon {
+  font-size: 42px;
+  color: #d4af37;
+  margin-bottom: 15px;
+}
+.modal-box h2 {
+  font: 700 22px "Playfair Display", Georgia, serif;
+  color: #171717;
+  margin: 0 0 10px;
+}
+.modal-box p {
+  font: 500 13px "Poppins", Arial, sans-serif;
+  color: #666;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+.modal-btn {
+  width: 100%;
+  height: 48px;
+  border: 1px solid #c79e12;
+  border-radius: 12px;
+  background: #d4af37;
+  color: #151515;
+  font: 700 13px "Poppins", Arial, sans-serif;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.modal-btn:hover {
+  background: #e1bd45;
+}
+/* ======================================================== */
+
 @media(max-width:480px){
   body{padding:8px 10px 12px}
   .page{min-height:calc(100vh - 20px)}
@@ -390,6 +455,16 @@ input:focus{
   <a class="back" href="index.html">← Back to JB STORE</a>
 </div>
 
+<!-- ✅ CUSTOM POPUP MODAL HTML -->
+<div class="modal-overlay" id="customModal">
+  <div class="modal-box">
+    <div class="modal-icon"><i class="fa-regular fa-envelope"></i></div>
+    <h2>Account Created</h2>
+    <p>Please check your email and confirm your account to continue.</p>
+    <button class="modal-btn" id="closeModalBtn">OK</button>
+  </div>
+</div>
+
 <script>
 const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
@@ -406,15 +481,6 @@ const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
 // =====================================================
 // GOOGLE OAUTH CALLBACK / EXISTING SESSION
 // =====================================================
-// Android returns to:
-// jbstore://auth/callback#access_token=...
-//
-// MainActivity sends that callback to this login.html.
-// Because detectSessionInUrl=true, Supabase processes the
-// access token here and persists the session.
-// Then move the user to the main website automatically.
-// =====================================================
-
 let __jbRedirectingToHome = false;
 
 function goToHomeAfterLogin() {
@@ -475,6 +541,24 @@ window.addEventListener('orientationchange', function () { setTimeout(forceViewp
 document.addEventListener('visibilitychange', function () {
   if (!document.hidden) forceViewport();
 });
+
+// ================= MODAL / POPUP LOGIC =================
+const customModal = document.getElementById('customModal');
+const closeModalBtn = document.getElementById('closeModalBtn');
+
+function showCustomModal() {
+  customModal.classList.add('active');
+}
+
+function closeCustomModal() {
+  customModal.classList.remove('active');
+}
+
+closeModalBtn.addEventListener('click', closeCustomModal);
+customModal.addEventListener('click', (e) => {
+  if (e.target === customModal) closeCustomModal();
+});
+// =======================================================
 
 $('togglePassword').addEventListener('click', () => {
   const input = $('password');
@@ -564,7 +648,9 @@ $('signupBtn').addEventListener('click', async () => {
   if (data.session) {
     window.location.replace('index.html');
   } else {
-    showStatus('Account created. Please check your email and confirm your account.', true);
+    // ✅ ఇక్కడ మార్పు చేశాను: కింద గ్రీన్ మెసేజ్ రాకుండా Popup వచ్చేలా
+    showStatus(''); // Clear any existing status text
+    showCustomModal(); // Show the popup
   }
 });
 
@@ -605,5 +691,3 @@ $('guestBtn').addEventListener('click', async () => {
 </script>
 </body>
 </html>
-
-
