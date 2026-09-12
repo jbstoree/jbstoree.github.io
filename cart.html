@@ -226,6 +226,57 @@
     }
     .shop-now-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(212, 175, 55, 0.3); }
 
+    /* ============ SUCCESS VIEW (IN-PAGE REPLACEMENT) ============ */
+    #orderSuccessView {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 60vh;
+      padding: 20px;
+      text-align: center;
+      animation: ckUp 0.3s ease;
+    }
+    .success-card {
+      background: #ffffff;
+      border-radius: 22px;
+      padding: 30px 24px;
+      max-width: 380px;
+      width: 100%;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      border-top: 4px solid #D4AF37;
+      box-sizing: border-box;
+    }
+    .success-card .tick-circle {
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      background: #e8f7ee;
+      color: #25D366;
+      font-size: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+    }
+    .success-card h3 { margin: 0 0 8px; font-size: 20px; color: #111111; }
+    .success-card p { margin: 0 0 6px; font-size: 13px; color: #777777; }
+    .success-card .code { font-weight: 800; color: #a3801a; letter-spacing: 1px; font-size: 16px; }
+    .success-card .note { font-size: 13px; color: #555; margin-top: 12px; }
+    .success-card button {
+      margin-top: 20px;
+      width: 100%;
+      border: 0;
+      border-radius: 14px;
+      padding: 14px;
+      background: #111111;
+      color: #d4af37;
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
     /* ============ PROFILE MODAL ============ */
     .jb-profile-modal {
       position: fixed;
@@ -354,50 +405,6 @@
     .ck-go { background: linear-gradient(135deg, #25D366, #128C7E); color: #ffffff; box-shadow: 0 8px 22px rgba(37, 211, 102, 0.35); }
     .ck-go:disabled { opacity: 0.6; cursor: wait; }
 
-    /* ============ SUCCESS MODAL (FIXED FOR APP) ============ */
-    .ok-modal {
-      position: fixed !important;
-      top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
-      width: 100vw !important;
-      height: 100vh !important;
-      height: 100dvh !important;
-      z-index: 2147483647 !important;
-      display: none;
-      background: rgba(0, 0, 0, 0.85) !important;
-      padding: 20px;
-      box-sizing: border-box;
-      justify-content: center !important;
-      align-items: center !important;
-      flex-direction: column !important;
-      overflow: hidden !important;
-      overscroll-behavior: contain;
-      -webkit-overflow-scrolling: touch;
-    }
-    .ok-modal.show { display: flex !important; }
-    .ok-card {
-      background: #ffffff !important;
-      border-radius: 22px !important;
-      padding: 30px 24px !important;
-      text-align: center !important;
-      max-width: 380px !important;
-      width: 90% !important;
-      font-family: 'Poppins', Arial, sans-serif !important;
-      -webkit-animation: ckUp 0.3s ease;
-      animation: ckUp 0.3s ease;
-      margin: auto !important;
-      max-height: 85vh !important;
-      max-height: 85dvh !important;
-      overflow-y: auto !important;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.3) !important;
-      position: relative !important;
-      z-index: 2147483647 !important;
-    }
-    .ok-card .tick { width: 74px; height: 74px; border-radius: 50%; background: #e8f7ee; color: #25D366; font-size: 40px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
-    .ok-card h3 { margin: 0 0 8px; font-size: 20px; color: #111111; }
-    .ok-card p { margin: 0 0 6px; font-size: 13px; color: #777777; }
-    .ok-card .code { font-weight: 800; color: #a3801a; letter-spacing: 1px; font-size: 16px; }
-    .ok-card button { margin-top: 20px; width: 100%; border: 0; border-radius: 14px; padding: 14px; background: #111111; color: #d4af37; font-weight: 800; font-size: 15px; cursor: pointer; font-family: inherit; }
-
     /* ============ MOBILE ============ */
     @media (max-width: 768px) {
       .cart-page { padding: 0 12px; margin: 16px auto; min-height: 50vh; }
@@ -436,7 +443,6 @@
       .ck-field textarea { min-height: 60px; }
       .ck-actions { margin: 6px -16px 0; padding: 12px 16px calc(14px + env(safe-area-inset-bottom, 0px)); }
       .ck-actions button { font-size: 13.5px; padding: 12px; }
-      .ok-card { padding: 24px 18px; max-width: 90%; }
     }
   </style>
 
@@ -541,45 +547,60 @@
 
 <!-- ===== CART PAGE ===== -->
 <main class="cart-page">
-  <div class="cart-header">
-    <div>
-      <h1>🛒 Your Cart</h1>
-      <p class="cart-subtitle">Review your items before checkout</p>
+  <!-- CART CONTENT WRAPPER (Hidden when order is placed) -->
+  <div id="cartPageContent">
+    <div class="cart-header">
+      <div>
+        <h1>🛒 Your Cart</h1>
+        <p class="cart-subtitle">Review your items before checkout</p>
+      </div>
+      <span class="cart-count" id="cartCount">0 items</span>
     </div>
-    <span class="cart-count" id="cartCount">0 items</span>
+
+    <div id="cartItemsContainer">
+      <div id="cartItems" class="cart-items"></div>
+      <div id="cartSummary" class="cart-summary" style="display:none;">
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <strong id="cartSubtotal">₹0</strong>
+        </div>
+        <div class="summary-row">
+          <span>Delivery</span>
+          <strong style="color:#25D366;">Free</strong>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-row total">
+          <span>Total</span>
+          <strong id="cartTotalPrice">₹0</strong>
+        </div>
+        <div class="cart-actions">
+          <button class="checkout-btn" id="proceedCheckoutBtn" type="button">
+            <span>Proceed to Checkout</span>
+            <span>→</span>
+          </button>
+          <button class="clear-cart-btn" type="button" onclick="clearCart()">🗑️ Clear Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="emptyCart" class="empty-cart" style="display:block;">
+      <div class="empty-icon">🛒</div>
+      <h2>Your cart is empty</h2>
+      <p>Browse our collection and add items you love</p>
+      <a href="index.html" class="shop-now-btn">Start Shopping →</a>
+    </div>
   </div>
 
-  <div id="cartItemsContainer">
-    <div id="cartItems" class="cart-items"></div>
-    <div id="cartSummary" class="cart-summary" style="display:none;">
-      <div class="summary-row">
-        <span>Subtotal</span>
-        <strong id="cartSubtotal">₹0</strong>
-      </div>
-      <div class="summary-row">
-        <span>Delivery</span>
-        <strong style="color:#25D366;">Free</strong>
-      </div>
-      <div class="summary-divider"></div>
-      <div class="summary-row total">
-        <span>Total</span>
-        <strong id="cartTotalPrice">₹0</strong>
-      </div>
-      <div class="cart-actions">
-        <button class="checkout-btn" id="proceedCheckoutBtn" type="button">
-          <span>Proceed to Checkout</span>
-          <span>→</span>
-        </button>
-        <button class="clear-cart-btn" type="button" onclick="clearCart()">🗑️ Clear Cart</button>
-      </div>
+  <!-- SUCCESS VIEW (Shown when order is placed) -->
+  <div id="orderSuccessView">
+    <div class="success-card">
+      <div class="tick-circle">✓</div>
+      <h3>Order Confirmed!</h3>
+      <p>Order ID:</p>
+      <p class="code" id="successOrderId">JB000000</p>
+      <p class="note">WhatsApp lo order details pampinchi — confirm cheyyandi.</p>
+      <button type="button" onclick="window.location.href='index.html'">Continue Shopping</button>
     </div>
-  </div>
-
-  <div id="emptyCart" class="empty-cart" style="display:block;">
-    <div class="empty-icon">🛒</div>
-    <h2>Your cart is empty</h2>
-    <p>Browse our collection and add items you love</p>
-    <a href="index.html" class="shop-now-btn">Start Shopping →</a>
   </div>
 </main>
 
@@ -631,9 +652,6 @@
     </div>
   </div>
 </div>
-
-<!-- ================= SUCCESS MODAL ================= -->
-<!-- Note: The static success modal HTML is removed. We will create it dynamically using JS. -->
 
 <!-- ===== EXISTING SCRIPTS ===== -->
 <script src="config.js"></script>
@@ -971,44 +989,22 @@
     const waURL = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg);
     try { const w = window.open(waURL, '_blank'); if (!w || w.closed || typeof w.closed === 'undefined') window.location.href = waURL; } catch (e) { window.location.href = waURL; }
 
+    // Clear cart from localStorage and DOM
     ['cart','jb_cart','jbstore_cart','jbCart','cartItems'].forEach(k => { try { localStorage.removeItem(k); } catch(e){} });
     const itemsBox = $('cartItems'); if (itemsBox) itemsBox.innerHTML = '';
     $('cartSummary').style.display = 'none'; $('emptyCart').style.display = 'block';
     document.querySelectorAll('.cart-badge,#cartBadge,#menuCartBadge').forEach(el => { el.textContent = '0'; el.style.display = 'none'; });
 
+    // Close checkout modal
     $('ckModal').classList.remove('show');
-    document.body.style.overflow = 'hidden'; // Prevent background scrolling
-    
-    $('ckGo').disabled = false; $('ckGo').textContent = '📲 Place Order';
+    document.body.style.overflow = 'hidden';
 
-    // --- APP FIX: Dynamically inject Success Modal with strict inline styles ---
-    var existingModal = document.getElementById('appSuccessModal');
-    if (existingModal) existingModal.remove();
-
-    var modalHTML = `
-      <div id="appSuccessModal" style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(0,0,0,0.85) !important; z-index: 999999999 !important; display: flex !important; justify-content: center !important; align-items: center !important; padding: 20px !important; box-sizing: border-box !important; margin: 0 !important; flex-direction: column !important; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);">
-        <div style="background: #ffffff !important; border-radius: 22px !important; padding: 30px 24px !important; text-align: center !important; max-width: 380px !important; width: 100% !important; box-shadow: 0 10px 40px rgba(0,0,0,0.3) !important; margin: auto !important; position: relative !important; z-index: 999999999 !important; font-family: 'Poppins', Arial, sans-serif !important;">
-          <div style="width: 74px; height: 74px; border-radius: 50%; background: #e8f7ee; color: #25D366; font-size: 40px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; font-family: sans-serif !important;">✓</div>
-          <h3 style="margin: 0 0 8px; font-size: 20px; color: #111111; font-family: sans-serif !important;">Order Confirmed!</h3>
-          <p style="margin: 0 0 6px; font-size: 13px; color: #777777; font-family: sans-serif !important;">Order ID:</p>
-          <p style="font-weight: 800; color: #a3801a; letter-spacing: 1px; font-size: 16px; margin: 0 0 6px; font-family: sans-serif !important;">${orderCode}</p>
-          <p style="margin: 0 0 6px; font-size: 13px; color: #777777; font-family: sans-serif !important; margin-top:12px;">WhatsApp lo order details pampinchi — confirm cheyyandi.</p>
-          <button id="appSuccessBtn" style="margin-top: 20px; width: 100%; border: 0; border-radius: 14px; padding: 14px; background: #111111; color: #d4af37; font-weight: 800; font-size: 15px; cursor: pointer; font-family: sans-serif !important;">Continue Shopping</button>
-        </div>
-      </div>
-    `;
-    
-    // Inject into the body
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-    
-    // Bind click event for the new button
-    document.getElementById('appSuccessBtn').onclick = function() {
-      var m = document.getElementById('appSuccessModal');
-      if(m) m.remove();
-      document.body.style.overflow = '';
-      window.location.href = 'index.html';
-    };
-    // -------------------------------------------------------------------------
+    // --- APP FIX: Show Success View In-Page Instead of Modal ---
+    document.getElementById('cartPageContent').style.display = 'none';
+    document.getElementById('orderSuccessView').style.display = 'flex';
+    document.getElementById('successOrderId').textContent = orderCode;
+    window.scrollTo(0, 0);
+    // -----------------------------------------------------------
   });
 })();
 </script>
