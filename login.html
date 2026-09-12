@@ -393,7 +393,15 @@ input:focus{
 <script>
 const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
-const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+  auth: {
+    flowType: 'implicit',
+    detectSessionInUrl: true,
+    persistSession: true,
+    autoRefreshToken: true
+  }
+});
 
 const $ = id => document.getElementById(id);
 
@@ -433,12 +441,22 @@ $('googleBtn').addEventListener('click', async () => {
   forceViewport();
 
   showStatus('Opening Google…');
+
+  // Android app → return through the custom deep link.
+  // Normal website browser → return to the current website.
+  const isAndroidApp = !!window.AndroidShare;
+
+  const redirectTo = isAndroidApp
+    ? 'jbstore://auth/callback'
+    : window.location.origin + '/index.html';
+
   const { error } = await client.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: 'https://jbstoree.github.io/index.html'
+      redirectTo: redirectTo
     }
   });
+
   if (error) showStatus(error.message);
 });
 
@@ -539,3 +557,4 @@ $('guestBtn').addEventListener('click', async () => {
 </script>
 </body>
 </html>
+
