@@ -7,58 +7,40 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
-        /* ───────── RESET & BASE ───────── */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
-            background: #f1f3f6;
-            color: #1a1a2e;
-            display: flex;
-            min-height: 100vh;
-            font-size: 14px;
+            background: #f1f3f6; color: #1a1a2e;
+            display: flex; min-height: 100vh; font-size: 14px;
         }
         body.login-active { display: block; overflow: hidden; }
-
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #f1f3f6; }
         ::-webkit-scrollbar-thumb { background: #c4c4c4; border-radius: 8px; }
-        ::-webkit-scrollbar-thumb:hover { background: #a0a0a0; }
 
-        /* ───────── SIDEBAR ───────── */
+        /* SIDEBAR */
         .sidebar {
-            width: 260px;
-            background: #ffffff;
+            width: 260px; background: #ffffff;
             border-right: 1px solid #e2e8f0;
             padding: 24px 16px;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            position: sticky;
-            top: 0;
-            overflow-y: auto;
-            flex-shrink: 0;
-            transition: transform 0.3s ease;
-            z-index: 100;
+            display: flex; flex-direction: column;
+            height: 100vh; position: sticky; top: 0;
+            overflow-y: auto; flex-shrink: 0;
+            transition: transform 0.3s ease; z-index: 100;
         }
         .sidebar-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 32px;
-            padding-bottom: 20px;
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 32px; padding-bottom: 20px;
             border-bottom: 1px solid #e2e8f0;
         }
         .sidebar-brand .logo-icon {
             width: 42px; height: 42px;
             background: linear-gradient(135deg, #2874f0, #1a5fc7);
-            border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
+            border-radius: 10px; display: flex;
+            align-items: center; justify-content: center;
             color: #fff; font-size: 20px; font-weight: 800;
         }
-        .sidebar-brand h1 {
-            font-size: 20px; font-weight: 700;
-            color: #1a1a2e; letter-spacing: -0.5px;
-        }
+        .sidebar-brand h1 { font-size: 20px; font-weight: 700; color: #1a1a2e; letter-spacing: -0.5px; }
         .sidebar-brand h1 span { color: #2874f0; }
         .sidebar-nav { flex: 1; }
         .sidebar-nav .nav-label {
@@ -104,13 +86,10 @@
         }
         .sidebar-footer .logout-btn:hover { background: #fef0ef; }
 
-        /* ───────── MAIN CONTENT ───────── */
-        .main-content {
-            flex: 1; padding: 28px 32px 40px;
-            min-width: 0; background: #f1f3f6;
-        }
+        /* MAIN */
+        .main-content { flex: 1; padding: 28px 32px 40px; min-width: 0; background: #f1f3f6; }
 
-        /* ───────── TOP BAR ───────── */
+        /* TOPBAR */
         .topbar {
             display: flex; justify-content: space-between;
             align-items: center; flex-wrap: wrap;
@@ -118,15 +97,11 @@
         }
         .topbar .page-title h2 { font-size: 24px; font-weight: 700; color: #1a1a2e; }
         .topbar .page-title p { color: #6b6b7a; font-size: 14px; margin-top: 2px; }
-        .topbar .top-actions {
-            display: flex; align-items: center;
-            gap: 12px; flex-wrap: wrap;
-        }
+        .topbar .top-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
         .topbar .top-actions .search-box {
             display: flex; align-items: center;
             background: #fff; border-radius: 8px;
-            padding: 0 16px; border: 1px solid #e2e8f0;
-            transition: 0.2s;
+            padding: 0 16px; border: 1px solid #e2e8f0; transition: 0.2s;
         }
         .topbar .top-actions .search-box:focus-within {
             border-color: #2874f0;
@@ -153,7 +128,7 @@
             box-shadow: 0 4px 12px rgba(40, 116, 240, 0.25);
         }
 
-        /* ───────── STATS CARDS ───────── */
+        /* STATS */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -165,23 +140,16 @@
             border: 1px solid #e8ecf1;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
         }
-        .stat-card .stat-top {
-            display: flex; justify-content: space-between;
-            align-items: flex-start;
-        }
+        .stat-card .stat-top { display: flex; justify-content: space-between; align-items: flex-start; }
         .stat-card .stat-top .stat-icon {
             width: 42px; height: 42px; border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px;
+            display: flex; align-items: center; justify-content: center; font-size: 18px;
         }
         .stat-card .stat-top .stat-icon.blue { background: #e8f0fe; color: #2874f0; }
         .stat-card .stat-top .stat-icon.green { background: #e6f7ec; color: #0f7b3a; }
         .stat-card .stat-top .stat-icon.orange { background: #fef3e8; color: #e67e22; }
         .stat-card .stat-top .stat-icon.purple { background: #f0ebff; color: #6c3cb3; }
-        .stat-card .stat-number {
-            font-size: 28px; font-weight: 700;
-            color: #1a1a2e; margin-top: 6px;
-        }
+        .stat-card .stat-number { font-size: 28px; font-weight: 700; color: #1a1a2e; margin-top: 6px; }
         .stat-card .stat-label { font-size: 14px; color: #6b6b7a; font-weight: 500; }
         .stat-card .stat-change {
             font-size: 12px; font-weight: 600;
@@ -190,7 +158,7 @@
             background: #e6f7ec; color: #0f7b3a;
         }
 
-        /* ───────── FILTER BAR ───────── */
+        /* FILTER */
         .filter-bar {
             display: flex; flex-wrap: wrap;
             align-items: center; gap: 12px;
@@ -216,7 +184,7 @@
         }
         .filter-bar .filter-clear:hover { text-decoration: underline; }
 
-        /* ───────── PRODUCT TABLE ───────── */
+        /* TABLE */
         .table-wrap {
             background: #fff; border-radius: 14px;
             border: 1px solid #e8ecf1; overflow: hidden;
@@ -227,25 +195,17 @@
             width: 100%; border-collapse: collapse;
             font-size: 13px; min-width: 600px;
         }
-        .product-table thead {
-            background: #f8f9fb; border-bottom: 1px solid #e8ecf1;
-        }
+        .product-table thead { background: #f8f9fb; border-bottom: 1px solid #e8ecf1; }
         .product-table thead th {
             padding: 14px 16px; text-align: left;
             font-weight: 600; color: #4a4a5a;
             font-size: 12px; text-transform: uppercase;
             letter-spacing: 0.4px; white-space: nowrap;
         }
-        .product-table tbody tr {
-            border-bottom: 1px solid #f1f3f6; transition: 0.15s;
-        }
+        .product-table tbody tr { border-bottom: 1px solid #f1f3f6; transition: 0.15s; }
         .product-table tbody tr:hover { background: #fafbfc; }
-        .product-table tbody td {
-            padding: 14px 16px; vertical-align: middle; color: #1a1a2e;
-        }
-        .product-table .product-cell {
-            display: flex; align-items: center; gap: 12px;
-        }
+        .product-table tbody td { padding: 14px 16px; vertical-align: middle; color: #1a1a2e; }
+        .product-table .product-cell { display: flex; align-items: center; gap: 12px; }
         .product-table .product-cell .thumb {
             width: 48px; height: 48px; border-radius: 8px;
             background: #f1f3f6; display: flex;
@@ -253,9 +213,7 @@
             overflow: hidden; flex-shrink: 0;
             border: 1px solid #e8ecf1;
         }
-        .product-table .product-cell .thumb img {
-            width: 100%; height: 100%; object-fit: contain;
-        }
+        .product-table .product-cell .thumb img { width: 100%; height: 100%; object-fit: contain; }
         .product-table .product-cell .info .name { font-weight: 600; font-size: 14px; }
         .product-table .product-cell .info .id { font-size: 12px; color: #8c8f94; }
         .product-table .badge-cat {
@@ -269,13 +227,8 @@
         .product-table .badge-cat.ac { background: #e0f2f1; color: #00695c; }
         .product-table .badge-cat.tv { background: #fff3e0; color: #e65100; }
         .product-table .price { font-weight: 700; color: #1a1a2e; font-size: 14px; }
-        .product-table .old-price {
-            font-size: 12px; color: #8c8f94;
-            text-decoration: line-through; margin-left: 6px;
-        }
-        .product-table .action-btns {
-            display: flex; gap: 6px; flex-wrap: wrap;
-        }
+        .product-table .old-price { font-size: 12px; color: #8c8f94; text-decoration: line-through; margin-left: 6px; }
+        .product-table .action-btns { display: flex; gap: 6px; flex-wrap: wrap; }
         .product-table .action-btns button {
             padding: 5px 14px; border-radius: 6px;
             border: none; font-weight: 600;
@@ -287,7 +240,7 @@
         .product-table .action-btns .btn-delete { background: #fde8e8; color: #d32f2f; }
         .product-table .action-btns .btn-delete:hover { background: #fccccc; }
 
-        /* ───────── PAGINATION ───────── */
+        /* PAGINATION */
         .pagination-wrap {
             display: flex; justify-content: space-between;
             align-items: center; flex-wrap: wrap; gap: 12px;
@@ -303,17 +256,11 @@
             cursor: pointer; transition: 0.15s;
             font-family: 'Inter', sans-serif;
         }
-        .pagination-wrap .pages button:hover {
-            background: #f0f4ff; border-color: #2874f0;
-        }
-        .pagination-wrap .pages button.active {
-            background: #2874f0; color: #fff; border-color: #2874f0;
-        }
-        .pagination-wrap .pages button:disabled {
-            opacity: 0.4; cursor: not-allowed;
-        }
+        .pagination-wrap .pages button:hover { background: #f0f4ff; border-color: #2874f0; }
+        .pagination-wrap .pages button.active { background: #2874f0; color: #fff; border-color: #2874f0; }
+        .pagination-wrap .pages button:disabled { opacity: 0.4; cursor: not-allowed; }
 
-        /* ───────── MODAL ───────── */
+        /* MODAL */
         .modal-overlay {
             display: none; position: fixed; inset: 0;
             background: rgba(0, 0, 0, 0.5);
@@ -332,10 +279,7 @@
             animation: slideUp 0.3s ease;
         }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .modal .modal-header {
             display: flex; justify-content: space-between;
             align-items: center; margin-bottom: 24px;
@@ -350,14 +294,10 @@
             display: flex; align-items: center; justify-content: center;
         }
         .modal .modal-header .close-modal:hover { background: #e2e8f0; }
-        .modal .form-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 18px 24px;
-        }
+        .modal .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 24px; }
         .modal .form-grid .full-width { grid-column: 1 / -1; }
         .modal .form-group { display: flex; flex-direction: column; gap: 5px; }
-        .modal .form-group label {
-            font-weight: 600; font-size: 13px; color: #4a4a5a;
-        }
+        .modal .form-group label { font-weight: 600; font-size: 13px; color: #4a4a5a; }
         .modal .form-group label .required { color: #d32f2f; }
         .modal .form-group input, .modal .form-group select, .modal .form-group textarea {
             padding: 10px 14px; border-radius: 8px;
@@ -397,15 +337,12 @@
             font-family: 'Inter', sans-serif; font-size: 13px;
             background: #fff; outline: none;
         }
-        .modal .dynamic-row input:focus, .modal .dynamic-row select:focus {
-            border-color: #2874f0;
-        }
+        .modal .dynamic-row input:focus, .modal .dynamic-row select:focus { border-color: #2874f0; }
         .modal .dynamic-row .remove-row {
             background: transparent; border: none;
             color: #d32f2f; font-size: 18px;
             cursor: pointer; padding: 0 4px; font-weight: 700;
         }
-        .modal .dynamic-row .remove-row:hover { color: #b71c1c; }
         .modal .add-row-btn {
             background: transparent; border: 1px dashed #b0b8c4;
             color: #4a4a5a; padding: 6px 18px;
@@ -414,14 +351,9 @@
             font-family: 'Inter', sans-serif;
             transition: 0.2s; margin-top: 2px;
         }
-        .modal .add-row-btn:hover {
-            border-color: #2874f0; color: #2874f0; background: #f0f4ff;
-        }
+        .modal .add-row-btn:hover { border-color: #2874f0; color: #2874f0; background: #f0f4ff; }
 
-        .color-image-tags {
-            display: flex; flex-wrap: wrap;
-            gap: 12px; padding: 6px 2px; flex: 1;
-        }
+        .color-image-tags { display: flex; flex-wrap: wrap; gap: 12px; padding: 6px 2px; flex: 1; }
         .color-image-tag {
             position: relative; width: 72px; height: 72px;
             border-radius: 8px; overflow: visible;
@@ -429,10 +361,6 @@
             border: 2px solid #e2e8f0;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
             transition: 0.2s;
-        }
-        .color-image-tag:hover {
-            border-color: #2874f0;
-            box-shadow: 0 2px 8px rgba(40, 116, 240, 0.12);
         }
         .color-image-tag img {
             width: 100%; height: 100%;
@@ -450,11 +378,7 @@
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
             transition: 0.2s; z-index: 3;
         }
-        .color-image-tag .remove-img:hover { background: #b71c1c; transform: scale(1.1); }
-        .color-image-input-wrap {
-            display: flex; gap: 6px;
-            align-items: center; flex-wrap: wrap; flex: 1 1 200px;
-        }
+        .color-image-input-wrap { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; flex: 1 1 200px; }
         .color-image-input-wrap input {
             flex: 1; min-width: 100px;
             padding: 6px 10px; border-radius: 6px;
@@ -462,7 +386,6 @@
             font-family: 'Inter', sans-serif; font-size: 13px;
             background: #fff; outline: none;
         }
-        .color-image-input-wrap input:focus { border-color: #2874f0; }
         .color-image-input-wrap label {
             background: #e8f0fe; color: #2874f0;
             padding: 4px 12px; border-radius: 6px;
@@ -470,12 +393,8 @@
             font-weight: 600; border: 1px solid #2874f0;
             white-space: nowrap; transition: 0.2s;
         }
-        .color-image-input-wrap label:hover { background: #d2e0fc; }
 
-        .main-image-preview-wrap {
-            display: flex; gap: 16px;
-            flex-wrap: wrap; align-items: center;
-        }
+        .main-image-preview-wrap { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
         .main-image-preview-wrap .main-image-tag {
             position: relative; width: 90px; height: 90px;
             border-radius: 8px; overflow: visible;
@@ -483,10 +402,6 @@
             border: 2px solid #e2e8f0;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
             transition: 0.2s;
-        }
-        .main-image-preview-wrap .main-image-tag:hover {
-            border-color: #2874f0;
-            box-shadow: 0 2px 8px rgba(40, 116, 240, 0.12);
         }
         .main-image-preview-wrap .main-image-tag img {
             width: 100%; height: 100%;
@@ -504,7 +419,6 @@
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
             transition: 0.2s; z-index: 3;
         }
-        .main-image-preview-wrap .main-image-tag .remove-img:hover { background: #b71c1c; transform: scale(1.1); }
         .main-image-preview-wrap .main-image-controls {
             display: flex; gap: 10px;
             flex-wrap: wrap; align-items: center; flex: 1;
@@ -516,11 +430,6 @@
             font-family: 'Inter', sans-serif; font-size: 14px;
             background: #fafbfc; outline: none; transition: 0.2s;
         }
-        .main-image-preview-wrap .main-image-controls input:focus {
-            border-color: #2874f0;
-            box-shadow: 0 0 0 3px rgba(40, 116, 240, 0.1);
-            background: #fff;
-        }
         .main-image-preview-wrap .main-image-controls .upload-label {
             background: #e8f0fe; color: #2874f0;
             padding: 8px 16px; border-radius: 8px;
@@ -528,12 +437,8 @@
             border: 1px solid #2874f0;
             white-space: nowrap; transition: 0.2s; font-size: 13px;
         }
-        .main-image-preview-wrap .main-image-controls .upload-label:hover { background: #d2e0fc; }
 
-        .brand-logo-preview-wrap {
-            display: flex; gap: 16px;
-            flex-wrap: wrap; align-items: center;
-        }
+        .brand-logo-preview-wrap { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
         .brand-logo-preview-wrap .brand-logo-tag {
             position: relative; width: 80px; height: 80px;
             border-radius: 8px; overflow: visible;
@@ -541,10 +446,6 @@
             border: 2px solid #e2e8f0;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
             transition: 0.2s;
-        }
-        .brand-logo-preview-wrap .brand-logo-tag:hover {
-            border-color: #2874f0;
-            box-shadow: 0 2px 8px rgba(40, 116, 240, 0.12);
         }
         .brand-logo-preview-wrap .brand-logo-tag img {
             width: 100%; height: 100%;
@@ -562,7 +463,6 @@
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
             transition: 0.2s; z-index: 3;
         }
-        .brand-logo-preview-wrap .brand-logo-tag .remove-img:hover { background: #b71c1c; transform: scale(1.1); }
         .brand-logo-preview-wrap .brand-logo-controls {
             display: flex; gap: 10px;
             flex-wrap: wrap; align-items: center; flex: 1;
@@ -574,11 +474,6 @@
             font-family: 'Inter', sans-serif; font-size: 14px;
             background: #fafbfc; outline: none; transition: 0.2s;
         }
-        .brand-logo-preview-wrap .brand-logo-controls input:focus {
-            border-color: #2874f0;
-            box-shadow: 0 0 0 3px rgba(40, 116, 240, 0.1);
-            background: #fff;
-        }
         .brand-logo-preview-wrap .brand-logo-controls .upload-label {
             background: #e8f0fe; color: #2874f0;
             padding: 8px 16px; border-radius: 8px;
@@ -586,7 +481,6 @@
             border: 1px solid #2874f0;
             white-space: nowrap; transition: 0.2s; font-size: 13px;
         }
-        .brand-logo-preview-wrap .brand-logo-controls .upload-label:hover { background: #d2e0fc; }
 
         .spec-group {
             background: #f8f9fb; border-radius: 12px;
@@ -604,18 +498,13 @@
             font-family: 'Inter', sans-serif; font-size: 13px;
             background: #fff; outline: none;
         }
-        .spec-group .spec-group-header input:focus { border-color: #2874f0; }
         .spec-group .spec-group-header .remove-group {
             background: transparent; border: none;
             color: #d32f2f; font-size: 18px;
             cursor: pointer; font-weight: 700; padding: 0 4px;
         }
-        .spec-group .spec-group-header .remove-group:hover { color: #b71c1c; }
         .spec-group .spec-items { padding-left: 8px; }
-        .spec-group .spec-item {
-            display: flex; gap: 10px;
-            align-items: center; padding: 6px 0; flex-wrap: wrap;
-        }
+        .spec-group .spec-item { display: flex; gap: 10px; align-items: center; padding: 6px 0; flex-wrap: wrap; }
         .spec-group .spec-item input {
             flex: 1; min-width: 100px;
             padding: 6px 10px; border-radius: 6px;
@@ -623,13 +512,11 @@
             font-family: 'Inter', sans-serif; font-size: 13px;
             background: #fff; outline: none;
         }
-        .spec-group .spec-item input:focus { border-color: #2874f0; }
         .spec-group .spec-item .remove-spec {
             background: transparent; border: none;
             color: #d32f2f; font-size: 16px;
             cursor: pointer; font-weight: 700; padding: 0 4px;
         }
-        .spec-group .spec-item .remove-spec:hover { color: #b71c1c; }
         .spec-group .add-spec-btn {
             background: transparent; border: 1px dashed #b0b8c4;
             color: #4a4a5a; padding: 4px 14px;
@@ -637,9 +524,6 @@
             font-size: 11px; font-weight: 500;
             font-family: 'Inter', sans-serif;
             transition: 0.2s; margin-top: 4px;
-        }
-        .spec-group .add-spec-btn:hover {
-            border-color: #2874f0; color: #2874f0; background: #f0f4ff;
         }
 
         .modal .modal-actions {
@@ -654,22 +538,15 @@
             transition: 0.2s; font-family: 'Inter', sans-serif;
         }
         .modal .modal-actions .btn-cancel { background: #f1f3f6; color: #4a4a5a; }
-        .modal .modal-actions .btn-cancel:hover { background: #e2e8f0; }
         .modal .modal-actions .btn-submit { background: #2874f0; color: #fff; }
-        .modal .modal-actions .btn-submit:hover {
-            background: #1a5fc7;
-            box-shadow: 0 4px 14px rgba(40, 116, 240, 0.25);
-        }
 
-        /* ───────── HAMBURGER ───────── */
         .hamburger {
             display: none; background: none; border: none;
             font-size: 24px; cursor: pointer;
             color: #1a1a2e; padding: 4px;
         }
-        .hamburger:hover { color: #2874f0; }
 
-        /* ───────── LOGIN OVERLAY ───────── */
+        /* LOGIN */
         .login-overlay {
             position: fixed; inset: 0; z-index: 9999;
             display: none; justify-content: center;
@@ -697,20 +574,12 @@
         .login-box .login-brand h2 { font-size: 22px; font-weight: 700; color: #1a1a2e; }
         .login-box .login-brand p { color: #6b6b7a; font-size: 14px; }
         .login-box .form-group { margin-bottom: 16px; }
-        .login-box .form-group label {
-            font-weight: 500; font-size: 13px; color: #4a4a5a;
-            display: block; margin-bottom: 4px;
-        }
+        .login-box .form-group label { font-weight: 500; font-size: 13px; color: #4a4a5a; display: block; margin-bottom: 4px; }
         .login-box .form-group input {
             width: 100%; padding: 12px 16px;
             border-radius: 8px; border: 1px solid #e2e8f0;
             font-family: 'Inter', sans-serif; font-size: 14px;
             background: #fafbfc; transition: 0.2s; outline: none;
-        }
-        .login-box .form-group input:focus {
-            border-color: #2874f0;
-            box-shadow: 0 0 0 3px rgba(40, 116, 240, 0.1);
-            background: #fff;
         }
         .login-box .login-btn {
             width: 100%; padding: 12px;
@@ -720,20 +589,11 @@
             cursor: pointer; transition: 0.2s;
             font-family: 'Inter', sans-serif;
         }
-        .login-box .login-btn:hover {
-            background: #1a5fc7;
-            box-shadow: 0 4px 14px rgba(40, 116, 240, 0.25);
-        }
-        .login-box .login-error {
-            color: #d32f2f; font-size: 13px;
-            margin-top: 10px; text-align: center;
-        }
-        .login-box .login-error.hidden { display: none; }
+        .login-box .login-error { color: #d32f2f; font-size: 13px; margin-top: 10px; text-align: center; }
 
         .hidden { display: none !important; }
-        .text-muted { color: #8c8f94; }
 
-        /* ───────── TOAST ───────── */
+        /* TOAST */
         .toast-container {
             position: fixed; bottom: 24px; right: 24px;
             z-index: 9999; display: flex;
@@ -755,15 +615,12 @@
             color: #fff; font-size: 18px; cursor: pointer;
             margin-left: auto; opacity: 0.7;
         }
-        .toast .toast-close:hover { opacity: 1; }
 
-        /* ═════════════ MOBILE ═════════════ */
         @media (max-width: 820px) {
             .sidebar {
                 position: fixed; top: 0; left: 0;
                 transform: translateX(-100%);
                 width: 280px; height: 100vh;
-                border-right: none;
                 box-shadow: 4px 0 20px rgba(0, 0, 0, 0.08);
                 transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
                 padding: 20px 14px;
@@ -772,7 +629,6 @@
             .hamburger { display: block; }
             .main-content { padding: 16px 16px 24px; }
             .topbar .page-title h2 { font-size: 18px; }
-            .topbar .page-title p { font-size: 12px; }
             .topbar .top-actions .search-box input { width: 140px; }
             .stats-grid { gap: 12px; margin-bottom: 18px; }
             .stat-card { padding: 14px 16px; }
@@ -784,22 +640,11 @@
             .modal .form-grid .full-width { grid-column: 1; }
             .modal .dynamic-section { grid-column: 1; }
             .modal .modal-actions { flex-direction: column; }
-            .modal .modal-actions button { width: 100%; justify-content: center; }
+            .modal .modal-actions button { width: 100%; }
             .login-box { padding: 28px 24px !important; max-width: 92% !important; }
             .product-table { font-size: 12px; min-width: 500px; }
             .product-table thead th { padding: 10px 12px; font-size: 10px; }
             .product-table tbody td { padding: 10px 12px; }
-            .product-table .product-cell .thumb { width: 38px; height: 38px; }
-            .product-table .product-cell .info .name { font-size: 12px; }
-            .product-table .action-btns button { padding: 4px 10px; font-size: 10px; }
-            .pagination-wrap { flex-direction: column; align-items: center; }
-            .toast { max-width: 90%; font-size: 13px; padding: 12px 18px; }
-            .main-image-preview-wrap .main-image-tag,
-            .brand-logo-preview-wrap .brand-logo-tag { width: 72px; height: 72px; }
-            .main-image-preview-wrap .main-image-controls input,
-            .brand-logo-preview-wrap .brand-logo-controls input {
-                min-width: 120px; font-size: 13px;
-            }
         }
 
         @media (max-width: 480px) {
@@ -807,37 +652,14 @@
             .stats-grid { grid-template-columns: 1fr; }
             .topbar .top-actions .search-box input { width: 100px; }
             .topbar .top-actions .add-btn { padding: 8px 14px; font-size: 12px; }
-            .product-table { font-size: 10px; min-width: 400px; }
-            .product-table thead th { padding: 6px 8px; font-size: 8px; }
-            .product-table tbody td { padding: 6px 8px; }
-            .product-table .product-cell .thumb { width: 30px; height: 30px; }
-            .product-table .product-cell .info .name { font-size: 10px; }
-            .product-table .action-btns button { padding: 2px 6px; font-size: 8px; }
             .modal { padding: 14px 12px; }
-            .modal .form-group input,
-            .modal .form-group select,
-            .modal .form-group textarea { padding: 6px 10px; font-size: 12px; }
             .color-image-tag { width: 48px; height: 48px; }
-            .color-image-tag .remove-img {
-                width: 18px; height: 18px; font-size: 9px;
-                top: -6px; right: -6px;
-            }
-            .login-box { padding: 20px 16px !important; }
-            .login-box .login-brand h2 { font-size: 18px; }
-            .login-box .login-brand .logo-icon { width: 44px; height: 44px; font-size: 20px; }
-            .main-image-preview-wrap .main-image-tag,
-            .brand-logo-preview-wrap .brand-logo-tag { width: 56px; height: 56px; }
-            .main-image-preview-wrap .main-image-tag .remove-img,
-            .brand-logo-preview-wrap .brand-logo-tag .remove-img {
-                width: 18px; height: 18px; font-size: 9px;
-                top: -6px; right: -6px;
-            }
         }
     </style>
 </head>
 <body>
 
-    <!-- ════════════════════════ SIDEBAR ════════════════════════ -->
+    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <div class="logo-icon">JB</div>
@@ -866,7 +688,7 @@
         </div>
     </aside>
 
-    <!-- ════════════════════════ MAIN ════════════════════════ -->
+    <!-- MAIN -->
     <div class="main-content" id="mainContent">
 
         <!-- TOP BAR -->
@@ -876,7 +698,7 @@
                 <p id="pageSubtitle">Welcome back, Admin! Here's what's happening.</p>
             </div>
             <div class="top-actions">
-                <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+                <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()">
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="search-box">
@@ -887,9 +709,9 @@
             </div>
         </div>
 
-        <!-- ─── DASHBOARD TAB ─── -->
+        <!-- DASHBOARD -->
         <div id="tabDashboard">
-            <div class="stats-grid" id="statsGrid">
+            <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-top">
                         <span class="stat-label">Total Products</span>
@@ -926,11 +748,10 @@
             <div style="background:#fff;border-radius:14px;border:1px solid #e8ecf1;padding:24px;text-align:center;color:#6b6b7a;">
                 <i class="fas fa-chart-line" style="font-size:32px;color:#2874f0;margin-bottom:12px;display:block;"></i>
                 <p style="font-weight:500;">Dashboard analytics &amp; charts coming soon.</p>
-                <p style="font-size:13px;">Manage your products from the <strong>Products</strong> tab.</p>
             </div>
         </div>
 
-        <!-- ─── PRODUCTS TAB ─── -->
+        <!-- PRODUCTS -->
         <div id="tabProducts" class="hidden">
             <div class="filter-bar">
                 <label>Category</label>
@@ -978,7 +799,7 @@
             </div>
         </div>
 
-        <!-- ─── ORDERS TAB ─── -->
+        <!-- ORDERS -->
         <div id="tabOrders" class="hidden">
             <div style="background:#fff;border-radius:14px;border:1px solid #e8ecf1;padding:20px;">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
@@ -996,7 +817,7 @@
             </div>
         </div>
 
-        <!-- ─── CATEGORIES TAB ─── -->
+        <!-- CATEGORIES -->
         <div id="tabCategories" class="hidden">
             <div style="background:#fff;border-radius:14px;border:1px solid #e8ecf1;padding:40px;text-align:center;color:#6b6b7a;">
                 <i class="fas fa-tags" style="font-size:40px;color:#2874f0;margin-bottom:12px;display:block;"></i>
@@ -1005,7 +826,7 @@
             </div>
         </div>
 
-        <!-- ─── SETTINGS TAB ─── -->
+        <!-- SETTINGS -->
         <div id="tabSettings" class="hidden">
             <div style="background:#fff;border-radius:14px;border:1px solid #e8ecf1;padding:40px;text-align:center;color:#6b6b7a;">
                 <i class="fas fa-cog" style="font-size:40px;color:#2874f0;margin-bottom:12px;display:block;"></i>
@@ -1015,7 +836,7 @@
         </div>
     </div>
 
-    <!-- ════════════════════════ MODAL ════════════════════════ -->
+    <!-- MODAL -->
     <div class="modal-overlay" id="productModal">
         <div class="modal">
             <div class="modal-header">
@@ -1025,7 +846,6 @@
             <form id="productForm" onsubmit="return false;">
                 <div class="form-grid">
 
-                    <!-- ─── BASIC FIELDS ─── -->
                     <div class="form-group">
                         <label>Product ID <span class="required">*</span></label>
                         <input type="text" id="editId" placeholder="e.g. MOB999" />
@@ -1067,7 +887,6 @@
                         </select>
                     </div>
 
-                    <!-- ─── CATEGORY-SPECIFIC FIELDS ─── -->
                     <div class="form-group field-group group-mobiles">
                         <label>Storage</label>
                         <input type="text" id="editStorage" placeholder="e.g. 128GB" />
@@ -1097,40 +916,35 @@
                         <input type="text" id="editResolution" placeholder="e.g. 4K UHD" />
                     </div>
 
-                    <!-- ─── MAIN IMAGE ─── -->
                     <div class="form-group full-width">
                         <label>Main Image</label>
                         <div class="main-image-preview-wrap">
                             <div id="mainImageTag" class="main-image-tag" style="display:none;">
-                                <img id="mainImagePreviewImg" src="" alt="Main image" loading="lazy" onerror="this.style.display='none'" />
-                                <button class="remove-img" onclick="removeMainImage()" title="Delete main image">✕</button>
+                                <img id="mainImagePreviewImg" src="" alt="Main image" onerror="this.style.display='none'" />
+                                <button class="remove-img" onclick="removeMainImage()">✕</button>
                             </div>
                             <div class="main-image-controls">
-                                <input type="text" id="editImage" placeholder="Image URL (GitHub or Supabase)" oninput="updateMainImagePreview()" />
+                                <input type="text" id="editImage" placeholder="Image URL" oninput="updateMainImagePreview()" />
                                 <label class="upload-label">
                                     <i class="fas fa-cloud-upload-alt"></i> Upload
                                     <input type="file" id="editImageFile" accept="image/*" style="display:none;" onchange="uploadImageToImageKit(this)" />
                                 </label>
                             </div>
                         </div>
-                        <small style="color:#8c8f94; margin-top:4px; display:block;">Upload to ImageKit CDN OR paste an image URL. Click ✕ on the preview to remove.</small>
                     </div>
 
-                    <!-- ─── DESCRIPTION ─── -->
                     <div class="form-group full-width">
                         <label>Description</label>
                         <textarea id="editDescription" placeholder="Product description…" rows="3"></textarea>
                     </div>
 
-                    <!-- 1️⃣ COLORS -->
-                    <div class="dynamic-section" id="colorSection">
+                    <div class="dynamic-section">
                         <div class="section-title"><i class="fas fa-palette"></i> Colors &amp; Gallery</div>
                         <div id="colorsContainer"></div>
                         <button class="add-row-btn" onclick="addColorRow()">+ Add Color</button>
                     </div>
 
-                    <!-- 2️⃣ VARIANTS -->
-                    <div class="dynamic-section" id="variantSection">
+                    <div class="dynamic-section">
                         <div class="section-title"><i class="fas fa-layer-group"></i> Variants</div>
                         <div id="variantsContainer">
                             <div class="dynamic-row">
@@ -1142,22 +956,18 @@
                         <button class="add-row-btn" onclick="addVariantRow()">+ Add Variant</button>
                     </div>
 
-                    <!-- 3️⃣ PRODUCT HIGHLIGHTS -->
                     <div class="dynamic-section">
                         <div class="section-title"><i class="fas fa-star"></i> Product Highlights</div>
                         <div id="highlightsContainer"></div>
                         <button class="add-row-btn" onclick="addHighlightRow()">+ Add Highlight</button>
-                        <small style="display:block;margin-top:6px;color:#8c8f94;">Icon can be an emoji (⭐) or text (✦).</small>
                     </div>
 
-                    <!-- 4️⃣ SPECIFICATIONS -->
                     <div class="dynamic-section">
                         <div class="section-title"><i class="fas fa-table"></i> Specifications</div>
                         <div id="specificationsContainer"></div>
                         <button class="add-row-btn" onclick="addSpecGroup()">+ Add Specification Group</button>
                     </div>
 
-                    <!-- 5️⃣ WARRANTY -->
                     <div class="dynamic-section">
                         <div class="section-title"><i class="fas fa-shield-alt"></i> Warranty</div>
                         <div style="display:grid; grid-template-columns:1fr 2fr; gap:14px;">
@@ -1170,10 +980,8 @@
                                 <textarea id="editWarrantyDetails" placeholder="Additional warranty info…" rows="2"></textarea>
                             </div>
                         </div>
-                        <small style="display:block;margin-top:6px;color:#8c8f94;">Both period and details are saved together in the warranty field.</small>
                     </div>
 
-                    <!-- 6️⃣ MANUFACTURER -->
                     <div class="dynamic-section">
                         <div class="section-title"><i class="fas fa-building"></i> Manufacturer</div>
                         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
@@ -1181,8 +989,8 @@
                                 <label>Brand Logo URL</label>
                                 <div class="brand-logo-preview-wrap">
                                     <div id="brandLogoTag" class="brand-logo-tag" style="display:none;">
-                                        <img id="brandLogoPreviewImg" src="" alt="Brand logo" loading="lazy" onerror="this.style.display='none'" />
-                                        <button class="remove-img" onclick="removeBrandLogo()" title="Delete logo">✕</button>
+                                        <img id="brandLogoPreviewImg" src="" alt="Brand logo" onerror="this.style.display='none'" />
+                                        <button class="remove-img" onclick="removeBrandLogo()">✕</button>
                                     </div>
                                     <div class="brand-logo-controls">
                                         <input type="text" id="editMfrLogo" placeholder="https://example.com/logo.png" oninput="updateMfrLogoPreview()" />
@@ -1192,7 +1000,6 @@
                                         </label>
                                     </div>
                                 </div>
-                                <small style="color:#8c8f94; margin-top:4px; display:block;">Click ✕ on the preview to remove the logo.</small>
                             </div>
                             <div class="form-group">
                                 <label>Country of Origin</label>
@@ -1200,7 +1007,7 @@
                             </div>
                             <div class="form-group" style="grid-column:1 / -1;">
                                 <label>Manufacturer Description</label>
-                                <textarea id="editMfrDesc" placeholder="Brief description of the manufacturer…" rows="2"></textarea>
+                                <textarea id="editMfrDesc" placeholder="Brief description…" rows="2"></textarea>
                             </div>
                             <div class="form-group" style="grid-column:1 / -1;">
                                 <label>Model</label>
@@ -1209,7 +1016,7 @@
                         </div>
                     </div>
 
-                </div><!-- end form-grid -->
+                </div>
 
                 <div class="modal-actions">
                     <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
@@ -1219,7 +1026,7 @@
         </div>
     </div>
 
-    <!-- ════════════════════════ LOGIN SCREEN ════════════════════════ -->
+    <!-- LOGIN -->
     <div class="login-overlay" id="loginScreen">
         <div class="login-box">
             <div class="login-brand">
@@ -1240,10 +1047,8 @@
         </div>
     </div>
 
-    <!-- ─── TOAST CONTAINER ─── -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- ════════════════════════ SUPABASE ════════════════════════ -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         // ───────── CONFIG ─────────
@@ -1253,10 +1058,8 @@
         const { createClient } = supabase;
         const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON);
 
-        const IMAGEKIT_UPLOAD_FUNCTION_URL =
-            `${SUPABASE_URL}/functions/v1/swift-responder`;
+        const IMAGEKIT_UPLOAD_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/swift-responder`;
 
-        // ───────── STATE ─────────
         let allProducts = [];
         let filteredProducts = [];
         let currentPage = 1;
@@ -1265,7 +1068,6 @@
         let isSubmitting = false;
         let colorImageData = {};
 
-        // ───────── DOM REFS ─────────
         const $ = id => document.getElementById(id);
 
         // ───────── AUTH ─────────
@@ -1281,9 +1083,7 @@
                 document.body.classList.remove('login-active');
                 document.getElementById('sidebar').style.display = '';
                 document.getElementById('mainContent').style.display = '';
-                if (window.innerWidth <= 820) {
-                    document.getElementById('sidebar').classList.remove('open');
-                }
+                if (window.innerWidth <= 820) document.getElementById('sidebar').classList.remove('open');
             }
         }
 
@@ -1301,18 +1101,14 @@
                 await loadProducts();
                 updateStats();
                 renderTable();
-            } catch (e) {
-                err.textContent = '❌ ' + e.message;
-            }
+            } catch (e) { err.textContent = '❌ ' + e.message; }
         }
 
         async function logoutAdmin() {
             await supabaseClient.auth.signOut();
             showLoginScreen(true);
-            allProducts = [];
-            filteredProducts = [];
-            renderTable();
-            updateStats();
+            allProducts = []; filteredProducts = [];
+            renderTable(); updateStats();
         }
 
         async function checkSession() {
@@ -1322,18 +1118,13 @@
                 await loadProducts();
                 updateStats();
                 renderTable();
-            } else {
-                showLoginScreen(true);
-            }
+            } else showLoginScreen(true);
         }
 
         // ───────── LOAD PRODUCTS ─────────
         async function loadProducts() {
             try {
-                const { data, error } = await supabaseClient
-                    .from('products')
-                    .select('*')
-                    .order('id', { ascending: true });
+                const { data, error } = await supabaseClient.from('products').select('*').order('id', { ascending: true });
                 if (error) throw error;
                 allProducts = data || [];
                 filteredProducts = [...allProducts];
@@ -1346,37 +1137,35 @@
             }
         }
 
-        // ───────── STATS ─────────
         function updateStats() {
             $('statTotal').textContent = allProducts.length;
             const cats = new Set(allProducts.map(p => p.category).filter(Boolean));
             $('statCategories').textContent = cats.size;
-            let variantCount = 0, colorCount = 0;
+            let vc = 0, cc = 0;
             allProducts.forEach(p => {
-                if (p.variants) variantCount += p.variants.length;
-                if (p.colors) colorCount += p.colors.length;
+                if (p.variants) vc += p.variants.length;
+                if (p.colors) cc += p.colors.length;
             });
-            $('statVariants').textContent = variantCount;
-            $('statColors').textContent = colorCount;
+            $('statVariants').textContent = vc;
+            $('statColors').textContent = cc;
         }
 
-        // ───────── FILTER ─────────
         function filterProducts() {
             const cat = $('categoryFilter').value;
             const cond = $('conditionFilter').value;
             const search = $('globalSearch').value.toLowerCase().trim();
 
             filteredProducts = allProducts.filter(p => {
-                let match = true;
-                if (cat && p.category !== cat) match = false;
-                if (match && cond && p.condition !== cond) match = false;
-                if (match && search) {
+                let m = true;
+                if (cat && p.category !== cat) m = false;
+                if (m && cond && p.condition !== cond) m = false;
+                if (m && search) {
                     const n = (p.name || '').toLowerCase();
                     const id = (p.id || '').toLowerCase();
                     const b = (p.brand || '').toLowerCase();
-                    if (!n.includes(search) && !id.includes(search) && !b.includes(search)) match = false;
+                    if (!n.includes(search) && !id.includes(search) && !b.includes(search)) m = false;
                 }
-                return match;
+                return m;
             });
             currentPage = 1;
             renderTable();
@@ -1390,7 +1179,6 @@
             filterProducts();
         }
 
-        // ───────── RENDER TABLE ─────────
         function renderTable() {
             const tbody = $('tableBody');
             const start = (currentPage - 1) * perPage;
@@ -1437,16 +1225,14 @@
                                 <button class="btn-delete" onclick="deleteProduct('${p.id}')"><i class="fas fa-trash"></i></button>
                             </div>
                         </td>
-                    </tr>
-                `;
+                    </tr>`;
             });
             tbody.innerHTML = html;
 
             $('paginationInfo').textContent = `Showing ${start+1}–${end} of ${filteredProducts.length}`;
 
             const totalPages = Math.ceil(filteredProducts.length / perPage);
-            let btns = '';
-            btns += `<button onclick="goPage(${currentPage-1})" ${currentPage<=1?'disabled':''}><i class="fas fa-chevron-left"></i></button>`;
+            let btns = `<button onclick="goPage(${currentPage-1})" ${currentPage<=1?'disabled':''}><i class="fas fa-chevron-left"></i></button>`;
             for (let i = 1; i <= totalPages; i++) {
                 btns += `<button class="${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
             }
@@ -1461,7 +1247,6 @@
             renderTable();
         }
 
-        // ───────── TAB SWITCH ─────────
         function switchTab(tab) {
             document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
             document.querySelectorAll('.sidebar-nav a').forEach(a => {
@@ -1473,8 +1258,7 @@
                 }
             });
 
-            const tabs = ['dashboard', 'products', 'orders', 'categories', 'settings'];
-            tabs.forEach(t => {
+            ['dashboard', 'products', 'orders', 'categories', 'settings'].forEach(t => {
                 const el = $('tab' + t.charAt(0).toUpperCase() + t.slice(1));
                 if (el) el.classList.toggle('hidden', t !== tab);
             });
@@ -1490,42 +1274,30 @@
             $('pageTitle').textContent = t[0];
             $('pageSubtitle').textContent = t[1];
 
-            if (window.innerWidth <= 820) {
-                document.getElementById('sidebar').classList.remove('open');
-            }
+            if (window.innerWidth <= 820) document.getElementById('sidebar').classList.remove('open');
 
-            // ✅ Auto-load orders when orders tab opens
             if (tab === 'orders' && typeof window.loadOrders === 'function') {
                 window.loadOrders();
             }
         }
 
-        // ───────── SIDEBAR TOGGLE ─────────
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('open');
+            document.getElementById('sidebar').classList.toggle('open');
         }
 
         document.addEventListener('click', function(e) {
             const sidebar = document.getElementById('sidebar');
             const hamburger = document.getElementById('hamburgerBtn');
             if (window.innerWidth <= 820) {
-                if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
-                    sidebar.classList.remove('open');
-                }
+                if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) sidebar.classList.remove('open');
             }
         });
 
         window.addEventListener('resize', function() {
-            const sidebar = document.getElementById('sidebar');
-            if (window.innerWidth > 820) {
-                sidebar.classList.remove('open');
-            }
+            if (window.innerWidth > 820) document.getElementById('sidebar').classList.remove('open');
         });
 
-        // ════════════════════════════════════════════════════
-        // COLORS
-        // ════════════════════════════════════════════════════
+        // ───────── COLORS ─────────
         function createColorRow(index, colorName) {
             const row = document.createElement('div');
             row.className = 'dynamic-row';
@@ -1533,27 +1305,23 @@
             const images = colorImageData[index] || [];
             const imageTagsHtml = images.map((img, imgIdx) => `
                 <div class="color-image-tag">
-                    <img src="${img}" alt="Color image" loading="lazy" onerror="this.style.display='none'" />
-                    <button class="remove-img" onclick="removeColorImage(${index}, ${imgIdx})" title="Delete this image">✕</button>
-                </div>
-            `).join('');
+                    <img src="${img}" onerror="this.style.display='none'" />
+                    <button class="remove-img" onclick="removeColorImage(${index}, ${imgIdx})">✕</button>
+                </div>`).join('');
 
             row.innerHTML = `
                 <input placeholder="Color name" class="color-name" value="${colorName}" style="min-width:100px;" />
                 <div style="display:flex; gap:8px; flex:1; flex-wrap:wrap; align-items:center;">
-                    <div class="color-image-tags" id="colorImageTags_${index}">
-                        ${imageTagsHtml}
-                    </div>
+                    <div class="color-image-tags" id="colorImageTags_${index}">${imageTagsHtml}</div>
                     <div class="color-image-input-wrap">
                         <input placeholder="Add image URL" class="color-image-input" style="flex:1; min-width:100px;" />
-                        <label style="background:#e8f0fe; color:#2874f0; padding:4px 12px; border-radius:6px; cursor:pointer; font-size:12px; font-weight:600; border:1px solid #2874f0; white-space:nowrap;">
+                        <label>
                             <i class="fas fa-upload"></i> Upload
                             <input type="file" accept="image/*" style="display:none;" onchange="uploadColorImage(this, ${index})" />
                         </label>
                     </div>
                 </div>
-                <button class="remove-row" onclick="removeRow(this)">✕</button>
-            `;
+                <button class="remove-row" onclick="removeRow(this)">✕</button>`;
             return row;
         }
 
@@ -1563,18 +1331,16 @@
             const images = colorImageData[index] || [];
             container.innerHTML = images.map((img, imgIdx) => `
                 <div class="color-image-tag">
-                    <img src="${img}" alt="Color image" loading="lazy" onerror="this.style.display='none'" />
-                    <button class="remove-img" onclick="removeColorImage(${index}, ${imgIdx})" title="Delete this image">✕</button>
-                </div>
-            `).join('');
+                    <img src="${img}" onerror="this.style.display='none'" />
+                    <button class="remove-img" onclick="removeColorImage(${index}, ${imgIdx})">✕</button>
+                </div>`).join('');
         }
 
         function addColorRow() {
             const c = $('colorsContainer');
             const index = c.children.length;
             colorImageData[index] = [];
-            const row = createColorRow(index, '');
-            c.appendChild(row);
+            c.appendChild(createColorRow(index, ''));
         }
 
         function addColorImageUrl(index) {
@@ -1588,55 +1354,33 @@
             colorImageData[index].push(url);
             renderColorTags(index);
             input.value = '';
-            showToast('✅ Image URL added!', 'success');
         }
 
         function removeColorImage(index, imgIndex) {
             if (!colorImageData[index]) return;
             colorImageData[index].splice(imgIndex, 1);
             renderColorTags(index);
-            showToast('🗑️ Image removed.', 'info');
         }
 
         async function uploadColorImage(input, index) {
             const file = input.files[0];
             if (!file) return;
-            if (!file.type.startsWith('image/')) {
-                showToast('❌ Please select an image file.', 'error');
-                input.value = '';
-                return;
-            }
-            if (file.size > 25 * 1024 * 1024) {
-                showToast('❌ Image size must be less than 25MB.', 'error');
-                input.value = '';
-                return;
-            }
+            if (!file.type.startsWith('image/')) { showToast('❌ Image file only.', 'error'); input.value=''; return; }
+            if (file.size > 25 * 1024 * 1024) { showToast('❌ Max 25MB.', 'error'); input.value=''; return; }
             const label = input.parentElement;
-            const originalText = label.innerHTML;
+            const orig = label.innerHTML;
             label.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
-            label.style.opacity = '0.7';
-            label.style.pointerEvents = 'none';
-
             try {
                 const url = await uploadFileToImageKit(file, 'colors');
                 if (!colorImageData[index]) colorImageData[index] = [];
                 colorImageData[index].push(url);
                 renderColorTags(index);
-                showToast('✅ Image uploaded to ImageKit CDN!', 'success');
-            } catch (e) {
-                console.error('ImageKit color upload error:', e);
-                showToast('❌ ImageKit upload failed: ' + e.message, 'error');
-            } finally {
-                label.innerHTML = originalText;
-                label.style.opacity = '1';
-                label.style.pointerEvents = 'auto';
-                input.value = '';
-            }
+                showToast('✅ Uploaded!', 'success');
+            } catch (e) { showToast('❌ ' + e.message, 'error'); }
+            finally { label.innerHTML = orig; input.value = ''; }
         }
 
-        // ════════════════════════════════════════════════════
-        // VARIANTS
-        // ════════════════════════════════════════════════════
+        // ───────── VARIANTS ─────────
         function addVariantRow() {
             const v = $('variantsContainer');
             const row = document.createElement('div');
@@ -1644,30 +1388,24 @@
             row.innerHTML = `
                 <input placeholder="Label" class="var-label" />
                 <input placeholder="Price" type="number" class="var-price" />
-                <button class="remove-row" onclick="removeRow(this)">✕</button>
-            `;
+                <button class="remove-row" onclick="removeRow(this)">✕</button>`;
             v.appendChild(row);
         }
 
-        // ════════════════════════════════════════════════════
-        // HIGHLIGHTS
-        // ════════════════════════════════════════════════════
+        // ───────── HIGHLIGHTS ─────────
         function addHighlightRow(icon, label, value) {
             const c = $('highlightsContainer');
             const row = document.createElement('div');
             row.className = 'dynamic-row';
             row.innerHTML = `
-                <input placeholder="Icon (e.g. ⭐)" class="hl-icon" value="${icon || ''}" style="max-width:80px;" />
-                <input placeholder="Label (e.g. Display)" class="hl-label" value="${label || ''}" />
-                <input placeholder="Value (e.g. 6.5 inch HD+)" class="hl-value" value="${value || ''}" />
-                <button class="remove-row" onclick="removeRow(this)">✕</button>
-            `;
+                <input placeholder="Icon" class="hl-icon" value="${icon || ''}" style="max-width:80px;" />
+                <input placeholder="Label" class="hl-label" value="${label || ''}" />
+                <input placeholder="Value" class="hl-value" value="${value || ''}" />
+                <button class="remove-row" onclick="removeRow(this)">✕</button>`;
             c.appendChild(row);
         }
 
-        // ════════════════════════════════════════════════════
-        // SPECIFICATIONS
-        // ════════════════════════════════════════════════════
+        // ───────── SPECS ─────────
         function addSpecGroup(groupName, items) {
             const c = $('specificationsContainer');
             const groupDiv = document.createElement('div');
@@ -1677,19 +1415,15 @@
                     <input placeholder="Key" class="spec-key" value="${item.key || ''}" />
                     <input placeholder="Value" class="spec-val" value="${item.value || ''}" />
                     <button class="remove-spec" onclick="removeSpecItem(this)">✕</button>
-                </div>`
-            ).join('');
+                </div>`).join('');
 
             groupDiv.innerHTML = `
                 <div class="spec-group-header">
-                    <input placeholder="Group name (e.g. Display)" class="spec-group-name" value="${groupName || ''}" />
+                    <input placeholder="Group name" class="spec-group-name" value="${groupName || ''}" />
                     <button class="remove-group" onclick="removeSpecGroup(this)">✕</button>
                 </div>
-                <div class="spec-items">
-                    ${itemsHtml}
-                </div>
-                <button class="add-spec-btn" onclick="addSpecItem(this)">+ Add Specification</button>
-            `;
+                <div class="spec-items">${itemsHtml}</div>
+                <button class="add-spec-btn" onclick="addSpecItem(this)">+ Add Specification</button>`;
             c.appendChild(groupDiv);
         }
 
@@ -1700,34 +1434,22 @@
             item.innerHTML = `
                 <input placeholder="Key" class="spec-key" />
                 <input placeholder="Value" class="spec-val" />
-                <button class="remove-spec" onclick="removeSpecItem(this)">✕</button>
-            `;
+                <button class="remove-spec" onclick="removeSpecItem(this)">✕</button>`;
             items.appendChild(item);
         }
 
         function removeSpecItem(btn) {
             const item = btn.parentElement;
-            const container = item.parentElement;
-            if (container.children.length > 1) {
-                item.remove();
-            } else {
-                showToast('At least one specification per group is required.', 'error');
-            }
+            if (item.parentElement.children.length > 1) item.remove();
+            else showToast('At least one spec required.', 'error');
         }
 
         function removeSpecGroup(btn) {
             const group = btn.closest('.spec-group');
-            const container = group.parentElement;
-            if (container.children.length > 1) {
-                group.remove();
-            } else {
-                showToast('At least one specification group is required.', 'error');
-            }
+            if (group.parentElement.children.length > 1) group.remove();
+            else showToast('At least one group required.', 'error');
         }
 
-        // ════════════════════════════════════════════════════
-        // REMOVE ROW
-        // ════════════════════════════════════════════════════
         function removeRow(btn) {
             const row = btn.parentElement;
             const container = row.parentElement;
@@ -1735,28 +1457,13 @@
                 const index = parseInt(row.dataset.index);
                 if (!isNaN(index)) delete colorImageData[index];
                 row.remove();
-                const rows = container.querySelectorAll('.dynamic-row');
-                const newData = {};
-                rows.forEach((r, idx) => {
-                    const imgTags = r.querySelectorAll('.color-image-tag img');
-                    const urls = [];
-                    imgTags.forEach(tag => { if (tag.src) urls.push(tag.src); });
-                    newData[idx] = urls;
-                });
-                colorImageData = newData;
-            } else {
-                showToast('At least one row is required.', 'error');
-            }
+            } else showToast('At least one row required.', 'error');
         }
 
-        // ════════════════════════════════════════════════════
-        // IMAGEKIT UPLOAD
-        // ════════════════════════════════════════════════════
+        // ───────── IMAGEKIT ─────────
         async function uploadFileToImageKit(file, folderType) {
             const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
-            if (sessionError || !session?.access_token) {
-                throw new Error('Admin session expired. Please login again.');
-            }
+            if (sessionError || !session?.access_token) throw new Error('Session expired.');
             const form = new FormData();
             form.append('file', file, file.name);
             form.append('folder', folderType === 'colors' ? '/JBStore/products/colors' :
@@ -1769,45 +1476,27 @@
                 body: form
             });
             let result;
-            try { result = await response.json(); } catch { throw new Error('Invalid response from upload server.'); }
-            if (!response.ok) throw new Error(result?.error || `Upload failed (${response.status})`);
-            if (!result?.url) throw new Error('ImageKit did not return an image URL.');
+            try { result = await response.json(); } catch { throw new Error('Invalid server response.'); }
+            if (!response.ok) throw new Error(result?.error || `Upload failed`);
+            if (!result?.url) throw new Error('No URL returned.');
             return result.url;
         }
 
         async function uploadImageToImageKit(input) {
             const file = input.files[0];
             if (!file) return;
-            if (!file.type.startsWith('image/')) {
-                showToast('❌ Please select an image file.', 'error');
-                input.value = '';
-                return;
-            }
-            if (file.size > 25 * 1024 * 1024) {
-                showToast('❌ Image size must be less than 25MB.', 'error');
-                input.value = '';
-                return;
-            }
+            if (!file.type.startsWith('image/')) { showToast('❌ Image only.', 'error'); input.value=''; return; }
+            if (file.size > 25 * 1024 * 1024) { showToast('❌ Max 25MB.', 'error'); input.value=''; return; }
             const label = input.parentElement;
-            const originalText = label.innerHTML;
+            const orig = label.innerHTML;
             label.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
-            label.style.opacity = '0.7';
-            label.style.pointerEvents = 'none';
-
             try {
                 const url = await uploadFileToImageKit(file, 'products');
                 document.getElementById('editImage').value = url;
                 updateMainImagePreview();
-                showToast('✅ Image uploaded to ImageKit CDN!', 'success');
-            } catch (e) {
-                console.error('ImageKit upload error:', e);
-                showToast('❌ ImageKit upload failed: ' + e.message, 'error');
-            } finally {
-                label.innerHTML = originalText;
-                label.style.opacity = '1';
-                label.style.pointerEvents = 'auto';
-                input.value = '';
-            }
+                showToast('✅ Uploaded!', 'success');
+            } catch (e) { showToast('❌ ' + e.message, 'error'); }
+            finally { label.innerHTML = orig; input.value = ''; }
         }
 
         function updateMainImagePreview() {
@@ -1815,115 +1504,68 @@
             const tag = document.getElementById('mainImageTag');
             const img = document.getElementById('mainImagePreviewImg');
             const url = input.value.trim();
-
-            img.onload = null;
-            img.onerror = null;
-
             if (url) {
                 tag.style.display = 'block';
                 img.style.display = 'block';
-
-                img.onload = function() { this.style.display = 'block'; };
-                img.onerror = function() {
-                    this.style.display = 'none';
-                    showToast('⚠️ Image URL could not be loaded.', 'error');
-                };
+                img.onerror = function() { this.style.display = 'none'; };
                 img.src = url;
             } else {
                 tag.style.display = 'none';
-                img.style.display = 'none';
-                img.onload = null;
-                img.onerror = null;
                 img.removeAttribute('src');
             }
         }
 
         function removeMainImage() {
-            if (confirm('Remove the main image?')) {
+            if (confirm('Remove main image?')) {
                 document.getElementById('editImage').value = '';
                 document.getElementById('mainImageTag').style.display = 'none';
                 document.getElementById('mainImagePreviewImg').src = '';
-                showToast('🗑️ Main image cleared.', 'info');
             }
         }
 
         async function uploadLogoImage(input) {
             const file = input.files[0];
             if (!file) return;
-            if (!file.type.startsWith('image/')) {
-                showToast('❌ Please select an image file.', 'error');
-                input.value = '';
-                return;
-            }
-            if (file.size > 25 * 1024 * 1024) {
-                showToast('❌ Image size must be less than 25MB.', 'error');
-                input.value = '';
-                return;
-            }
+            if (!file.type.startsWith('image/')) { showToast('❌ Image only.', 'error'); input.value=''; return; }
+            if (file.size > 25 * 1024 * 1024) { showToast('❌ Max 25MB.', 'error'); input.value=''; return; }
             const label = input.parentElement;
-            const originalText = label.innerHTML;
+            const orig = label.innerHTML;
             label.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
-            label.style.opacity = '0.7';
-            label.style.pointerEvents = 'none';
-
             try {
                 const url = await uploadFileToImageKit(file, 'brands');
                 document.getElementById('editMfrLogo').value = url;
                 updateMfrLogoPreview();
-                showToast('✅ Brand logo uploaded to ImageKit CDN!', 'success');
-            } catch (e) {
-                console.error('Logo upload error:', e);
-                showToast('❌ Logo upload failed: ' + e.message, 'error');
-            } finally {
-                label.innerHTML = originalText;
-                label.style.opacity = '1';
-                label.style.pointerEvents = 'auto';
-                input.value = '';
-            }
+                showToast('✅ Uploaded!', 'success');
+            } catch (e) { showToast('❌ ' + e.message, 'error'); }
+            finally { label.innerHTML = orig; input.value = ''; }
         }
 
         function updateMfrLogoPreview() {
-            const input = document.getElementById('editMfrLogo');
+            const url = document.getElementById('editMfrLogo').value.trim();
             const tag = document.getElementById('brandLogoTag');
             const img = document.getElementById('brandLogoPreviewImg');
-            const url = input.value.trim();
-
             if (url) {
                 img.src = url;
                 img.style.display = 'block';
                 tag.style.display = 'block';
-                img.onerror = function() {
-                    this.style.display = 'none';
-                    showToast('⚠️ Logo URL could not be loaded.', 'error');
-                };
-                img.onload = function() { this.style.display = 'block'; };
-            } else {
-                tag.style.display = 'none';
-                img.src = '';
-            }
+                img.onerror = function() { this.style.display = 'none'; };
+            } else { tag.style.display = 'none'; img.src = ''; }
         }
 
         function removeBrandLogo() {
-            if (confirm('Remove the brand logo?')) {
+            if (confirm('Remove brand logo?')) {
                 document.getElementById('editMfrLogo').value = '';
                 document.getElementById('brandLogoTag').style.display = 'none';
                 document.getElementById('brandLogoPreviewImg').src = '';
-                showToast('🗑️ Brand logo cleared.', 'info');
             }
         }
 
-        // ════════════════════════════════════════════════════
-        // MODAL OPEN / EDIT
-        // ════════════════════════════════════════════════════
+        // ───────── MODAL ─────────
         function openAddModal() {
             editingId = null;
             $('modalTitle').textContent = '➕ Add Product';
             $('modalSubmitBtn').textContent = 'Add Product';
             resetForm();
-            document.getElementById('mainImageTag').style.display = 'none';
-            document.getElementById('mainImagePreviewImg').src = '';
-            document.getElementById('brandLogoTag').style.display = 'none';
-            document.getElementById('brandLogoPreviewImg').src = '';
             $('productModal').classList.add('open');
         }
 
@@ -1950,24 +1592,19 @@
             $('editResolution').value = p.resolution || '';
             $('editImage').value = p.image || '';
             $('editDescription').value = p.description || '';
-
             updateMainImagePreview();
 
-            let warrantyPeriod = '';
-            let warrantyDetails = '';
+            let wp = '', wd = '';
             if (p.warranty) {
                 try {
                     const parsed = JSON.parse(p.warranty);
                     if (typeof parsed === 'object' && parsed !== null) {
-                        warrantyPeriod = parsed.period || '';
-                        warrantyDetails = parsed.details || '';
-                    } else {
-                        warrantyPeriod = p.warranty;
-                    }
-                } catch (e) { warrantyPeriod = p.warranty; }
+                        wp = parsed.period || ''; wd = parsed.details || '';
+                    } else wp = p.warranty;
+                } catch (e) { wp = p.warranty; }
             }
-            $('editWarranty').value = warrantyPeriod;
-            $('editWarrantyDetails').value = warrantyDetails;
+            $('editWarranty').value = wp;
+            $('editWarrantyDetails').value = wd;
 
             const mfr = p.manufacturer || {};
             $('editMfrLogo').value = mfr.logo || '';
@@ -1980,65 +1617,45 @@
             const cContainer = $('colorsContainer');
             cContainer.innerHTML = '';
             colorImageData = {};
-            if (colors.length === 0) {
-                addColorRow();
-            } else {
-                colors.forEach((color, index) => {
-                    const images = color.images || [];
-                    colorImageData[index] = images;
-                    const row = createColorRow(index, color.name || '');
-                    cContainer.appendChild(row);
-                });
-            }
+            if (colors.length === 0) addColorRow();
+            else colors.forEach((color, index) => {
+                colorImageData[index] = color.images || [];
+                cContainer.appendChild(createColorRow(index, color.name || ''));
+            });
 
             const variants = p.variants || [];
             const vContainer = $('variantsContainer');
             vContainer.innerHTML = '';
             if (variants.length === 0) {
-                vContainer.innerHTML = `
-                    <div class="dynamic-row">
-                        <input placeholder="Label" class="var-label" />
-                        <input placeholder="Price" type="number" class="var-price" />
-                        <button class="remove-row" onclick="removeRow(this)">✕</button>
-                    </div>
-                `;
-            } else {
-                variants.forEach(v => {
-                    const row = document.createElement('div');
-                    row.className = 'dynamic-row';
-                    row.innerHTML = `
-                        <input placeholder="Label" class="var-label" value="${v.label || ''}" />
-                        <input placeholder="Price" type="number" class="var-price" value="${v.price || 0}" />
-                        <button class="remove-row" onclick="removeRow(this)">✕</button>
-                    `;
-                    vContainer.appendChild(row);
-                });
-            }
+                vContainer.innerHTML = `<div class="dynamic-row">
+                    <input placeholder="Label" class="var-label" />
+                    <input placeholder="Price" type="number" class="var-price" />
+                    <button class="remove-row" onclick="removeRow(this)">✕</button>
+                </div>`;
+            } else variants.forEach(v => {
+                const row = document.createElement('div');
+                row.className = 'dynamic-row';
+                row.innerHTML = `
+                    <input placeholder="Label" class="var-label" value="${v.label || ''}" />
+                    <input placeholder="Price" type="number" class="var-price" value="${v.price || 0}" />
+                    <button class="remove-row" onclick="removeRow(this)">✕</button>`;
+                vContainer.appendChild(row);
+            });
 
             const highlights = p.highlights || [];
-            const hContainer = $('highlightsContainer');
-            hContainer.innerHTML = '';
-            if (highlights.length === 0) {
-                addHighlightRow('', '', '');
-            } else {
-                highlights.forEach(h => {
-                    addHighlightRow(h.icon || '', h.label || '', h.value || '');
-                });
-            }
+            $('highlightsContainer').innerHTML = '';
+            if (highlights.length === 0) addHighlightRow('', '', '');
+            else highlights.forEach(h => addHighlightRow(h.icon || '', h.label || '', h.value || ''));
 
             const specs = p.specifications || {};
-            const sContainer = $('specificationsContainer');
-            sContainer.innerHTML = '';
-            const groupNames = Object.keys(specs);
-            if (groupNames.length === 0) {
-                addSpecGroup('', []);
-            } else {
-                groupNames.forEach(gName => {
-                    const items = specs[gName] || {};
-                    const itemArr = Object.keys(items).map(key => ({ key, value: items[key] }));
-                    addSpecGroup(gName, itemArr);
-                });
-            }
+            $('specificationsContainer').innerHTML = '';
+            const gn = Object.keys(specs);
+            if (gn.length === 0) addSpecGroup('', []);
+            else gn.forEach(gName => {
+                const items = specs[gName] || {};
+                const arr = Object.keys(items).map(k => ({ key: k, value: items[k] }));
+                addSpecGroup(gName, arr);
+            });
 
             $('productModal').classList.add('open');
         }
@@ -2051,50 +1668,27 @@
         }
 
         function resetForm() {
-            $('editId').value = '';
-            $('editName').value = '';
-            $('editBrand').value = '';
+            ['editId','editName','editBrand','editPrice','editOldPrice','editStorage','editRam',
+             'editCapacity','editType','editEnergy','editSize','editResolution','editImage',
+             'editDescription','editWarranty','editWarrantyDetails','editMfrLogo','editMfrCountry',
+             'editMfrDesc','editMfrModel'].forEach(id => { if ($(id)) $(id).value = ''; });
             $('editCategory').value = 'mobiles';
-            $('editPrice').value = '';
-            $('editOldPrice').value = '';
             $('editCondition').value = '';
-            $('editStorage').value = '';
-            $('editRam').value = '';
-            $('editCapacity').value = '';
-            $('editType').value = '';
-            $('editEnergy').value = '';
-            $('editSize').value = '';
-            $('editResolution').value = '';
-            $('editImage').value = '';
-            $('editDescription').value = '';
-            $('editWarranty').value = '';
-            $('editWarrantyDetails').value = '';
-            $('editMfrLogo').value = '';
-            $('editMfrCountry').value = '';
-            $('editMfrDesc').value = '';
-            $('editMfrModel').value = '';
 
             document.getElementById('mainImageTag').style.display = 'none';
-            document.getElementById('mainImagePreviewImg').onload = null;
-            document.getElementById('mainImagePreviewImg').onerror = null;
             document.getElementById('mainImagePreviewImg').removeAttribute('src');
-
             document.getElementById('brandLogoTag').style.display = 'none';
-            document.getElementById('brandLogoPreviewImg').onload = null;
-            document.getElementById('brandLogoPreviewImg').onerror = null;
             document.getElementById('brandLogoPreviewImg').removeAttribute('src');
 
             $('colorsContainer').innerHTML = '';
             colorImageData = {};
             addColorRow();
 
-            $('variantsContainer').innerHTML = `
-                <div class="dynamic-row">
-                    <input placeholder="Label" class="var-label" />
-                    <input placeholder="Price" type="number" class="var-price" />
-                    <button class="remove-row" onclick="removeRow(this)">✕</button>
-                </div>
-            `;
+            $('variantsContainer').innerHTML = `<div class="dynamic-row">
+                <input placeholder="Label" class="var-label" />
+                <input placeholder="Price" type="number" class="var-price" />
+                <button class="remove-row" onclick="removeRow(this)">✕</button>
+            </div>`;
 
             $('highlightsContainer').innerHTML = '';
             addHighlightRow('', '', '');
@@ -2103,9 +1697,7 @@
             addSpecGroup('', []);
         }
 
-        // ════════════════════════════════════════════════════
-        // SUBMIT PRODUCT
-        // ════════════════════════════════════════════════════
+        // ───────── SUBMIT PRODUCT ─────────
         async function submitProduct() {
             if (isSubmitting) return;
             isSubmitting = true;
@@ -2117,26 +1709,22 @@
                 const id = $('editId').value.trim();
                 const name = $('editName').value.trim();
                 if (!id || !name) {
-                    showToast('ID and Name are required.', 'error');
+                    showToast('ID and Name required.', 'error');
                     isSubmitting = false;
                     btn.textContent = editingId ? 'Update Product' : 'Add Product';
                     btn.disabled = false;
                     return;
                 }
-                if (!editingId) {
-                    const exists = allProducts.some(p => p.id === id);
-                    if (exists) {
-                        showToast('Product ID already exists. Use a unique ID.', 'error');
-                        isSubmitting = false;
-                        btn.textContent = 'Add Product';
-                        btn.disabled = false;
-                        return;
-                    }
+                if (!editingId && allProducts.some(p => p.id === id)) {
+                    showToast('Product ID already exists.', 'error');
+                    isSubmitting = false;
+                    btn.textContent = 'Add Product';
+                    btn.disabled = false;
+                    return;
                 }
 
                 const product = {
-                    id: id,
-                    name: name,
+                    id, name,
                     brand: $('editBrand').value.trim(),
                     category: $('editCategory').value,
                     price: parseFloat($('editPrice').value) || 0,
@@ -2163,32 +1751,23 @@
                     const nameInput = row.querySelector('.color-name');
                     const idx = parseInt(row.dataset.index);
                     const images = colorImageData[idx] || [];
-                    if (nameInput && nameInput.value.trim()) {
-                        colors.push({ name: nameInput.value.trim(), images });
-                    } else if (images.length > 0) {
-                        colors.push({ name: 'Unnamed', images });
-                    }
+                    if (nameInput && nameInput.value.trim()) colors.push({ name: nameInput.value.trim(), images });
+                    else if (images.length > 0) colors.push({ name: 'Unnamed', images });
                 });
                 product.colors = colors;
 
-                const variantRows = $('variantsContainer').querySelectorAll('.dynamic-row');
                 const variants = [];
-                variantRows.forEach(row => {
+                $('variantsContainer').querySelectorAll('.dynamic-row').forEach(row => {
                     const l = row.querySelector('.var-label');
                     const p = row.querySelector('.var-price');
-                    if (l && p && l.value.trim()) {
-                        variants.push({
-                            label: l.value.trim(),
-                            price: parseFloat(p.value) || 0,
-                            oldPrice: parseFloat(p.value) || 0
-                        });
-                    }
+                    if (l && p && l.value.trim()) variants.push({
+                        label: l.value.trim(), price: parseFloat(p.value) || 0, oldPrice: parseFloat(p.value) || 0
+                    });
                 });
                 product.variants = variants;
 
-                const hlRows = $('highlightsContainer').querySelectorAll('.dynamic-row');
                 const highlights = [];
-                hlRows.forEach(row => {
+                $('highlightsContainer').querySelectorAll('.dynamic-row').forEach(row => {
                     const icon = row.querySelector('.hl-icon');
                     const label = row.querySelector('.hl-label');
                     const value = row.querySelector('.hl-value');
@@ -2202,76 +1781,52 @@
                 });
                 product.highlights = highlights;
 
-                const specGroups = $('specificationsContainer').querySelectorAll('.spec-group');
                 const specifications = {};
-                specGroups.forEach(group => {
+                $('specificationsContainer').querySelectorAll('.spec-group').forEach(group => {
                     const nameInput = group.querySelector('.spec-group-name');
-                    const groupName = nameInput ? nameInput.value.trim() : 'General';
+                    const groupName = nameInput ? nameInput.value.trim() : '';
                     if (!groupName) return;
-                    const items = group.querySelectorAll('.spec-item');
                     const specObj = {};
-                    items.forEach(item => {
-                        const keyInput = item.querySelector('.spec-key');
-                        const valInput = item.querySelector('.spec-val');
-                        if (keyInput && valInput && keyInput.value.trim() && valInput.value.trim()) {
-                            specObj[keyInput.value.trim()] = valInput.value.trim();
-                        }
+                    group.querySelectorAll('.spec-item').forEach(item => {
+                        const k = item.querySelector('.spec-key');
+                        const v = item.querySelector('.spec-val');
+                        if (k && v && k.value.trim() && v.value.trim()) specObj[k.value.trim()] = v.value.trim();
                     });
-                    if (Object.keys(specObj).length > 0) {
-                        specifications[groupName] = specObj;
-                    }
+                    if (Object.keys(specObj).length > 0) specifications[groupName] = specObj;
                 });
                 product.specifications = specifications;
 
-                const mfrLogo = $('editMfrLogo').value.trim();
-                const mfrCountry = $('editMfrCountry').value.trim();
-                const mfrDesc = $('editMfrDesc').value.trim();
-                const mfrModel = $('editMfrModel').value.trim();
-                if (mfrLogo || mfrCountry || mfrDesc || mfrModel) {
-                    product.manufacturer = {
-                        logo: mfrLogo,
-                        countryOfOrigin: mfrCountry,
-                        description: mfrDesc,
-                        model: mfrModel
-                    };
-                } else {
-                    product.manufacturer = null;
-                }
+                const ml = $('editMfrLogo').value.trim();
+                const mc = $('editMfrCountry').value.trim();
+                const md = $('editMfrDesc').value.trim();
+                const mm = $('editMfrModel').value.trim();
+                product.manufacturer = (ml || mc || md || mm) ? { logo: ml, countryOfOrigin: mc, description: md, model: mm } : null;
 
                 let error;
                 if (editingId) {
-                    const { error: e } = await supabaseClient
-                        .from('products')
-                        .update(product)
-                        .eq('id', editingId);
+                    const { error: e } = await supabaseClient.from('products').update(product).eq('id', editingId);
                     error = e;
-                    if (!error) showToast('✅ Product updated successfully!', 'success');
+                    if (!error) showToast('✅ Product updated!', 'success');
                 } else {
-                    const { error: e } = await supabaseClient
-                        .from('products')
-                        .insert(product);
+                    const { error: e } = await supabaseClient.from('products').insert(product);
                     error = e;
-                    if (!error) showToast('✅ Product added successfully!', 'success');
+                    if (!error) showToast('✅ Product added!', 'success');
                 }
 
-                if (error) {
-                    showToast('❌ ' + error.message, 'error');
-                } else {
+                if (error) showToast('❌ ' + error.message, 'error');
+                else {
                     closeModal();
                     await loadProducts();
                     updateStats();
                     renderTable();
                     switchTab('products');
                 }
-            } catch (e) {
-                showToast('❌ ' + e.message, 'error');
-            }
+            } catch (e) { showToast('❌ ' + e.message, 'error'); }
             isSubmitting = false;
             btn.textContent = editingId ? 'Update Product' : 'Add Product';
             btn.disabled = false;
         }
 
-        // ───────── DELETE PRODUCT ─────────
         async function deleteProduct(id) {
             if (!confirm('Delete this product permanently?')) return;
             try {
@@ -2281,30 +1836,21 @@
                 await loadProducts();
                 updateStats();
                 renderTable();
-            } catch (e) {
-                showToast('❌ ' + e.message, 'error');
-            }
+            } catch (e) { showToast('❌ ' + e.message, 'error'); }
         }
 
-        // ───────── TOAST ─────────
         function showToast(msg, type = 'info') {
             const container = $('toastContainer');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
             const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
-            toast.innerHTML = `
-                <span>${icon} ${msg}</span>
-                <button class="toast-close" onclick="this.parentElement.remove()">×</button>
-            `;
+            toast.innerHTML = `<span>${icon} ${msg}</span><button class="toast-close" onclick="this.parentElement.remove()">×</button>`;
             container.appendChild(toast);
             setTimeout(() => { if (toast.parentElement) toast.remove(); }, 4000);
         }
 
-        // ───────── KEYBOARD SHORTCUTS ─────────
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                if ($('productModal').classList.contains('open')) closeModal();
-            }
+            if (e.key === 'Escape' && $('productModal').classList.contains('open')) closeModal();
             if (e.ctrlKey && e.key === 'n') {
                 e.preventDefault();
                 if ($('loginScreen').classList.contains('show')) return;
@@ -2312,26 +1858,18 @@
             }
             if (e.key === 'Enter' && e.target.classList.contains('color-image-input')) {
                 const row = e.target.closest('.dynamic-row');
-                if (row) {
-                    const index = parseInt(row.dataset.index);
-                    addColorImageUrl(index);
-                }
+                if (row) addColorImageUrl(parseInt(row.dataset.index));
             }
         });
 
-        // ───────── INIT ─────────
         document.addEventListener('DOMContentLoaded', () => {
             switchTab('dashboard');
-            if (window.innerWidth <= 820) {
-                document.getElementById('sidebar').classList.remove('open');
-            }
-            $('productModal').addEventListener('click', function(e) {
-                if (e.target === this) closeModal();
-            });
+            if (window.innerWidth <= 820) document.getElementById('sidebar').classList.remove('open');
+            $('productModal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
             checkSession();
         });
 
-        // ───────── EXPOSE TO GLOBAL ─────────
+        // Global exposures
         window.supabaseClient = supabaseClient;
         window.switchTab = switchTab;
         window.toggleSidebar = toggleSidebar;
@@ -2366,14 +1904,11 @@
     </script>
 
     <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- ═══ ORDERS MANAGEMENT (FIXED) ═══                             -->
+    <!-- ORDERS MANAGEMENT — with DELETE feature                     -->
     <!-- ═══════════════════════════════════════════════════════════ -->
     <script>
     (function () {
-        // ✅ Dynamic getter — parse time lo capture cheyyaku
-        function getSb() {
-            return window.supabaseClient;
-        }
+        function getSb() { return window.supabaseClient; }
 
         const STATUS_COLORS = {
             pending:   { bg:'#fff4d6', c:'#a3801a' },
@@ -2393,32 +1928,22 @@
             try {
                 const sb = getSb();
                 if (!sb) {
-                    box.innerHTML = '<p style="text-align:center;color:#c00;padding:30px;">❌ Supabase client not initialized. Please refresh the page.</p>';
+                    box.innerHTML = '<p style="text-align:center;color:#c00;padding:30px;">❌ Supabase client not initialized.</p>';
                     return;
                 }
 
-                console.log('🔍 Fetching orders from Supabase...');
+                let { data, error } = await sb.from('orders').select('*').order('created_at', { ascending: false });
 
-                let { data, error } = await sb
-                    .from('orders')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-
-                // Fallback if created_at column missing
                 if (error && (error.message.includes('created_at') || error.code === '42703')) {
-                    console.warn('created_at column not found, sorting by id instead.');
-                    const fallback = await sb.from('orders').select('*').order('id', { ascending: false });
-                    data = fallback.data;
-                    error = fallback.error;
+                    const fb = await sb.from('orders').select('*').order('id', { ascending: false });
+                    data = fb.data; error = fb.error;
                 }
 
                 if (error) {
-                    console.error('❌ Supabase query error:', error);
+                    console.error('Supabase query error:', error);
                     box.innerHTML = '<p style="text-align:center;color:#c00;padding:30px;">❌ ' + esc(error.message) + '</p>';
                     return;
                 }
-
-                console.log('✅ Orders fetched:', data?.length || 0);
 
                 if (!data || !data.length) {
                     box.innerHTML = '<p style="text-align:center;color:#8c8f94;padding:40px;">Inka orders levu.</p>';
@@ -2484,49 +2009,116 @@
                             <span style="font-weight:800;font-size:19px;color:#a3801a;">${money(o.total)}</span>
                         </div>
 
-                        <div style="margin-top:12px; display:flex; gap:10px; align-items:center;">
+                        <!-- ═══ ACTIONS ROW: Status + Delete ═══ -->
+                        <div style="margin-top:12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
                             <select data-order="${esc(o.id)}" class="statusSel"
-                                style="flex:1; border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:600;background:#f8f9fb;font-family:'Inter',sans-serif;color:#1a1a2e;cursor:pointer;outline:none;">
+                                style="flex:1; min-width:140px; border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:600;background:#f8f9fb;font-family:'Inter',sans-serif;color:#1a1a2e;cursor:pointer;outline:none;">
                                 ${['pending','confirmed','shipped','delivered','cancelled'].map(s =>
                                     `<option value="${s}" ${o.status===s?'selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`
                                 ).join('')}
                             </select>
+
+                            <button class="deleteOrderBtn"
+                                data-order="${esc(o.id)}"
+                                data-code="${esc(o.order_code||o.id)}"
+                                style="background:#fde8e8;color:#d32f2f;border:1px solid #f5c6c6;padding:10px 18px;border-radius:10px;font-weight:700;font-size:13.5px;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:6px;transition:0.2s;white-space:nowrap;">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
                         </div>
                     </div>`;
                 }).join('');
 
-                // ✅ Status update listeners
+                // Status update listeners
                 box.querySelectorAll('.statusSel').forEach(sel => {
                     sel.addEventListener('change', async function () {
                         const orderId = this.getAttribute('data-order');
                         const newStatus = this.value;
                         this.disabled = true;
                         try {
-                            const { error } = await getSb()
-                                .from('orders')
-                                .update({ status: newStatus })
-                                .eq('id', orderId);
+                            const { error } = await getSb().from('orders').update({ status: newStatus }).eq('id', orderId);
                             if (error) throw error;
                             if (window.showToast) window.showToast('✅ Status updated to ' + newStatus, 'success');
                         } catch (e) {
                             console.error('Status update error:', e);
                             if (window.showToast) window.showToast('❌ ' + e.message, 'error');
-                        } finally {
-                            this.disabled = false;
-                        }
+                        } finally { this.disabled = false; }
+                    });
+                });
+
+                // ✅ Delete order listeners
+                box.querySelectorAll('.deleteOrderBtn').forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        const orderId = this.getAttribute('data-order');
+                        const orderCode = this.getAttribute('data-code');
+                        deleteOrder(orderId, orderCode);
                     });
                 });
 
             } catch (e) {
-                console.error('❌ loadOrders exception:', e);
+                console.error('loadOrders exception:', e);
                 box.innerHTML = '<p style="text-align:center;color:#c00;padding:30px;">❌ ' + esc(e.message) + '</p>';
             }
         }
 
-        // ✅ CRITICAL: Global ga expose cheyyi — switchTab & refresh button call cheyyadaniki
-        window.loadOrders = loadOrders;
+        // ═══════════════════════════════════════════════════════════
+        // 🗑️ DELETE ORDER — Supabase nunchi permanent ga delete avutundi
+        // ═══════════════════════════════════════════════════════════
+        async function deleteOrder(orderId, orderCode) {
+            if (!orderId) {
+                if (window.showToast) window.showToast('❌ Order ID missing', 'error');
+                return;
+            }
 
-        // ✅ Refresh button listener
+            const confirmed = confirm(
+                `🗑️ Delete this order permanently?\n\n` +
+                `Order: ${orderCode}\n` +
+                `\n⚠️ Ee order Supabase nunchi completely delete avutundi.\n` +
+                `Users ki kuda kanipinchadu.\n\n` +
+                `Continue?`
+            );
+            if (!confirmed) return;
+
+            try {
+                const sb = getSb();
+                if (!sb) throw new Error('Supabase client not ready');
+
+                // Button disable visual feedback
+                const btn = document.querySelector(`.deleteOrderBtn[data-order="${orderId}"]`);
+                let originalHtml = '';
+                if (btn) {
+                    originalHtml = btn.innerHTML;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+                    btn.disabled = true;
+                    btn.style.opacity = '0.6';
+                    btn.style.cursor = 'wait';
+                }
+
+                const { error } = await sb.from('orders').delete().eq('id', orderId);
+                if (error) throw error;
+
+                if (window.showToast) window.showToast('🗑️ Order deleted successfully!', 'success');
+
+                // Reload orders list
+                await loadOrders();
+
+            } catch (e) {
+                console.error('Delete order error:', e);
+                if (window.showToast) window.showToast('❌ Delete failed: ' + e.message, 'error');
+
+                // Restore button
+                const btn = document.querySelector(`.deleteOrderBtn[data-order="${orderId}"]`);
+                if (btn) {
+                    btn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                    btn.style.cursor = 'pointer';
+                }
+            }
+        }
+
+        window.loadOrders = loadOrders;
+        window.deleteOrder = deleteOrder;
+
         document.addEventListener('DOMContentLoaded', function () {
             const btn = document.getElementById('refreshOrders');
             if (btn) btn.addEventListener('click', loadOrders);
@@ -2535,4 +2127,4 @@
     </script>
 
 </body>
-</html>
+    </html>
