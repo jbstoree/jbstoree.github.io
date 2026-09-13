@@ -676,18 +676,169 @@ $('resetBtn').addEventListener('click', async () => {
   showStatus('Password reset email sent. Check your inbox.', true);
 });
 
-$('guestBtn').addEventListener('click', async () => {
-  showStatus('Starting guest session…');
+$('guestBtn').addEventListener(
+  'click',
+  async () => {
 
-  const { error } = await client.auth.signInAnonymously();
+    const button = $('guestBtn');
 
-  if (error) {
-    showStatus(error.message);
-    return;
+    button.disabled = true;
+
+    showStatus(
+      'Starting guest session…'
+    );
+
+    try {
+
+      /*
+       * Android App:
+       * Get stable device ID from
+       * native Android bridge.
+       */
+
+      let deviceId = '';
+
+      try {
+
+        if (
+          window.JBStoreDevice &&
+          typeof window.JBStoreDevice.getDeviceId ===
+            'function'
+        ) {
+
+          deviceId =
+            String(
+              window.JBStoreDevice
+                .getDeviceId() || ''
+            ).trim();
+        }
+
+      } catch (e) {
+
+        console.error(
+          'Device ID bridge error:',
+          e
+        );
+      }
+
+      /*
+       * Guest device login works inside
+       * the JB STORE Android app.
+       */
+
+      if (!deviceId) {
+
+        showStatus(
+          'Guest login is available in the JB STORE app.'
+        );
+
+        button.disabled = false;
+
+        return;
+      }
+
+      /*
+       * Call Supabase Edge Function.
+       */
+
+      const response =
+        await fetch(
+          SUPABASE_URL +
+            '/functions/v1/guest-login',
+          {
+            method: 'POST',
+
+            headers: {
+              'Content-Type':
+                'application/json',
+
+              'apikey':
+                SUPABASE_ANON
+            },
+
+            body: JSON.stringify({
+              device_id:
+                deviceId
+            })
+          }
+        );
+
+      const result =
+        await response.json().catch(
+          () => ({})
+        );
+
+      if (
+        !response.ok ||
+        !result.access_token ||
+        !result.refresh_token
+      ) {
+
+        console.error(
+          'Guest login error:',
+          result
+        );
+
+        throw new Error(
+          result?.error ||
+          result?.message ||
+          'Guest login failed.'
+        );
+      }
+
+      /*
+       * Store the returned Supabase
+       * session in the normal client.
+       */
+
+      const {
+        error: sessionError
+      } =
+        await client.auth.setSession(
+          {
+            access_token:
+              result.access_token,
+
+            refresh_token:
+              result.refresh_token
+          }
+        );
+
+      if (sessionError) {
+
+        console.error(
+          'Session error:',
+          sessionError
+        );
+
+        throw sessionError;
+      }
+
+      /*
+       * Same device → same guest account.
+       */
+
+      window.location.replace(
+        'index.html'
+      );
+
+    } catch (error) {
+
+      console.error(
+        'Guest login failed:',
+        error
+      );
+
+      showStatus(
+        error?.message ||
+        'Guest login failed.'
+      );
+
+      button.disabled = false;
+    }
   }
-
-  window.location.replace('index.html');
-});
+);
 </script>
 </body>
 </html>
+
