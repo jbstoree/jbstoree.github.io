@@ -946,6 +946,33 @@
   if (cancelBtn) { cancelBtn.addEventListener('click', () => { $('ckModal').classList.remove('show'); document.body.style.overflow = ''; }); }
   $('ckModal').addEventListener('click', e => { if (e.target === $('ckModal')) { $('ckModal').classList.remove('show'); document.body.style.overflow = ''; } });
 
+  // ✅ BLOCK CHECK FUNCTION
+  async function checkIfUserIsBlocked(email, mobile) {
+    try {
+      if (!sb) return false;
+      const { data, error } = await sb
+        .from('blocked_users')
+        .select('*')
+        .or(`email.eq.${email},mobile.eq.${mobile}`)
+        .maybeSingle();
+
+      if (error) {
+        console.error("Error checking block status:", error);
+        return false; 
+      }
+
+      if (data) {
+        alert("🚫 Mee account block cheyyabaddindi. Order place cheyyalevaru. Support ni contact cheyyandi.");
+        return true; 
+      }
+
+      return false; 
+    } catch (e) {
+      console.error("Exception:", e);
+      return false;
+    }
+  }
+
   $('ckGo').addEventListener('click', async function () {
     const name = $('ckName').value.trim();
     const mob  = $('ckMobile').value.trim();
@@ -956,12 +983,23 @@
     if (!items.length) { showErr('⚠️ Cart khali undi'); return; }
     if (!currentUser && sb) { try { const { data } = await sb.auth.getUser(); if (data && data.user) currentUser = data.user; } catch(e){} }
 
+    const userEmail = currentUser ? (currentUser.is_anonymous ? 'guest@jbstore' : (currentUser.email || '')) : 'guest@jbstore';
+
+    // ✅ 1. BLOCK CHECK CHEYYANDI
+    const isBlocked = await checkIfUserIsBlocked(userEmail, mob);
+    
+    if (isBlocked) {
+        $('ckGo').disabled = false;
+        $('ckGo').textContent = '📲 Place Order';
+        return; // User blocked, so ikkade aapandi. Order insert cheyyoddu.
+    }
+
+    // ✅ 2. USER BLOCK CHEYYAKAPOTHE, ORDER PLACE CHEYYANDI
     $('ckGo').disabled = true; $('ckGo').textContent = 'Placing...'; $('ckErr').textContent = '';
 
     const subtotal  = items.reduce((s,i) => s + i.price * i.qty, 0);
     const orderCode = 'JB' + Date.now().toString().slice(-8);
     const userName  = name || (currentUser && currentUser.email ? currentUser.email.split('@')[0] : 'Customer');
-    const userEmail = currentUser ? (currentUser.is_anonymous ? 'guest@jbstore' : (currentUser.email || '')) : 'guest@jbstore';
 
     if (sb && currentUser) {
       try {
