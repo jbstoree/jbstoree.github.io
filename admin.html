@@ -1904,7 +1904,7 @@
     </script>
 
     <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- ORDERS MANAGEMENT — with DELETE feature                     -->
+    <!-- ORDERS MANAGEMENT — with WORKING DELETE                     -->
     <!-- ═══════════════════════════════════════════════════════════ -->
     <script>
     (function () {
@@ -1932,6 +1932,8 @@
                     return;
                 }
 
+                console.log('🔍 Fetching orders from Supabase...');
+
                 let { data, error } = await sb.from('orders').select('*').order('created_at', { ascending: false });
 
                 if (error && (error.message.includes('created_at') || error.code === '42703')) {
@@ -1944,6 +1946,8 @@
                     box.innerHTML = '<p style="text-align:center;color:#c00;padding:30px;">❌ ' + esc(error.message) + '</p>';
                     return;
                 }
+
+                console.log('✅ Orders fetched:', data?.length || 0);
 
                 if (!data || !data.length) {
                     box.innerHTML = '<p style="text-align:center;color:#8c8f94;padding:40px;">Inka orders levu.</p>';
@@ -2009,7 +2013,6 @@
                             <span style="font-weight:800;font-size:19px;color:#a3801a;">${money(o.total)}</span>
                         </div>
 
-                        <!-- ═══ ACTIONS ROW: Status + Delete ═══ -->
                         <div style="margin-top:12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
                             <select data-order="${esc(o.id)}" class="statusSel"
                                 style="flex:1; min-width:140px; border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:600;background:#f8f9fb;font-family:'Inter',sans-serif;color:#1a1a2e;cursor:pointer;outline:none;">
@@ -2028,7 +2031,6 @@
                     </div>`;
                 }).join('');
 
-                // Status update listeners
                 box.querySelectorAll('.statusSel').forEach(sel => {
                     sel.addEventListener('change', async function () {
                         const orderId = this.getAttribute('data-order');
@@ -2045,7 +2047,6 @@
                     });
                 });
 
-                // ✅ Delete order listeners
                 box.querySelectorAll('.deleteOrderBtn').forEach(btn => {
                     btn.addEventListener('click', function () {
                         const orderId = this.getAttribute('data-order');
@@ -2061,7 +2062,7 @@
         }
 
         // ═══════════════════════════════════════════════════════════
-        // 🗑️ DELETE ORDER — Supabase nunchi permanent ga delete avutundi
+        // 🗑️ DELETE ORDER — WITH .select() VERIFICATION
         // ═══════════════════════════════════════════════════════════
         async function deleteOrder(orderId, orderCode) {
             if (!orderId) {
@@ -2078,37 +2079,54 @@
             );
             if (!confirmed) return;
 
+            const btn = document.querySelector(`.deleteOrderBtn[data-order="${orderId}"]`);
+            let originalHtml = '';
+            if (btn) {
+                originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+                btn.disabled = true;
+                btn.style.opacity = '0.6';
+                btn.style.cursor = 'wait';
+            }
+
             try {
                 const sb = getSb();
                 if (!sb) throw new Error('Supabase client not ready');
 
-                // Button disable visual feedback
-                const btn = document.querySelector(`.deleteOrderBtn[data-order="${orderId}"]`);
-                let originalHtml = '';
-                if (btn) {
-                    originalHtml = btn.innerHTML;
-                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
-                    btn.disabled = true;
-                    btn.style.opacity = '0.6';
-                    btn.style.cursor = 'wait';
-                }
+                // ✅ KEY FIX: .select() — actually deleted rows return avutundi
+                const { data, error } = await sb
+                    .from('orders')
+                    .delete()
+                    .eq('id', orderId)
+                    .select();
 
-                const { error } = await sb.from('orders').delete().eq('id', orderId);
+                console.log('🗑️ Delete response:', {
+                    orderId,
+                    deletedCount: data?.length || 0,
+                    deletedData: data,
+                    error
+                });
+
                 if (error) throw error;
 
-                if (window.showToast) window.showToast('🗑️ Order deleted successfully!', 'success');
+                // ✅ Verify actually deleted
+                if (!data || data.length === 0) {
+                    throw new Error(
+                        'RLS policy orders delete ni block chestundi. ' +
+                        'Supabase lo DELETE policy add cheyyali. ' +
+                        'SQL: CREATE POLICY "Authenticated can delete orders" ON orders FOR DELETE TO authenticated USING (true);'
+                    );
+                }
 
-                // Reload orders list
+                if (window.showToast) window.showToast('🗑️ Order deleted successfully!', 'success');
                 await loadOrders();
 
             } catch (e) {
-                console.error('Delete order error:', e);
+                console.error('❌ Delete order error:', e);
                 if (window.showToast) window.showToast('❌ Delete failed: ' + e.message, 'error');
 
-                // Restore button
-                const btn = document.querySelector(`.deleteOrderBtn[data-order="${orderId}"]`);
                 if (btn) {
-                    btn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+                    btn.innerHTML = originalHtml || '<i class="fas fa-trash-alt"></i> Delete';
                     btn.disabled = false;
                     btn.style.opacity = '1';
                     btn.style.cursor = 'pointer';
@@ -2127,4 +2145,4 @@
     </script>
 
 </body>
-    </html>
+</html>
