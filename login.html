@@ -692,50 +692,86 @@ $('guestBtn').addEventListener(
 
       /*
        * Android App:
-       * Get stable device ID from
-       * native Android bridge.
+       * Wait briefly for the native bridge to become
+       * available. This prevents the first-click race
+       * that can happen while WebView is finishing
+       * the initial page load.
        */
 
-      let deviceId = '';
+      async function getNativeGuestDeviceId() {
 
-      try {
+        const maxAttempts = 30;
 
-        if (
-          window.JBStoreDevice &&
-          typeof window.JBStoreDevice.getDeviceId ===
-            'function'
+        for (
+          let attempt = 0;
+          attempt < maxAttempts;
+          attempt++
         ) {
 
-          deviceId =
-            String(
-              window.JBStoreDevice
-                .getDeviceId() || ''
-            ).trim();
+          try {
+
+            if (
+              window.JBStoreDevice &&
+              typeof window.JBStoreDevice.getDeviceId ===
+                'function'
+            ) {
+
+              const deviceId =
+                String(
+                  window.JBStoreDevice
+                    .getDeviceId() || ''
+                ).trim();
+
+              if (
+                /^[a-f0-9]{64}$/i.test(
+                  deviceId
+                )
+              ) {
+                return deviceId;
+              }
+            }
+
+          } catch (e) {
+
+            console.error(
+              'Device ID bridge error:',
+              e
+            );
+          }
+
+          /*
+           * Give Android/WebView 100 ms to finish
+           * exposing the JavaScript interface.
+           */
+
+          await new Promise(
+            resolve =>
+              setTimeout(
+                resolve,
+                100
+              )
+          );
         }
 
-      } catch (e) {
-
-        console.error(
-          'Device ID bridge error:',
-          e
-        );
+        return '';
       }
 
+
       /*
-       * Guest device login works inside
-       * the JB STORE Android app.
+       * Get the native device ID.
        */
+
+      const deviceId =
+        await getNativeGuestDeviceId();
+
 
       if (!deviceId) {
 
-        showStatus(
-          'Guest login is available in the JB STORE app.'
+        throw new Error(
+          'Unable to initialize guest account. Please try again.'
         );
-
-        button.disabled = false;
-
-        return;
       }
+
 
       /*
        * Call Supabase Edge Function.
@@ -766,10 +802,12 @@ $('guestBtn').addEventListener(
           }
         );
 
+
       const result =
         await response.json().catch(
           () => ({})
         );
+
 
       if (
         !response.ok ||
@@ -789,6 +827,7 @@ $('guestBtn').addEventListener(
         );
       }
 
+
       /*
        * Store the returned Supabase
        * session in the normal client.
@@ -807,6 +846,7 @@ $('guestBtn').addEventListener(
           }
         );
 
+
       if (sessionError) {
 
         console.error(
@@ -817,8 +857,10 @@ $('guestBtn').addEventListener(
         throw sessionError;
       }
 
+
       /*
-       * Same device → same guest account.
+       * Same Android device →
+       * same guest account.
        */
 
       window.location.replace(
@@ -841,6 +883,7 @@ $('guestBtn').addEventListener(
     }
   }
 );
+
 </script>
 </body>
 </html>
