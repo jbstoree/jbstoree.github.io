@@ -519,6 +519,24 @@
             margin-left: auto; opacity: 0.7;
         }
 
+        /* NEW STYLES FOR ORDERS GRID */
+        .orders-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        @media (min-width: 821px) {
+            .orders-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+                gap: 16px;
+            }
+            .order-card {
+                margin-bottom: 0 !important;
+            }
+        }
+
         @media (max-width: 820px) {
             .sidebar {
                 position: fixed; top: 0; left: 0;
@@ -2356,6 +2374,7 @@
                 <div style="font-size:12px;color:#8c8f94;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 10px;">🛍 All Orders (${user.orders.length})</div>
             `;
 
+            let ordersGridHtml = '';
             user.orders.forEach(o => {
                 const st = STATUS_COLORS[o.status] || STATUS_COLORS.pending;
                 
@@ -2382,8 +2401,8 @@
                 let dt = 'N/A';
                 if (o.created_at) { try { dt = new Date(o.created_at).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'}); } catch(e){} }
 
-                html += `
-                <div style="background:#fff;border:1px solid #e8ecf1;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.04);">
+                ordersGridHtml += `
+                <div class="order-card" style="background:#fff;border:1px solid #e8ecf1;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.04);">
                     <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
                         <div>
                             <div style="font-weight:800;font-size:15px;color:#a3801a;letter-spacing:.5px;">${esc(o.order_code||'—')}</div>
@@ -2407,6 +2426,8 @@
                     </div>
                 </div>`;
             });
+
+            html += `<div class="orders-grid">${ordersGridHtml}</div>`;
 
             box.innerHTML = html;
 
@@ -2583,4 +2604,4 @@
     </script>
 
 </body>
-    </html>
+</html>
