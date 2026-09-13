@@ -978,9 +978,7 @@
             </div>
         </div>
 
-        <!-- ══════════════════════════════════════════════════════ -->
-        <!-- ─── ORDERS TAB (NEW: Full Orders Management) ─── -->
-        <!-- ══════════════════════════════════════════════════════ -->
+        <!-- ─── ORDERS TAB ─── -->
         <div id="tabOrders" class="hidden">
             <div style="background:#fff;border-radius:14px;border:1px solid #e8ecf1;padding:20px;">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
@@ -1124,18 +1122,14 @@
                         <textarea id="editDescription" placeholder="Product description…" rows="3"></textarea>
                     </div>
 
-                    <!-- ═══════════════════════════════════════════════════ -->
-                    <!-- 1️⃣  COLORS                                           -->
-                    <!-- ═══════════════════════════════════════════════════ -->
+                    <!-- 1️⃣ COLORS -->
                     <div class="dynamic-section" id="colorSection">
                         <div class="section-title"><i class="fas fa-palette"></i> Colors &amp; Gallery</div>
                         <div id="colorsContainer"></div>
                         <button class="add-row-btn" onclick="addColorRow()">+ Add Color</button>
                     </div>
 
-                    <!-- ═══════════════════════════════════════════════════ -->
-                    <!-- 2️⃣  VARIANTS                                         -->
-                    <!-- ═══════════════════════════════════════════════════ -->
+                    <!-- 2️⃣ VARIANTS -->
                     <div class="dynamic-section" id="variantSection">
                         <div class="section-title"><i class="fas fa-layer-group"></i> Variants</div>
                         <div id="variantsContainer">
@@ -1148,9 +1142,7 @@
                         <button class="add-row-btn" onclick="addVariantRow()">+ Add Variant</button>
                     </div>
 
-                    <!-- ═══════════════════════════════════════════════════ -->
-                    <!-- 3️⃣  PRODUCT HIGHLIGHTS                              -->
-                    <!-- ═══════════════════════════════════════════════════ -->
+                    <!-- 3️⃣ PRODUCT HIGHLIGHTS -->
                     <div class="dynamic-section">
                         <div class="section-title"><i class="fas fa-star"></i> Product Highlights</div>
                         <div id="highlightsContainer"></div>
@@ -1158,18 +1150,14 @@
                         <small style="display:block;margin-top:6px;color:#8c8f94;">Icon can be an emoji (⭐) or text (✦).</small>
                     </div>
 
-                    <!-- ═══════════════════════════════════════════════════ -->
-                    <!-- 4️⃣  SPECIFICATIONS                                  -->
-                    <!-- ═══════════════════════════════════════════════════ -->
+                    <!-- 4️⃣ SPECIFICATIONS -->
                     <div class="dynamic-section">
                         <div class="section-title"><i class="fas fa-table"></i> Specifications</div>
                         <div id="specificationsContainer"></div>
                         <button class="add-row-btn" onclick="addSpecGroup()">+ Add Specification Group</button>
                     </div>
 
-                    <!-- ═══════════════════════════════════════════════════ -->
-                    <!-- 5️⃣  WARRANTY                                        -->
-                    <!-- ═══════════════════════════════════════════════════ -->
+                    <!-- 5️⃣ WARRANTY -->
                     <div class="dynamic-section">
                         <div class="section-title"><i class="fas fa-shield-alt"></i> Warranty</div>
                         <div style="display:grid; grid-template-columns:1fr 2fr; gap:14px;">
@@ -1185,9 +1173,7 @@
                         <small style="display:block;margin-top:6px;color:#8c8f94;">Both period and details are saved together in the warranty field.</small>
                     </div>
 
-                    <!-- ═══════════════════════════════════════════════════ -->
-                    <!-- 6️⃣  MANUFACTURER                                    -->
-                    <!-- ═══════════════════════════════════════════════════ -->
+                    <!-- 6️⃣ MANUFACTURER -->
                     <div class="dynamic-section">
                         <div class="section-title"><i class="fas fa-building"></i> Manufacturer</div>
                         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
@@ -2346,7 +2332,7 @@
         });
 
         // ───────── EXPOSE TO GLOBAL ─────────
-        window.supabaseClient = supabaseClient; // ← IMPORTANT: Orders script ki access ivvadaniki
+        window.supabaseClient = supabaseClient;
         window.switchTab = switchTab;
         window.toggleSidebar = toggleSidebar;
         window.openAddModal = openAddModal;
@@ -2380,12 +2366,14 @@
     </script>
 
     <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- ═══ ORDERS MANAGEMENT (NEW) ═══                              -->
+    <!-- ═══ ORDERS MANAGEMENT (FIXED) ═══                             -->
     <!-- ═══════════════════════════════════════════════════════════ -->
     <script>
     (function () {
-        // Use the global supabaseClient so the admin login session is shared
-        const sb = window.supabaseClient;
+        // ✅ Dynamic getter — parse time lo capture cheyyaku
+        function getSb() {
+            return window.supabaseClient;
+        }
 
         const STATUS_COLORS = {
             pending:   { bg:'#fff4d6', c:'#a3801a' },
@@ -2403,14 +2391,20 @@
             box.innerHTML = '<p style="text-align:center;color:#8c8f94;padding:30px;">Loading orders…</p>';
 
             try {
+                const sb = getSb();
                 if (!sb) {
-                    box.innerHTML = '<p style="text-align:center;color:#c00;padding:30px;">❌ Supabase client not initialized.</p>';
+                    box.innerHTML = '<p style="text-align:center;color:#c00;padding:30px;">❌ Supabase client not initialized. Please refresh the page.</p>';
                     return;
                 }
 
-                // Try to sort by created_at, fallback to id if column missing
-                let { data, error } = await sb.from('orders').select('*').order('created_at', { ascending: false });
+                console.log('🔍 Fetching orders from Supabase...');
 
+                let { data, error } = await sb
+                    .from('orders')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                // Fallback if created_at column missing
                 if (error && (error.message.includes('created_at') || error.code === '42703')) {
                     console.warn('created_at column not found, sorting by id instead.');
                     const fallback = await sb.from('orders').select('*').order('id', { ascending: false });
@@ -2419,10 +2413,12 @@
                 }
 
                 if (error) {
-                    console.error('Supabase query error:', error);
+                    console.error('❌ Supabase query error:', error);
                     box.innerHTML = '<p style="text-align:center;color:#c00;padding:30px;">❌ ' + esc(error.message) + '</p>';
                     return;
                 }
+
+                console.log('✅ Orders fetched:', data?.length || 0);
 
                 if (!data || !data.length) {
                     box.innerHTML = '<p style="text-align:center;color:#8c8f94;padding:40px;">Inka orders levu.</p>';
@@ -2433,8 +2429,7 @@
                     const st = STATUS_COLORS[o.status] || STATUS_COLORS.pending;
                     const itemsHtml = (o.items || []).map(it => `
                         <div style="display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px dashed #eee;">
-                            <img src="${esc(it.image||'')}" onerror="this.style.background='#f1f3f6';this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2246%22 height=%2246%22><rect width=%2246%22 height=%2246%22 fill=%22%23f1f3f6%22/><text x=%2223%22 y=%2227%22 text-anchor=%22middle%22 font-size=%2216%22 fill=%22%23aaa%22>📦</text></svg>'"
-                                 style="width:46px;height:46px;object-fit:contain;border-radius:8px;background:#faf8f2;padding:4px;flex-shrink:0;">
+                            <div style="width:46px;height:46px;border-radius:8px;background:#faf8f2;padding:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;">📦</div>
                             <div style="flex:1;min-width:0;">
                                 <div style="font-weight:600;font-size:13.5px;color:#1a1a2e;">${esc(it.name)}</div>
                                 <div style="font-size:11px;color:#8c8f94;">${esc(it.brand||'')}</div>
@@ -2454,20 +2449,21 @@
                     <div style="background:#fff;border:1px solid #e8ecf1;border-radius:14px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.04);">
                         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
                             <div>
-                                <div style="font-weight:800;font-size:15px;color:#a3801a;letter-spacing:.5px;">${esc(o.order_code)}</div>
+                                <div style="font-weight:800;font-size:15px;color:#a3801a;letter-spacing:.5px;">${esc(o.order_code||'—')}</div>
                                 <div style="font-size:11.5px;color:#8c8f94;margin-top:2px;"><i class="far fa-clock"></i> ${esc(dt)}</div>
                             </div>
-                            <span style="background:${st.bg};color:${st.c};font-size:11px;font-weight:800;padding:5px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.4px;">${esc(o.status)}</span>
+                            <span style="background:${st.bg};color:${st.c};font-size:11px;font-weight:800;padding:5px 12px;border-radius:20px;text-transform:uppercase;">${esc(o.status||'pending')}</span>
                         </div>
 
                         <div style="background:#f8f9fb;border-radius:12px;padding:14px;margin-bottom:12px;border-left:3px solid #2874f0;">
-                            <div style="font-size:11px;color:#8c8f94;margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">👤 Customer Details</div>
+                            <div style="font-size:11px;color:#8c8f94;margin-bottom:8px;font-weight:700;text-transform:uppercase;">👤 Customer Details</div>
                             <div style="font-size:13.5px;line-height:1.85;color:#1a1a2e;">
                                 <div style="font-weight:700;font-size:14.5px;">${esc(o.customer_name||'—')}</div>
                                 <div>📱 <a href="tel:${esc(o.mobile)}" style="color:#2874f0;text-decoration:none;font-weight:600;">${esc(o.mobile||'—')}</a></div>
                                 <div>📧 ${esc(o.user_email||'—')}</div>
                                 <div style="color:#4a4a5a;">📍 ${esc(o.address||'—')}</div>
                             </div>
+                            ${o.mobile ? `
                             <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
                                 <a href="https://wa.me/91${esc(o.mobile)}" target="_blank"
                                    style="background:#25D366;color:#fff;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;">
@@ -2477,10 +2473,10 @@
                                    style="background:#1a1a2e;color:#fff;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;">
                                    <i class="fas fa-phone"></i> Call
                                 </a>
-                            </div>
+                            </div>` : ''}
                         </div>
 
-                        <div style="font-size:11px;color:#8c8f94;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">🛍 Items (${(o.items||[]).length})</div>
+                        <div style="font-size:11px;color:#8c8f94;font-weight:700;text-transform:uppercase;margin-bottom:6px;">🛍 Items (${(o.items||[]).length})</div>
                         ${itemsHtml}
 
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:2px solid #f0ead6;">
@@ -2492,4 +2488,51 @@
                             <select data-order="${esc(o.id)}" class="statusSel"
                                 style="flex:1; border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:600;background:#f8f9fb;font-family:'Inter',sans-serif;color:#1a1a2e;cursor:pointer;outline:none;">
                                 ${['pending','confirmed','shipped','delivered','cancelled'].map(s =>
-                                    `<option value="${s}" ${o.status===s?'selected
+                                    `<option value="${s}" ${o.status===s?'selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`
+                                ).join('')}
+                            </select>
+                        </div>
+                    </div>`;
+                }).join('');
+
+                // ✅ Status update listeners
+                box.querySelectorAll('.statusSel').forEach(sel => {
+                    sel.addEventListener('change', async function () {
+                        const orderId = this.getAttribute('data-order');
+                        const newStatus = this.value;
+                        this.disabled = true;
+                        try {
+                            const { error } = await getSb()
+                                .from('orders')
+                                .update({ status: newStatus })
+                                .eq('id', orderId);
+                            if (error) throw error;
+                            if (window.showToast) window.showToast('✅ Status updated to ' + newStatus, 'success');
+                        } catch (e) {
+                            console.error('Status update error:', e);
+                            if (window.showToast) window.showToast('❌ ' + e.message, 'error');
+                        } finally {
+                            this.disabled = false;
+                        }
+                    });
+                });
+
+            } catch (e) {
+                console.error('❌ loadOrders exception:', e);
+                box.innerHTML = '<p style="text-align:center;color:#c00;padding:30px;">❌ ' + esc(e.message) + '</p>';
+            }
+        }
+
+        // ✅ CRITICAL: Global ga expose cheyyi — switchTab & refresh button call cheyyadaniki
+        window.loadOrders = loadOrders;
+
+        // ✅ Refresh button listener
+        document.addEventListener('DOMContentLoaded', function () {
+            const btn = document.getElementById('refreshOrders');
+            if (btn) btn.addEventListener('click', loadOrders);
+        });
+    })();
+    </script>
+
+</body>
+</html>
