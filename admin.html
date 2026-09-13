@@ -2135,7 +2135,17 @@
                 if (!sb) { showError('Supabase not initialized. Refresh cheyyi.'); return; }
 
                 console.log('🔍 Fetching orders...');
-                let result = await sb.from('orders').select('*').order('created_at', { ascending: false });
+                
+                // 10 seconds timeout pettadam valla, page hang avvadu
+                const timeoutPromise = new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error('Request timed out. Check your internet connection.')), 10000)
+                );
+
+                let result = await Promise.race([
+                    sb.from('orders').select('*').order('created_at', { ascending: false }),
+                    timeoutPromise
+                ]);
+                
                 console.log('📥 Result:', { count: result.data?.length, error: result.error?.message });
 
                 if (result.error && (result.error.message.includes('created_at') || result.error.code === '42703')) {
@@ -2151,7 +2161,6 @@
 
                 allOrders = result.data || [];
                 console.log('✅ Orders loaded:', allOrders.length);
-
                 await loadBlockedUsersData();
 
                 if (!allOrders.length) {
@@ -2351,7 +2360,15 @@
 
             user.orders.forEach(o => {
                 const st = STATUS_COLORS[o.status] || STATUS_COLORS.pending;
-                const itemsHtml = (o.items || []).map(it => `
+                
+                // Robustly handle items (whether it's an array or a JSON string)
+                let itemsArray = o.items;
+                if (typeof itemsArray === 'string') {
+                    try { itemsArray = JSON.parse(itemsArray); } catch(e) { itemsArray = []; }
+                }
+                if (!Array.isArray(itemsArray)) itemsArray = [];
+
+                const itemsHtml = itemsArray.map(it => `
                     <div style="display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px dashed #eee;">
                         <div style="width:46px;height:46px;border-radius:8px;background:#faf8f2;padding:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;">📦</div>
                         <div style="flex:1;min-width:0;">
@@ -2376,7 +2393,7 @@
                         </div>
                         <span style="background:${st.bg};color:${st.c};font-size:11px;font-weight:800;padding:5px 12px;border-radius:20px;text-transform:uppercase;">${esc(o.status||'pending')}</span>
                     </div>
-                    <div style="font-size:11px;color:#8c8f94;font-weight:700;text-transform:uppercase;margin-bottom:6px;">🛍 Items (${(o.items||[]).length})</div>
+                    <div style="font-size:11px;color:#8c8f94;font-weight:700;text-transform:uppercase;margin-bottom:6px;">🛍 Items (${itemsArray.length})</div>
                     ${itemsHtml}
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:2px solid #f0ead6;">
                         <span style="font-weight:700;font-size:13px;">TOTAL</span>
@@ -2511,3 +2528,61 @@
                 const { data, error } = await sb.from('blocked_users').select('*').order('blocked_at', { ascending: false });
                 if (error) {
                     if (error.code === '42P01') {
+                        box.innerHTML = '<p style="text-align:center;color:#c00;padding:30px;">❌ blocked_users table create cheyyaledu.</p>'; return;
+                    }
+                    throw error;
+                }
+                blockedUsers = data || [];
+                if (!blockedUsers.length) { box.innerHTML = '<p style="text-align:center;color:#8c8f94;padding:40px;">Evaru block cheyyaledu. 🎉</p>'; return; }
+
+                box.innerHTML = blockedUsers.map(b => {
+                    const initial = (b.name || b.email || 'U').charAt(0).toUpperCase();
+                    const dt = b.blocked_at ? new Date(b.blocked_at).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'}) : '—';
+                    return `<div style="background:#fff;border:1px solid #f5c6c6;border-radius:14px;padding:16px;background:linear-gradient(180deg,#fff5f5 0%,#fff 40%);margin-bottom:12px;">
+                        <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+                            <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#d32f2f,#a02020);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;flex-shrink:0;">${esc(initial)}</div>
+                            <div style="flex:1;min-width:180px;">
+                                <div style="font-weight:700;font-size:15px;color:#1a1a2e;">${esc(b.name || 'Unknown')}</div>
+                                <div style="font-size:12.5px;color:#6b6b7a;margin-top:3px;">📧 ${esc(b.email || '—')}</div>
+                                <div style="font-size:12.5px;color:#6b6b7a;margin-top:2px;">📱 ${esc(b.mobile || '—')}</div>
+                                ${b.reason ? `<div style="font-size:12px;color:#a02020;margin-top:6px;background:#fff0f0;padding:6px 10px;border-radius:6px;display:inline-block;"><strong>Reason:</strong> ${esc(b.reason)}</div>` : ''}
+                                <div style="font-size:11px;color:#8c8f94;margin-top:6px;"><i class="far fa-clock"></i> ${esc(dt)}</div>
+                            </div>
+                            <button class="unblockTabBtn" data-id="${b.id}" style="background:#e8f7ee;color:#1e8e4a;border:1px solid #b8e0c8;padding:10px 18px;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;"><i class="fas fa-unlock"></i> Unblock</button>
+                        </div>
+                    </div>`;
+                }).join('');
+
+                box.querySelectorAll('.unblockTabBtn').forEach(btn => {
+                    btn.addEventListener('click', async function () {
+                        if (!confirm('Unblock this user?')) return;
+                        try {
+                            const { error } = await getSb().from('blocked_users').delete().eq('id', this.getAttribute('data-id'));
+                            if (error) throw error;
+                            if (window.showToast) window.showToast('✅ Unblocked!', 'success');
+                            await loadBlockedUsers();
+                            await loadBlockedUsersData();
+                        } catch (e) { if (window.showToast) window.showToast('❌ ' + e.message, 'error'); }
+                    });
+                });
+            } catch (e) {
+                box.innerHTML = '<p style="color:#c00;text-align:center;padding:30px;">❌ ' + esc(e.message) + '</p>';
+            }
+        }
+
+        window.loadOrders = loadOrders;
+        window.loadBlockedUsers = loadBlockedUsers;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const b1 = document.getElementById('refreshOrders');
+            if (b1) b1.addEventListener('click', loadOrders);
+            const b2 = document.getElementById('refreshBlocked');
+            if (b2) b2.addEventListener('click', loadBlockedUsers);
+        });
+
+        console.log('✅ Orders script ready. loadOrders =', typeof window.loadOrders);
+    })();
+    </script>
+
+</body>
+    </html>
