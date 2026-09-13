@@ -635,6 +635,14 @@
                     <div class="stat-number" id="statColors">0</div>
                     <span class="stat-change"><i class="fas fa-arrow-up"></i> 5%</span>
                 </div>
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Total Customers</span>
+                        <span class="stat-icon purple"><i class="fas fa-users"></i></span>
+                    </div>
+                    <div class="stat-number" id="statCustomers">0</div>
+                    <span class="stat-change"><i class="fas fa-users"></i> Registered users</span>
+                </div>
             </div>
         </div>
 
@@ -1974,6 +1982,15 @@
                         ? result.users
                         : [];
 
+                // Dashboard Total Customers uses the exact same user list
+                // shown in the Customers tab.
+                const dashboardCustomers =
+                    document.getElementById('statCustomers');
+
+                if (dashboardCustomers) {
+                    dashboardCustomers.textContent = allCustomers.length;
+                }
+
                 renderCustomerStats();
                 renderCustomers();
 
@@ -2032,6 +2049,10 @@
                     loadCustomers
                 );
             }
+
+            // Load the same Customers data on Dashboard so the
+            // Total Customers card always matches the Customers tab.
+            loadCustomers();
         });
 
         window.loadCustomers = loadCustomers;
@@ -2545,3 +2566,4 @@
 
 </body>
 </html>
+
