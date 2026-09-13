@@ -1232,7 +1232,6 @@
 
             if (window.innerWidth <= 820) $('sidebar').classList.remove('open');
 
-            if (tab === 'dashboard' && typeof window.loadCustomers === 'function') window.loadCustomers();
             if (tab === 'orders' && typeof window.loadOrders === 'function') window.loadOrders();
             if (tab === 'customers' && typeof window.loadCustomers === 'function') window.loadCustomers();
             if (tab === 'blocked' && typeof window.loadBlockedUsers === 'function') window.loadBlockedUsers();
@@ -2057,15 +2056,6 @@
         });
 
         window.loadCustomers = loadCustomers;
-
-        // Load customer count immediately when the admin opens on Dashboard.
-        // This uses the same list/count as the Customers tab.
-        document.addEventListener('DOMContentLoaded', function () {
-            const dashboard = document.getElementById('tabDashboard');
-            if (dashboard && !dashboard.classList.contains('hidden')) {
-                loadCustomers();
-            }
-        });
 
     })();
     </script>
