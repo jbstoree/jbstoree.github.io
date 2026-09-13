@@ -691,177 +691,158 @@ $('guestBtn').addEventListener(
     try {
 
       /*
-       * Android App:
-       * Wait briefly for the native bridge to become
-       * available. This prevents the first-click race
-       * that can happen while WebView is finishing
-       * the initial page load.
+       * ANDROID APP
+       *
+       * MainActivity injects the stable device ID into
+       * window.__JBStoreDeviceId after the trusted page
+       * finishes loading.
+       *
+       * The native bridge is also checked as a fallback.
        */
 
-      async function getNativeGuestDeviceId() {
-
-        const maxAttempts = 30;
-
-        for (
-          let attempt = 0;
-          attempt < maxAttempts;
-          attempt++
-        ) {
-
-          try {
-
-            if (
-              window.JBStoreDevice &&
-              typeof window.JBStoreDevice.getDeviceId ===
-                'function'
-            ) {
-
-              const deviceId =
-                String(
-                  window.JBStoreDevice
-                    .getDeviceId() || ''
-                ).trim();
-
-              if (
-                /^[a-f0-9]{64}$/i.test(
-                  deviceId
-                )
-              ) {
-                return deviceId;
-              }
-            }
-
-          } catch (e) {
-
-            console.error(
-              'Device ID bridge error:',
-              e
-            );
-          }
-
-          /*
-           * Give Android/WebView 100 ms to finish
-           * exposing the JavaScript interface.
-           */
-
-          await new Promise(
-            resolve =>
-              setTimeout(
-                resolve,
-                100
-              )
-          );
-        }
-
-        return '';
-      }
-
-
-      /*
-       * Get the native device ID.
-       */
-
-      const deviceId =
-        await getNativeGuestDeviceId();
-
-
-      if (!deviceId) {
-
-        throw new Error(
-          'Unable to initialize guest account. Please try again.'
-        );
-      }
-
-
-      /*
-       * Call Supabase Edge Function.
-       */
-
-      const response =
-        await fetch(
-          SUPABASE_URL +
-            '/functions/v1/guest-login',
-          {
-            method: 'POST',
-
-            headers: {
-              'Content-Type':
-                'application/json',
-
-              'apikey':
-                SUPABASE_ANON,
-
-              'Authorization':
-                'Bearer ' + SUPABASE_ANON
-            },
-
-            body: JSON.stringify({
-              device_id:
-                deviceId
-            })
-          }
-        );
-
-
-      const result =
-        await response.json().catch(
-          () => ({})
-        );
+      let deviceId =
+        String(
+          window.__JBStoreDeviceId || ''
+        ).trim();
 
 
       if (
-        !response.ok ||
-        !result.access_token ||
-        !result.refresh_token
+        !/^[a-f0-9]{64}$/i.test(
+          deviceId
+        )
       ) {
 
-        console.error(
-          'Guest login error:',
-          result
-        );
+        try {
 
-        throw new Error(
-          result?.error ||
-          result?.message ||
-          'Guest login failed.'
-        );
+          if (
+            window.JBStoreDevice &&
+            typeof window.JBStoreDevice.getDeviceId ===
+              'function'
+          ) {
+
+            deviceId =
+              String(
+                window.JBStoreDevice
+                  .getDeviceId() || ''
+              ).trim();
+          }
+
+        } catch (e) {
+
+          console.error(
+            'Device ID bridge error:',
+            e
+          );
+        }
       }
 
 
       /*
-       * Store the returned Supabase
-       * session in the normal client.
+       * ANDROID APP:
+       * Device-based guest account.
+       */
+
+      if (
+        /^[a-f0-9]{64}$/i.test(
+          deviceId
+        )
+      ) {
+
+        const response =
+          await fetch(
+            SUPABASE_URL +
+              '/functions/v1/guest-login',
+            {
+              method: 'POST',
+
+              headers: {
+                'Content-Type':
+                  'application/json',
+
+                'apikey':
+                  SUPABASE_ANON,
+
+                'Authorization':
+                  'Bearer ' + SUPABASE_ANON
+              },
+
+              body: JSON.stringify({
+                device_id:
+                  deviceId
+              })
+            }
+          );
+
+
+        const result =
+          await response.json().catch(
+            () => ({})
+          );
+
+
+        if (
+          !response.ok ||
+          !result.access_token ||
+          !result.refresh_token
+        ) {
+
+          console.error(
+            'Device guest login error:',
+            result
+          );
+
+          throw new Error(
+            result?.error ||
+            result?.message ||
+            'Guest login failed.'
+          );
+        }
+
+
+        const {
+          error: sessionError
+        } =
+          await client.auth.setSession(
+            {
+              access_token:
+                result.access_token,
+
+              refresh_token:
+                result.refresh_token
+            }
+          );
+
+
+        if (sessionError) {
+          throw sessionError;
+        }
+
+
+        window.location.replace(
+          'index.html'
+        );
+
+        return;
+      }
+
+
+      /*
+       * NORMAL WEBSITE BROWSER:
+       *
+       * There is no Android device ID in a normal
+       * browser, so use Supabase anonymous auth.
        */
 
       const {
-        error: sessionError
+        error: anonymousError
       } =
-        await client.auth.setSession(
-          {
-            access_token:
-              result.access_token,
-
-            refresh_token:
-              result.refresh_token
-          }
-        );
+        await client.auth.signInAnonymously();
 
 
-      if (sessionError) {
-
-        console.error(
-          'Session error:',
-          sessionError
-        );
-
-        throw sessionError;
+      if (anonymousError) {
+        throw anonymousError;
       }
 
-
-      /*
-       * Same Android device →
-       * same guest account.
-       */
 
       window.location.replace(
         'index.html'
