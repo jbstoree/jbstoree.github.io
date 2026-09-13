@@ -18,6 +18,7 @@
         ::-webkit-scrollbar-track { background: #f1f3f6; }
         ::-webkit-scrollbar-thumb { background: #c4c4c4; border-radius: 8px; }
 
+        /* SIDEBAR */
         .sidebar {
             width: 260px; background: #ffffff;
             border-right: 1px solid #e2e8f0;
@@ -39,7 +40,7 @@
             align-items: center; justify-content: center;
             color: #fff; font-size: 20px; font-weight: 800;
         }
-        .sidebar-brand h1 { font-size: 20px; font-weight: 700; color: #1a1a2e; letter-spacing: -0.5px; }
+        .sidebar-brand h1 { font-size: 20px; font-weight: 700; color: #1a1a2e; }
         .sidebar-brand h1 span { color: #2874f0; }
         .sidebar-nav { flex: 1; }
         .sidebar-nav .nav-label {
@@ -159,7 +160,7 @@
             padding: 8px 14px; border-radius: 6px;
             border: 1px solid #e2e8f0; background: #f8f9fa;
             font-family: 'Inter', sans-serif; font-size: 13px;
-            color: #1a1a2e; outline: none; transition: 0.2s;
+            color: #1a1a2e; outline: none;
         }
         .filter-bar .filter-clear {
             background: transparent; border: none;
@@ -227,8 +228,7 @@
             width: 36px; height: 36px; border-radius: 8px;
             border: 1px solid #e2e8f0; background: #fff;
             color: #1a1a2e; font-weight: 500;
-            cursor: pointer; transition: 0.15s;
-            font-family: 'Inter', sans-serif;
+            cursor: pointer; font-family: 'Inter', sans-serif;
         }
         .pagination-wrap .pages button.active { background: #2874f0; color: #fff; border-color: #2874f0; }
         .pagination-wrap .pages button:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -269,8 +269,7 @@
             padding: 10px 14px; border-radius: 8px;
             border: 1px solid #e2e8f0;
             font-family: 'Inter', sans-serif; font-size: 14px;
-            background: #fafbfc; transition: 0.2s;
-            outline: none; color: #1a1a2e;
+            background: #fafbfc; outline: none; color: #1a1a2e;
         }
         .modal .form-group textarea { resize: vertical; min-height: 70px; }
         .modal .dynamic-section {
@@ -307,17 +306,15 @@
             color: #4a4a5a; padding: 6px 18px;
             border-radius: 20px; cursor: pointer;
             font-size: 12px; font-weight: 500;
-            font-family: 'Inter', sans-serif;
-            transition: 0.2s; margin-top: 2px;
+            font-family: 'Inter', sans-serif; margin-top: 2px;
         }
         .color-image-tags { display: flex; flex-wrap: wrap; gap: 12px; padding: 6px 2px; flex: 1; }
         .color-image-tag {
             position: relative; width: 72px; height: 72px;
-            border-radius: 8px; overflow: visible;
-            flex-shrink: 0; background: #f1f3f6;
-            border: 2px solid #e2e8f0;
+            border-radius: 8px; flex-shrink: 0;
+            background: #f1f3f6; border: 2px solid #e2e8f0;
         }
-        .color-image-tag img { width: 100%; height: 100%; object-fit: contain; display: block; background: #fff; border-radius: 6px; }
+        .color-image-tag img { width: 100%; height: 100%; object-fit: contain; background: #fff; border-radius: 6px; }
         .color-image-tag .remove-img {
             position: absolute; top: -8px; right: -8px;
             width: 22px; height: 22px; border-radius: 50%;
@@ -343,11 +340,10 @@
         .main-image-preview-wrap { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
         .main-image-preview-wrap .main-image-tag {
             position: relative; width: 90px; height: 90px;
-            border-radius: 8px; overflow: visible;
-            flex-shrink: 0; background: #f1f3f6;
-            border: 2px solid #e2e8f0;
+            border-radius: 8px; flex-shrink: 0;
+            background: #f1f3f6; border: 2px solid #e2e8f0;
         }
-        .main-image-preview-wrap .main-image-tag img { width: 100%; height: 100%; object-fit: contain; display: block; background: #fff; border-radius: 6px; }
+        .main-image-preview-wrap .main-image-tag img { width: 100%; height: 100%; object-fit: contain; background: #fff; border-radius: 6px; }
         .main-image-preview-wrap .main-image-tag .remove-img {
             position: absolute; top: -8px; right: -8px;
             width: 24px; height: 24px; border-radius: 50%;
@@ -373,11 +369,10 @@
         .brand-logo-preview-wrap { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
         .brand-logo-preview-wrap .brand-logo-tag {
             position: relative; width: 80px; height: 80px;
-            border-radius: 8px; overflow: visible;
-            flex-shrink: 0; background: #f1f3f6;
-            border: 2px solid #e2e8f0;
+            border-radius: 8px; flex-shrink: 0;
+            background: #f1f3f6; border: 2px solid #e2e8f0;
         }
-        .brand-logo-preview-wrap .brand-logo-tag img { width: 100%; height: 100%; object-fit: contain; display: block; background: #fff; border-radius: 6px; }
+        .brand-logo-preview-wrap .brand-logo-tag img { width: 100%; height: 100%; object-fit: contain; background: #fff; border-radius: 6px; }
         .brand-logo-preview-wrap .brand-logo-tag .remove-img {
             position: absolute; top: -8px; right: -8px;
             width: 24px; height: 24px; border-radius: 50%;
@@ -437,8 +432,7 @@
             color: #4a4a5a; padding: 4px 14px;
             border-radius: 16px; cursor: pointer;
             font-size: 11px; font-weight: 500;
-            font-family: 'Inter', sans-serif;
-            transition: 0.2s; margin-top: 4px;
+            font-family: 'Inter', sans-serif; margin-top: 4px;
         }
         .modal .modal-actions {
             display: flex; justify-content: flex-end;
@@ -449,7 +443,7 @@
             padding: 10px 32px; border-radius: 8px;
             font-weight: 600; font-size: 14px;
             border: none; cursor: pointer;
-            transition: 0.2s; font-family: 'Inter', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
         .modal .modal-actions .btn-cancel { background: #f1f3f6; color: #4a4a5a; }
         .modal .modal-actions .btn-submit { background: #2874f0; color: #fff; }
@@ -542,7 +536,7 @@
             .topbar .top-actions .search-box input { width: 140px; }
             .stats-grid { gap: 12px; margin-bottom: 18px; }
             .stat-card { padding: 14px 16px; }
-            .modal { padding: 20px 18px; border-radius: 14px; margin: 10px; }
+            .modal { padding: 20px 18px; margin: 10px; }
             .modal .form-grid { grid-template-columns: 1fr; }
             .modal .form-grid .full-width { grid-column: 1; }
             .modal .dynamic-section { grid-column: 1; }
@@ -591,7 +585,7 @@
         <div class="topbar">
             <div class="page-title">
                 <h2 id="pageTitle">📊 Dashboard</h2>
-                <p id="pageSubtitle">Welcome back, Admin! Here's what's happening.</p>
+                <p id="pageSubtitle">Welcome back, Admin!</p>
             </div>
             <div class="top-actions">
                 <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()">
@@ -668,7 +662,7 @@
 
             <div class="table-wrap">
                 <div class="table-scroll">
-                    <table class="product-table" id="productTable">
+                    <table class="product-table">
                         <thead>
                             <tr>
                                 <th>Product</th>
@@ -697,7 +691,7 @@
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
                     <div>
                         <h3 style="margin:0;font-size:18px;font-weight:700;color:#1a1a2e;">📦 Customer Orders</h3>
-                        <p style="margin:2px 0 0;font-size:13px;color:#8c8f94;">Oka Gmail = oka user. Click cheste vaalla orders chudochu, block/unblock cheyyochu.</p>
+                        <p style="margin:2px 0 0;font-size:13px;color:#8c8f94;">Oka Gmail = oka user. Click cheste vaalla orders chudochu, block cheyyochu.</p>
                     </div>
                     <button id="refreshOrders" style="border:1px solid #2874f0;background:#fff;color:#2874f0;border-radius:8px;padding:8px 16px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;">
                         <i class="fas fa-sync-alt"></i> Refresh
@@ -732,7 +726,7 @@
             <div style="background:#fff;border-radius:14px;border:1px solid #e8ecf1;padding:40px;text-align:center;color:#6b6b7a;">
                 <i class="fas fa-tags" style="font-size:40px;color:#2874f0;margin-bottom:12px;display:block;"></i>
                 <h3 style="font-weight:600;color:#1a1a2e;">Category Management</h3>
-                <p>Manage product categories &amp; attributes.</p>
+                <p>Coming soon.</p>
             </div>
         </div>
 
@@ -741,19 +735,19 @@
             <div style="background:#fff;border-radius:14px;border:1px solid #e8ecf1;padding:40px;text-align:center;color:#6b6b7a;">
                 <i class="fas fa-cog" style="font-size:40px;color:#2874f0;margin-bottom:12px;display:block;"></i>
                 <h3 style="font-weight:600;color:#1a1a2e;">Settings</h3>
-                <p>Store settings coming soon.</p>
+                <p>Coming soon.</p>
             </div>
         </div>
     </div>
 
-    <!-- MODAL -->
+    <!-- PRODUCT MODAL -->
     <div class="modal-overlay" id="productModal">
         <div class="modal">
             <div class="modal-header">
                 <h3 id="modalTitle">Add Product</h3>
                 <button class="close-modal" onclick="closeModal()"><i class="fas fa-times"></i></button>
             </div>
-            <form id="productForm" onsubmit="return false;">
+            <form onsubmit="return false;">
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Product ID <span class="required">*</span></label>
@@ -795,31 +789,31 @@
                             <option value="New">🆕 New</option>
                         </select>
                     </div>
-                    <div class="form-group field-group group-mobiles">
+                    <div class="form-group">
                         <label>Storage</label>
                         <input type="text" id="editStorage" placeholder="e.g. 128GB" />
                     </div>
-                    <div class="form-group field-group group-mobiles">
+                    <div class="form-group">
                         <label>RAM</label>
                         <input type="text" id="editRam" placeholder="e.g. 8GB" />
                     </div>
-                    <div class="form-group field-group group-fridge group-washing group-ac">
+                    <div class="form-group">
                         <label>Capacity</label>
                         <input type="text" id="editCapacity" placeholder="e.g. 320L" />
                     </div>
-                    <div class="form-group field-group group-fridge group-washing group-ac">
+                    <div class="form-group">
                         <label>Type</label>
                         <input type="text" id="editType" placeholder="e.g. Inverter" />
                     </div>
-                    <div class="form-group field-group group-fridge group-ac">
+                    <div class="form-group">
                         <label>Energy Rating</label>
                         <input type="text" id="editEnergy" placeholder="e.g. 5 Star" />
                     </div>
-                    <div class="form-group field-group group-tv">
+                    <div class="form-group">
                         <label>Size</label>
                         <input type="text" id="editSize" placeholder="e.g. 55 inch" />
                     </div>
-                    <div class="form-group field-group group-tv">
+                    <div class="form-group">
                         <label>Resolution</label>
                         <input type="text" id="editResolution" placeholder="e.g. 4K UHD" />
                     </div>
@@ -828,7 +822,7 @@
                         <label>Main Image</label>
                         <div class="main-image-preview-wrap">
                             <div id="mainImageTag" class="main-image-tag" style="display:none;">
-                                <img id="mainImagePreviewImg" src="" alt="" onerror="this.style.display='none'" />
+                                <img id="mainImagePreviewImg" src="" onerror="this.style.display='none'" />
                                 <button class="remove-img" onclick="removeMainImage()">✕</button>
                             </div>
                             <div class="main-image-controls">
@@ -879,11 +873,11 @@
                     <div class="dynamic-section">
                         <div class="section-title"><i class="fas fa-shield-alt"></i> Warranty</div>
                         <div style="display:grid; grid-template-columns:1fr 2fr; gap:14px;">
-                            <div class="form-group" style="grid-column:1;">
+                            <div class="form-group">
                                 <label>Warranty Period</label>
                                 <input type="text" id="editWarranty" placeholder="e.g. 1 Year" />
                             </div>
-                            <div class="form-group" style="grid-column:2;">
+                            <div class="form-group">
                                 <label>Warranty Details</label>
                                 <textarea id="editWarrantyDetails" placeholder="…" rows="2"></textarea>
                             </div>
@@ -897,11 +891,11 @@
                                 <label>Brand Logo URL</label>
                                 <div class="brand-logo-preview-wrap">
                                     <div id="brandLogoTag" class="brand-logo-tag" style="display:none;">
-                                        <img id="brandLogoPreviewImg" src="" alt="" onerror="this.style.display='none'" />
+                                        <img id="brandLogoPreviewImg" src="" onerror="this.style.display='none'" />
                                         <button class="remove-img" onclick="removeBrandLogo()">✕</button>
                                     </div>
                                     <div class="brand-logo-controls">
-                                        <input type="text" id="editMfrLogo" placeholder="https://example.com/logo.png" oninput="updateMfrLogoPreview()" />
+                                        <input type="text" id="editMfrLogo" placeholder="https://…" oninput="updateMfrLogoPreview()" />
                                         <label class="upload-label">
                                             <i class="fas fa-cloud-upload-alt"></i> Upload Logo
                                             <input type="file" id="editMfrLogoFile" accept="image/*" style="display:none;" onchange="uploadLogoImage(this)" />
@@ -937,14 +931,14 @@
     <div class="modal-overlay" id="blockModal">
         <div class="modal" style="max-width:480px;">
             <div class="modal-header">
-                <h3 id="blockModalTitle">Block User</h3>
+                <h3 id="blockModalTitle">🚫 Block User</h3>
                 <button class="close-modal" onclick="closeBlockModal()"><i class="fas fa-times"></i></button>
             </div>
             <div style="padding:0 4px;">
                 <p style="color:#6b6b7a;font-size:14px;margin-bottom:16px;" id="blockModalSubtitle"></p>
                 <div class="form-group" style="margin-bottom:16px;">
                     <label style="font-weight:600;font-size:13px;color:#4a4a5a;display:block;margin-bottom:6px;">Reason (optional)</label>
-                    <textarea id="blockReason" placeholder="e.g. Fake orders, spam, abusive behavior…" rows="3"
+                    <textarea id="blockReason" placeholder="e.g. Fake orders, spam…" rows="3"
                         style="width:100%;padding:10px 14px;border-radius:8px;border:1px solid #e2e8f0;font-family:'Inter',sans-serif;font-size:14px;background:#fafbfc;outline:none;resize:vertical;"></textarea>
                 </div>
             </div>
@@ -979,6 +973,8 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- ═══════════════ MAIN SCRIPT ═══════════════ -->
     <script>
         const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
         const SUPABASE_ANON =
@@ -990,22 +986,23 @@
         let allProducts = [], filteredProducts = [], currentPage = 1;
         const perPage = 8;
         let editingId = null, isSubmitting = false, colorImageData = {};
+
         const $ = id => document.getElementById(id);
 
-        // ───────── AUTH ─────────
+        // ───── AUTH ─────
         function showLoginScreen(show) {
             const overlay = $('loginScreen');
             if (show) {
                 overlay.classList.add('show');
                 document.body.classList.add('login-active');
-                document.getElementById('sidebar').style.display = 'none';
-                document.getElementById('mainContent').style.display = 'none';
+                $('sidebar').style.display = 'none';
+                $('mainContent').style.display = 'none';
             } else {
                 overlay.classList.remove('show');
                 document.body.classList.remove('login-active');
-                document.getElementById('sidebar').style.display = '';
-                document.getElementById('mainContent').style.display = '';
-                if (window.innerWidth <= 820) document.getElementById('sidebar').classList.remove('open');
+                $('sidebar').style.display = '';
+                $('mainContent').style.display = '';
+                if (window.innerWidth <= 820) $('sidebar').classList.remove('open');
             }
         }
 
@@ -1043,7 +1040,7 @@
             } else showLoginScreen(true);
         }
 
-        // ───────── PRODUCTS ─────────
+        // ───── PRODUCTS ─────
         async function loadProducts() {
             try {
                 const { data, error } = await supabaseClient.from('products').select('*').order('id', { ascending: true });
@@ -1053,9 +1050,7 @@
                 currentPage = 1;
                 updateStats();
                 filterProducts();
-            } catch (e) {
-                showToast('Failed to load products: ' + e.message, 'error');
-            }
+            } catch (e) { showToast('Failed to load products: ' + e.message, 'error'); }
         }
 
         function updateStats() {
@@ -1151,10 +1146,12 @@
             renderTable();
         }
 
+        // ───── TAB SWITCH ─────
         function switchTab(tab) {
             document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
             document.querySelectorAll('.sidebar-nav a').forEach(a => {
-                if (a.textContent.trim().toLowerCase().includes(tab === 'dashboard' ? 'dashboard' :
+                const txt = a.textContent.trim().toLowerCase();
+                if (txt.includes(tab === 'dashboard' ? 'dashboard' :
                         tab === 'products' ? 'products' :
                         tab === 'orders' ? 'orders' :
                         tab === 'blocked' ? 'blocked' :
@@ -1180,21 +1177,23 @@
             $('pageTitle').textContent = t[0];
             $('pageSubtitle').textContent = t[1];
 
-            if (window.innerWidth <= 820) document.getElementById('sidebar').classList.remove('open');
+            if (window.innerWidth <= 820) $('sidebar').classList.remove('open');
 
             if (tab === 'orders' && typeof window.loadOrders === 'function') window.loadOrders();
             if (tab === 'blocked' && typeof window.loadBlockedUsers === 'function') window.loadBlockedUsers();
         }
 
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+        function toggleSidebar() { $('sidebar').classList.toggle('open'); }
 
         document.addEventListener('click', function(e) {
-            const sidebar = document.getElementById('sidebar');
-            const hamburger = document.getElementById('hamburgerBtn');
-            if (window.innerWidth <= 820 && !sidebar.contains(e.target) && !hamburger.contains(e.target)) sidebar.classList.remove('open');
+            if (window.innerWidth <= 820) {
+                const sidebar = $('sidebar');
+                const hamburger = $('hamburgerBtn');
+                if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) sidebar.classList.remove('open');
+            }
         });
 
-        // ───────── COLORS ─────────
+        // ───── COLOR ROWS ─────
         function createColorRow(index, colorName) {
             const row = document.createElement('div');
             row.className = 'dynamic-row';
@@ -1219,48 +1218,44 @@
         }
 
         function renderColorTags(index) {
-            const container = document.getElementById(`colorImageTags_${index}`);
-            if (!container) return;
+            const c = document.getElementById(`colorImageTags_${index}`);
+            if (!c) return;
             const images = colorImageData[index] || [];
-            container.innerHTML = images.map((img, imgIdx) => `
+            c.innerHTML = images.map((img, i) => `
                 <div class="color-image-tag">
                     <img src="${img}" onerror="this.style.display='none'" />
-                    <button class="remove-img" onclick="removeColorImage(${index}, ${imgIdx})">✕</button>
+                    <button class="remove-img" onclick="removeColorImage(${index}, ${i})">✕</button>
                 </div>`).join('');
         }
 
         function addColorRow() {
             const c = $('colorsContainer');
-            const index = c.children.length;
-            colorImageData[index] = [];
-            c.appendChild(createColorRow(index, ''));
+            const i = c.children.length;
+            colorImageData[i] = [];
+            c.appendChild(createColorRow(i, ''));
         }
 
         function addColorImageUrl(index) {
             const row = document.querySelector(`#colorsContainer .dynamic-row[data-index="${index}"]`);
             if (!row) return;
             const input = row.querySelector('.color-image-input');
-            if (!input) return;
-            const url = input.value.trim();
-            if (!url) return;
+            if (!input || !input.value.trim()) return;
             if (!colorImageData[index]) colorImageData[index] = [];
-            colorImageData[index].push(url);
+            colorImageData[index].push(input.value.trim());
             renderColorTags(index);
             input.value = '';
         }
 
-        function removeColorImage(index, imgIndex) {
+        function removeColorImage(index, i) {
             if (!colorImageData[index]) return;
-            colorImageData[index].splice(imgIndex, 1);
+            colorImageData[index].splice(i, 1);
             renderColorTags(index);
         }
 
         async function uploadColorImage(input, index) {
             const file = input.files[0];
             if (!file) return;
-            if (!file.type.startsWith('image/')) { showToast('❌ Image only.', 'error'); input.value=''; return; }
-            const label = input.parentElement;
-            const orig = label.innerHTML;
+            const label = input.parentElement, orig = label.innerHTML;
             label.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             try {
                 const url = await uploadFileToImageKit(file, 'colors');
@@ -1333,12 +1328,13 @@
             const row = btn.parentElement;
             const container = row.parentElement;
             if (container.children.length > 1) {
-                const index = parseInt(row.dataset.index);
-                if (!isNaN(index)) delete colorImageData[index];
+                const i = parseInt(row.dataset.index);
+                if (!isNaN(i)) delete colorImageData[i];
                 row.remove();
             }
         }
 
+        // ───── IMAGEKIT ─────
         async function uploadFileToImageKit(file, folderType) {
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (!session?.access_token) throw new Error('Session expired.');
@@ -1353,20 +1349,20 @@
                 body: form
             });
             let result;
-            try { result = await response.json(); } catch { throw new Error('Invalid server response.'); }
-            if (!response.ok) throw new Error(result?.error || `Upload failed`);
+            try { result = await response.json(); } catch { throw new Error('Invalid response.'); }
+            if (!response.ok) throw new Error(result?.error || 'Upload failed');
             if (!result?.url) throw new Error('No URL returned.');
             return result.url;
         }
 
         async function uploadImageToImageKit(input) {
             const file = input.files[0];
-            if (!file || !file.type.startsWith('image/')) { showToast('❌ Image only.', 'error'); input.value=''; return; }
+            if (!file) return;
             const label = input.parentElement, orig = label.innerHTML;
             label.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             try {
                 const url = await uploadFileToImageKit(file, 'products');
-                document.getElementById('editImage').value = url;
+                $('editImage').value = url;
                 updateMainImagePreview();
                 showToast('✅ Uploaded!', 'success');
             } catch (e) { showToast('❌ ' + e.message, 'error'); }
@@ -1374,10 +1370,8 @@
         }
 
         function updateMainImagePreview() {
-            const input = document.getElementById('editImage');
-            const tag = document.getElementById('mainImageTag');
-            const img = document.getElementById('mainImagePreviewImg');
-            const url = input.value.trim();
+            const url = $('editImage').value.trim();
+            const tag = $('mainImageTag'), img = $('mainImagePreviewImg');
             if (url) {
                 tag.style.display = 'block'; img.style.display = 'block';
                 img.onerror = function() { this.style.display = 'none'; };
@@ -1387,20 +1381,20 @@
 
         function removeMainImage() {
             if (confirm('Remove main image?')) {
-                document.getElementById('editImage').value = '';
-                document.getElementById('mainImageTag').style.display = 'none';
-                document.getElementById('mainImagePreviewImg').src = '';
+                $('editImage').value = '';
+                $('mainImageTag').style.display = 'none';
+                $('mainImagePreviewImg').src = '';
             }
         }
 
         async function uploadLogoImage(input) {
             const file = input.files[0];
-            if (!file || !file.type.startsWith('image/')) { showToast('❌ Image only.', 'error'); input.value=''; return; }
+            if (!file) return;
             const label = input.parentElement, orig = label.innerHTML;
             label.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             try {
                 const url = await uploadFileToImageKit(file, 'brands');
-                document.getElementById('editMfrLogo').value = url;
+                $('editMfrLogo').value = url;
                 updateMfrLogoPreview();
                 showToast('✅ Uploaded!', 'success');
             } catch (e) { showToast('❌ ' + e.message, 'error'); }
@@ -1408,9 +1402,8 @@
         }
 
         function updateMfrLogoPreview() {
-            const url = document.getElementById('editMfrLogo').value.trim();
-            const tag = document.getElementById('brandLogoTag');
-            const img = document.getElementById('brandLogoPreviewImg');
+            const url = $('editMfrLogo').value.trim();
+            const tag = $('brandLogoTag'), img = $('brandLogoPreviewImg');
             if (url) {
                 img.src = url; img.style.display = 'block'; tag.style.display = 'block';
                 img.onerror = function() { this.style.display = 'none'; };
@@ -1419,12 +1412,13 @@
 
         function removeBrandLogo() {
             if (confirm('Remove brand logo?')) {
-                document.getElementById('editMfrLogo').value = '';
-                document.getElementById('brandLogoTag').style.display = 'none';
-                document.getElementById('brandLogoPreviewImg').src = '';
+                $('editMfrLogo').value = '';
+                $('brandLogoTag').style.display = 'none';
+                $('brandLogoPreviewImg').src = '';
             }
         }
 
+        // ───── MODAL ─────
         function openAddModal() {
             editingId = null;
             $('modalTitle').textContent = '➕ Add Product';
@@ -1479,9 +1473,9 @@
             const cContainer = $('colorsContainer');
             cContainer.innerHTML = ''; colorImageData = {};
             if (colors.length === 0) addColorRow();
-            else colors.forEach((color, index) => {
-                colorImageData[index] = color.images || [];
-                cContainer.appendChild(createColorRow(index, color.name || ''));
+            else colors.forEach((color, i) => {
+                colorImageData[i] = color.images || [];
+                cContainer.appendChild(createColorRow(i, color.name || ''));
             });
 
             const variants = p.variants || [];
@@ -1526,10 +1520,10 @@
              'editMfrDesc','editMfrModel'].forEach(id => { if ($(id)) $(id).value = ''; });
             $('editCategory').value = 'mobiles';
             $('editCondition').value = '';
-            document.getElementById('mainImageTag').style.display = 'none';
-            document.getElementById('mainImagePreviewImg').removeAttribute('src');
-            document.getElementById('brandLogoTag').style.display = 'none';
-            document.getElementById('brandLogoPreviewImg').removeAttribute('src');
+            $('mainImageTag').style.display = 'none';
+            $('mainImagePreviewImg').removeAttribute('src');
+            $('brandLogoTag').style.display = 'none';
+            $('brandLogoPreviewImg').removeAttribute('src');
             $('colorsContainer').innerHTML = ''; colorImageData = {}; addColorRow();
             $('variantsContainer').innerHTML = `<div class="dynamic-row"><input placeholder="Label" class="var-label" /><input placeholder="Price" type="number" class="var-price" /><button class="remove-row" onclick="removeRow(this)">✕</button></div>`;
             $('highlightsContainer').innerHTML = ''; addHighlightRow('', '', '');
@@ -1545,7 +1539,7 @@
                 const id = $('editId').value.trim();
                 const name = $('editName').value.trim();
                 if (!id || !name) { showToast('ID and Name required.', 'error'); isSubmitting = false; btn.textContent = editingId ? 'Update Product' : 'Add Product'; btn.disabled = false; return; }
-                if (!editingId && allProducts.some(p => p.id === id)) { showToast('Product ID already exists.', 'error'); isSubmitting = false; btn.textContent = 'Add Product'; btn.disabled = false; return; }
+                if (!editingId && allProducts.some(p => p.id === id)) { showToast('Product ID exists.', 'error'); isSubmitting = false; btn.textContent = 'Add Product'; btn.disabled = false; return; }
 
                 const product = {
                     id, name,
@@ -1652,6 +1646,7 @@
             checkSession();
         });
 
+        // Expose
         window.supabaseClient = supabaseClient;
         window.switchTab = switchTab;
         window.toggleSidebar = toggleSidebar;
@@ -1685,11 +1680,11 @@
         window.addColorImageUrl = addColorImageUrl;
     </script>
 
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- ORDERS (USER-WISE) + BLOCKED USERS                          -->
-    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- ═══════════════ ORDERS + BLOCKED USERS ═══════════════ -->
     <script>
     (function () {
+        console.log('✅ Orders script loaded');
+
         function getSb() { return window.supabaseClient; }
 
         const STATUS_COLORS = {
@@ -1708,65 +1703,38 @@
         let currentUserKey = null;
         let pendingBlockKey = null;
 
-        // ═══════════════════════════════════════════
-        // LOAD ORDERS
-        // ═══════════════════════════════════════════
-        async function loadOrders() {
+        function showError(msg) {
             const box = document.getElementById('ordersList');
-            if (!box) return;
-            box.innerHTML = '<p style="text-align:center;color:#8c8f94;padding:30px;">Loading orders…</p>';
-
-            try {
-                const sb = getSb();
-                if (!sb) { box.innerHTML = '<p style="color:#c00;text-align:center;padding:30px;">❌ Supabase not initialized.</p>'; return; }
-
-                // Load blocked users first
-                await loadBlockedUsersData();
-
-                let { data, error } = await sb.from('orders').select('*').order('created_at', { ascending: false });
-                if (error && (error.message.includes('created_at') || error.code === '42703')) {
-                    const fb = await sb.from('orders').select('*').order('id', { ascending: false });
-                    data = fb.data; error = fb.error;
-                }
-                if (error) throw error;
-
-                allOrders = data || [];
-                groupedUsers = groupOrdersByUser(allOrders);
-
-                if (currentUserKey) {
-                    const exists = groupedUsers.find(u => u.key === currentUserKey);
-                    if (exists) renderUserDetail(currentUserKey);
-                    else { currentUserKey = null; renderUsersList(); }
-                } else renderUsersList();
-            } catch (e) {
-                console.error(e);
-                box.innerHTML = '<p style="color:#c00;text-align:center;padding:30px;">❌ ' + esc(e.message) + '</p>';
+            if (box) {
+                box.innerHTML = `
+                    <div style="background:#fff5f5;border:2px solid #d32f2f;border-radius:12px;padding:20px;">
+                        <div style="font-weight:800;color:#d32f2f;font-size:15px;margin-bottom:8px;">❌ Error</div>
+                        <div style="color:#1a1a2e;font-size:13.5px;line-height:1.6;">${esc(msg)}</div>
+                        <div style="margin-top:12px;font-size:12px;color:#6b6b7a;">F12 → Console lo full details chudu</div>
+                    </div>`;
             }
         }
 
-        // ═══════════════════════════════════════════
-        // LOAD BLOCKED USERS DATA
-        // ═══════════════════════════════════════════
         async function loadBlockedUsersData() {
             try {
                 const sb = getSb();
                 if (!sb) return;
                 const { data, error } = await sb.from('blocked_users').select('*');
                 if (error) {
-                    console.warn('Blocked users load error (table may not exist):', error.message);
+                    console.warn('⚠️ blocked_users load error:', error.message);
                     blockedUsers = [];
                     return;
                 }
                 blockedUsers = data || [];
-                console.log('🚫 Blocked users:', blockedUsers.length);
+                console.log('🚫 Blocked:', blockedUsers.length);
             } catch (e) {
-                console.warn('blocked_users fetch error:', e);
+                console.warn('blocked_users exception:', e.message);
                 blockedUsers = [];
             }
         }
 
         function isUserBlocked(email, mobile) {
-            if (!blockedUsers.length) return null;
+            if (!blockedUsers || !blockedUsers.length) return null;
             const e = (email || '').toLowerCase().trim();
             const m = (mobile || '').trim();
             return blockedUsers.find(b =>
@@ -1775,16 +1743,63 @@
             );
         }
 
-        // ═══════════════════════════════════════════
-        // GROUP ORDERS BY USER
-        // ═══════════════════════════════════════════
+        async function loadOrders() {
+            console.log('🔍 loadOrders() called');
+            const box = document.getElementById('ordersList');
+            if (!box) { console.error('❌ ordersList not found'); return; }
+            box.innerHTML = '<p style="text-align:center;color:#8c8f94;padding:30px;">Loading orders…</p>';
+
+            try {
+                const sb = getSb();
+                if (!sb) { showError('Supabase not initialized. Refresh cheyyi.'); return; }
+
+                console.log('🔍 Fetching orders...');
+                let result = await sb.from('orders').select('*').order('created_at', { ascending: false });
+                console.log('📥 Result:', { count: result.data?.length, error: result.error?.message });
+
+                if (result.error && (result.error.message.includes('created_at') || result.error.code === '42703')) {
+                    console.warn('⚠️ created_at missing, use id');
+                    result = await sb.from('orders').select('*').order('id', { ascending: false });
+                }
+
+                if (result.error) {
+                    console.error('❌ Fetch error:', result.error);
+                    showError('Fetch failed: ' + result.error.message);
+                    return;
+                }
+
+                allOrders = result.data || [];
+                console.log('✅ Orders loaded:', allOrders.length);
+
+                await loadBlockedUsersData();
+
+                if (!allOrders.length) {
+                    box.innerHTML = '<p style="text-align:center;color:#8c8f94;padding:40px;">Inka orders levu.</p>';
+                    return;
+                }
+
+                groupedUsers = groupOrdersByUser(allOrders);
+                console.log('👥 Grouped users:', groupedUsers.length);
+
+                if (currentUserKey) {
+                    const exists = groupedUsers.find(u => u.key === currentUserKey);
+                    if (exists) renderUserDetail(currentUserKey);
+                    else { currentUserKey = null; renderUsersList(); }
+                } else {
+                    renderUsersList();
+                }
+            } catch (e) {
+                console.error('❌ loadOrders exception:', e);
+                showError(e.message || 'Unknown error');
+            }
+        }
+
         function groupOrdersByUser(orders) {
             const map = {};
             orders.forEach(o => {
                 const email = (o.user_email || '').toLowerCase().trim();
                 const mobile = (o.mobile || '').trim();
                 const key = email || mobile || 'unknown_' + (o.id || Math.random());
-
                 if (!map[key]) {
                     map[key] = { key, email, name: o.customer_name || 'Unknown', mobile, address: o.address || '', orders: [] };
                 }
@@ -1793,12 +1808,10 @@
                 if (o.mobile) map[key].mobile = o.mobile;
                 if (o.address) map[key].address = o.address;
             });
-
             return Object.values(map).map(u => {
                 const totalSpent = u.orders.reduce((s, o) => s + (Number(o.total) || 0), 0);
                 const latest = u.orders[0];
-                const blocked = isUserBlocked(u.email, u.mobile);
-                return { ...u, totalSpent, orderCount: u.orders.length, latestOrder: latest, blockedInfo: blocked };
+                return { ...u, totalSpent, orderCount: u.orders.length, latestOrder: latest, blockedInfo: isUserBlocked(u.email, u.mobile) };
             }).sort((a, b) => {
                 const da = a.latestOrder?.created_at ? new Date(a.latestOrder.created_at).getTime() : 0;
                 const db = b.latestOrder?.created_at ? new Date(b.latestOrder.created_at).getTime() : 0;
@@ -1806,13 +1819,9 @@
             });
         }
 
-        // ═══════════════════════════════════════════
-        // VIEW 1: USERS LIST
-        // ═══════════════════════════════════════════
         function renderUsersList() {
             const box = document.getElementById('ordersList');
             if (!box) return;
-
             if (!groupedUsers.length) {
                 box.innerHTML = '<p style="text-align:center;color:#8c8f94;padding:40px;">Inka orders levu.</p>';
                 return;
@@ -1836,58 +1845,41 @@
                         <div style="font-size:22px;font-weight:800;color:#d32f2f;margin-top:4px;">${blockedCount}</div>
                     </div>
                 </div>
-                <div style="font-size:12px;color:#6b6b7a;padding:0 4px 8px;">Click on a customer to view their orders →</div>
+                <div style="font-size:12px;color:#6b6b7a;padding:0 4px 8px;">Click on a customer to view orders →</div>
             `;
 
             html += groupedUsers.map(u => {
                 const initial = (u.name || u.email || 'U').charAt(0).toUpperCase();
                 const latestDt = u.latestOrder?.created_at
-                    ? new Date(u.latestOrder.created_at).toLocaleDateString('en-IN', { dateStyle: 'medium' })
-                    : '—';
+                    ? new Date(u.latestOrder.created_at).toLocaleDateString('en-IN', { dateStyle: 'medium' }) : '—';
                 const isBlocked = !!u.blockedInfo;
 
                 return `
-                <div class="userCard" data-key="${esc(u.key)}"
-                     style="background:#fff;border:1px solid ${isBlocked ? '#f5c6c6' : '#e8ecf1'};border-radius:14px;padding:16px;transition:0.2s;box-shadow:0 2px 8px rgba(0,0,0,.04);position:relative;${isBlocked ? 'background:linear-gradient(180deg,#fff5f5 0%,#fff 40%);' : ''}">
-                    ${isBlocked ? `<div style="position:absolute;top:12px;right:12px;background:#d32f2f;color:#fff;font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px;letter-spacing:.5px;">🚫 BLOCKED</div>` : ''}
+                <div class="userCard" style="background:${isBlocked ? 'linear-gradient(180deg,#fff5f5 0%,#fff 40%)' : '#fff'};border:1px solid ${isBlocked ? '#f5c6c6' : '#e8ecf1'};border-radius:14px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.04);position:relative;margin-bottom:12px;">
+                    ${isBlocked ? `<div style="position:absolute;top:12px;right:12px;background:#d32f2f;color:#fff;font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px;">🚫 BLOCKED</div>` : ''}
                     <div class="userCardBody" data-key="${esc(u.key)}" style="display:flex;gap:14px;align-items:center;cursor:pointer;">
-                        <div style="width:52px;height:52px;border-radius:50%;background:${isBlocked ? 'linear-gradient(135deg,#d32f2f,#a02020)' : 'linear-gradient(135deg,#2874f0,#1a5fc7)'};color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;flex-shrink:0;">
-                            ${esc(initial)}
-                        </div>
+                        <div style="width:52px;height:52px;border-radius:50%;background:${isBlocked ? 'linear-gradient(135deg,#d32f2f,#a02020)' : 'linear-gradient(135deg,#2874f0,#1a5fc7)'};color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;flex-shrink:0;">${esc(initial)}</div>
                         <div style="flex:1;min-width:0;">
-                            <div style="font-weight:700;font-size:15px;color:#1a1a2e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                                ${esc(u.name)}
-                            </div>
-                            <div style="font-size:12.5px;color:#6b6b7a;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                                📧 ${esc(u.email || '—')}
-                            </div>
-                            <div style="font-size:12.5px;color:#6b6b7a;margin-top:2px;">
-                                📱 ${esc(u.mobile || '—')}
-                            </div>
+                            <div style="font-weight:700;font-size:15px;color:#1a1a2e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(u.name)}</div>
+                            <div style="font-size:12.5px;color:#6b6b7a;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">📧 ${esc(u.email || '—')}</div>
+                            <div style="font-size:12.5px;color:#6b6b7a;margin-top:2px;">📱 ${esc(u.mobile || '—')}</div>
                         </div>
                         <div style="text-align:right;flex-shrink:0;">
-                            <div style="background:#e8f0fe;color:#2874f0;font-size:11px;font-weight:800;padding:5px 12px;border-radius:20px;display:inline-block;">
-                                ${u.orderCount} ${u.orderCount === 1 ? 'Order' : 'Orders'}
-                            </div>
-                            <div style="font-weight:800;font-size:16px;color:#a3801a;margin-top:8px;">
-                                ${money(u.totalSpent)}
-                            </div>
+                            <div style="background:#e8f0fe;color:#2874f0;font-size:11px;font-weight:800;padding:5px 12px;border-radius:20px;display:inline-block;">${u.orderCount} ${u.orderCount === 1 ? 'Order' : 'Orders'}</div>
+                            <div style="font-weight:800;font-size:16px;color:#a3801a;margin-top:8px;">${money(u.totalSpent)}</div>
                             <div style="font-size:11px;color:#8c8f94;margin-top:2px;">Latest: ${esc(latestDt)}</div>
                         </div>
                     </div>
                     <div style="margin-top:10px;padding-top:10px;border-top:1px dashed ${isBlocked ? '#f5c6c6' : '#e8ecf1'};display:flex;gap:8px;">
-                        <button class="viewOrdersBtn" data-key="${esc(u.key)}"
-                            style="flex:1;background:#e8f0fe;color:#2874f0;border:none;padding:9px 14px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;transition:0.2s;">
+                        <button class="viewOrdersBtn" data-key="${esc(u.key)}" style="flex:1;background:#e8f0fe;color:#2874f0;border:none;padding:9px 14px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;">
                             <i class="fas fa-eye"></i> View Orders
                         </button>
                         ${isBlocked ? `
-                            <button class="unblockBtn" data-key="${esc(u.key)}"
-                                style="background:#e8f7ee;color:#1e8e4a;border:1px solid #b8e0c8;padding:9px 14px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;transition:0.2s;white-space:nowrap;">
+                            <button class="unblockBtn" data-key="${esc(u.key)}" style="background:#e8f7ee;color:#1e8e4a;border:1px solid #b8e0c8;padding:9px 14px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;">
                                 <i class="fas fa-unlock"></i> Unblock
                             </button>
                         ` : `
-                            <button class="blockBtn" data-key="${esc(u.key)}"
-                                style="background:#fde8e8;color:#d32f2f;border:1px solid #f5c6c6;padding:9px 14px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;transition:0.2s;white-space:nowrap;">
+                            <button class="blockBtn" data-key="${esc(u.key)}" style="background:#fde8e8;color:#d32f2f;border:1px solid #f5c6c6;padding:9px 14px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;">
                                 <i class="fas fa-ban"></i> Block
                             </button>
                         `}
@@ -1897,37 +1889,18 @@
 
             box.innerHTML = html;
 
-            // Hover effect on card
-            box.querySelectorAll('.userCard').forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    if (this.querySelector('.userCardBody').parentElement.style.background.includes('fff5f5')) return;
-                    this.style.borderColor = '#2874f0';
-                    this.style.boxShadow = '0 6px 20px rgba(40,116,240,.12)';
-                });
-                card.addEventListener('mouseleave', function() {
-                    if (this.querySelector('.userCardBody').parentElement.style.background.includes('fff5f5')) return;
-                    this.style.borderColor = '#e8ecf1';
-                    this.style.boxShadow = '0 2px 8px rgba(0,0,0,.04)';
-                });
-            });
-
-            // View orders click
             box.querySelectorAll('.viewOrdersBtn, .userCardBody').forEach(el => {
                 el.addEventListener('click', function(e) {
                     e.stopPropagation();
                     openUserDetail(this.getAttribute('data-key'));
                 });
             });
-
-            // Block buttons
             box.querySelectorAll('.blockBtn').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
                     openBlockModal(this.getAttribute('data-key'));
                 });
             });
-
-            // Unblock buttons
             box.querySelectorAll('.unblockBtn').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -1936,9 +1909,6 @@
             });
         }
 
-        // ═══════════════════════════════════════════
-        // VIEW 2: USER DETAIL
-        // ═══════════════════════════════════════════
         function openUserDetail(key) {
             currentUserKey = key;
             renderUserDetail(key);
@@ -1958,12 +1928,11 @@
             const isBlocked = !!user.blockedInfo;
 
             let html = `
-                <button onclick="window.__goBackToUsers()" style="background:#f1f3f6;color:#4a4a5a;border:none;padding:10px 20px;border-radius:10px;font-weight:600;font-size:13.5px;cursor:pointer;font-family:'Inter',sans-serif;margin-bottom:16px;display:inline-flex;align-items:center;gap:8px;">
+                <button id="backBtn" style="background:#f1f3f6;color:#4a4a5a;border:none;padding:10px 20px;border-radius:10px;font-weight:600;font-size:13.5px;cursor:pointer;font-family:'Inter',sans-serif;margin-bottom:16px;display:inline-flex;align-items:center;gap:8px;">
                     <i class="fas fa-arrow-left"></i> Back to Customers
                 </button>
-
                 <div style="background:${isBlocked ? 'linear-gradient(135deg,#d32f2f,#a02020)' : 'linear-gradient(135deg,#2874f0,#1a5fc7)'};border-radius:14px;padding:20px;color:#fff;margin-bottom:16px;position:relative;">
-                    ${isBlocked ? `<div style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,.25);padding:5px 12px;border-radius:20px;font-size:11px;font-weight:800;letter-spacing:.5px;">🚫 BLOCKED</div>` : ''}
+                    ${isBlocked ? `<div style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,.25);padding:5px 12px;border-radius:20px;font-size:11px;font-weight:800;">🚫 BLOCKED</div>` : ''}
                     <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
                         <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;flex-shrink:0;">${esc(initial)}</div>
                         <div style="flex:1;min-width:200px;">
@@ -1973,45 +1942,30 @@
                             ${user.address ? `<div style="font-size:13px;opacity:0.9;margin-top:4px;">📍 ${esc(user.address)}</div>` : ''}
                         </div>
                     </div>
-                    ${isBlocked && user.blockedInfo.reason ? `
-                        <div style="margin-top:14px;background:rgba(0,0,0,.2);border-radius:8px;padding:10px 14px;font-size:13px;">
-                            <strong>Block Reason:</strong> ${esc(user.blockedInfo.reason)}
-                        </div>
-                    ` : ''}
+                    ${isBlocked && user.blockedInfo.reason ? `<div style="margin-top:14px;background:rgba(0,0,0,.2);border-radius:8px;padding:10px 14px;font-size:13px;"><strong>Reason:</strong> ${esc(user.blockedInfo.reason)}</div>` : ''}
                     <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
                         <div style="flex:1;min-width:120px;background:rgba(255,255,255,.15);border-radius:10px;padding:12px;text-align:center;">
-                            <div style="font-size:11px;opacity:0.9;text-transform:uppercase;letter-spacing:.5px;">Orders</div>
+                            <div style="font-size:11px;opacity:0.9;">Orders</div>
                             <div style="font-size:22px;font-weight:800;margin-top:4px;">${user.orderCount}</div>
                         </div>
                         <div style="flex:1;min-width:120px;background:rgba(255,255,255,.15);border-radius:10px;padding:12px;text-align:center;">
-                            <div style="font-size:11px;opacity:0.9;text-transform:uppercase;letter-spacing:.5px;">Spent</div>
+                            <div style="font-size:11px;opacity:0.9;">Spent</div>
                             <div style="font-size:22px;font-weight:800;margin-top:4px;">${money(user.totalSpent)}</div>
                         </div>
                     </div>
                     <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
                         ${user.mobile ? `
-                            <a href="https://wa.me/91${esc(user.mobile)}" target="_blank" style="background:#25D366;color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
-                                <i class="fab fa-whatsapp"></i> WhatsApp
-                            </a>
-                            <a href="tel:${esc(user.mobile)}" style="background:#fff;color:#1a1a2e;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
-                                <i class="fas fa-phone"></i> Call
-                            </a>
+                            <a href="https://wa.me/91${esc(user.mobile)}" target="_blank" style="background:#25D366;color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                            <a href="tel:${esc(user.mobile)}" style="background:#fff;color:#1a1a2e;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;"><i class="fas fa-phone"></i> Call</a>
                         ` : ''}
                         ${isBlocked ? `
-                            <button onclick="window.__unblockUser('${esc(user.key)}')" style="background:#fff;color:#1e8e4a;border:none;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;display:inline-flex;align-items:center;gap:6px;">
-                                <i class="fas fa-unlock"></i> Unblock
-                            </button>
+                            <button class="unblockDetailBtn" data-key="${esc(user.key)}" style="background:#fff;color:#1e8e4a;border:none;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;"><i class="fas fa-unlock"></i> Unblock</button>
                         ` : `
-                            <button onclick="window.__openBlockModal('${esc(user.key)}')" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.4);padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;display:inline-flex;align-items:center;gap:6px;">
-                                <i class="fas fa-ban"></i> Block User
-                            </button>
+                            <button class="blockDetailBtn" data-key="${esc(user.key)}" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.4);padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;"><i class="fas fa-ban"></i> Block</button>
                         `}
                     </div>
                 </div>
-
-                <div style="font-size:12px;color:#8c8f94;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 10px;">
-                    🛍 All Orders (${user.orders.length})
-                </div>
+                <div style="font-size:12px;color:#8c8f94;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 10px;">🛍 All Orders (${user.orders.length})</div>
             `;
 
             user.orders.forEach(o => {
@@ -2048,14 +2002,10 @@
                         <span style="font-weight:800;font-size:19px;color:#a3801a;">${money(o.total)}</span>
                     </div>
                     <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
-                        <select data-order="${esc(o.id)}" class="statusSel"
-                            style="flex:1;min-width:140px;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:600;background:#f8f9fb;font-family:'Inter',sans-serif;color:#1a1a2e;cursor:pointer;outline:none;">
-                            ${['pending','confirmed','shipped','delivered','cancelled'].map(s =>
-                                `<option value="${s}" ${o.status===s?'selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`
-                            ).join('')}
+                        <select data-order="${esc(o.id)}" class="statusSel" style="flex:1;min-width:140px;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:600;background:#f8f9fb;font-family:'Inter',sans-serif;color:#1a1a2e;cursor:pointer;outline:none;">
+                            ${['pending','confirmed','shipped','delivered','cancelled'].map(s => `<option value="${s}" ${o.status===s?'selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`).join('')}
                         </select>
-                        <button class="deleteOrderBtn" data-order="${esc(o.id)}" data-code="${esc(o.order_code||o.id)}"
-                            style="background:#fde8e8;color:#d32f2f;border:1px solid #f5c6c6;padding:10px 18px;border-radius:10px;font-weight:700;font-size:13.5px;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;">
+                        <button class="deleteOrderBtn" data-order="${esc(o.id)}" data-code="${esc(o.order_code||o.id)}" style="background:#fde8e8;color:#d32f2f;border:1px solid #f5c6c6;padding:10px 18px;border-radius:10px;font-weight:700;font-size:13.5px;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;">
                             <i class="fas fa-trash-alt"></i> Delete
                         </button>
                     </div>
@@ -2063,6 +2013,12 @@
             });
 
             box.innerHTML = html;
+
+            document.getElementById('backBtn').addEventListener('click', goBackToUsers);
+            const bd = box.querySelector('.blockDetailBtn');
+            if (bd) bd.addEventListener('click', function() { openBlockModal(this.getAttribute('data-key')); });
+            const ud = box.querySelector('.unblockDetailBtn');
+            if (ud) ud.addEventListener('click', function() { unblockUser(this.getAttribute('data-key')); });
 
             box.querySelectorAll('.statusSel').forEach(sel => {
                 sel.addEventListener('change', async function () {
@@ -2086,13 +2042,6 @@
             });
         }
 
-        window.__goBackToUsers = goBackToUsers;
-        window.__openBlockModal = openBlockModal;
-        window.__unblockUser = unblockUser;
-
-        // ═══════════════════════════════════════════
-        // DELETE ORDER
-        // ═══════════════════════════════════════════
         async function deleteOrder(orderId, orderCode) {
             if (!confirm(`🗑️ Delete order "${orderCode}" permanently?`)) return;
             try {
@@ -2106,16 +2055,12 @@
             }
         }
 
-        // ═══════════════════════════════════════════
-        // BLOCK MODAL
-        // ═══════════════════════════════════════════
         function openBlockModal(key) {
             const user = groupedUsers.find(u => u.key === key);
             if (!user) return;
             pendingBlockKey = key;
             document.getElementById('blockModalTitle').textContent = '🚫 Block User';
-            document.getElementById('blockModalSubtitle').innerHTML =
-                `<strong>${esc(user.name)}</strong><br>📧 ${esc(user.email || '—')}<br>📱 ${esc(user.mobile || '—')}`;
+            document.getElementById('blockModalSubtitle').innerHTML = `<strong>${esc(user.name)}</strong><br>📧 ${esc(user.email || '—')}<br>📱 ${esc(user.mobile || '—')}`;
             document.getElementById('blockReason').value = '';
             document.getElementById('blockConfirmBtn').onclick = confirmBlockUser;
             document.getElementById('blockModal').classList.add('open');
@@ -2125,67 +2070,47 @@
             document.getElementById('blockModal').classList.remove('open');
             pendingBlockKey = null;
         }
+        window.closeBlockModal = closeBlockModal;
 
         async function confirmBlockUser() {
             if (!pendingBlockKey) return;
             const user = groupedUsers.find(u => u.key === pendingBlockKey);
             if (!user) { closeBlockModal(); return; }
-
             const reason = document.getElementById('blockReason').value.trim();
             const btn = document.getElementById('blockConfirmBtn');
             const orig = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Blocking...';
             btn.disabled = true;
-
             try {
-                const sb = getSb();
-                const payload = {
-                    email: user.email || null,
-                    mobile: user.mobile || null,
-                    name: user.name || null,
-                    reason: reason || null
-                };
-
-                const { error } = await sb.from('blocked_users').insert(payload);
+                const payload = { email: user.email || null, mobile: user.mobile || null, name: user.name || null, reason: reason || null };
+                const { error } = await getSb().from('blocked_users').insert(payload);
                 if (error) {
                     if (error.code === '23505') throw new Error('User already blocked.');
+                    if (error.code === '42P01') throw new Error('blocked_users table create cheyyaledu. SQL run cheyyi.');
                     throw error;
                 }
-
-                if (window.showToast) window.showToast('🚫 User blocked successfully!', 'success');
+                if (window.showToast) window.showToast('🚫 User blocked!', 'success');
                 closeBlockModal();
                 await loadBlockedUsersData();
                 if (currentUserKey) renderUserDetail(currentUserKey);
                 else renderUsersList();
             } catch (e) {
-                console.error('Block error:', e);
-                if (window.showToast) window.showToast('❌ Block failed: ' + e.message, 'error');
+                if (window.showToast) window.showToast('❌ ' + e.message, 'error');
             } finally {
                 btn.innerHTML = orig;
                 btn.disabled = false;
             }
         }
 
-        // ═══════════════════════════════════════════
-        // UNBLOCK
-        // ═══════════════════════════════════════════
         async function unblockUser(key) {
             const user = groupedUsers.find(u => u.key === key);
             if (!user) return;
-            if (!confirm(`✅ Unblock "${user.name}"?\n\nVaallu malli orders cheyyagalaru.`)) return;
-
+            if (!confirm(`✅ Unblock "${user.name}"?`)) return;
             try {
                 const sb = getSb();
-                const blockers = [];
-                if (user.email) blockers.push(sb.from('blocked_users').delete().eq('email', user.email));
-                if (user.mobile) blockers.push(sb.from('blocked_users').delete().eq('mobile', user.mobile));
-
-                for (const p of blockers) {
-                    const { error } = await p;
-                    if (error) throw error;
-                }
-
-                if (window.showToast) window.showToast('✅ User unblocked!', 'success');
+                if (user.email) { const { error } = await sb.from('blocked_users').delete().eq('email', user.email); if (error) throw error; }
+                if (user.mobile) { const { error } = await sb.from('blocked_users').delete().eq('mobile', user.mobile); if (error) throw error; }
+                if (window.showToast) window.showToast('✅ Unblocked!', 'success');
                 await loadBlockedUsersData();
                 if (currentUserKey) renderUserDetail(currentUserKey);
                 else renderUsersList();
@@ -2195,32 +2120,25 @@
             }
         }
 
-        // ═══════════════════════════════════════════
-        // BLOCKED USERS TAB
-        // ═══════════════════════════════════════════
         async function loadBlockedUsers() {
             const box = document.getElementById('blockedList');
             if (!box) return;
             box.innerHTML = '<p style="text-align:center;color:#8c8f94;padding:30px;">Loading blocked users…</p>';
-
             try {
                 const sb = getSb();
-                if (!sb) { box.innerHTML = '<p style="color:#c00;text-align:center;padding:30px;">❌ Supabase not initialized.</p>'; return; }
-
+                if (!sb) { box.innerHTML = '<p style="color:#c00;text-align:center;padding:30px;">❌ Supabase not ready.</p>'; return; }
                 const { data, error } = await sb.from('blocked_users').select('*').order('blocked_at', { ascending: false });
-                if (error) throw error;
-                blockedUsers = data || [];
-
-                if (!blockedUsers.length) {
-                    box.innerHTML = '<p style="text-align:center;color:#8c8f94;padding:40px;">Inka evaru block cheyyaledu. 🎉</p>';
-                    return;
+                if (error) {
+                    if (error.code === '42P01') { box.innerHTML = '<p style="text-align:center;color:#c00;padding:30px;">❌ blocked_users table create cheyyaledu.</p>'; return; }
+                    throw error;
                 }
+                blockedUsers = data || [];
+                if (!blockedUsers.length) { box.innerHTML = '<p style="text-align:center;color:#8c8f94;padding:40px;">Evaru block cheyyaledu. 🎉</p>'; return; }
 
                 box.innerHTML = blockedUsers.map(b => {
                     const initial = (b.name || b.email || 'U').charAt(0).toUpperCase();
                     const dt = b.blocked_at ? new Date(b.blocked_at).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'}) : '—';
-                    return `
-                    <div style="background:#fff;border:1px solid #f5c6c6;border-radius:14px;padding:16px;background:linear-gradient(180deg,#fff5f5 0%,#fff 40%);">
+                    return `<div style="background:#fff;border:1px solid #f5c6c6;border-radius:14px;padding:16px;background:linear-gradient(180deg,#fff5f5 0%,#fff 40%);margin-bottom:12px;">
                         <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
                             <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#d32f2f,#a02020);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;flex-shrink:0;">${esc(initial)}</div>
                             <div style="flex:1;min-width:180px;">
@@ -2228,30 +2146,23 @@
                                 <div style="font-size:12.5px;color:#6b6b7a;margin-top:3px;">📧 ${esc(b.email || '—')}</div>
                                 <div style="font-size:12.5px;color:#6b6b7a;margin-top:2px;">📱 ${esc(b.mobile || '—')}</div>
                                 ${b.reason ? `<div style="font-size:12px;color:#a02020;margin-top:6px;background:#fff0f0;padding:6px 10px;border-radius:6px;display:inline-block;"><strong>Reason:</strong> ${esc(b.reason)}</div>` : ''}
-                                <div style="font-size:11px;color:#8c8f94;margin-top:6px;"><i class="far fa-clock"></i> Blocked: ${esc(dt)}</div>
+                                <div style="font-size:11px;color:#8c8f94;margin-top:6px;"><i class="far fa-clock"></i> ${esc(dt)}</div>
                             </div>
-                            <button class="unblockTabBtn" data-id="${b.id}" data-email="${esc(b.email||'')}"
-                                style="background:#e8f7ee;color:#1e8e4a;border:1px solid #b8e0c8;padding:10px 18px;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;">
-                                <i class="fas fa-unlock"></i> Unblock
-                            </button>
+                            <button class="unblockTabBtn" data-id="${b.id}" style="background:#e8f7ee;color:#1e8e4a;border:1px solid #b8e0c8;padding:10px 18px;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;"><i class="fas fa-unlock"></i> Unblock</button>
                         </div>
                     </div>`;
                 }).join('');
 
                 box.querySelectorAll('.unblockTabBtn').forEach(btn => {
                     btn.addEventListener('click', async function () {
-                        const id = this.getAttribute('data-id');
-                        const email = this.getAttribute('data-email');
-                        if (!confirm(`Unblock ${email || 'this user'}?`)) return;
+                        if (!confirm('Unblock this user?')) return;
                         try {
-                            const { error } = await getSb().from('blocked_users').delete().eq('id', id);
+                            const { error } = await getSb().from('blocked_users').delete().eq('id', this.getAttribute('data-id'));
                             if (error) throw error;
-                            if (window.showToast) window.showToast('✅ User unblocked!', 'success');
+                            if (window.showToast) window.showToast('✅ Unblocked!', 'success');
                             await loadBlockedUsers();
                             await loadBlockedUsersData();
-                        } catch (e) {
-                            if (window.showToast) window.showToast('❌ ' + e.message, 'error');
-                        }
+                        } catch (e) { if (window.showToast) window.showToast('❌ ' + e.message, 'error'); }
                     });
                 });
             } catch (e) {
@@ -2263,11 +2174,13 @@
         window.loadBlockedUsers = loadBlockedUsers;
 
         document.addEventListener('DOMContentLoaded', function () {
-            const btn1 = document.getElementById('refreshOrders');
-            if (btn1) btn1.addEventListener('click', loadOrders);
-            const btn2 = document.getElementById('refreshBlocked');
-            if (btn2) btn2.addEventListener('click', loadBlockedUsers);
+            const b1 = document.getElementById('refreshOrders');
+            if (b1) b1.addEventListener('click', loadOrders);
+            const b2 = document.getElementById('refreshBlocked');
+            if (b2) b2.addEventListener('click', loadBlockedUsers);
         });
+
+        console.log('✅ Orders script ready. loadOrders =', typeof window.loadOrders);
     })();
     </script>
 
