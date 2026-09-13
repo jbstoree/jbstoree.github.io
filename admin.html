@@ -60,6 +60,13 @@
         .sidebar-nav a:hover i { color: #2874f0; }
         .sidebar-nav a.active { background: #e8f0fe; color: #2874f0; font-weight: 600; }
         .sidebar-nav a.active i { color: #2874f0; }
+        
+        /* Logout Link Styling */
+        .sidebar-nav a.logout-link { color: #e74c3c; margin-top: 8px; }
+        .sidebar-nav a.logout-link i { color: #e74c3c; }
+        .sidebar-nav a.logout-link:hover { background: #fef0ef; color: #e74c3c; }
+        .sidebar-nav a.logout-link:hover i { color: #e74c3c; }
+
         .sidebar-footer {
             border-top: 1px solid #e2e8f0;
             padding-top: 16px; margin-top: 8px;
@@ -77,14 +84,6 @@
         .sidebar-footer .user-card .user-info { flex: 1; }
         .sidebar-footer .user-card .user-info .name { font-weight: 600; font-size: 14px; }
         .sidebar-footer .user-card .user-info .role { font-size: 12px; color: #8c8f94; }
-        .sidebar-footer .logout-btn {
-            display: flex; align-items: center; gap: 10px;
-            padding: 10px 16px; border-radius: 10px;
-            color: #e74c3c; font-weight: 500; font-size: 14px;
-            cursor: pointer; transition: 0.2s; margin-top: 8px;
-            border: none; background: transparent; width: 100%;
-        }
-        .sidebar-footer .logout-btn:hover { background: #fef0ef; }
 
         .main-content { flex: 1; padding: 28px 32px 40px; min-width: 0; background: #f1f3f6; }
 
@@ -565,6 +564,8 @@
             <div class="nav-label" style="margin-top:20px;">Settings</div>
             <a onclick="switchTab('categories')"><i class="fas fa-tags"></i> Categories</a>
             <a onclick="switchTab('settings')"><i class="fas fa-cog"></i> Settings</a>
+            <!-- MOVED LOGOUT HERE -->
+            <a class="logout-link" onclick="logoutAdmin()"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </nav>
         <div class="sidebar-footer">
             <div class="user-card">
@@ -574,9 +575,6 @@
                     <div class="role">Super Admin</div>
                 </div>
             </div>
-            <button class="logout-btn" onclick="logoutAdmin()">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
         </div>
     </aside>
 
