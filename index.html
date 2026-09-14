@@ -71,6 +71,15 @@
     .jb-profile-field input[readonly]{background:#f4f2ec;color:#666;}
     .jb-profile-logout{width:100%;border:1px solid #e6c9c9;border-radius:14px;padding:13px;background:#fff;color:#b00020;font-size:15px;font-weight:700;cursor:pointer;margin-top:10px;font-family:inherit;}
     .jb-profile-logout:hover{background:#fff5f5;}
+    .jb-profile-delete{width:100%;border:1px solid #f0b7b7;border-radius:14px;padding:13px;background:#fff;color:#c62828;font-size:15px;font-weight:800;cursor:pointer;margin-top:10px;font-family:inherit;}
+    .jb-profile-delete:hover{background:#fff2f2;border-color:#d95353;}
+    .jb-delete-warning{display:none;margin-top:12px;padding:13px;border:1px solid #f0caca;border-radius:12px;background:#fff7f7;color:#7d2020;font-size:12px;line-height:1.55;}
+    .jb-delete-warning.show{display:block;}
+    .jb-delete-actions{display:none;gap:8px;margin-top:10px;}
+    .jb-delete-actions.show{display:flex;}
+    .jb-delete-actions button{flex:1;border-radius:12px;padding:12px;font-family:inherit;font-weight:800;cursor:pointer;}
+    .jb-delete-cancel{border:1px solid #ddd;background:#fff;color:#555;}
+    .jb-delete-confirm{border:0;background:#c62828;color:#fff;}
   </style>
 
   <!-- ✅ SEARCH SUGGESTIONS CSS -->
@@ -567,6 +576,15 @@
     </div>
     <button class="jb-profile-save" id="jbProfileSave" type="button">Save Profile</button>
     <button class="jb-profile-logout" id="jbProfileLogout" type="button">↪ Logout</button>
+    <button class="jb-profile-delete" id="jbProfileDelete" type="button">🗑 Delete Account</button>
+    <div class="jb-delete-warning" id="jbDeleteWarning">
+      <strong>This action is permanent.</strong><br>
+      Your JB STORE account and account-associated information will be deleted. Your order records may also be deleted as part of account removal. You will not be able to recover the account after confirmation.
+    </div>
+    <div class="jb-delete-actions" id="jbDeleteActions">
+      <button class="jb-delete-cancel" id="jbDeleteCancel" type="button">Cancel</button>
+      <button class="jb-delete-confirm" id="jbDeleteConfirm" type="button">Delete Permanently</button>
+    </div>
     <div class="jb-profile-status" id="jbProfileStatus"></div>
     <div class="jb-profile-note">These details can be used automatically when you place an order.</div>
   </div>
@@ -592,6 +610,11 @@
   const closeBtn    = $('jbProfileClose');
   const saveBtn     = $('jbProfileSave');
   const logoutBtn   = $('jbProfileLogout');
+  const deleteBtn   = $('jbProfileDelete');
+  const deleteWarning = $('jbDeleteWarning');
+  const deleteActions = $('jbDeleteActions');
+  const deleteCancel = $('jbDeleteCancel');
+  const deleteConfirm = $('jbDeleteConfirm');
   const nameInput   = $('jbProfileName');
   const mobileInput = $('jbProfileMobile');
   const addressInput= $('jbProfileAddress');
@@ -654,6 +677,8 @@
     addressInput.value = meta.address || '';
     providerEl.textContent = providerText(user);
     statusEl.textContent = '';
+    if (statusEl) statusEl.style.color = '#777';
+    hideDeleteConfirmation();
 
     modal.classList.add('show');
     modal.setAttribute('aria-hidden', 'false');
@@ -722,6 +747,74 @@
       await client.auth.signOut();
       closeProfile();
       window.location.href = 'login.html';
+    });
+  }
+
+  function hideDeleteConfirmation() {
+    if (deleteWarning) deleteWarning.classList.remove('show');
+    if (deleteActions) deleteActions.classList.remove('show');
+  }
+
+  if (deleteBtn) {
+    deleteBtn.addEventListener('click', function () {
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+      if (deleteWarning) deleteWarning.classList.add('show');
+      if (deleteActions) deleteActions.classList.add('show');
+      if (statusEl) statusEl.textContent = '';
+      setTimeout(function () {
+        if (deleteConfirm) deleteConfirm.focus();
+      }, 50);
+    });
+  }
+
+  if (deleteCancel) {
+    deleteCancel.addEventListener('click', function () {
+      hideDeleteConfirmation();
+    });
+  }
+
+  if (deleteConfirm) {
+    deleteConfirm.addEventListener('click', async function () {
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      deleteConfirm.disabled = true;
+      deleteCancel.disabled = true;
+      deleteConfirm.textContent = 'Deleting...';
+      statusEl.textContent = '';
+
+      try {
+        const { error } = await client.rpc('delete_my_account');
+
+        if (error) {
+          throw error;
+        }
+
+        try {
+          localStorage.removeItem('jb_favorites');
+          localStorage.removeItem('jb_cart');
+          localStorage.removeItem('cart');
+          sessionStorage.removeItem('selectedProduct');
+        } catch (e) {}
+
+        await client.auth.signOut({ scope: 'local' });
+        closeProfile();
+        window.location.replace('login.html?account_deleted=1');
+      } catch (error) {
+        console.error('Account deletion failed:', error);
+        deleteConfirm.disabled = false;
+        deleteCancel.disabled = false;
+        deleteConfirm.textContent = 'Delete Permanently';
+        if (statusEl) {
+          statusEl.textContent = 'Unable to delete account. Please try again or contact JB STORE support.';
+          statusEl.style.color = '#c62828';
+        }
+      }
     });
   }
 
@@ -1037,3 +1130,4 @@
 
 </body>
 </html>
+
