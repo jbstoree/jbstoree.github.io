@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>JB STORE • Delete Account</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#f7f5ef;color:#171717;font-family:Poppins,Arial,sans-serif;display:flex;justify-content:center;padding:20px}.card{width:100%;max-width:520px;background:#fff;border:1px solid #e4d8ae;border-radius:24px;padding:28px 22px;box-shadow:0 12px 35px rgba(99,78,21,.1);border-top:5px solid #d4af37}.logo{text-align:center;font:700 36px Georgia,serif;margin-bottom:4px}.logo span{color:#d4af37}.sub{text-align:center;color:#777;font-size:13px;margin-bottom:25px}.warning{background:#fff7f7;border:1px solid #efc3c3;border-radius:14px;padding:14px;color:#7d2020;font-size:13px;line-height:1.55;margin-bottom:20px}label{display:block;font-weight:700;font-size:13px;margin:0 0 7px}input{width:100%;padding:13px;border:1px solid #ddd8ca;border-radius:12px;font-size:15px;margin-bottom:13px}.btn{width:100%;border:0;border-radius:13px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;margin-top:4px}.login{background:#d4af37;color:#111}.google{background:#fff;border:1px solid #ddd;color:#222}.delete{background:#c62828;color:#fff}.delete:disabled,.btn:disabled{opacity:.55;cursor:not-allowed}.divider{text-align:center;color:#aaa;font-size:12px;margin:14px 0}.status{text-align:center;min-height:22px;margin-top:14px;font-size:13px;font-weight:600}.success{color:#1e8e4a}.error{color:#c62828}.hidden{display:none}.back{display:block;text-align:center;margin-top:18px;color:#8b711f;text-decoration:none;font-size:13px}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo"><span>JB</span> STORE</div>
+  <div class="sub">Account &amp; Data Deletion</div>
+
+  <div class="warning">
+    <strong>Permanent action:</strong> deleting your account removes your JB STORE authentication account and account-associated order records. This action cannot be undone.
+  </div>
+
+  <div id="loginBox">
+    <label for="email">Email ID</label>
+    <input id="email" type="email" autocomplete="email" placeholder="Enter your email">
+    <label for="password">Password</label>
+    <input id="password" type="password" autocomplete="current-password" placeholder="Enter your password">
+    <button class="btn login" id="loginBtn">Sign In &amp; Continue</button>
+    <div class="divider">OR</div>
+    <button class="btn google" id="googleBtn">Continue with Google</button>
+  </div>
+
+  <div id="deleteBox" class="hidden">
+    <div id="signedInAs" style="font-size:13px;color:#666;text-align:center;margin-bottom:15px"></div>
+    <button class="btn delete" id="deleteBtn">Delete My Account Permanently</button>
+  </div>
+
+  <div class="status" id="status"></div>
+  <a class="back" href="index.html">← Back to JB STORE</a>
+</div>
+
+<script>
+(function(){
+  const SUPABASE_URL='https://iuucwxdkjqpecqwbsoyv.supabase.co';
+  const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpdWljd3hka3NqcGVjcXdib295diIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzg3NDY1ODE5LCJleHAiOjIxMDMwNDE4MTl9.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
+  const client=supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
+  const $=id=>document.getElementById(id);
+
+  function status(msg,type){$('status').textContent=msg;$('status').className='status '+(type||'');}
+  function showDelete(user){
+    $('loginBox').classList.add('hidden');
+    $('deleteBox').classList.remove('hidden');
+    $('signedInAs').textContent='Signed in as: '+(user.email||'Account');
+    status('');
+  }
+
+  async function check(){
+    const {data}=await client.auth.getSession();
+    if(data&&data.session&&data.session.user) showDelete(data.session.user);
+  }
+
+  $('loginBtn').addEventListener('click',async()=>{
+    const email=$('email').value.trim(), password=$('password').value;
+    if(!email||!password){status('Please enter your email and password.','error');return;}
+    $('loginBtn').disabled=true;$('loginBtn').textContent='Signing in…';status('');
+    const {data,error}=await client.auth.signInWithPassword({email,password});
+    $('loginBtn').disabled=false;$('loginBtn').textContent='Sign In & Continue';
+    if(error){status(error.message,'error');return;}
+    if(data&&data.user) showDelete(data.user);
+  });
+
+  $('googleBtn').addEventListener('click',async()=>{
+    $('googleBtn').disabled=true;status('Opening Google…');
+    const {error}=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.href}});
+    if(error){$('googleBtn').disabled=false;status(error.message,'error');}
+  });
+
+  $('deleteBtn').addEventListener('click',async()=>{
+    const ok=window.confirm('Delete your JB STORE account permanently? This cannot be undone.');
+    if(!ok)return;
+    $('deleteBtn').disabled=true;$('deleteBtn').textContent='Deleting…';status('');
+    const {error}=await client.rpc('delete_my_account');
+    if(error){$('deleteBtn').disabled=false;$('deleteBtn').textContent='Delete My Account Permanently';status('Unable to delete account. Please try again or contact JB STORE support.','error');return;}
+    try{localStorage.clear();sessionStorage.clear();}catch(e){}
+    await client.auth.signOut({scope:'local'});
+    $('deleteBox').classList.add('hidden');
+    status('Your JB STORE account has been deleted successfully.','success');
+  });
+
+  client.auth.onAuthStateChange(function(_event,session){if(session&&session.user)showDelete(session.user);});
+  check();
+})();
+</script>
+</body>
+</html>
