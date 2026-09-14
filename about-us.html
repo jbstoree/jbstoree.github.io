@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="description" content="About JB STORE - Premium Electronics">
+<title>About Us | JB STORE</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;max-width:100%;overflow-x:hidden}
+body{
+    font-family:'Poppins',Arial,sans-serif;
+    background:#F7F5F0;
+    color:#1C1C1C;
+    line-height:1.7;
+}
+.header{
+    width:100%;
+    background:#FFFFFF;
+    padding:18px 20px;
+    border-bottom:1px solid rgba(212,175,55,.20);
+    box-shadow:0 2px 25px rgba(0,0,0,.05);
+}
+.header-inner{
+    width:min(1000px,100%);
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+.logo{
+    text-decoration:none;
+    font-size:24px;
+    font-weight:800;
+    letter-spacing:1px;
+    color:#D4AF37;
+}
+.logo span{color:#1C1C1C}
+.back{
+    text-decoration:none;
+    color:#1C1C1C;
+    border:1px solid rgba(212,175,55,.45);
+    padding:8px 15px;
+    border-radius:9px;
+    font-size:13px;
+    font-weight:600;
+    transition:.2s;
+}
+.back:hover{background:#D4AF37;color:#fff}
+.container{
+    width:min(900px,calc(100% - 28px));
+    margin:30px auto 55px;
+}
+.hero{
+    background:#FFFFFF;
+    border:1px solid rgba(212,175,55,.22);
+    border-radius:18px;
+    padding:38px 30px;
+    text-align:center;
+    box-shadow:0 8px 30px rgba(0,0,0,.05);
+    margin-bottom:18px;
+}
+.badge{
+    display:inline-block;
+    color:#D4AF37;
+    border:1px solid rgba(212,175,55,.45);
+    border-radius:50px;
+    padding:5px 13px;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    margin-bottom:12px;
+}
+h1{
+    font-size:32px;
+    line-height:1.25;
+    color:#1C1C1C;
+    margin-bottom:10px;
+}
+h1 span{color:#D4AF37}
+.hero p{
+    max-width:680px;
+    margin:auto;
+    color:#666;
+    font-size:14px;
+}
+.card{
+    background:#FFFFFF;
+    border:1px solid rgba(212,175,55,.16);
+    border-radius:16px;
+    padding:26px;
+    margin-bottom:16px;
+    box-shadow:0 5px 22px rgba(0,0,0,.04);
+}
+h2{
+    color:#1C1C1C;
+    font-size:19px;
+    margin-bottom:9px;
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+h2::before{
+    content:"";
+    width:4px;
+    height:21px;
+    border-radius:5px;
+    background:#D4AF37;
+    display:inline-block;
+}
+p{color:#5d5d5d;font-size:14px;margin-bottom:9px}
+ul{padding-left:21px;color:#5d5d5d;font-size:14px}
+li{margin:6px 0}
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin-top:15px;
+}
+.info{
+    border:1px solid #eee6cf;
+    background:#FCFBF8;
+    border-radius:12px;
+    padding:15px;
+}
+.info strong{display:block;color:#D4AF37;font-size:12px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.info span{color:#444;font-size:13px}
+.highlight{
+    border-left:4px solid #D4AF37;
+    background:#FBF8EE;
+    padding:15px 17px;
+    border-radius:8px;
+    margin-top:14px;
+}
+.highlight p{margin:0;color:#4b4b4b}
+.links{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:14px;
+}
+.links a{
+    text-decoration:none;
+    border:1px solid rgba(212,175,55,.4);
+    color:#6b5720;
+    background:#FFFDF6;
+    padding:9px 13px;
+    border-radius:9px;
+    font-size:12px;
+    font-weight:600;
+}
+.links a:hover{background:#D4AF37;color:#fff}
+.footer{
+    text-align:center;
+    padding:25px 15px 35px;
+    color:#888;
+    font-size:12px;
+}
+@media(max-width:600px){
+    .container{width:calc(100% - 18px);margin-top:18px}
+    .hero{padding:29px 18px;border-radius:15px}
+    .card{padding:20px 17px;border-radius:14px}
+    h1{font-size:26px}
+    h2{font-size:18px}
+    .grid{grid-template-columns:1fr}
+    .logo{font-size:21px}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+    <div class="header-inner">
+        <a href="index.html" class="logo">JB <span>STORE</span></a>
+        <a href="index.html" class="back">← Back to Store</a>
+    </div>
+</header>
+
+<main class="container">
+
+<section class="hero">
+    <div class="badge">About JB STORE</div>
+    <h1>Premium Electronics.<br><span>Trusted Service.</span></h1>
+    <p>
+        JB STORE is a local electronics store focused on providing genuine products,
+        convenient ordering, transparent COD delivery, and direct customer support.
+    </p>
+</section>
+
+<section class="card">
+    <h2>Who We Are</h2>
+    <p>
+        JB STORE is operated by <strong>Jabbar</strong> under the developer/business
+        identity <strong>OMG_x_NOOR</strong>. We aim to make electronics shopping simple,
+        convenient, and customer-friendly through our website and app.
+    </p>
+    <p>
+        Customers can browse products, place orders, choose Cash on Delivery,
+        and receive support directly from JB STORE.
+    </p>
+</section>
+
+<section class="card">
+    <h2>What We Offer</h2>
+    <ul>
+        <li>Premium electronics and related products.</li>
+        <li>Product information to help customers make informed choices.</li>
+        <li>Cash on Delivery for current orders.</li>
+        <li>Open-and-check-before-payment for COD deliveries.</li>
+        <li>Direct customer support through available contact channels.</li>
+        <li>Our own delivery service within supported areas.</li>
+    </ul>
+</section>
+
+<section class="card">
+    <h2>Our COD Promise</h2>
+    <div class="highlight">
+        <p>
+            <strong>Open → Check → Accept → Pay</strong><br>
+            For COD orders, customers can open the box and check the product before
+            completing payment. If a wrong, visibly damaged, or apparently defective
+            product is identified during the check, the customer should inform JB STORE
+            immediately and, where possible, before accepting the delivery.
+        </p>
+    </div>
+</section>
+
+<section class="card">
+    <h2>Delivery Service</h2>
+    <p>
+        JB STORE currently provides its own delivery service primarily within
+        <strong>Nandyal District</strong> and approximately <strong>100–200 km</strong>
+        from the store location, subject to delivery feasibility and availability.
+    </p>
+    <p>
+        Delivery timing can vary depending on location, product availability,
+        order volume, weather, road conditions, and other circumstances.
+    </p>
+</section>
+
+<section class="card">
+    <h2>Business Information</h2>
+    <div class="grid">
+        <div class="info">
+            <strong>Owner</strong>
+            <span>Jabbar</span>
+        </div>
+        <div class="info">
+            <strong>Developer / Business Identity</strong>
+            <span>OMG_x_NOOR</span>
+        </div>
+        <div class="info">
+            <strong>Location</strong>
+            <span>Atmakur, near HDFC Bank, Nandyal District, Andhra Pradesh</span>
+        </div>
+        <div class="info">
+            <strong>Email</strong>
+            <span>jbstore01012@gmail.com</span>
+        </div>
+    </div>
+</section>
+
+<section class="card">
+    <h2>Customer Support</h2>
+    <p>
+        We value clear communication with our customers. For product questions,
+        order-related support, delivery issues, cancellations, or other assistance,
+        customers can contact JB STORE using the support options available on the
+        website or app.
+    </p>
+    <p>
+        <strong style="color:#D4AF37">Email:</strong>
+        <a href="mailto:jbstore01012@gmail.com">jbstore01012@gmail.com</a>
+    </p>
+    <p>
+        WhatsApp and phone support are available through the contact options
+        provided by JB STORE.
+    </p>
+</section>
+
+<section class="card">
+    <h2>Our Policies</h2>
+    <p>
+        Please review our policies before placing an order. They explain how we
+        handle delivery, returns, refunds, terms of use, and privacy.
+    </p>
+    <div class="links">
+        <a href="shipping-delivery-policy.html">Shipping & Delivery</a>
+        <a href="return-refund-policy.html">Return & Refund</a>
+        <a href="terms-and-conditions.html">Terms & Conditions</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+    </div>
+</section>
+
+<section class="card">
+    <h2>Our Commitment</h2>
+    <p>
+        JB STORE strives to provide a straightforward shopping experience with
+        clear product information, transparent COD procedures, reliable communication,
+        and practical customer support.
+    </p>
+</section>
+
+</main>
+
+<footer class="footer">
+    © 2026 JB STORE. All rights reserved.
+</footer>
+
+</body>
+</html>
