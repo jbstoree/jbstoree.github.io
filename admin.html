@@ -1058,6 +1058,17 @@
         const $ = id => document.getElementById(id);
 
         // ───── AUTH ─────
+        // Only this email is allowed to access the Admin Panel.
+        const ADMIN_EMAIL = 'jbstore01012@gmail.com';
+
+        function isAdminUser(user) {
+            return !!(
+                user &&
+                user.email &&
+                user.email.trim().toLowerCase() === ADMIN_EMAIL.toLowerCase()
+            );
+        }
+
         function showLoginScreen(show) {
             const overlay = $('loginScreen');
             if (show) {
@@ -1074,39 +1085,128 @@
             }
         }
 
+        async function denyAdminAccess(message = '❌ Admin access denied.') {
+            try {
+                await supabaseClient.auth.signOut();
+            } catch (_) {}
+
+            showLoginScreen(true);
+
+            $('loginEmail').value = '';
+            $('loginPassword').value = '';
+            $('loginError').textContent = message;
+
+            allProducts = [];
+            filteredProducts = [];
+            renderTable();
+            updateStats();
+        }
+
         async function loginAdmin() {
             const email = $('loginEmail').value.trim();
             const pass = $('loginPassword').value;
             const err = $('loginError');
+
             err.textContent = '';
-            if (!email || !pass) { err.textContent = '❌ Enter email and password.'; return; }
+
+            if (!email || !pass) {
+                err.textContent = '❌ Enter email and password.';
+                return;
+            }
+
+            // Block non-admin email BEFORE authentication.
+            if (email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+                err.textContent = '❌ Admin access is allowed only for the authorized admin account.';
+                return;
+            }
+
             try {
-                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password: pass });
-                if (error) { err.textContent = '❌ ' + error.message; return; }
-                if (!data.user) { err.textContent = '❌ Login failed.'; return; }
+                const { data, error } =
+                    await supabaseClient.auth.signInWithPassword({
+                        email,
+                        password: pass
+                    });
+
+                if (error) {
+                    err.textContent = '❌ ' + error.message;
+                    return;
+                }
+
+                if (!data.user) {
+                    err.textContent = '❌ Login failed.';
+                    return;
+                }
+
+                // Verify the actual authenticated account too.
+                // This prevents any non-admin session from opening the dashboard.
+                if (!isAdminUser(data.user)) {
+                    await denyAdminAccess(
+                        '❌ Access denied. Only jbstore01012@gmail.com can access Admin Panel.'
+                    );
+                    return;
+                }
+
                 showLoginScreen(false);
                 await loadProducts();
                 updateStats();
                 renderTable();
-            } catch (e) { err.textContent = '❌ ' + e.message; }
+
+            } catch (e) {
+                err.textContent = '❌ ' + e.message;
+            }
         }
 
         async function logoutAdmin() {
             await supabaseClient.auth.signOut();
             showLoginScreen(true);
-            allProducts = []; filteredProducts = [];
-            renderTable(); updateStats();
+            allProducts = [];
+            filteredProducts = [];
+            renderTable();
+            updateStats();
         }
 
         async function checkSession() {
-            const { data: { session } } = await supabaseClient.auth.getSession();
+            const {
+                data: { session }
+            } = await supabaseClient.auth.getSession();
+
             if (session && session.user) {
+
+                // IMPORTANT:
+                // If another JBStore user is already logged in,
+                // do NOT allow that session to access admin.html.
+                if (!isAdminUser(session.user)) {
+                    await denyAdminAccess(
+                        '❌ Access denied. Only jbstore01012@gmail.com can access Admin Panel.'
+                    );
+                    return;
+                }
+
                 showLoginScreen(false);
                 await loadProducts();
                 updateStats();
                 renderTable();
-            } else showLoginScreen(true);
+
+            } else {
+                showLoginScreen(true);
+            }
         }
+
+        // Keep checking authentication changes.
+        // If the admin session changes to another account,
+        // immediately lock the Admin Panel.
+        supabaseClient.auth.onAuthStateChange(async (_event, session) => {
+            if (!session || !session.user) {
+                showLoginScreen(true);
+                return;
+            }
+
+            if (!isAdminUser(session.user)) {
+                await denyAdminAccess(
+                    '❌ Access denied. Only jbstore01012@gmail.com can access Admin Panel.'
+                );
+            }
+        });
 
         // ───── PRODUCTS ─────
         async function loadProducts() {
@@ -2605,3 +2705,4 @@
 
 </body>
 </html>
+
