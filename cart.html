@@ -1047,10 +1047,18 @@
 })();
 </script>
 
-<!-- ===== CART RENDERER (FIX) — localStorage నుంచి items చూపిస్తుంది ===== -->
+<!-- ===== CART RENDERER (FIXED WITH SUPABASE SYNC) — localStorage నుంచి items చూపిస్తుంది ===== -->
 <script>
 (function () {
   'use strict';
+
+  const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
+  
+  let sb = null;
+  if (typeof supabase !== 'undefined') {
+    try { sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON); } catch(e) { console.error("Supabase init error in cart renderer:", e); }
+  }
 
   var KEYS = ['cart','jb_cart','jbstore_cart','jbCart','cartItems'];
   var $ = function (id) { return document.getElementById(id); };
@@ -1109,12 +1117,49 @@
     }
   }
 
+  /* ---------- SYNC WITH DATABASE ---------- */
+  async function syncCartWithDatabase() {
+    items = readCart();
+    if (!items.length) return;
+
+    // Extract unique product IDs from the cart
+    const productIds = [...new Set(items.map(it => String(it.id)).filter(id => id && id !== 'undefined'))];
+    if (!productIds.length) return;
+
+    try {
+      if (!sb) return; // If Supabase is not available, skip sync to avoid blocking
+
+      const { data, error } = await sb.from('products').select('id').in('id', productIds);
+      
+      if (error) {
+        console.error("Error fetching products for cart sync:", error);
+        return;
+      }
+
+      const validIds = new Set((data || []).map(p => String(p.id)));
+      const originalLength = items.length;
+      
+      // Filter out items that no longer exist in the database
+      items = items.filter(it => validIds.has(String(it.id)));
+
+      // If some items were removed, update localStorage
+      if (items.length < originalLength) {
+        saveCart();
+        // Optional: Show a subtle alert or toast
+        console.log("Some items in your cart are no longer available and have been removed.");
+      }
+    } catch (e) {
+      console.error("Exception during cart sync:", e);
+    }
+  }
+
   /* ---------- RENDER ---------- */
-  function render() {
+  async function render() {
     var box = $('cartItems');
     if (!box) return;
 
-    items = readCart();
+    // Sync with database first (removes deleted products)
+    await syncCartWithDatabase();
 
     var empty   = $('emptyCart');
     var summary = $('cartSummary');
