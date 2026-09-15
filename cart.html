@@ -1047,7 +1047,7 @@
 })();
 </script>
 
-<!-- ===== CART RENDERER (FIXED) — Instant Load + Background Supabase Sync ===== -->
+<!-- ===== CART RENDERER (ROBUST FIXED) — Instant Load + Safe Background Supabase Sync ===== -->
 <script>
 (function () {
   'use strict';
@@ -1176,39 +1176,51 @@
     updateBadges(qtySum);
   }
 
-  /* ---------- BACKGROUND SYNC WITH SUPABASE ---------- */
+  /* ---------- BACKGROUND SYNC WITH SUPABASE (SAFE) ---------- */
   async function syncCartWithDatabase() {
     if (!sb) return; // If Supabase is not available, don't sync
 
     var currentItems = readCart();
     if (!currentItems.length) return;
 
-    try {
-      // Fetch ALL product IDs from the database
-      const { data, error } = await sb.from('products').select('id');
-      
-      if (error) {
-        console.error("Error fetching products for cart sync:", error);
-        return; // Don't remove anything if there's an error
-      }
+    // Extract all product IDs from the cart
+    var cartIds = currentItems.map(it => String(it.id).trim()).filter(Boolean);
+    if (!cartIds.length) return;
 
-      const validDbIds = new Set((data || []).map(p => String(p.id).trim()));
+    // Filter out IDs that don't look like valid DB IDs (UUIDs or Integers)
+    // This prevents sending garbage IDs to Supabase and accidentally wiping the cart.
+    var validDbIdsToCheck = cartIds.filter(id => 
+        /^[0-9a-fA-F-]{36}$/.test(id) || /^\d+$/.test(id)
+    );
+
+    if (!validDbIdsToCheck.length) return; // Nothing to check against DB
+
+    try {
+      // Fetch ONLY the products that are currently in the cart
+      const { data, error } = await sb.from('products').select('id').in('id', validDbIdsToCheck);
       
-      // Filter out items that are NOT in the database
+      if (error) throw error; // If DB error, abort safely without deleting anything
+
+      const validIdsSet = new Set((data || []).map(p => String(p.id).trim()));
+      
+      // Filter: Keep item if it's NOT a valid DB ID (e.g., custom local item)
+      // OR if it IS a valid DB ID and it exists in the database.
       const filteredItems = currentItems.filter(it => {
           const cartId = String(it.id).trim();
-          return validDbIds.has(cartId);
+          if (!validDbIdsToCheck.includes(cartId)) return true; // Keep non-DB items
+          return validIdsSet.has(cartId); // Only keep if exists in DB
       });
 
       // If some items were deleted, update the cart and UI
       if (filteredItems.length < currentItems.length) {
         items = filteredItems;
         saveCart();
-        renderDOM(); // Re-render the DOM without triggering sync again
+        renderDOM(); // Re-render the DOM to remove deleted items
         console.log("Removed deleted products from cart.");
       }
     } catch (e) {
-      console.error("Exception during cart sync:", e);
+      console.error("Sync failed, keeping cart as is:", e);
+      // If network fails, we do NOT delete anything. The cart stays as it is.
     }
   }
 
