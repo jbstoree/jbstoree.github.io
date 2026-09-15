@@ -429,17 +429,32 @@
       const products = Array.isArray(data) ? data : [];
       const favorites = products.filter(product => savedIds.includes(normalizeFavoriteId(product.id)));
 
+      // ==========================================
+      // FIX: Deleted product ni local storage nunchi remove cheyyadam
+      // ==========================================
       if (favorites.length === 0) {
+        // Product delete ayipoyindi, so local storage nunchi aa IDs ni remove cheddam
+        if (typeof saveFavorites === 'function') {
+          saveFavorites([]); // Clear all stale favorites
+        } else {
+          localStorage.removeItem('jb_favorites'); // Fallback cleanup
+        }
+        
+        // Update the item count
+        if (countEl) countEl.textContent = '0 items';
+
+        // Show standard empty state (as you requested)
         grid.innerHTML = `
           <div class="fav-empty">
-            <span class="empty-icon">⚠️</span>
-            <h2>Favorite product not found</h2>
-            <p>The favorite ID is saved, but it does not match an ID in the Supabase products table.</p>
+            <span class="empty-icon">💔</span>
+            <h2>No favorites yet</h2>
+            <p>Tap the heart ❤️ on any product to save it here.</p>
             <a href="index.html" class="shop-now-btn">Browse Products</a>
           </div>
         `;
         return;
       }
+      // ==========================================
 
       if (countEl) countEl.textContent = favorites.length + (favorites.length === 1 ? ' item' : ' items');
       grid.innerHTML = '';
