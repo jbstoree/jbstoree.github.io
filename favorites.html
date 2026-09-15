@@ -18,21 +18,16 @@
     .favorites-page .page-head h1 { margin: 0; font-size: 28px; font-weight: 700; color: #222; text-align: center; line-height: 1.2; letter-spacing: 0.5px; }
     .favorites-page .page-head h1::before { content: "❤️ "; font-size: 28px; }
     .favorites-page .page-head .fav-count { display: inline-flex; align-items: center; justify-content: center; min-width: 120px; box-sizing: border-box; color: #c49b18; font-size: 14px; font-weight: 600; padding: 6px 18px; border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 30px; background: rgba(212, 175, 55, 0.04); }
-    .fav-grid { width: 100%; box-sizing: border-box; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; align-items: stretch; }
-    .fav-grid .best-card { width: 100%; min-width: 0; max-width: 100%; box-sizing: border-box; position: relative; display: flex; flex-direction: column; align-items: stretch; padding: 12px; border-radius: 16px; background: #ffffff; border: 1px solid #ffd700 !important; box-shadow: 0 0 4px rgba(255, 215, 0, 0.05) !important; overflow: hidden; }
-    .fav-grid .best-card img { display: block; width: 100%; height: 150px; box-sizing: border-box; object-fit: contain; padding: 8px; background: #fff; border-radius: 10px; margin: 0 0 8px; }
-    .fav-grid .best-card h3 { width: 100%; box-sizing: border-box; margin: 3px 0 2px; font-size: 14px; font-weight: 600; line-height: 1.3; color: #111111 !important; min-height: 36px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .fav-grid .best-card .brand { margin: 2px 0; font-size: 12px; line-height: 1.3; color: #999; }
-    .fav-grid .best-card .price-row { width: 100%; box-sizing: border-box; display: flex; align-items: center; gap: 8px; margin: 8px 0 8px; flex-wrap: wrap; }
-    .fav-grid .best-card .price-row .new { color: #d4af37; font-size: 18px; font-weight: 700; }
-    .fav-grid .best-card .price-row .old { color: #777; font-size: 13px; text-decoration: line-through; }
-    .fav-grid .best-card button:last-child { width: 100%; height: 40px; box-sizing: border-box; margin-top: auto; border: none; border-radius: 10px; background: linear-gradient(135deg, #d4af37, #c9a030); color: #0a0a0a; font-family: "Poppins", sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
-    .fav-grid .best-card .favorite-btn { display: none !important; }
-    .fav-grid .fav-empty { width: 100%; box-sizing: border-box; grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 55px 20px; margin: 0 auto; }
-    .fav-grid .fav-empty .empty-icon { display: block; font-size: 52px; line-height: 1; margin-bottom: 18px; }
-    .fav-grid .fav-empty h2 { margin: 0 0 10px; color: #222; font-size: 25px; font-weight: 700; line-height: 1.25; }
-    .fav-grid .fav-empty p { max-width: 360px; margin: 0 0 22px; color: #555; font-size: 15px; line-height: 1.6; }
-    .fav-grid .fav-empty .shop-now-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 170px; height: 42px; padding: 0 22px; box-sizing: border-box; border-radius: 10px; background: linear-gradient(135deg, #d4af37, #c9a030); color: #111 !important; font-size: 14px; font-weight: 700; text-decoration: none; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); }
+
+    /* Empty State (now inside .deal-grid) */
+    .fav-empty { width: 100%; box-sizing: border-box; grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 55px 20px; margin: 0 auto; }
+    .fav-empty .empty-icon { display: block; font-size: 52px; line-height: 1; margin-bottom: 18px; }
+    .fav-empty h2 { margin: 0 0 10px; color: #222; font-size: 25px; font-weight: 700; line-height: 1.25; }
+    .fav-empty p { max-width: 360px; margin: 0 0 22px; color: #555; font-size: 15px; line-height: 1.6; }
+    .fav-empty .shop-now-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 170px; height: 42px; padding: 0 22px; box-sizing: border-box; border-radius: 10px; background: linear-gradient(135deg, #d4af37, #c9a030); color: #111 !important; font-size: 14px; font-weight: 700; text-decoration: none; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); }
+
+    /* Hide favorite button on deal cards if rendered */
+    .deal-card .favorite-btn { display: none !important; }
 
     /* ==========================================
        PROFILE MODAL (APP FIXED)
@@ -58,31 +53,15 @@
     /* ==========================================
        RESPONSIVE
        ========================================== */
-    @media (max-width: 900px) { .fav-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; } }
     @media (max-width: 768px) {
       .favorites-page { padding: 0 6px 76px; }
       .favorites-page .page-head { padding: 5px 0 13px; margin-bottom: 14px; }
       .favorites-page .page-head h1 { font-size: 20px; }
       .favorites-page .page-head h1::before { font-size: 20px; }
       .favorites-page .page-head .fav-count { min-width: 88px; padding: 4px 13px; font-size: 10px; }
-      .fav-grid { width: 100%; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-      .fav-grid .best-card { width: 100%; min-width: 0; min-height: 288px; padding: 7px; border-radius: 11px; }
-      .fav-grid .best-card img { width: 100%; height: 152px; padding: 5px; border-radius: 7px; object-fit: contain; }
-      .fav-grid .best-card h3 { font-size: 10px; min-height: 27px; margin-top: 4px; }
-      .fav-grid .best-card .brand { font-size: 10px; }
-      .fav-grid .best-card .price-row { gap: 4px; margin: 6px 0; }
-      .fav-grid .best-card .price-row .new { font-size: 13px; }
-      .fav-grid .best-card .price-row .old { font-size: 10px; }
     }
     @media (max-width: 450px) {
       .favorites-page { padding-left: 6px; padding-right: 6px; }
-      .fav-grid { gap: 8px; }
-      .fav-grid .best-card { padding: 7px; border-radius: 13px; min-height: 300px; }
-      .fav-grid .best-card img { width: 100%; height: 145px; padding: 4px; object-fit: contain; margin-bottom: 5px; }
-      .fav-grid .best-card h3 { font-size: 11.5px; min-height: 30px; }
-      .fav-grid .best-card .brand { font-size: 10.5px; }
-      .fav-grid .best-card .price-row .new { font-size: 14px; }
-      .fav-grid .best-card .price-row .old { font-size: 10px; }
     }
   </style>
 </head>
@@ -188,7 +167,8 @@
     <h1>Your Favorites</h1>
     <span class="fav-count" id="favCount">0 items</span>
   </div>
-  <div id="favoritesGrid" class="fav-grid"></div>
+  <!-- Changed from fav-grid to deal-grid to match Top Deals card size -->
+  <div id="favoritesGrid" class="deal-grid"></div>
 </main>
 
 <!-- ===== BOTTOM BAR ===== -->
@@ -461,7 +441,8 @@
 
       favorites.forEach(product => {
         const card = document.createElement('div');
-        card.className = 'best-card';
+        // Changed from 'best-card' to 'deal-card' to match Top Deals size
+        card.className = 'deal-card';
         card.style.position = 'relative'; card.style.cursor = 'pointer';
 
         const image = product.image || (Array.isArray(product.images) && product.images.length ? product.images[0] : '');
