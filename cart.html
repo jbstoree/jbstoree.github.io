@@ -1187,22 +1187,35 @@
     var productIds = [...new Set(currentItems.map(it => String(it.id)).filter(id => id && id !== 'undefined'))];
     if (!productIds.length) return;
 
+    // 🛡️ SAFETY CHECK: Only query Supabase with IDs that look like UUIDs or Integers.
+    // This prevents custom IDs (like 'p0', 'p1', or SKUs) from being sent to the DB,
+    // which would return an empty array and accidentally wipe the cart.
+    var isValidDbId = function(id) {
+      return /^[0-9a-fA-F-]{36}$/.test(id) || /^\d+$/.test(id);
+    };
+    var validProductIds = productIds.filter(isValidDbId);
+    
+    if (!validProductIds.length) return; // No valid DB IDs to check
+
     try {
-      const { data, error } = await sb.from('products').select('id').in('id', productIds);
+      const { data, error } = await sb.from('products').select('id').in('id', validProductIds);
       
       if (error) {
         console.error("Error fetching products for cart sync:", error);
         return; // Don't remove anything if there's an error
       }
 
-      const validIds = new Set((data || []).map(p => String(p.id)));
-      const originalLength = currentItems.length;
+      const validDbIds = new Set((data || []).map(p => String(p.id)));
       
-      // Filter out items that are NOT in the database anymore
-      const filteredItems = currentItems.filter(it => validIds.has(String(it.id)));
+      // Filter: Keep the item if it's NOT a valid DB ID (so we don't delete custom items),
+      // OR if it IS a valid DB ID and it exists in the database.
+      const filteredItems = currentItems.filter(it => {
+          const id = String(it.id);
+          return !validProductIds.includes(id) || validDbIds.has(id);
+      });
 
       // If some items were deleted, update the cart and UI
-      if (filteredItems.length < originalLength) {
+      if (filteredItems.length < currentItems.length) {
         items = filteredItems;
         saveCart();
         renderDOM(); // Re-render the DOM without triggering sync again
