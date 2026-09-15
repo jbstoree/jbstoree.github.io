@@ -991,7 +991,7 @@
     if (isBlocked) {
         $('ckGo').disabled = false;
         $('ckGo').textContent = '📲 Place Order';
-        return; // User blocked, so ikkade aapandi. Order insert cheyyoddu.
+        return;
     }
 
     // ✅ 2. USER BLOCK CHEYYAKAPOTHE, ORDER PLACE CHEYYANDI
@@ -1042,28 +1042,31 @@
     document.getElementById('orderSuccessView').style.display = 'flex';
     document.getElementById('successOrderId').textContent = orderCode;
     window.scrollTo(0, 0);
-    // -----------------------------------------------------------
   });
 })();
 </script>
 
-<!-- ===== CART RENDERER (ROBUST FIXED) — Instant Load + Safe Background Supabase Sync ===== -->
+<!-- ===== CART RENDERER + PRODUCT VALIDATION (Deleted products auto-remove) ===== -->
 <script>
 (function () {
   'use strict';
 
-  const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
-  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
-  
-  let sb = null;
+  /* ---------- Supabase client (validation kosam) ---------- */
+  var SUPABASE_URL  = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
+  var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
+  var sb = null;
   if (typeof supabase !== 'undefined') {
-    try { sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON); } catch(e) { console.error("Supabase init error in cart renderer:", e); }
+    try { sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON); } catch (e) {}
   }
 
   var KEYS = ['cart','jb_cart','jbstore_cart','jbCart','cartItems'];
   var $ = function (id) { return document.getElementById(id); };
   var currentKey = 'cart';
   var items = [];
+
+  /* Validation cache: 30 seconds */
+  var _lastValidate = 0;
+  var _validating   = false;
 
   function num(v) {
     if (typeof v === 'number') return v;
@@ -1077,7 +1080,7 @@
   }
   function fmt(n) { return Number(n || 0).toLocaleString('en-IN'); }
 
-  /* ---------- READ ---------- */
+  /* ---------- READ FROM localStorage ---------- */
   function readCart() {
     for (var i = 0; i < KEYS.length; i++) {
       var k = KEYS[i], raw = null;
@@ -1096,7 +1099,7 @@
   function normalize(it, i) {
     it = it || {};
     return {
-      id:    it.id || it.productId || it.product_id || it.pid || ('p' + i),
+      id:    it.id || it.productId || it.product_id || it.pid || '',
       name:  it.name || it.title || it.productName || it.product_name || 'Product',
       brand: it.brand || it.category || it.subtitle || '',
       price: num(it.price != null ? it.price : (it.amount != null ? it.amount : it.mrp)),
@@ -1117,10 +1120,115 @@
     }
   }
 
-  /* ---------- RENDER UI (Only updates DOM from `items` array) ---------- */
-  function renderDOM() {
+  /* ---------- PRODUCT VALIDATION ---------- */
+  /* Admin products delete chesina cart items ni remove chestundi */
+  async function validateCartAgainstProducts() {
+    if (!sb || !items.length) return;
+    if (_validating) return;
+    _validating = true;
+
+    var ids   = [];
+    var names = [];
+    items.forEach(function (it) {
+      if (it.id)   ids.push(it.id);
+      if (it.name) names.push(it.name);
+    });
+
+    var foundIds   = {};
+    var foundNames = {};
+    var querySuccess = false;
+
+    // 1) ID tho query
+    if (ids.length) {
+      try {
+        var r1 = await sb.from('products').select('id').in('id', ids);
+        if (!r1.error) {
+          querySuccess = true;
+          (r1.data || []).forEach(function (p) {
+            foundIds[String(p.id)] = true;
+          });
+        } else {
+          console.warn('[cart] id query error:', r1.error.message);
+        }
+      } catch (e) { console.warn('[cart] id query exception:', e); }
+    }
+
+    // 2) Name tho query (id lekunda add ayina items ki fallback)
+    if (names.length) {
+      try {
+        var r2 = await sb.from('products').select('name').in('name', names);
+        if (!r2.error) {
+          querySuccess = true;
+          (r2.data || []).forEach(function (p) {
+            foundNames[p.name] = true;
+          });
+        }
+      } catch (e) { console.warn('[cart] name query exception:', e); }
+    }
+
+    // Query fail ayithe cart ni touch cheyyoddu
+    if (!querySuccess) {
+      _validating = false;
+      return;
+    }
+
+    var before = items.length;
+    items = items.filter(function (it) {
+      // id match ayithe keep
+      if (it.id && foundIds[String(it.id)]) return true;
+      // name match ayithe keep
+      if (it.name && foundNames[it.name]) return true;
+      // Match ledu -> deleted product, remove
+      return false;
+    });
+
+    if (items.length < before) {
+      var removedCount = before - items.length;
+      saveCart();
+      console.log('[cart] ' + removedCount + ' deleted product(s) removed from cart');
+      showRemovedNotice(removedCount);
+    }
+
+    _validating = false;
+  }
+
+  /* User ki chinna notice chupinchadam */
+  function showRemovedNotice(count) {
+    var existing = document.getElementById('cartRemovedNotice');
+    if (existing) existing.remove();
+
+    var div = document.createElement('div');
+    div.id = 'cartRemovedNotice';
+    div.style.cssText =
+      'position:fixed;left:50%;top:14px;transform:translateX(-50%);' +
+      'background:#111;color:#ffd24d;padding:10px 18px;border-radius:30px;' +
+      'font-size:13px;font-weight:600;z-index:2147483647;' +
+      'box-shadow:0 6px 24px rgba(0,0,0,0.25);border:1px solid #d4af37;' +
+      'max-width:92vw;text-align:center;font-family:Poppins,sans-serif;';
+    div.textContent = '⚠️ ' + count + ' item' + (count > 1 ? 's' : '') +
+                      ' removed — product no longer available';
+    document.body.appendChild(div);
+
+    setTimeout(function () {
+      div.style.transition = 'opacity 0.4s ease';
+      div.style.opacity = '0';
+      setTimeout(function () { div.remove(); }, 450);
+    }, 3500);
+  }
+
+  /* ---------- RENDER ---------- */
+  async function render(forceValidate) {
     var box = $('cartItems');
     if (!box) return;
+
+    items = readCart();
+
+    // Product validation (30s cache, force true ayithe immediate)
+    var now = Date.now();
+    if (forceValidate || (now - _lastValidate) > 30000) {
+      _lastValidate = now;
+      await validateCartAgainstProducts();
+    }
 
     var empty   = $('emptyCart');
     var summary = $('cartSummary');
@@ -1176,67 +1284,6 @@
     updateBadges(qtySum);
   }
 
-  /* ---------- BACKGROUND SYNC WITH SUPABASE (SAFE) ---------- */
-  async function syncCartWithDatabase() {
-    if (!sb) return; // If Supabase is not available, don't sync
-
-    var currentItems = readCart();
-    if (!currentItems.length) return;
-
-    // Extract all product IDs from the cart
-    var cartIds = currentItems.map(it => String(it.id).trim()).filter(Boolean);
-    if (!cartIds.length) return;
-
-    // Filter out IDs that don't look like valid DB IDs (UUIDs or Integers)
-    // This prevents sending garbage IDs to Supabase and accidentally wiping the cart.
-    var validDbIdsToCheck = cartIds.filter(id => 
-        /^[0-9a-fA-F-]{36}$/.test(id) || /^\d+$/.test(id)
-    );
-
-    if (!validDbIdsToCheck.length) return; // Nothing to check against DB
-
-    try {
-      // Fetch ONLY the products that are currently in the cart
-      const { data, error } = await sb.from('products').select('id').in('id', validDbIdsToCheck);
-      
-      if (error) throw error; // If DB error, abort safely without deleting anything
-
-      const validIdsSet = new Set((data || []).map(p => String(p.id).trim()));
-      
-      // Filter: Keep item if it's NOT a valid DB ID (e.g., custom local item)
-      // OR if it IS a valid DB ID and it exists in the database.
-      const filteredItems = currentItems.filter(it => {
-          const cartId = String(it.id).trim();
-          if (!validDbIdsToCheck.includes(cartId)) return true; // Keep non-DB items
-          return validIdsSet.has(cartId); // Only keep if exists in DB
-      });
-
-      // If some items were deleted, update the cart and UI
-      if (filteredItems.length < currentItems.length) {
-        items = filteredItems;
-        saveCart();
-        renderDOM(); // Re-render the DOM to remove deleted items
-        console.log("Removed deleted products from cart.");
-      }
-    } catch (e) {
-      console.error("Sync failed, keeping cart as is:", e);
-      // If network fails, we do NOT delete anything. The cart stays as it is.
-    }
-  }
-
-  /* ---------- MAIN RENDER (Instant + Background Sync) ---------- */
-  async function render() {
-    var box = $('cartItems');
-    if (!box) return;
-
-    // 1. Immediately read from localStorage and render so the user sees their items instantly
-    items = readCart();
-    renderDOM();
-
-    // 2. Then sync in the background to remove deleted products
-    await syncCartWithDatabase();
-  }
-
   /* ---------- EVENTS ---------- */
   var box = $('cartItems');
   if (box) {
@@ -1254,7 +1301,7 @@
       else if (act === 'rm')  items.splice(idx, 1);
 
       saveCart();
-      renderDOM(); // Only update DOM, no need to re-sync DB for this
+      render(false);
     });
   }
 
@@ -1262,20 +1309,22 @@
     if (!confirm('Cart lo unna anni items remove cheyyala?')) return;
     items = [];
     for (var i = 0; i < KEYS.length; i++) { try { localStorage.removeItem(KEYS[i]); } catch (e) {} }
-    renderDOM();
+    render(false);
   };
 
   window.addEventListener('storage', function (e) {
-    if (KEYS.indexOf(e.key) !== -1) render();
+    if (KEYS.indexOf(e.key) !== -1) render(true);
   });
-  window.addEventListener('pageshow', render);
-  document.addEventListener('visibilitychange', function () { if (!document.hidden) render(); });
+  window.addEventListener('pageshow', function () { render(true); });
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) render(true);
+  });
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', render);
-  else render();
-
-  setTimeout(render, 400);
-  setTimeout(render, 1200);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { render(true); });
+  } else {
+    render(true);
+  }
 })();
 </script>
 </body>
