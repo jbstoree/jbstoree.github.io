@@ -1047,7 +1047,7 @@
 })();
 </script>
 
-<!-- ===== CART RENDERER (FIXED WITH SUPABASE SYNC) — localStorage నుంచి items చూపిస్తుంది ===== -->
+<!-- ===== CART RENDERER (FIXED) — Instant Load + Background Supabase Sync ===== -->
 <script>
 (function () {
   'use strict';
@@ -1117,49 +1117,10 @@
     }
   }
 
-  /* ---------- SYNC WITH DATABASE ---------- */
-  async function syncCartWithDatabase() {
-    items = readCart();
-    if (!items.length) return;
-
-    // Extract unique product IDs from the cart
-    const productIds = [...new Set(items.map(it => String(it.id)).filter(id => id && id !== 'undefined'))];
-    if (!productIds.length) return;
-
-    try {
-      if (!sb) return; // If Supabase is not available, skip sync to avoid blocking
-
-      const { data, error } = await sb.from('products').select('id').in('id', productIds);
-      
-      if (error) {
-        console.error("Error fetching products for cart sync:", error);
-        return;
-      }
-
-      const validIds = new Set((data || []).map(p => String(p.id)));
-      const originalLength = items.length;
-      
-      // Filter out items that no longer exist in the database
-      items = items.filter(it => validIds.has(String(it.id)));
-
-      // If some items were removed, update localStorage
-      if (items.length < originalLength) {
-        saveCart();
-        // Optional: Show a subtle alert or toast
-        console.log("Some items in your cart are no longer available and have been removed.");
-      }
-    } catch (e) {
-      console.error("Exception during cart sync:", e);
-    }
-  }
-
-  /* ---------- RENDER ---------- */
-  async function render() {
+  /* ---------- RENDER UI (Only updates DOM from `items` array) ---------- */
+  function renderDOM() {
     var box = $('cartItems');
     if (!box) return;
-
-    // Sync with database first (removes deleted products)
-    await syncCartWithDatabase();
 
     var empty   = $('emptyCart');
     var summary = $('cartSummary');
@@ -1215,6 +1176,56 @@
     updateBadges(qtySum);
   }
 
+  /* ---------- BACKGROUND SYNC WITH SUPABASE ---------- */
+  async function syncCartWithDatabase() {
+    if (!sb) return; // If Supabase is not available, don't sync
+
+    var currentItems = readCart();
+    if (!currentItems.length) return;
+
+    // Use String() to match IDs correctly
+    var productIds = [...new Set(currentItems.map(it => String(it.id)).filter(id => id && id !== 'undefined'))];
+    if (!productIds.length) return;
+
+    try {
+      const { data, error } = await sb.from('products').select('id').in('id', productIds);
+      
+      if (error) {
+        console.error("Error fetching products for cart sync:", error);
+        return; // Don't remove anything if there's an error
+      }
+
+      const validIds = new Set((data || []).map(p => String(p.id)));
+      const originalLength = currentItems.length;
+      
+      // Filter out items that are NOT in the database anymore
+      const filteredItems = currentItems.filter(it => validIds.has(String(it.id)));
+
+      // If some items were deleted, update the cart and UI
+      if (filteredItems.length < originalLength) {
+        items = filteredItems;
+        saveCart();
+        renderDOM(); // Re-render the DOM without triggering sync again
+        console.log("Removed deleted products from cart.");
+      }
+    } catch (e) {
+      console.error("Exception during cart sync:", e);
+    }
+  }
+
+  /* ---------- MAIN RENDER (Instant + Background Sync) ---------- */
+  async function render() {
+    var box = $('cartItems');
+    if (!box) return;
+
+    // 1. Immediately read from localStorage and render so the user sees their items instantly
+    items = readCart();
+    renderDOM();
+
+    // 2. Then sync in the background to remove deleted products
+    await syncCartWithDatabase();
+  }
+
   /* ---------- EVENTS ---------- */
   var box = $('cartItems');
   if (box) {
@@ -1232,7 +1243,7 @@
       else if (act === 'rm')  items.splice(idx, 1);
 
       saveCart();
-      render();
+      renderDOM(); // Only update DOM, no need to re-sync DB for this
     });
   }
 
@@ -1240,7 +1251,7 @@
     if (!confirm('Cart lo unna anni items remove cheyyala?')) return;
     items = [];
     for (var i = 0; i < KEYS.length; i++) { try { localStorage.removeItem(KEYS[i]); } catch (e) {} }
-    render();
+    renderDOM();
   };
 
   window.addEventListener('storage', function (e) {
