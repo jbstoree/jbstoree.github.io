@@ -682,6 +682,10 @@
                     <option value="Seal Cut">✂️ Seal Cut</option>
                     <option value="2nd Hand">🔄 2nd Hand</option>
                 </select>
+                <label>Brand</label>
+                <select id="brandFilter" onchange="filterProducts()">
+                    <option value="">All Brands</option>
+                </select>
                 <button class="filter-clear" onclick="clearFilters()">Clear Filters</button>
                 <span style="margin-left:auto;font-size:13px;color:#6b6b7a;" id="filterCount">0 products</span>
             </div>
@@ -1217,8 +1221,34 @@
                 filteredProducts = [...allProducts];
                 currentPage = 1;
                 updateStats();
+                populateBrandFilter();   // ✅ Brand list rebuild
                 filterProducts();
             } catch (e) { showToast('Failed to load products: ' + e.message, 'error'); }
+        }
+
+        // ✅ NEW: Build unique brand list for the Brand dropdown
+        function populateBrandFilter() {
+            const brandSelect = $('brandFilter');
+            if (!brandSelect) return;
+
+            const currentVal = brandSelect.value;
+
+            const brands = [...new Set(
+                allProducts
+                    .map(p => (p.brand || '').trim())
+                    .filter(b => b !== '')
+            )].sort((a, b) => a.localeCompare(b));
+
+            let html = '<option value="">All Brands</option>';
+            brands.forEach(b => {
+                html += `<option value="${b}">${b}</option>`;
+            });
+            brandSelect.innerHTML = html;
+
+            // Previous selection restore
+            if (currentVal && brands.includes(currentVal)) {
+                brandSelect.value = currentVal;
+            }
         }
 
         function updateStats() {
@@ -1237,11 +1267,13 @@
         function filterProducts() {
             const cat = $('categoryFilter').value;
             const cond = $('conditionFilter').value;
+            const brand = $('brandFilter') ? $('brandFilter').value : '';
             const search = $('globalSearch').value.toLowerCase().trim();
             filteredProducts = allProducts.filter(p => {
                 let m = true;
                 if (cat && p.category !== cat) m = false;
                 if (m && cond && p.condition !== cond) m = false;
+                if (m && brand && (p.brand || '') !== brand) m = false;
                 if (m && search) {
                     const n = (p.name || '').toLowerCase();
                     const id = (p.id || '').toLowerCase();
@@ -1258,6 +1290,7 @@
         function clearFilters() {
             $('categoryFilter').value = '';
             $('conditionFilter').value = '';
+            if ($('brandFilter')) $('brandFilter').value = '';
             $('globalSearch').value = '';
             filterProducts();
         }
@@ -2704,5 +2737,4 @@
     </script>
 
 </body>
-</html>
-
+    </html>
