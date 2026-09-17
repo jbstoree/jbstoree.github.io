@@ -946,32 +946,8 @@
   if (cancelBtn) { cancelBtn.addEventListener('click', () => { $('ckModal').classList.remove('show'); document.body.style.overflow = ''; }); }
   $('ckModal').addEventListener('click', e => { if (e.target === $('ckModal')) { $('ckModal').classList.remove('show'); document.body.style.overflow = ''; } });
 
-  // ✅ BLOCK CHECK FUNCTION
-  async function checkIfUserIsBlocked(email, mobile) {
-    try {
-      if (!sb) return false;
-      const { data, error } = await sb
-        .from('blocked_users')
-        .select('*')
-        .or(`email.eq.${email},mobile.eq.${mobile}`)
-        .maybeSingle();
-
-      if (error) {
-        console.error("Error checking block status:", error);
-        return false; 
-      }
-
-      if (data) {
-        alert("🚫 Mee account block cheyyabaddindi. Order place cheyyalevaru. Support ni contact cheyyandi.");
-        return true; 
-      }
-
-      return false; 
-    } catch (e) {
-      console.error("Exception:", e);
-      return false;
-    }
-  }
+  // BLOCK CHECK IS NOW DONE SERVER-SIDE BY the orders BEFORE INSERT trigger.
+  // The browser must NOT query public.blocked_users directly.
 
   $('ckGo').addEventListener('click', async function () {
     const name = $('ckName').value.trim();
@@ -985,16 +961,7 @@
 
     const userEmail = currentUser ? (currentUser.is_anonymous ? 'guest@jbstore' : (currentUser.email || '')) : 'guest@jbstore';
 
-    // ✅ 1. BLOCK CHECK CHEYYANDI
-    const isBlocked = await checkIfUserIsBlocked(userEmail, mob);
-    
-    if (isBlocked) {
-        $('ckGo').disabled = false;
-        $('ckGo').textContent = '📲 Place Order';
-        return;
-    }
-
-    // ✅ 2. USER BLOCK CHEYYAKAPOTHE, ORDER PLACE CHEYYANDI
+    // Block status is checked securely by the database trigger when the order is inserted.
     $('ckGo').disabled = true; $('ckGo').textContent = 'Placing...'; $('ckErr').textContent = '';
 
     const subtotal  = items.reduce((s,i) => s + i.price * i.qty, 0);
@@ -1014,8 +981,29 @@
           total: subtotal,
           status: 'pending'
         }]);
-        if (error) console.error('Order save error:', error);
-      } catch(e) { console.error('Order save failed:', e); }
+
+        if (error) {
+          console.error('Order save error:', error);
+
+          // The database trigger rejects blocked customers. Do not continue to WhatsApp/success view.
+          const errorText = String(error.message || error.details || error.hint || '').toLowerCase();
+          $('ckGo').disabled = false;
+          $('ckGo').textContent = '📲 Place Order';
+
+          if (errorText.includes('blocked')) {
+            alert('🚫 Mee account block cheyyabaddindi. Order place cheyyalevaru. Support ni contact cheyyandi.');
+          } else {
+            showErr('❌ Order place cheyyadam lo problem vachindi. Please try again.');
+          }
+          return;
+        }
+      } catch(e) {
+        console.error('Order save failed:', e);
+        $('ckGo').disabled = false;
+        $('ckGo').textContent = '📲 Place Order';
+        showErr('❌ Order place cheyyadam lo problem vachindi. Please try again.');
+        return;
+      }
 
       try { await sb.auth.updateUser({ data:{ full_name: userName, name: userName, mobile: mob, address: addr, profile_completed: true }}); } catch(e){}
     }
@@ -1329,3 +1317,4 @@
 </script>
 </body>
 </html>
+
