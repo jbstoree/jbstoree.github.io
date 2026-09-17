@@ -829,18 +829,169 @@ $('guestBtn').addEventListener(
       /*
        * NORMAL WEBSITE BROWSER:
        *
-       * There is no Android device ID in a normal
-       * browser, so use Supabase anonymous auth.
+       * Use the same guest-login Edge Function as Android.
+       * A normal browser has no Android native device ID, so
+       * create a stable browser ID and hash it to the same
+       * 64-character SHA-256 format expected by the function.
+       *
+       * The Supabase secret key is NEVER placed in browser code.
        */
 
+      const BROWSER_GUEST_ID_KEY =
+        'jbstore_browser_guest_device_id_v1';
+
+      let browserGuestId =
+        localStorage.getItem(
+          BROWSER_GUEST_ID_KEY
+        );
+
+      /*
+       * Create a browser identifier once.
+       */
+      if (
+        !browserGuestId ||
+        browserGuestId.length < 16
+      ) {
+
+        if (
+          window.crypto &&
+          typeof crypto.randomUUID === 'function'
+        ) {
+
+          browserGuestId =
+            crypto.randomUUID();
+
+        } else {
+
+          browserGuestId =
+            Date.now().toString(36) +
+            '_' +
+            Math.random().toString(36).slice(2) +
+            '_' +
+            Math.random().toString(36).slice(2);
+        }
+
+        localStorage.setItem(
+          BROWSER_GUEST_ID_KEY,
+          browserGuestId
+        );
+      }
+
+
+      /*
+       * SHA-256 helper.
+       */
+      async function sha256HexBrowser(value) {
+
+        const data =
+          new TextEncoder().encode(value);
+
+        const hash =
+          await crypto.subtle.digest(
+            'SHA-256',
+            data
+          );
+
+        return Array.from(
+          new Uint8Array(hash)
+        )
+          .map(
+            byte =>
+              byte
+                .toString(16)
+                .padStart(2, '0')
+          )
+          .join('');
+      }
+
+
+      /*
+       * Convert the browser ID into the same
+       * 64-character device_id format used
+       * by the Edge Function.
+       */
+      deviceId =
+        await sha256HexBrowser(
+          'JBSTORE_BROWSER_GUEST_V1:' +
+          browserGuestId
+        );
+
+
+      /*
+       * Call the same Guest Login Edge Function
+       * used by the Android app.
+       *
+       * The public/anon key is used here.
+       * NEVER put the secret key in this file.
+       */
+      const browserGuestResponse =
+        await fetch(
+          SUPABASE_URL +
+            '/functions/v1/guest-login',
+          {
+            method: 'POST',
+
+            headers: {
+              'Content-Type':
+                'application/json',
+
+              'apikey':
+                SUPABASE_ANON,
+
+              'Authorization':
+                'Bearer ' + SUPABASE_ANON
+            },
+
+            body: JSON.stringify({
+              device_id:
+                deviceId
+            })
+          }
+        );
+
+
+      const browserGuestResult =
+        await browserGuestResponse
+          .json()
+          .catch(() => ({}));
+
+
+      if (
+        !browserGuestResponse.ok ||
+        !browserGuestResult.access_token ||
+        !browserGuestResult.refresh_token
+      ) {
+
+        console.error(
+          'Browser guest login error:',
+          browserGuestResult
+        );
+
+        throw new Error(
+          browserGuestResult?.error ||
+          browserGuestResult?.message ||
+          'Guest login failed.'
+        );
+      }
+
+
+      /*
+       * Save the Supabase session.
+       */
       const {
-        error: anonymousError
+        error: browserSessionError
       } =
-        await client.auth.signInAnonymously();
+        await client.auth.setSession({
+          access_token:
+            browserGuestResult.access_token,
+
+          refresh_token:
+            browserGuestResult.refresh_token
+        });
 
 
-      if (anonymousError) {
-        throw anonymousError;
+      if (browserSessionError) {
+        throw browserSessionError;
       }
 
 
@@ -868,4 +1019,5 @@ $('guestBtn').addEventListener(
 </script>
 </body>
 </html>
+
 
