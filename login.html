@@ -600,14 +600,40 @@ window.__JBStoreNativeGoogleError = function (message) {
 $('googleBtn').addEventListener('click', async () => {
   forceViewport();
 
-  // Android app: use native Credential Manager only.
-  // We deliberately do not use the browser OAuth flow inside the app.
-  if (
-    window.JBStoreGoogleAuth &&
-    typeof window.JBStoreGoogleAuth.signInWithGoogle === 'function'
-  ) {
+  // Android app detection is based on the native WebView user-agent marker.
+  // This is important on the very first launch: even if Android has not
+  // exposed the Javascript bridge yet, NEVER fall back to browser OAuth.
+  // Instead, wait briefly for JBStoreGoogleAuth to become available.
+  const isAndroidApp =
+    /JBStoreAndroidApp\/1/i.test(navigator.userAgent || '');
+
+  if (isAndroidApp) {
     showStatus('Opening your Google accounts…');
-    window.JBStoreGoogleAuth.signInWithGoogle();
+
+    const waitForNativeGoogleBridge = (attempt = 0) => {
+      if (
+        window.JBStoreGoogleAuth &&
+        typeof window.JBStoreGoogleAuth.signInWithGoogle === 'function'
+      ) {
+        try {
+          window.JBStoreGoogleAuth.signInWithGoogle();
+        } catch (error) {
+          console.error('Native Google bridge error:', error);
+          showStatus(error?.message || 'Google Sign-In failed.');
+        }
+        return;
+      }
+
+      // Wait up to about 5 seconds for the bridge on first app launch.
+      if (attempt < 50) {
+        setTimeout(() => waitForNativeGoogleBridge(attempt + 1), 100);
+        return;
+      }
+
+      showStatus('Google Sign-In is still loading. Please try again.');
+    };
+
+    waitForNativeGoogleBridge();
     return;
   }
 
