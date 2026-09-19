@@ -604,16 +604,39 @@ $('googleBtn').addEventListener('click', async () => {
     /JBStoreAndroidApp\/1/i.test(navigator.userAgent || '');
 
   if (isAndroidApp) {
-    // IMPORTANT: Use a WebView URL intercepted by MainActivity.
-    // This does not depend on the JavaScript bridge being visible during
-    // the very first page load, so refresh is never required.
+    // Android app: start native Google Sign-In immediately.
+    // The bridge is registered BEFORE the first WebView load.
+    // A non-hierarchical custom-scheme fallback is kept for WebView builds
+    // where the injected bridge is temporarily unavailable.
     showStatus('Opening your Google accounts…');
 
+    let started = false;
+
     try {
-      window.location.href = 'jbstore://native-google/signin';
+      if (
+        window.JBStoreGoogleAuth &&
+        typeof window.JBStoreGoogleAuth.signInWithGoogle === 'function'
+      ) {
+        window.JBStoreGoogleAuth.signInWithGoogle();
+        started = true;
+      }
     } catch (error) {
-      console.error('Native Google Sign-In start error:', error);
-      showStatus('Google Sign-In could not start. Please try again.');
+      console.error('Native Google bridge error:', error);
+    }
+
+    if (!started) {
+      try {
+        // This follows Android WebView's documented custom-scheme pattern.
+        const link = document.createElement('a');
+        link.href = 'jbstore:native-google-signin';
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => link.remove(), 0);
+      } catch (error) {
+        console.error('Native Google Sign-In fallback error:', error);
+        showStatus('Google Sign-In could not start. Please reopen the app.');
+      }
     }
 
     return;
