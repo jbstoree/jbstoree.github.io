@@ -568,38 +568,37 @@ $('togglePassword').addEventListener('click', () => {
   icon.className = showing ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
 });
 
-// =====================================================
-// NATIVE GOOGLE SIGN-IN
-// =====================================================
-// Android:
-//   Login button → Credential Manager → device Google
-//   accounts → ID token → Supabase signInWithIdToken().
-//
-// Browser:
-//   Keep the existing Supabase web OAuth flow.
-// =====================================================
-
-window.__JBStoreNativeGoogleSignIn = async function (idToken) {
+window.__JBStoreNativeGoogleSignIn = async function (
+  idToken,
+  nonce
+) {
 
   try {
 
     if (!idToken) {
-      throw new Error('Google did not return an ID token.');
+      throw new Error(
+        'Google did not return an ID token.'
+      );
     }
 
-    showStatus('Signing in with Google…');
+    showStatus(
+      'Signing in with Google…'
+    );
 
     const { error } =
       await client.auth.signInWithIdToken({
         provider: 'google',
-        token: idToken
+        token: idToken,
+        nonce: nonce || undefined
       });
 
     if (error) {
       throw error;
     }
 
-    window.location.replace('index.html');
+    window.location.replace(
+      'index.html'
+    );
 
   } catch (error) {
 
@@ -615,65 +614,81 @@ window.__JBStoreNativeGoogleSignIn = async function (idToken) {
   }
 };
 
-window.__JBStoreNativeGoogleError = function (message) {
 
-  showStatus(
-    message ||
-    'Google Sign-In was cancelled or failed.'
-  );
-};
+window.__JBStoreNativeGoogleError =
+  function (message) {
+
+    showStatus(
+      message ||
+      'Google Sign-In was cancelled or failed.'
+    );
+  };
 
 
-$('googleBtn').addEventListener('click', async () => {
+$('googleBtn').addEventListener(
+  'click',
+  async () => {
 
-  forceViewport();
+    forceViewport();
 
-  // Android app: use the native Credential Manager flow.
-  if (
-    window.JBStoreGoogleAuth &&
-    typeof window.JBStoreGoogleAuth.signInWithGoogle ===
-      'function'
-  ) {
-
-    showStatus('Opening your Google accounts…');
-
-    try {
-
-      window.JBStoreGoogleAuth.signInWithGoogle();
-
-    } catch (error) {
-
-      console.error(
-        'Native Google bridge error:',
-        error
-      );
+    // Android app:
+    // Credential Manager will show the Google accounts
+    // available on the device.
+    if (
+      window.JBStoreGoogleAuth &&
+      typeof
+        window.JBStoreGoogleAuth.signInWithGoogle ===
+        'function'
+    ) {
 
       showStatus(
-        error?.message ||
-        'Unable to open Google Sign-In.'
+        'Opening your Google accounts…'
       );
+
+      try {
+
+        window.JBStoreGoogleAuth
+          .signInWithGoogle();
+
+      } catch (error) {
+
+        console.error(
+          'Native Google bridge error:',
+          error
+        );
+
+        showStatus(
+          error?.message ||
+          'Unable to open Google Sign-In.'
+        );
+      }
+
+      return;
     }
 
-    return;
+    // Normal browser:
+    // Keep the normal Supabase web OAuth flow.
+    showStatus(
+      'Opening Google…'
+    );
+
+    const { error } =
+      await client.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo:
+            window.location.origin +
+            '/index.html'
+        }
+      });
+
+    if (error) {
+      showStatus(
+        error.message
+      );
+    }
   }
-
-  // Normal website browser: keep the normal Supabase OAuth flow.
-  showStatus('Opening Google…');
-
-  const { error } =
-    await client.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo:
-          window.location.origin +
-          '/index.html'
-      }
-    });
-
-  if (error) {
-    showStatus(error.message);
-  }
-});
+);
 
 $('loginBtn').addEventListener('click', async () => {
   const email = $('email').value.trim();
@@ -1102,4 +1117,6 @@ $('guestBtn').addEventListener(
 </script>
 </body>
 </html>
+
+
 
