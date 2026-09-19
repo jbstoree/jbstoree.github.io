@@ -576,18 +576,41 @@ $('googleBtn').addEventListener('click', async () => {
 
   // Android app → return through the custom deep link.
   // Normal website browser → return to the current website.
-  const isAndroidApp = !!window.AndroidShare;
+  //
+  // SECURITY:
+  // Do not use AndroidShare as the Android-app detector.
+  // AndroidShare is intentionally exposed only to trusted pages
+  // after the WebView URL has been verified. That makes it unsuitable
+  // as a permanent environment flag for OAuth.
+  //
+  // The Android app sets this flag before loading the trusted page.
+  // Normal browsers simply do not have it.
+  const isAndroidApp =
+    window.__JBSTORE_ANDROID_APP__ === true;
 
   const redirectTo = isAndroidApp
     ? 'jbstore://auth/callback'
     : window.location.origin + '/index.html';
 
-  const { error } = await client.auth.signInWithOAuth({
+  const { data, error } = await client.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: redirectTo
+      redirectTo: redirectTo,
+      skipBrowserRedirect: isAndroidApp
     }
   });
+
+  if (error) {
+    showStatus(error.message);
+    return;
+  }
+
+  // For Android, MainActivity opens the returned OAuth URL in the
+  // external browser/Custom Tab. The browser then redirects to
+  // jbstore://auth/callback and Android handles that callback.
+  if (isAndroidApp && data?.url) {
+    window.location.href = data.url;
+  }
 
   if (error) showStatus(error.message);
 });
@@ -1019,5 +1042,6 @@ $('guestBtn').addEventListener(
 </script>
 </body>
 </html>
+
 
 
