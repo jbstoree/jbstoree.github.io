@@ -568,51 +568,111 @@ $('togglePassword').addEventListener('click', () => {
   icon.className = showing ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
 });
 
+// =====================================================
+// NATIVE GOOGLE SIGN-IN
+// =====================================================
+// Android:
+//   Login button → Credential Manager → device Google
+//   accounts → ID token → Supabase signInWithIdToken().
+//
+// Browser:
+//   Keep the existing Supabase web OAuth flow.
+// =====================================================
+
+window.__JBStoreNativeGoogleSignIn = async function (idToken) {
+
+  try {
+
+    if (!idToken) {
+      throw new Error('Google did not return an ID token.');
+    }
+
+    showStatus('Signing in with Google…');
+
+    const { error } =
+      await client.auth.signInWithIdToken({
+        provider: 'google',
+        token: idToken
+      });
+
+    if (error) {
+      throw error;
+    }
+
+    window.location.replace('index.html');
+
+  } catch (error) {
+
+    console.error(
+      'Native Google Sign-In error:',
+      error
+    );
+
+    showStatus(
+      error?.message ||
+      'Google Sign-In failed.'
+    );
+  }
+};
+
+window.__JBStoreNativeGoogleError = function (message) {
+
+  showStatus(
+    message ||
+    'Google Sign-In was cancelled or failed.'
+  );
+};
+
+
 $('googleBtn').addEventListener('click', async () => {
-  // ✅ Force viewport reset BEFORE OAuth redirect
+
   forceViewport();
 
-  showStatus('Opening Google…');
+  // Android app: use the native Credential Manager flow.
+  if (
+    window.JBStoreGoogleAuth &&
+    typeof window.JBStoreGoogleAuth.signInWithGoogle ===
+      'function'
+  ) {
 
-  // Android app → return through the custom deep link.
-  // Normal website browser → return to the current website.
-  //
-  // SECURITY:
-  // Do not use AndroidShare as the Android-app detector.
-  // AndroidShare is intentionally exposed only to trusted pages
-  // after the WebView URL has been verified. That makes it unsuitable
-  // as a permanent environment flag for OAuth.
-  //
-  // The Android app sets this flag before loading the trusted page.
-  // Normal browsers simply do not have it.
-  const isAndroidApp =
-    window.__JBSTORE_ANDROID_APP__ === true;
+    showStatus('Opening your Google accounts…');
 
-  const redirectTo = isAndroidApp
-    ? 'jbstore://auth/callback'
-    : window.location.origin + '/index.html';
+    try {
 
-  const { data, error } = await client.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo: redirectTo,
-      skipBrowserRedirect: isAndroidApp
+      window.JBStoreGoogleAuth.signInWithGoogle();
+
+    } catch (error) {
+
+      console.error(
+        'Native Google bridge error:',
+        error
+      );
+
+      showStatus(
+        error?.message ||
+        'Unable to open Google Sign-In.'
+      );
     }
-  });
 
-  if (error) {
-    showStatus(error.message);
     return;
   }
 
-  // For Android, MainActivity opens the returned OAuth URL in the
-  // external browser/Custom Tab. The browser then redirects to
-  // jbstore://auth/callback and Android handles that callback.
-  if (isAndroidApp && data?.url) {
-    window.location.href = data.url;
-  }
+  // Normal website browser: keep the normal Supabase OAuth flow.
+  showStatus('Opening Google…');
 
-  if (error) showStatus(error.message);
+  const { error } =
+    await client.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo:
+          window.location.origin +
+          '/index.html'
+      }
+    });
+
+  if (error) {
+    showStatus(error.message);
+  }
 });
 
 $('loginBtn').addEventListener('click', async () => {
@@ -1042,6 +1102,4 @@ $('guestBtn').addEventListener(
 </script>
 </body>
 </html>
-
-
 
