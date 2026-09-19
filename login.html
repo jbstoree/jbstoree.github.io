@@ -568,133 +568,61 @@ $('togglePassword').addEventListener('click', () => {
   icon.className = showing ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
 });
 
-window.__JBStoreNativeGoogleSignIn = async function (
-  idToken,
-  nonce
-) {
-
+// Native Android Google Sign-In callback.
+// MainActivity sends the Google ID token + raw nonce here.
+window.__JBStoreNativeGoogleSignIn = async function (idToken, nonce) {
   try {
+    showStatus('Signing in with Google…');
 
-    if (!idToken) {
-      throw new Error(
-        'Google did not return an ID token.'
-      );
-    }
-
-    showStatus(
-      'Signing in with Google…'
-    );
-
-    const { error } =
-      await client.auth.signInWithIdToken({
-        provider: 'google',
-        token: idToken,
-        nonce: nonce || undefined
-      });
+    const { error } = await client.auth.signInWithIdToken({
+      provider: 'google',
+      token: idToken,
+      nonce: nonce || undefined
+    });
 
     if (error) {
-      throw error;
-    }
-
-    window.location.replace(
-      'index.html'
-    );
-
-  } catch (error) {
-
-    console.error(
-      'Native Google Sign-In error:',
-      error
-    );
-
-    showStatus(
-      error?.message ||
-      'Google Sign-In failed.'
-    );
-  }
-};
-
-
-window.__JBStoreNativeGoogleError =
-  function (message) {
-
-    showStatus(
-      message ||
-      'Google Sign-In was cancelled or failed.'
-    );
-  };
-
-
-$('googleBtn').addEventListener(
-  'click',
-  async () => {
-
-    forceViewport();
-
-    // Android app:
-    // NEVER use browser OAuth inside the Android WebView.
-    // The native bridge opens Android Credential Manager.
-    if (window.__JBStoreAndroidApp === true) {
-
-      if (
-        !window.JBStoreGoogleAuth ||
-        typeof window.JBStoreGoogleAuth.signInWithGoogle !==
-          'function'
-      ) {
-        showStatus(
-          'Native Google Sign-In is not ready. Please wait a moment and try again.'
-        );
-        return;
-      }
-
-      showStatus(
-        'Opening your Google accounts…'
-      );
-
-      try {
-
-        window.JBStoreGoogleAuth
-          .signInWithGoogle();
-
-      } catch (error) {
-
-        console.error(
-          'Native Google bridge error:',
-          error
-        );
-
-        showStatus(
-          error?.message ||
-          'Unable to open Google Sign-In.'
-        );
-      }
-
+      console.error('Supabase native Google sign-in error:', error);
+      showStatus(error.message || 'Google Sign-In failed.');
       return;
     }
 
-    // Normal browser:
-    // Keep the normal Supabase web OAuth flow.
-    showStatus(
-      'Opening Google…'
-    );
-
-    const { error } =
-      await client.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo:
-            window.location.origin +
-            '/index.html'
-        }
-      });
-
-    if (error) {
-      showStatus(
-        error.message
-      );
-    }
+    window.location.replace('index.html');
+  } catch (error) {
+    console.error('Native Google sign-in error:', error);
+    showStatus(error?.message || 'Google Sign-In failed.');
   }
-);
+};
+
+window.__JBStoreNativeGoogleError = function (message) {
+  showStatus(message || 'Google Sign-In failed.');
+};
+
+$('googleBtn').addEventListener('click', async () => {
+  forceViewport();
+
+  // Android app: use native Credential Manager only.
+  // We deliberately do not use the browser OAuth flow inside the app.
+  if (
+    window.JBStoreGoogleAuth &&
+    typeof window.JBStoreGoogleAuth.signInWithGoogle === 'function'
+  ) {
+    showStatus('Opening your Google accounts…');
+    window.JBStoreGoogleAuth.signInWithGoogle();
+    return;
+  }
+
+  // Normal website browser: use Supabase's normal Google OAuth flow.
+  showStatus('Opening Google…');
+
+  const { error } = await client.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: window.location.origin + '/index.html'
+    }
+  });
+
+  if (error) showStatus(error.message);
+});
 
 $('loginBtn').addEventListener('click', async () => {
   const email = $('email').value.trim();
@@ -1123,6 +1051,5 @@ $('guestBtn').addEventListener(
 </script>
 </body>
 </html>
-
 
 
