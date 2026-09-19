@@ -632,14 +632,20 @@ $('googleBtn').addEventListener(
     forceViewport();
 
     // Android app:
-    // Credential Manager will show the Google accounts
-    // available on the device.
-    if (
-      window.JBStoreGoogleAuth &&
-      typeof
-        window.JBStoreGoogleAuth.signInWithGoogle ===
-        'function'
-    ) {
+    // NEVER use browser OAuth inside the Android WebView.
+    // The native bridge opens Android Credential Manager.
+    if (window.__JBStoreAndroidApp === true) {
+
+      if (
+        !window.JBStoreGoogleAuth ||
+        typeof window.JBStoreGoogleAuth.signInWithGoogle !==
+          'function'
+      ) {
+        showStatus(
+          'Native Google Sign-In is not ready. Please wait a moment and try again.'
+        );
+        return;
+      }
 
       showStatus(
         'Opening your Google accounts…'
