@@ -600,40 +600,46 @@ window.__JBStoreNativeGoogleError = function (message) {
 $('googleBtn').addEventListener('click', async () => {
   forceViewport();
 
-  // Android app detection is based on the native WebView user-agent marker.
-  // This is important on the very first launch: even if Android has not
-  // exposed the Javascript bridge yet, NEVER fall back to browser OAuth.
-  // Instead, wait briefly for JBStoreGoogleAuth to become available.
+  // Android app detection. In the Android app we NEVER fall back to
+  // browser OAuth. The native bridge is installed before the first trusted
+  // page load and again at onPageStarted, so the first click can directly
+  // open the device Google account chooser.
   const isAndroidApp =
     /JBStoreAndroidApp\/1/i.test(navigator.userAgent || '');
 
   if (isAndroidApp) {
     showStatus('Opening your Google accounts…');
 
-    const waitForNativeGoogleBridge = (attempt = 0) => {
+    const callNativeGoogle = (attempt = 0) => {
+      const bridge = window.JBStoreGoogleAuth;
+
       if (
-        window.JBStoreGoogleAuth &&
-        typeof window.JBStoreGoogleAuth.signInWithGoogle === 'function'
+        bridge &&
+        typeof bridge.isReady === 'function' &&
+        typeof bridge.signInWithGoogle === 'function'
       ) {
         try {
-          window.JBStoreGoogleAuth.signInWithGoogle();
+          if (bridge.isReady() === true) {
+            bridge.signInWithGoogle();
+            return;
+          }
         } catch (error) {
           console.error('Native Google bridge error:', error);
-          showStatus(error?.message || 'Google Sign-In failed.');
         }
+      }
+
+      // A very short retry is only a safety net. The Android side now adds
+      // the bridge before the initial URL is loaded, so normal first clicks
+      // do not wait here.
+      if (attempt < 30) {
+        setTimeout(() => callNativeGoogle(attempt + 1), 50);
         return;
       }
 
-      // Wait up to about 5 seconds for the bridge on first app launch.
-      if (attempt < 50) {
-        setTimeout(() => waitForNativeGoogleBridge(attempt + 1), 100);
-        return;
-      }
-
-      showStatus('Google Sign-In is still loading. Please try again.');
+      showStatus('Google Sign-In could not start. Please reopen the app.');
     };
 
-    waitForNativeGoogleBridge();
+    callNativeGoogle();
     return;
   }
 
