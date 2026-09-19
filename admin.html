@@ -1414,7 +1414,7 @@
                     <div class="color-image-tags" id="colorImageTags_${index}">${imageTagsHtml}</div>
                     <div class="color-image-input-wrap">
                         <input placeholder="Add image URL" class="color-image-input" style="flex:1; min-width:100px;" />
-                        <label><i class="fas fa-upload"></i> Upload<input type="file" accept="image/*" style="display:none;" onchange="uploadColorImage(this, ${index})" /></label>
+                        <label title="Select multiple images at once"><i class="fas fa-images"></i> Upload Images<input type="file" accept="image/*" multiple style="display:none;" onchange="uploadColorImage(this, ${index})" /></label>
                     </div>
                 </div>
                 <button class="remove-row" onclick="removeRow(this)">✕</button>`;
@@ -1457,18 +1457,51 @@
         }
 
         async function uploadColorImage(input, index) {
-            const file = input.files[0];
-            if (!file) return;
-            const label = input.parentElement, orig = label.innerHTML;
-            label.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            const files = Array.from(input.files || []);
+            if (!files.length) return;
+
+            const label = input.parentElement;
+            const orig = label.innerHTML;
+            const total = files.length;
+            let uploaded = 0;
+            let failed = 0;
+            const errors = [];
+
+            label.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Uploading ${total} image${total === 1 ? '' : 's'}…`;
+
             try {
-                const url = await uploadFileToImageKit(file, 'colors');
                 if (!colorImageData[index]) colorImageData[index] = [];
-                colorImageData[index].push(url);
+
+                // Upload all selected images in parallel, while keeping successful uploads.
+                const results = await Promise.allSettled(
+                    files.map(file => uploadFileToImageKit(file, 'colors'))
+                );
+
+                results.forEach(result => {
+                    if (result.status === 'fulfilled' && result.value) {
+                        colorImageData[index].push(result.value);
+                        uploaded++;
+                    } else {
+                        failed++;
+                        errors.push(result.reason?.message || 'Upload failed');
+                    }
+                });
+
                 renderColorTags(index);
-                showToast('✅ Uploaded!', 'success');
-            } catch (e) { showToast('❌ ' + e.message, 'error'); }
-            finally { label.innerHTML = orig; input.value = ''; }
+
+                if (uploaded === total) {
+                    showToast(`✅ ${uploaded} image${uploaded === 1 ? '' : 's'} uploaded!`, 'success');
+                } else if (uploaded > 0) {
+                    showToast(`⚠️ ${uploaded} uploaded, ${failed} failed.`, 'info');
+                } else {
+                    showToast(`❌ Upload failed: ${errors[0] || 'Unknown error'}`, 'error');
+                }
+            } catch (e) {
+                showToast('❌ ' + e.message, 'error');
+            } finally {
+                label.innerHTML = orig;
+                input.value = '';
+            }
         }
 
         function addVariantRow() {
@@ -2738,3 +2771,4 @@
 
 </body>
     </html>
+
