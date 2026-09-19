@@ -600,46 +600,22 @@ window.__JBStoreNativeGoogleError = function (message) {
 $('googleBtn').addEventListener('click', async () => {
   forceViewport();
 
-  // Android app detection. In the Android app we NEVER fall back to
-  // browser OAuth. The native bridge is installed before the first trusted
-  // page load and again at onPageStarted, so the first click can directly
-  // open the device Google account chooser.
   const isAndroidApp =
     /JBStoreAndroidApp\/1/i.test(navigator.userAgent || '');
 
   if (isAndroidApp) {
+    // IMPORTANT: Use a WebView URL intercepted by MainActivity.
+    // This does not depend on the JavaScript bridge being visible during
+    // the very first page load, so refresh is never required.
     showStatus('Opening your Google accounts…');
 
-    const callNativeGoogle = (attempt = 0) => {
-      const bridge = window.JBStoreGoogleAuth;
+    try {
+      window.location.href = 'jbstore://native-google/signin';
+    } catch (error) {
+      console.error('Native Google Sign-In start error:', error);
+      showStatus('Google Sign-In could not start. Please try again.');
+    }
 
-      if (
-        bridge &&
-        typeof bridge.isReady === 'function' &&
-        typeof bridge.signInWithGoogle === 'function'
-      ) {
-        try {
-          if (bridge.isReady() === true) {
-            bridge.signInWithGoogle();
-            return;
-          }
-        } catch (error) {
-          console.error('Native Google bridge error:', error);
-        }
-      }
-
-      // A very short retry is only a safety net. The Android side now adds
-      // the bridge before the initial URL is loaded, so normal first clicks
-      // do not wait here.
-      if (attempt < 30) {
-        setTimeout(() => callNativeGoogle(attempt + 1), 50);
-        return;
-      }
-
-      showStatus('Google Sign-In could not start. Please reopen the app.');
-    };
-
-    callNativeGoogle();
     return;
   }
 
