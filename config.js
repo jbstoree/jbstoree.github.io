@@ -3,7 +3,7 @@
 // ==========================================
 
 // ← CHANGE THIS TO YOUR ACTUAL STORE NUMBER
-const STORE_PHONE = "919999999999";
+const STORE_PHONE = "+919652699702";
 
 // Store details
 const STORE_NAME = "JB STORE";
