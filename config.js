@@ -7,4 +7,4 @@ const STORE_PHONE = "+919652699702";
 
 // Store details
 const STORE_NAME = "JB STORE";
-const STORE_EMAIL = "info@jbstore.com";
+const STORE_EMAIL = "jbstore01012@gmail.com";
