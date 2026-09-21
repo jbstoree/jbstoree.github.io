@@ -728,8 +728,8 @@ $('resetBtn').addEventListener('click', async () => {
   showStatus('Sending password reset email…');
 
   const { error } = await client.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + '/login.html'
-  });
+  redirectTo: window.location.origin + '/reset-password.html'
+});
 
   if (error) {
     showStatus(error.message);
