@@ -455,7 +455,7 @@
 <header class="header">
   <div class="header-top">
     <a href="index.html" class="logo">JB <span>STORE</span></a>
-    <a href="javascript:void(0)" class="account-link" id="headerAccountLink" aria-label="Login or Account">👤</a>
+    <!-- Profile icon removed as requested -->
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
     </button>
@@ -946,9 +946,6 @@
   if (cancelBtn) { cancelBtn.addEventListener('click', () => { $('ckModal').classList.remove('show'); document.body.style.overflow = ''; }); }
   $('ckModal').addEventListener('click', e => { if (e.target === $('ckModal')) { $('ckModal').classList.remove('show'); document.body.style.overflow = ''; } });
 
-  // BLOCK CHECK IS NOW DONE SERVER-SIDE BY the orders BEFORE INSERT trigger.
-  // The browser must NOT query public.blocked_users directly.
-
   $('ckGo').addEventListener('click', async function () {
     const name = $('ckName').value.trim();
     const mob  = $('ckMobile').value.trim();
@@ -961,7 +958,6 @@
 
     const userEmail = currentUser ? (currentUser.is_anonymous ? 'guest@jbstore' : (currentUser.email || '')) : 'guest@jbstore';
 
-    // Block status is checked securely by the database trigger when the order is inserted.
     $('ckGo').disabled = true; $('ckGo').textContent = 'Placing...'; $('ckErr').textContent = '';
 
     const subtotal  = items.reduce((s,i) => s + i.price * i.qty, 0);
@@ -984,8 +980,6 @@
 
         if (error) {
           console.error('Order save error:', error);
-
-          // The database trigger rejects blocked customers. Do not continue to WhatsApp/success view.
           const errorText = String(error.message || error.details || error.hint || '').toLowerCase();
           $('ckGo').disabled = false;
           $('ckGo').textContent = '📲 Place Order';
@@ -1015,17 +1009,14 @@
     const waURL = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg);
     try { const w = window.open(waURL, '_blank'); if (!w || w.closed || typeof w.closed === 'undefined') window.location.href = waURL; } catch (e) { window.location.href = waURL; }
 
-    // Clear cart from localStorage and DOM
     ['cart','jb_cart','jbstore_cart','jbCart','cartItems'].forEach(k => { try { localStorage.removeItem(k); } catch(e){} });
     const itemsBox = $('cartItems'); if (itemsBox) itemsBox.innerHTML = '';
     $('cartSummary').style.display = 'none'; $('emptyCart').style.display = 'block';
     document.querySelectorAll('.cart-badge,#cartBadge,#menuCartBadge').forEach(el => { el.textContent = '0'; el.style.display = 'none'; });
 
-    // Close checkout modal
     $('ckModal').classList.remove('show');
     document.body.style.overflow = 'hidden';
 
-    // --- APP FIX: Show Success View In-Page Instead of Modal ---
     document.getElementById('cartPageContent').style.display = 'none';
     document.getElementById('orderSuccessView').style.display = 'flex';
     document.getElementById('successOrderId').textContent = orderCode;
@@ -1039,7 +1030,6 @@
 (function () {
   'use strict';
 
-  /* ---------- Supabase client (validation kosam) ---------- */
   var SUPABASE_URL  = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
   var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
   var sb = null;
@@ -1052,7 +1042,6 @@
   var currentKey = 'cart';
   var items = [];
 
-  /* Validation cache: 30 seconds */
   var _lastValidate = 0;
   var _validating   = false;
 
@@ -1068,7 +1057,6 @@
   }
   function fmt(n) { return Number(n || 0).toLocaleString('en-IN'); }
 
-  /* ---------- READ FROM localStorage ---------- */
   function readCart() {
     for (var i = 0; i < KEYS.length; i++) {
       var k = KEYS[i], raw = null;
@@ -1108,8 +1096,6 @@
     }
   }
 
-  /* ---------- PRODUCT VALIDATION ---------- */
-  /* Admin products delete chesina cart items ni remove chestundi */
   async function validateCartAgainstProducts() {
     if (!sb || !items.length) return;
     if (_validating) return;
@@ -1126,7 +1112,6 @@
     var foundNames = {};
     var querySuccess = false;
 
-    // 1) ID tho query
     if (ids.length) {
       try {
         var r1 = await sb.from('products').select('id').in('id', ids);
@@ -1141,7 +1126,6 @@
       } catch (e) { console.warn('[cart] id query exception:', e); }
     }
 
-    // 2) Name tho query (id lekunda add ayina items ki fallback)
     if (names.length) {
       try {
         var r2 = await sb.from('products').select('name').in('name', names);
@@ -1154,7 +1138,6 @@
       } catch (e) { console.warn('[cart] name query exception:', e); }
     }
 
-    // Query fail ayithe cart ni touch cheyyoddu
     if (!querySuccess) {
       _validating = false;
       return;
@@ -1162,11 +1145,8 @@
 
     var before = items.length;
     items = items.filter(function (it) {
-      // id match ayithe keep
       if (it.id && foundIds[String(it.id)]) return true;
-      // name match ayithe keep
       if (it.name && foundNames[it.name]) return true;
-      // Match ledu -> deleted product, remove
       return false;
     });
 
@@ -1180,7 +1160,6 @@
     _validating = false;
   }
 
-  /* User ki chinna notice chupinchadam */
   function showRemovedNotice(count) {
     var existing = document.getElementById('cartRemovedNotice');
     if (existing) existing.remove();
@@ -1204,14 +1183,12 @@
     }, 3500);
   }
 
-  /* ---------- RENDER ---------- */
   async function render(forceValidate) {
     var box = $('cartItems');
     if (!box) return;
 
     items = readCart();
 
-    // Product validation (30s cache, force true ayithe immediate)
     var now = Date.now();
     if (forceValidate || (now - _lastValidate) > 30000) {
       _lastValidate = now;
@@ -1272,7 +1249,6 @@
     updateBadges(qtySum);
   }
 
-  /* ---------- EVENTS ---------- */
   var box = $('cartItems');
   if (box) {
     box.addEventListener('click', function (e) {
@@ -1317,4 +1293,3 @@
 </script>
 </body>
 </html>
-
