@@ -94,16 +94,18 @@
 }
 
     .logo {
-        font-size: 22px;
-        font-weight: 700;
-        color: #D4AF37;
-        letter-spacing: 1px;
-        text-decoration: none;
-        flex-shrink: 0;
-    }
-    .logo span {
-        color: #1C1C1C;
-    }
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logo img {
+  width: 155px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
 
     .menu-toggle {
         display: flex;
