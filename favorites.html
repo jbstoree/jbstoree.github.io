@@ -71,7 +71,7 @@
 <header class="header">
   <div class="header-top">
     <a href="index.html" class="logo">JB <span>STORE</span></a>
-    <a href="javascript:void(0)" class="account-link" id="headerAccountLink" aria-label="Login or Account">👤</a>
+    <!-- Profile icon removed as requested -->
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
     </button>
@@ -409,21 +409,15 @@
       const products = Array.isArray(data) ? data : [];
       const favorites = products.filter(product => savedIds.includes(normalizeFavoriteId(product.id)));
 
-      // ==========================================
-      // FIX: Deleted product ni local storage nunchi remove cheyyadam
-      // ==========================================
       if (favorites.length === 0) {
-        // Product delete ayipoyindi, so local storage nunchi aa IDs ni remove cheddam
         if (typeof saveFavorites === 'function') {
-          saveFavorites([]); // Clear all stale favorites
+          saveFavorites([]);
         } else {
-          localStorage.removeItem('jb_favorites'); // Fallback cleanup
+          localStorage.removeItem('jb_favorites');
         }
         
-        // Update the item count
         if (countEl) countEl.textContent = '0 items';
 
-        // Show standard empty state (as you requested)
         grid.innerHTML = `
           <div class="fav-empty">
             <span class="empty-icon">💔</span>
@@ -434,14 +428,12 @@
         `;
         return;
       }
-      // ==========================================
 
       if (countEl) countEl.textContent = favorites.length + (favorites.length === 1 ? ' item' : ' items');
       grid.innerHTML = '';
 
       favorites.forEach(product => {
         const card = document.createElement('div');
-        // Changed from 'best-card' to 'deal-card' to match Top Deals size
         card.className = 'deal-card';
         card.style.position = 'relative'; card.style.cursor = 'pointer';
 
