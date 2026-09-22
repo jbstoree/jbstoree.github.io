@@ -1371,6 +1371,10 @@
         .exchange-offer img {
             border-radius: 8px;
         }
+      .logo img {
+    width: 155px;
+    max-width: 42vw;
+      }
     }
 
     /* ==========================================
