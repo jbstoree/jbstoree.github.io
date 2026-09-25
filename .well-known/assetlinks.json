@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.jbstore",
+      "sha256_cert_fingerprints": [
+        "BC:D7:B8:6E:2D:12:64:31:AD:2E:F1:97:8C:BE:16:D6:6D:C8:3B:95:6F:85:A1:F8:5D:7A:74:82:9F:FB:F6:F4"
+      ]
+    }
+  }
+]
