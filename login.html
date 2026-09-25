@@ -4,14 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <title>JB STORE • Login</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;min-height:100%;}
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  width:100%;
+  min-height:100%;
+}
+
 body{
   background:#f7f5ef;
   color:#171717;
@@ -20,6 +33,7 @@ body{
   justify-content:center;
   padding:12px 12px 18px;
 }
+
 .page{
   width:100%;
   max-width:520px;
@@ -27,11 +41,13 @@ body{
   display:flex;
   flex-direction:column;
 }
+
 .top{
   text-align:center;
   padding:8px 0 13px;
   flex:0 0 auto;
 }
+
 .logo{
   font-family:"Playfair Display",Georgia,serif;
   font-weight:700;
@@ -39,18 +55,38 @@ body{
   line-height:1;
   letter-spacing:.3px;
 }
-.logo .jb{color:#d4af37}
-.logo .store{color:#171717}
+
+.logo .jb{
+  color:#d4af37;
+}
+
+.logo .store{
+  color:#171717;
+}
+
 .tagline{
   margin:5px 0 0;
   color:#777;
   font:italic 15px "Playfair Display",Georgia,serif;
   letter-spacing:1px;
 }
+
 .gold-line{
-  width:120px;height:2px;margin:10px auto 0;
-  background:linear-gradient(90deg,transparent,#d4af37,transparent);
+  width:120px;
+  height:2px;
+  margin:10px auto 0;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    #d4af37,
+    transparent
+  );
 }
+
+
+/* =========================
+   LOGIN CARD
+========================= */
 
 .login-card{
   position:relative;
@@ -65,20 +101,41 @@ body{
   flex-direction:column;
   overflow:hidden;
 }
+
 .login-card::before{
   content:"";
-  position:absolute;left:0;right:0;top:0;height:5px;
-  background:linear-gradient(90deg,#d4af37,#f0d36b,#d4af37);
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  height:5px;
+  background:linear-gradient(
+    90deg,
+    #d4af37,
+    #f0d36b,
+    #d4af37
+  );
 }
+
 .corner{
-  position:absolute;right:19px;top:18px;color:#d4af37;font-size:17px;
+  position:absolute;
+  right:19px;
+  top:18px;
+  color:#d4af37;
+  font-size:17px;
 }
+
 h1{
-  margin:0;text-align:center;
+  margin:0;
+  text-align:center;
   color:#151515;
   font:700 31px/1.15 "Playfair Display",Georgia,serif;
 }
-h1 .gold{color:#d4af37}
+
+h1 .gold{
+  color:#d4af37;
+}
+
 .subtitle{
   margin:9px auto 22px;
   max-width:390px;
@@ -87,8 +144,14 @@ h1 .gold{color:#d4af37}
   font:500 12px/1.55 "Playfair Display",Georgia,serif;
 }
 
+
+/* =========================
+   GOOGLE BUTTON
+========================= */
+
 .google{
-  width:100%;height:55px;
+  width:100%;
+  height:55px;
   border:1px solid #ddd7c8;
   border-radius:14px;
   background:#fff;
@@ -97,34 +160,71 @@ h1 .gold{color:#d4af37}
   box-shadow:0 5px 15px rgba(0,0,0,.055);
   cursor:pointer;
 }
-.google i{margin-right:10px;font-size:17px}
-.google:hover{border-color:#d4af37;background:#fffdf7}
+
+.google i{
+  margin-right:10px;
+  font-size:17px;
+}
+
+.google:hover{
+  border-color:#d4af37;
+  background:#fffdf7;
+}
+
+
+/* =========================
+   DIVIDER
+========================= */
 
 .divider{
-  display:flex;align-items:center;gap:12px;
+  display:flex;
+  align-items:center;
+  gap:12px;
   color:#b18d32;
-  font-size:10px;font-weight:600;letter-spacing:2px;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:2px;
   margin:20px 0 3px;
 }
-.divider::before,.divider::after{
-  content:"";height:1px;background:#eadfbd;flex:1;
+
+.divider::before,
+.divider::after{
+  content:"";
+  height:1px;
+  background:#eadfbd;
+  flex:1;
 }
 
+
+/* =========================
+   INPUTS
+========================= */
+
 label{
-  display:block;margin:14px 0 7px;
-  color:#4f4f4f;font-size:11px;font-weight:600;
+  display:block;
+  margin:14px 0 7px;
+  color:#4f4f4f;
+  font-size:11px;
+  font-weight:600;
 }
+
 .field{
   position:relative;
 }
+
 .field i{
-  position:absolute;left:15px;top:50%;
+  position:absolute;
+  left:15px;
+  top:50%;
   transform:translateY(-50%);
-  color:#8a8a8a;font-size:14px;
+  color:#8a8a8a;
+  font-size:14px;
   pointer-events:none;
 }
+
 input{
-  width:100%;height:51px;
+  width:100%;
+  height:51px;
   border:1px solid #dedbd2;
   border-radius:13px;
   background:#faf9f6;
@@ -133,12 +233,22 @@ input{
   outline:none;
   font:500 12px "Poppins",Arial,sans-serif;
 }
-input::placeholder{color:#aaa}
+
+input::placeholder{
+  color:#aaa;
+}
+
 input:focus{
   background:#fff;
   border-color:#d4af37;
   box-shadow:0 0 0 3px rgba(212,175,55,.11);
 }
+
+
+/* =========================
+   PASSWORD TOGGLE
+========================= */
+
 .password-toggle{
   position:absolute;
   right:8px;
@@ -161,21 +271,43 @@ input:focus{
   -webkit-tap-highlight-color:transparent;
   touch-action:manipulation;
 }
-.password-toggle:active{color:#a27e1c}
-.password-toggle i{pointer-events:none}
-.field input{padding-right:55px}
+
+.password-toggle:active{
+  color:#a27e1c;
+}
+
+.password-toggle i{
+  pointer-events:none;
+}
+
+.field input{
+  padding-right:55px;
+}
+
+
+/* =========================
+   FORGOT
+========================= */
 
 .forgot{
   display:block;
   margin:8px 1px 0 auto;
-  border:0;background:none;
+  border:0;
+  background:none;
   color:#a27e1c;
   font:600 10px "Poppins",Arial,sans-serif;
   cursor:pointer;
 }
 
+
+/* =========================
+   BUTTONS
+========================= */
+
 .primary{
-  width:100%;height:53px;margin-top:16px;
+  width:100%;
+  height:53px;
+  margin-top:16px;
   border:1px solid #c79e12;
   border-radius:13px;
   background:#d4af37;
@@ -184,11 +316,19 @@ input:focus{
   cursor:pointer;
   box-shadow:0 7px 18px rgba(212,175,55,.22);
 }
-.primary i{margin-left:8px}
-.primary:hover{background:#e1bd45}
+
+.primary i{
+  margin-left:8px;
+}
+
+.primary:hover{
+  background:#e1bd45;
+}
 
 .secondary{
-  width:100%;height:51px;margin-top:10px;
+  width:100%;
+  height:51px;
+  margin-top:10px;
   border:1px solid #d9c990;
   border-radius:13px;
   background:#fff;
@@ -196,10 +336,16 @@ input:focus{
   font:700 12px "Poppins",Arial,sans-serif;
   cursor:pointer;
 }
-.secondary:hover{background:#fcf9ef;border-color:#d4af37}
+
+.secondary:hover{
+  background:#fcf9ef;
+  border-color:#d4af37;
+}
 
 .guest{
-  width:100%;height:49px;margin-top:10px;
+  width:100%;
+  height:49px;
+  margin-top:10px;
   border:1px solid #eee8da;
   border-radius:13px;
   background:#faf8f2;
@@ -207,8 +353,20 @@ input:focus{
   font:600 12px "Poppins",Arial,sans-serif;
   cursor:pointer;
 }
-.guest i{margin-right:8px}
-.guest:hover{border-color:#d4af37;background:#fffdf7}
+
+.guest i{
+  margin-right:8px;
+}
+
+.guest:hover{
+  border-color:#d4af37;
+  background:#fffdf7;
+}
+
+
+/* =========================
+   STATUS
+========================= */
 
 .status{
   min-height:22px;
@@ -218,6 +376,7 @@ input:focus{
   font-size:10px;
   line-height:1.45;
 }
+
 .note{
   margin:5px auto 0;
   max-width:370px;
@@ -227,6 +386,11 @@ input:focus{
   line-height:1.55;
 }
 
+
+/* =========================
+   TRUST
+========================= */
+
 .trust{
   margin-top:auto;
   padding-top:20px;
@@ -234,22 +398,39 @@ input:focus{
   grid-template-columns:repeat(3,1fr);
   border-top:1px solid #eee6d2;
 }
+
 .trust-item{
   text-align:center;
   padding:0 6px;
   border-right:1px solid #e7dfcc;
 }
-.trust-item:last-child{border-right:0}
-.trust-icon{
-  color:#d4af37;font-size:20px;margin-bottom:5px;
+
+.trust-item:last-child{
+  border-right:0;
 }
+
+.trust-icon{
+  color:#d4af37;
+  font-size:20px;
+  margin-bottom:5px;
+}
+
 .trust-title{
   font:700 10px "Playfair Display",Georgia,serif;
   color:#222;
 }
+
 .trust-sub{
-  margin-top:2px;color:#999;font-size:7px;line-height:1.35;
+  margin-top:2px;
+  color:#999;
+  font-size:7px;
+  line-height:1.35;
 }
+
+
+/* =========================
+   BACK LINK
+========================= */
 
 .back{
   display:block;
@@ -259,802 +440,1245 @@ input:focus{
   text-decoration:none;
   font:500 10px "Poppins",Arial,sans-serif;
 }
-.back:hover{color:#a27e1c}
 
-/* ================= MODAL / POPUP STYLES ================= */
-.modal-overlay {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(23, 23, 23, 0.6);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
+.back:hover{
+  color:#a27e1c;
 }
-.modal-overlay.active {
-  opacity: 1;
-  visibility: visible;
+
+
+/* =====================================================
+   OTP MODAL
+===================================================== */
+
+.modal-overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+
+  background:rgba(23,23,23,.6);
+  backdrop-filter:blur(4px);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  z-index:9999;
+
+  opacity:0;
+  visibility:hidden;
+
+  transition:all .3s ease;
 }
-.modal-box {
-  background: #fff;
-  border: 1px solid #e4d8ae;
-  border-radius: 20px;
-  padding: 30px 24px;
-  width: 90%;
-  max-width: 380px;
-  text-align: center;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-  transform: translateY(20px) scale(0.95);
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+.modal-overlay.active{
+  opacity:1;
+  visibility:visible;
 }
-.modal-overlay.active .modal-box {
-  transform: translateY(0) scale(1);
+
+.modal-box{
+  background:#fff;
+  border:1px solid #e4d8ae;
+  border-radius:20px;
+
+  padding:30px 24px;
+
+  width:90%;
+  max-width:380px;
+
+  text-align:center;
+
+  box-shadow:0 20px 50px rgba(0,0,0,.15);
+
+  transform:translateY(20px) scale(.95);
+
+  transition:
+    all .3s cubic-bezier(
+      .175,
+      .885,
+      .32,
+      1.275
+    );
 }
-.modal-icon {
-  font-size: 42px;
-  color: #d4af37;
-  margin-bottom: 15px;
+
+.modal-overlay.active .modal-box{
+  transform:translateY(0) scale(1);
 }
-.modal-box h2 {
-  font: 700 22px "Playfair Display", Georgia, serif;
-  color: #171717;
-  margin: 0 0 10px;
+
+.modal-icon{
+  font-size:42px;
+  color:#d4af37;
+  margin-bottom:15px;
 }
-.modal-box p {
-  font: 500 13px "Poppins", Arial, sans-serif;
-  color: #666;
-  line-height: 1.6;
-  margin: 0 0 20px;
+
+.modal-box h2{
+  font:700 22px "Playfair Display",Georgia,serif;
+  color:#171717;
+  margin:0 0 10px;
 }
-.modal-btn {
-  width: 100%;
-  height: 48px;
-  border: 1px solid #c79e12;
-  border-radius: 12px;
-  background: #d4af37;
-  color: #151515;
-  font: 700 13px "Poppins", Arial, sans-serif;
-  cursor: pointer;
-  transition: background 0.2s;
+
+.modal-box p{
+  font:500 13px "Poppins",Arial,sans-serif;
+  color:#666;
+  line-height:1.6;
+  margin:0 0 20px;
 }
-.modal-btn:hover {
-  background: #e1bd45;
+
+
+/* OTP INPUT */
+
+#signupOtp{
+  width:100%;
+  height:52px;
+
+  border:1px solid #dedbd2;
+  border-radius:13px;
+
+  background:#faf9f6;
+
+  color:#171717;
+
+  outline:none;
+
+  padding:0 15px;
+
+  text-align:center;
+
+  letter-spacing:7px;
+
+  font:700 19px "Poppins",Arial,sans-serif;
+
+  margin:0 0 12px;
 }
-/* ======================================================== */
+
+#signupOtp:focus{
+  background:#fff;
+  border-color:#d4af37;
+  box-shadow:0 0 0 3px rgba(212,175,55,.11);
+}
+
+#signupOtp::placeholder{
+  color:#aaa;
+  letter-spacing:1px;
+  font-size:12px;
+}
+
+
+/* VERIFY BUTTON */
+
+.modal-btn{
+  width:100%;
+  height:48px;
+
+  border:1px solid #c79e12;
+  border-radius:12px;
+
+  background:#d4af37;
+  color:#151515;
+
+  font:700 13px "Poppins",Arial,sans-serif;
+
+  cursor:pointer;
+
+  transition:background .2s;
+}
+
+.modal-btn:hover{
+  background:#e1bd45;
+}
+
+.modal-btn:disabled{
+  opacity:.65;
+  cursor:not-allowed;
+}
+
+
+/* RESEND */
+
+.resend-btn{
+  width:100%;
+  height:42px;
+
+  margin-top:9px;
+
+  border:0;
+  background:none;
+
+  color:#a27e1c;
+
+  font:600 11px "Poppins",Arial,sans-serif;
+
+  cursor:pointer;
+}
+
+.resend-btn:hover{
+  text-decoration:underline;
+}
+
+.resend-btn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+
+/* OTP STATUS */
+
+#otpStatus{
+  min-height:18px;
+  margin-top:2px;
+
+  color:#777;
+
+  font:500 10px "Poppins",Arial,sans-serif;
+
+  line-height:1.4;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
 
 @media(max-width:480px){
-  body{padding:8px 10px 12px}
-  .page{min-height:calc(100vh - 20px)}
-  .top{padding:5px 0 9px}
-  .logo{font-size:35px}
-  .tagline{font-size:13px}
-  .gold-line{margin-top:7px}
-  .login-card{border-radius:23px;padding:27px 18px 18px}
-  h1{font-size:28px}
-  .subtitle{font-size:11px;margin-bottom:18px}
-  .google{height:51px}
-  input{height:49px}
-  .primary{height:51px}
-  .secondary{height:49px}
-  .guest{height:47px}
-  .trust{padding-top:16px}
+
+  body{
+    padding:8px 10px 12px;
+  }
+
+  .page{
+    min-height:calc(100vh - 20px);
+  }
+
+  .top{
+    padding:5px 0 9px;
+  }
+
+  .logo{
+    font-size:35px;
+  }
+
+  .tagline{
+    font-size:13px;
+  }
+
+  .gold-line{
+    margin-top:7px;
+  }
+
+  .login-card{
+    border-radius:23px;
+    padding:27px 18px 18px;
+  }
+
+  h1{
+    font-size:28px;
+  }
+
+  .subtitle{
+    font-size:11px;
+    margin-bottom:18px;
+  }
+
+  .google{
+    height:51px;
+  }
+
+  input{
+    height:49px;
+  }
+
+  .primary{
+    height:51px;
+  }
+
+  .secondary{
+    height:49px;
+  }
+
+  .guest{
+    height:47px;
+  }
+
+  .trust{
+    padding-top:16px;
+  }
+
+  .modal-box{
+    width:92%;
+    padding:27px 19px;
+  }
 }
+
+
 @media(max-height:700px){
-  body{padding-top:5px;padding-bottom:7px}
-  .top{padding:2px 0 6px}
-  .logo{font-size:30px}
-  .tagline{font-size:11px}
-  .gold-line{margin-top:5px}
-  .login-card{padding-top:21px;padding-bottom:14px}
-  h1{font-size:24px}
-  .subtitle{margin:6px auto 13px}
-  .divider{margin:14px 0 0}
-  label{margin-top:9px}
-  .forgot{margin-top:5px}
-  .primary{margin-top:10px}
-  .trust{padding-top:11px}
+
+  body{
+    padding-top:5px;
+    padding-bottom:7px;
+  }
+
+  .top{
+    padding:2px 0 6px;
+  }
+
+  .logo{
+    font-size:30px;
+  }
+
+  .tagline{
+    font-size:11px;
+  }
+
+  .gold-line{
+    margin-top:5px;
+  }
+
+  .login-card{
+    padding-top:21px;
+    padding-bottom:14px;
+  }
+
+  h1{
+    font-size:24px;
+  }
+
+  .subtitle{
+    margin:6px auto 13px;
+  }
+
+  .divider{
+    margin:14px 0 0;
+  }
+
+  label{
+    margin-top:9px;
+  }
+
+  .forgot{
+    margin-top:5px;
+  }
+
+  .primary{
+    margin-top:10px;
+  }
+
+  .trust{
+    padding-top:11px;
+  }
 }
 </style>
 
-<!-- ✅ Force mobile viewport script (before body loads) -->
+
+<!-- MOBILE VIEWPORT -->
 <script>
-(function () {
-  function forceViewport() {
-    var vp = document.querySelector('meta[name="viewport"]');
-    if (!vp) {
-      vp = document.createElement('meta');
-      vp.setAttribute('name', 'viewport');
+(function(){
+
+  function forceViewport(){
+
+    var vp =
+      document.querySelector(
+        'meta[name="viewport"]'
+      );
+
+    if(!vp){
+
+      vp =
+        document.createElement('meta');
+
+      vp.setAttribute(
+        'name',
+        'viewport'
+      );
+
       document.head.appendChild(vp);
     }
-    vp.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover');
+
+    vp.setAttribute(
+      'content',
+      'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover'
+    );
   }
+
   forceViewport();
+
 })();
 </script>
+
 </head>
 
+
 <body>
+
 <div class="page">
 
   <header class="top">
-    <div class="logo"><span class="jb">JB</span> <span class="store">STORE</span></div>
-    <div class="tagline">Premium Electronics</div>
+
+    <div class="logo">
+      <span class="jb">JB</span>
+      <span class="store">STORE</span>
+    </div>
+
+    <div class="tagline">
+      Premium Electronics
+    </div>
+
     <div class="gold-line"></div>
+
   </header>
 
+
   <main class="login-card">
-    <div class="corner">✦</div>
 
-    <h1>Welcome to <span class="gold">JB</span> STORE</h1>
-    <p class="subtitle">Login or create your account to continue and explore premium electronics.</p>
-
-    <button class="google" id="googleBtn">
-      <i class="fa-brands fa-google"></i> Continue with Google
-    </button>
-
-    <div class="divider">OR</div>
-
-    <label for="email">Email Address</label>
-    <div class="field">
-      <i class="fa-regular fa-envelope"></i>
-      <input id="email" type="email" autocomplete="email" placeholder="you@example.com">
+    <div class="corner">
+      ✦
     </div>
 
-    <label for="password">Password</label>
+
+    <h1>
+      Welcome to
+      <span class="gold">JB</span>
+      STORE
+    </h1>
+
+
+    <p class="subtitle">
+      Login or create your account to continue
+      and explore premium electronics.
+    </p>
+
+
+    <!-- GOOGLE -->
+
+    <button
+      class="google"
+      id="googleBtn"
+      type="button"
+    >
+      <i class="fa-brands fa-google"></i>
+      Continue with Google
+    </button>
+
+
+    <div class="divider">
+      OR
+    </div>
+
+
+    <!-- EMAIL -->
+
+    <label for="email">
+      Email Address
+    </label>
+
     <div class="field">
+
+      <i class="fa-regular fa-envelope"></i>
+
+      <input
+        id="email"
+        type="email"
+        autocomplete="email"
+        placeholder="you@example.com"
+      >
+
+    </div>
+
+
+    <!-- PASSWORD -->
+
+    <label for="password">
+      Password
+    </label>
+
+    <div class="field">
+
       <i class="fa-solid fa-lock"></i>
-      <input id="password" type="password" autocomplete="current-password" placeholder="Enter your password">
-      <button class="password-toggle" id="togglePassword" type="button" aria-label="Show password">
+
+      <input
+        id="password"
+        type="password"
+        autocomplete="current-password"
+        placeholder="Enter your password"
+      >
+
+      <button
+        class="password-toggle"
+        id="togglePassword"
+        type="button"
+        aria-label="Show password"
+      >
         <i class="fa-regular fa-eye"></i>
       </button>
+
     </div>
 
-    <button class="forgot" id="resetBtn" type="button">Forgot password?</button>
 
-    <button class="primary" id="loginBtn" type="button">
-      Login <i class="fa-solid fa-arrow-right"></i>
+    <!-- FORGOT -->
+
+    <button
+      class="forgot"
+      id="resetBtn"
+      type="button"
+    >
+      Forgot password?
     </button>
 
-    <button class="secondary" id="signupBtn" type="button">
+
+    <!-- LOGIN -->
+
+    <button
+      class="primary"
+      id="loginBtn"
+      type="button"
+    >
+      Login
+      <i class="fa-solid fa-arrow-right"></i>
+    </button>
+
+
+    <!-- CREATE ACCOUNT -->
+
+    <button
+      class="secondary"
+      id="signupBtn"
+      type="button"
+    >
       Create Account
     </button>
 
-    <button class="guest" id="guestBtn" type="button">
-      <i class="fa-solid fa-user"></i> Continue as Guest
+
+    <!-- GUEST -->
+
+    <button
+      class="guest"
+      id="guestBtn"
+      type="button"
+    >
+      <i class="fa-solid fa-user"></i>
+      Continue as Guest
     </button>
 
-    <div class="status" id="status"></div>
+
+    <div
+      class="status"
+      id="status"
+    ></div>
+
 
     <p class="note">
-      Guest accounts can browse and shop. You can add permanent account features later.
+      Guest accounts can browse and shop.
+      You can add permanent account features later.
     </p>
 
+
+    <!-- TRUST -->
+
     <div class="trust">
+
       <div class="trust-item">
-        <div class="trust-icon"><i class="fa-solid fa-shield-halved"></i></div>
-        <div class="trust-title">Safe &amp; Secure</div>
-        <div class="trust-sub">Your data is protected</div>
+
+        <div class="trust-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <div class="trust-title">
+          Safe &amp; Secure
+        </div>
+
+        <div class="trust-sub">
+          Your data is protected
+        </div>
+
       </div>
+
+
       <div class="trust-item">
-        <div class="trust-icon"><i class="fa-solid fa-truck-fast"></i></div>
-        <div class="trust-title">Fast Delivery</div>
-        <div class="trust-sub">Across India</div>
+
+        <div class="trust-icon">
+          <i class="fa-solid fa-truck-fast"></i>
+        </div>
+
+        <div class="trust-title">
+          Fast Delivery
+        </div>
+
+        <div class="trust-sub">
+          Across India
+        </div>
+
       </div>
+
+
       <div class="trust-item">
-        <div class="trust-icon"><i class="fa-regular fa-star"></i></div>
-        <div class="trust-title">Trusted Store</div>
-        <div class="trust-sub">Premium quality</div>
+
+        <div class="trust-icon">
+          <i class="fa-regular fa-star"></i>
+        </div>
+
+        <div class="trust-title">
+          Trusted Store
+        </div>
+
+        <div class="trust-sub">
+          Premium quality
+        </div>
+
       </div>
+
     </div>
+
   </main>
 
-  <a class="back" href="index.html">← Back to JB STORE</a>
+
+  <a
+    class="back"
+    href="index.html"
+  >
+    ← Back to JB STORE
+  </a>
+
 </div>
 
-<!-- ✅ CUSTOM POPUP MODAL HTML -->
-<div class="modal-overlay" id="customModal">
+
+<!-- =====================================================
+     OTP VERIFICATION POPUP
+===================================================== -->
+
+<div
+  class="modal-overlay"
+  id="customModal"
+>
+
   <div class="modal-box">
-    <div class="modal-icon"><i class="fa-regular fa-envelope"></i></div>
-    <h2>Account Created</h2>
-    <p>Please check your email and confirm your account to continue.</p>
-    <button class="modal-btn" id="closeModalBtn">OK</button>
+
+    <div class="modal-icon">
+      <i class="fa-regular fa-envelope"></i>
+    </div>
+
+
+    <h2>
+      Verify Your Email
+    </h2>
+
+
+    <p>
+      We sent a 6-digit verification code
+      to your email address.
+    </p>
+
+
+    <input
+      id="signupOtp"
+      type="text"
+      inputmode="numeric"
+      autocomplete="one-time-code"
+      maxlength="6"
+      placeholder="Enter 6-digit code"
+    >
+
+
+    <button
+      class="modal-btn"
+      id="verifyOtpBtn"
+      type="button"
+    >
+      Verify &amp; Continue
+    </button>
+
+
+    <button
+      class="resend-btn"
+      id="resendOtpBtn"
+      type="button"
+    >
+      Resend code
+    </button>
+
+
+    <div
+      id="otpStatus"
+    ></div>
+
   </div>
+
 </div>
+
 
 <script>
-const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
 
-const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
-  auth: {
-    flowType: 'implicit',
-    detectSessionInUrl: true,
-    persistSession: true,
-    autoRefreshToken: true
+/* =====================================================
+   SUPABASE CONFIG
+===================================================== */
+
+const SUPABASE_URL =
+  'https://iuucwxdkjqpecqwbsoyv.supabase.co';
+
+const SUPABASE_ANON =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
+
+
+const client =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON,
+    {
+      auth:{
+        flowType:'implicit',
+        detectSessionInUrl:true,
+        persistSession:true,
+        autoRefreshToken:true
+      }
+    }
+  );
+
+
+/* =====================================================
+   GLOBAL SESSION
+===================================================== */
+
+let __jbRedirectingToHome =
+  false;
+
+
+function goToHomeAfterLogin(){
+
+  if(__jbRedirectingToHome){
+    return;
   }
-});
 
-// =====================================================
-// GOOGLE OAUTH CALLBACK / EXISTING SESSION
-// =====================================================
-let __jbRedirectingToHome = false;
-
-function goToHomeAfterLogin() {
-  if (__jbRedirectingToHome) return;
   __jbRedirectingToHome = true;
 
   setTimeout(() => {
-    window.location.replace('index.html');
-  }, 0);
-}
 
-client.auth.onAuthStateChange((event, session) => {
-  if (
-    session &&
-    (
-      event === 'SIGNED_IN' ||
-      event === 'INITIAL_SESSION'
-    )
-  ) {
-    goToHomeAfterLogin();
-  }
-});
-
-// Also handle an already-persisted session when login.html opens.
-(async () => {
-  try {
-    const { data } = await client.auth.getSession();
-
-    if (data && data.session) {
-      goToHomeAfterLogin();
-    }
-  } catch (error) {
-    console.error('Supabase session check failed:', error);
-  }
-})();
-
-const $ = id => document.getElementById(id);
-
-function showStatus(message, success=false) {
-  $('status').textContent = message;
-  $('status').style.color = success ? '#4d8a55' : '#777';
-}
-
-/* ✅ Force mobile viewport — Google OAuth redirect varaku kuda apply avutundi */
-function forceViewport() {
-  var vp = document.querySelector('meta[name="viewport"]');
-  if (!vp) {
-    vp = document.createElement('meta');
-    vp.setAttribute('name', 'viewport');
-    document.head.appendChild(vp);
-  }
-  vp.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover');
-}
-forceViewport();
-window.addEventListener('pageshow', forceViewport);
-window.addEventListener('load', forceViewport);
-window.addEventListener('orientationchange', function () { setTimeout(forceViewport, 100); });
-document.addEventListener('visibilitychange', function () {
-  if (!document.hidden) forceViewport();
-});
-
-// ================= MODAL / POPUP LOGIC =================
-const customModal = document.getElementById('customModal');
-const closeModalBtn = document.getElementById('closeModalBtn');
-
-function showCustomModal() {
-  customModal.classList.add('active');
-}
-
-function closeCustomModal() {
-  customModal.classList.remove('active');
-}
-
-closeModalBtn.addEventListener('click', closeCustomModal);
-customModal.addEventListener('click', (e) => {
-  if (e.target === customModal) closeCustomModal();
-});
-// =======================================================
-
-$('togglePassword').addEventListener('click', () => {
-  const input = $('password');
-  const icon = $('togglePassword').querySelector('i');
-  const showing = input.type === 'text';
-  input.type = showing ? 'password' : 'text';
-  icon.className = showing ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
-});
-
-// Native Android Google Sign-In callback.
-// MainActivity sends the Google ID token + raw nonce here.
-window.__JBStoreNativeGoogleSignIn = async function (idToken, nonce) {
-  try {
-    showStatus('Signing in with Google…');
-
-    const { error } = await client.auth.signInWithIdToken({
-      provider: 'google',
-      token: idToken,
-      nonce: nonce || undefined
-    });
-
-    if (error) {
-      console.error('Supabase native Google sign-in error:', error);
-      showStatus(error.message || 'Google Sign-In failed.');
-      return;
-    }
-
-    window.location.replace('index.html');
-  } catch (error) {
-    console.error('Native Google sign-in error:', error);
-    showStatus(error?.message || 'Google Sign-In failed.');
-  }
-};
-
-window.__JBStoreNativeGoogleError = function (message) {
-  showStatus(message || 'Google Sign-In failed.');
-};
-
-$('googleBtn').addEventListener('click', async () => {
-  forceViewport();
-
-  const isAndroidApp =
-    /JBStoreAndroidApp\/1/i.test(navigator.userAgent || '');
-
-  if (isAndroidApp) {
-    // Android app: start native Google Sign-In immediately.
-    // The bridge is registered BEFORE the first WebView load.
-    // A non-hierarchical custom-scheme fallback is kept for WebView builds
-    // where the injected bridge is temporarily unavailable.
-    showStatus('Opening your Google accounts…');
-
-    let started = false;
-
-    try {
-      if (
-        window.JBStoreGoogleAuth &&
-        typeof window.JBStoreGoogleAuth.signInWithGoogle === 'function'
-      ) {
-        window.JBStoreGoogleAuth.signInWithGoogle();
-        started = true;
-      }
-    } catch (error) {
-      console.error('Native Google bridge error:', error);
-    }
-
-    if (!started) {
-      try {
-        // This follows Android WebView's documented custom-scheme pattern.
-        const link = document.createElement('a');
-        link.href = 'jbstore:native-google-signin';
-        link.style.display = 'none';
-        document.body.appendChild(link);
-        link.click();
-        setTimeout(() => link.remove(), 0);
-      } catch (error) {
-        console.error('Native Google Sign-In fallback error:', error);
-        showStatus('Google Sign-In could not start. Please reopen the app.');
-      }
-    }
-
-    return;
-  }
-
-  // Normal website browser: use Supabase's normal Google OAuth flow.
-  showStatus('Opening Google…');
-
-  const { error } = await client.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo: window.location.origin + '/index.html'
-    }
-  });
-
-  if (error) showStatus(error.message);
-});
-
-$('loginBtn').addEventListener('click', async () => {
-  const email = $('email').value.trim();
-  const password = $('password').value;
-
-  if (!email || !password) {
-    showStatus('Please enter your email and password.');
-    return;
-  }
-
-  showStatus('Logging in…');
-
-  const { error } = await client.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if (error) {
-    showStatus(error.message);
-    return;
-  }
-
-  window.location.replace('index.html');
-});
-
-$('signupBtn').addEventListener('click', async () => {
-  const email = $('email').value.trim();
-  const password = $('password').value;
-
-  if (!email || !password) {
-    showStatus('Please enter an email and password.');
-    return;
-  }
-
-  if (password.length < 6) {
-    showStatus('Password must be at least 6 characters.');
-    return;
-  }
-
-  showStatus('Creating your account…');
-
-  const { data, error } = await client.auth.signUp({
-    email: email,
-    password: password,
-    options: {
-        emailRedirectTo: "jbstore://auth/callback"
-    }
-});
-
-  if (error) {
-    showStatus(error.message);
-    return;
-  }
-
-  if (data.session) {
-    window.location.replace('index.html');
-  } else {
-    // ✅ ఇక్కడ మార్పు చేశాను: కింద గ్రీన్ మెసేజ్ రాకుండా Popup వచ్చేలా
-    showStatus(''); // Clear any existing status text
-    showCustomModal(); // Show the popup
-  }
-});
-
-$('resetBtn').addEventListener('click', async () => {
-  const email = $('email').value.trim();
-
-  if (!email) {
-    showStatus('Enter your email address first.');
-    return;
-  }
-
-  showStatus('Sending password reset email…');
-
-  const { error } = await client.auth.resetPasswordForEmail(email, {
-  redirectTo: window.location.origin + '/reset-password.html'
-});
-
-  if (error) {
-    showStatus(error.message);
-    return;
-  }
-
-  showStatus('Password reset email sent. Check your inbox.', true);
-});
-
-$('guestBtn').addEventListener(
-  'click',
-  async () => {
-
-    const button = $('guestBtn');
-
-    button.disabled = true;
-
-    showStatus(
-      'Starting guest session…'
+    window.location.replace(
+      'index.html'
     );
 
-    try {
-
-      /*
-       * ANDROID APP
-       *
-       * MainActivity injects the stable device ID into
-       * window.__JBStoreDeviceId after the trusted page
-       * finishes loading.
-       *
-       * The native bridge is also checked as a fallback.
-       */
-
-      let deviceId =
-        String(
-          window.__JBStoreDeviceId || ''
-        ).trim();
+  },0);
+}
 
 
-      if (
-        !/^[a-f0-9]{64}$/i.test(
-          deviceId
-        )
-      ) {
+client.auth.onAuthStateChange(
+  (event,session) => {
 
-        try {
+    if(
+      session &&
+      (
+        event === 'SIGNED_IN' ||
+        event === 'INITIAL_SESSION'
+      )
+    ){
 
-          if (
-            window.JBStoreDevice &&
-            typeof window.JBStoreDevice.getDeviceId ===
-              'function'
-          ) {
+      goToHomeAfterLogin();
 
-            deviceId =
-              String(
-                window.JBStoreDevice
-                  .getDeviceId() || ''
-              ).trim();
-          }
+    }
 
-        } catch (e) {
+  }
+);
 
-          console.error(
-            'Device ID bridge error:',
-            e
-          );
-        }
+
+/* =====================================================
+   EXISTING SESSION CHECK
+===================================================== */
+
+(async() => {
+
+  try{
+
+    const {data} =
+      await client.auth.getSession();
+
+    if(
+      data &&
+      data.session
+    ){
+
+      goToHomeAfterLogin();
+
+    }
+
+  }catch(error){
+
+    console.error(
+      'Supabase session check failed:',
+      error
+    );
+
+  }
+
+})();
+
+
+/* =====================================================
+   HELPER
+===================================================== */
+
+const $ =
+  id => document.getElementById(id);
+
+
+function showStatus(
+  message,
+  success=false
+){
+
+  $('status').textContent =
+    message;
+
+  $('status').style.color =
+    success
+      ? '#4d8a55'
+      : '#777';
+
+}
+
+
+/* =====================================================
+   FORCE MOBILE VIEWPORT
+===================================================== */
+
+function forceViewport(){
+
+  var vp =
+    document.querySelector(
+      'meta[name="viewport"]'
+    );
+
+  if(!vp){
+
+    vp =
+      document.createElement('meta');
+
+    vp.setAttribute(
+      'name',
+      'viewport'
+    );
+
+    document.head.appendChild(vp);
+
+  }
+
+  vp.setAttribute(
+    'content',
+    'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover'
+  );
+
+}
+
+forceViewport();
+
+window.addEventListener(
+  'pageshow',
+  forceViewport
+);
+
+window.addEventListener(
+  'load',
+  forceViewport
+);
+
+window.addEventListener(
+  'orientationchange',
+  function(){
+
+    setTimeout(
+      forceViewport,
+      100
+    );
+
+  }
+);
+
+document.addEventListener(
+  'visibilitychange',
+  function(){
+
+    if(!document.hidden){
+
+      forceViewport();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   OTP MODAL
+===================================================== */
+
+const customModal =
+  document.getElementById(
+    'customModal'
+  );
+
+const signupOtp =
+  document.getElementById(
+    'signupOtp'
+  );
+
+const verifyOtpBtn =
+  document.getElementById(
+    'verifyOtpBtn'
+  );
+
+const resendOtpBtn =
+  document.getElementById(
+    'resendOtpBtn'
+  );
+
+const otpStatus =
+  document.getElementById(
+    'otpStatus'
+  );
+
+
+let pendingSignupEmail =
+  '';
+
+
+function showCustomModal(){
+
+  customModal.classList.add(
+    'active'
+  );
+
+  setTimeout(() => {
+
+    signupOtp.focus();
+
+  },100);
+
+}
+
+
+function closeCustomModal(){
+
+  customModal.classList.remove(
+    'active'
+  );
+
+}
+
+
+customModal.addEventListener(
+  'click',
+  (e) => {
+
+    if(
+      e.target === customModal
+    ){
+
+      closeCustomModal();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   RESEND SIGNUP OTP
+===================================================== */
+
+async function sendSignupOtp(){
+
+  if(!pendingSignupEmail){
+
+    return;
+
+  }
+
+
+  otpStatus.textContent =
+    'Sending a new code…';
+
+  otpStatus.style.color =
+    '#777';
+
+  resendOtpBtn.disabled =
+    true;
+
+
+  try{
+
+    const {error} =
+      await client.auth.resend({
+        type:'signup',
+        email:pendingSignupEmail
+      });
+
+
+    if(error){
+
+      throw error;
+
+    }
+
+
+    otpStatus.textContent =
+      'A new code has been sent.';
+
+    otpStatus.style.color =
+      '#4d8a55';
+
+
+  }catch(error){
+
+    console.error(
+      'Resend OTP error:',
+      error
+    );
+
+
+    otpStatus.textContent =
+      error?.message ||
+      'Could not resend the code.';
+
+    otpStatus.style.color =
+      '#777';
+
+
+  }finally{
+
+    resendOtpBtn.disabled =
+      false;
+
+  }
+
+}
+
+
+resendOtpBtn.addEventListener(
+  'click',
+  sendSignupOtp
+);
+
+
+/* =====================================================
+   VERIFY OTP
+===================================================== */
+
+verifyOtpBtn.addEventListener(
+  'click',
+  async() => {
+
+    const token =
+      signupOtp.value.trim();
+
+
+    if(!pendingSignupEmail){
+
+      otpStatus.textContent =
+        'Email address is missing. Please try again.';
+
+      return;
+
+    }
+
+
+    if(!/^\d{6}$/.test(token)){
+
+      otpStatus.textContent =
+        'Please enter the 6-digit code.';
+
+      return;
+
+    }
+
+
+    verifyOtpBtn.disabled =
+      true;
+
+    resendOtpBtn.disabled =
+      true;
+
+
+    otpStatus.textContent =
+      'Verifying…';
+
+    otpStatus.style.color =
+      '#777';
+
+
+    try{
+
+      const {data,error} =
+        await client.auth.verifyOtp({
+
+          email:
+            pendingSignupEmail,
+
+          token:
+            token,
+
+          type:
+            'email'
+
+        });
+
+
+      if(error){
+
+        throw error;
+
       }
 
 
-      /*
-       * ANDROID APP:
-       * Device-based guest account.
-       */
+      if(
+        !data ||
+        !data.session
+      ){
 
-      if (
-        /^[a-f0-9]{64}$/i.test(
-          deviceId
-        )
-      ) {
+        throw new Error(
+          'Verification succeeded, but no login session was returned.'
+        );
 
-        const response =
-          await fetch(
-            SUPABASE_URL +
-              '/functions/v1/guest-login',
-            {
-              method: 'POST',
-
-              headers: {
-                'Content-Type':
-                  'application/json',
-
-                'apikey':
-                  SUPABASE_ANON,
-
-                'Authorization':
-                  'Bearer ' + SUPABASE_ANON
-              },
-
-              body: JSON.stringify({
-                device_id:
-                  deviceId
-              })
-            }
-          );
+      }
 
 
-        const result =
-          await response.json().catch(
-            () => ({})
-          );
+      otpStatus.textContent =
+        'Email verified. Opening JB STORE…';
+
+      otpStatus.style.color =
+        '#4d8a55';
 
 
-        if (
-          !response.ok ||
-          !result.access_token ||
-          !result.refresh_token
-        ) {
-
-          console.error(
-            'Device guest login error:',
-            result
-          );
-
-          throw new Error(
-            result?.error ||
-            result?.message ||
-            'Guest login failed.'
-          );
-        }
-
-
-        const {
-          error: sessionError
-        } =
-          await client.auth.setSession(
-            {
-              access_token:
-                result.access_token,
-
-              refresh_token:
-                result.refresh_token
-            }
-          );
-
-
-        if (sessionError) {
-          throw sessionError;
-        }
-
+      setTimeout(() => {
 
         window.location.replace(
           'index.html'
         );
 
-        return;
-      }
+      },250);
 
 
-      /*
-       * NORMAL WEBSITE BROWSER:
-       *
-       * Use the same guest-login Edge Function as Android.
-       * A normal browser has no Android native device ID, so
-       * create a stable browser ID and hash it to the same
-       * 64-character SHA-256 format expected by the function.
-       *
-       * The Supabase secret key is NEVER placed in browser code.
-       */
+    }catch(error){
 
-      const BROWSER_GUEST_ID_KEY =
-        'jbstore_browser_guest_device_id_v1';
-
-      let browserGuestId =
-        localStorage.getItem(
-          BROWSER_GUEST_ID_KEY
-        );
-
-      /*
-       * Create a browser identifier once.
-       */
-      if (
-        !browserGuestId ||
-        browserGuestId.length < 16
-      ) {
-
-        if (
-          window.crypto &&
-          typeof crypto.randomUUID === 'function'
-        ) {
-
-          browserGuestId =
-            crypto.randomUUID();
-
-        } else {
-
-          browserGuestId =
-            Date.now().toString(36) +
-            '_' +
-            Math.random().toString(36).slice(2) +
-            '_' +
-            Math.random().toString(36).slice(2);
-        }
-
-        localStorage.setItem(
-          BROWSER_GUEST_ID_KEY,
-          browserGuestId
-        );
-      }
+      console.error(
+        'OTP verification error:',
+        error
+      );
 
 
-      /*
-       * SHA-256 helper.
-       */
-      async function sha256HexBrowser(value) {
+      otpStatus.textContent =
+        error?.message ||
+        'Invalid or expired code.';
 
-        const data =
-          new TextEncoder().encode(value);
-
-        const hash =
-          await crypto.subtle.digest(
-            'SHA-256',
-            data
-          );
-
-        return Array.from(
-          new Uint8Array(hash)
-        )
-          .map(
-            byte =>
-              byte
-                .toString(16)
-                .padStart(2, '0')
-          )
-          .join('');
-      }
+      otpStatus.style.color =
+        '#777';
 
 
-      /*
-       * Convert the browser ID into the same
-       * 64-character device_id format used
-       * by the Edge Function.
-       */
-      deviceId =
-        await sha256HexBrowser(
-          'JBSTORE_BROWSER_GUEST_V1:' +
-          browserGuestId
-        );
+      verifyOtpBtn.disabled =
+        false;
+
+      resendOtpBtn.disabled =
+        false;
+
+    }
+
+  }
+);
 
 
-      /*
-       * Call the same Guest Login Edge Function
-       * used by the Android app.
-       *
-       * The public/anon key is used here.
-       * NEVER put the secret key in this file.
-       */
-      const browserGuestResponse =
-        await fetch(
-          SUPABASE_URL +
-            '/functions/v1/guest-login',
-          {
-            method: 'POST',
+/* =====================================================
+   OTP INPUT
+===================================================== */
 
-            headers: {
-              'Content-Type':
-                'application/json',
+signupOtp.addEventListener(
+  'input',
+  () => {
 
-              'apikey':
-                SUPABASE_ANON,
+    signupOtp.value =
+      signupOtp.value
+        .replace(/\D/g,'')
+        .slice(0,6);
 
-              'Authorization':
-                'Bearer ' + SUPABASE_ANON
-            },
-
-            body: JSON.stringify({
-              device_id:
-                deviceId
-            })
-          }
-        );
+  }
+);
 
 
-      const browserGuestResult =
-        await browserGuestResponse
-          .json()
-          .catch(() => ({}));
+/* =====================================================
+   PASSWORD SHOW / HIDE
+===================================================== */
+
+$('togglePassword')
+  .addEventListener(
+    'click',
+    () => {
+
+      const input =
+        $('password');
+
+      const icon =
+        $('togglePassword')
+          .querySelector('i');
+
+      const showing =
+        input.type === 'text';
 
 
-      if (
-        !browserGuestResponse.ok ||
-        !browserGuestResult.access_token ||
-        !browserGuestResult.refresh_token
-      ) {
-
-        console.error(
-          'Browser guest login error:',
-          browserGuestResult
-        );
-
-        throw new Error(
-          browserGuestResult?.error ||
-          browserGuestResult?.message ||
-          'Guest login failed.'
-        );
-      }
+      input.type =
+        showing
+          ? 'password'
+          : 'text';
 
 
-      /*
-       * Save the Supabase session.
-       */
-      const {
-        error: browserSessionError
-      } =
-        await client.auth.setSession({
-          access_token:
-            browserGuestResult.access_token,
+      icon.className =
+        showing
+          ? 'fa-regular fa-eye'
+          : 'fa-regular fa-eye-slash';
 
-          refresh_token:
-            browserGuestResult.refresh_token
+    }
+  );
+
+
+/* =====================================================
+   NATIVE ANDROID GOOGLE SIGN-IN
+===================================================== */
+
+window.__JBStoreNativeGoogleSignIn =
+  async function(
+    idToken,
+    nonce
+  ){
+
+    try{
+
+      showStatus(
+        'Signing in with Google…'
+      );
+
+
+      const {error} =
+        await client.auth.signInWithIdToken({
+
+          provider:'google',
+
+          token:idToken,
+
+          nonce:
+            nonce ||
+            undefined
+
         });
 
 
-      if (browserSessionError) {
-        throw browserSessionError;
+      if(error){
+
+        console.error(
+          'Supabase native Google sign-in error:',
+          error
+        );
+
+        showStatus(
+          error.message ||
+          'Google Sign-In failed.'
+        );
+
+        return;
+
       }
 
 
@@ -1062,26 +1686,830 @@ $('guestBtn').addEventListener(
         'index.html'
       );
 
-    } catch (error) {
+
+    }catch(error){
 
       console.error(
-        'Guest login failed:',
+        'Native Google sign-in error:',
         error
       );
 
+
       showStatus(
         error?.message ||
-        'Guest login failed.'
+        'Google Sign-In failed.'
       );
 
-      button.disabled = false;
     }
-  }
-);
+
+  };
+
+
+window.__JBStoreNativeGoogleError =
+  function(message){
+
+    showStatus(
+      message ||
+      'Google Sign-In failed.'
+    );
+
+  };
+
+
+/* =====================================================
+   GOOGLE LOGIN BUTTON
+===================================================== */
+
+$('googleBtn')
+  .addEventListener(
+    'click',
+    async() => {
+
+      forceViewport();
+
+
+      const isAndroidApp =
+        /JBStoreAndroidApp\/1/i.test(
+          navigator.userAgent || ''
+        );
+
+
+      if(isAndroidApp){
+
+        showStatus(
+          'Opening your Google accounts…'
+        );
+
+
+        let started =
+          false;
+
+
+        try{
+
+          if(
+            window.JBStoreGoogleAuth &&
+            typeof
+              window.JBStoreGoogleAuth
+                .signInWithGoogle
+              === 'function'
+          ){
+
+            window.JBStoreGoogleAuth
+              .signInWithGoogle();
+
+            started =
+              true;
+
+          }
+
+        }catch(error){
+
+          console.error(
+            'Native Google bridge error:',
+            error
+          );
+
+        }
+
+
+        if(!started){
+
+          try{
+
+            const link =
+              document.createElement(
+                'a'
+              );
+
+            link.href =
+              'jbstore:native-google-signin';
+
+            link.style.display =
+              'none';
+
+            document.body.appendChild(
+              link
+            );
+
+            link.click();
+
+            setTimeout(
+              () => link.remove(),
+              0
+            );
+
+
+          }catch(error){
+
+            console.error(
+              'Native Google Sign-In fallback error:',
+              error
+            );
+
+
+            showStatus(
+              'Google Sign-In could not start. Please reopen the app.'
+            );
+
+          }
+
+        }
+
+
+        return;
+
+      }
+
+
+      /* =========================
+         NORMAL WEBSITE
+      ========================= */
+
+      showStatus(
+        'Opening Google…'
+      );
+
+
+      const {error} =
+        await client.auth.signInWithOAuth({
+
+          provider:'google',
+
+          options:{
+            redirectTo:
+              window.location.origin +
+              '/index.html'
+          }
+
+        });
+
+
+      if(error){
+
+        showStatus(
+          error.message
+        );
+
+      }
+
+    }
+  );
+
+
+/* =====================================================
+   NORMAL LOGIN
+===================================================== */
+
+$('loginBtn')
+  .addEventListener(
+    'click',
+    async() => {
+
+      const email =
+        $('email')
+          .value
+          .trim();
+
+      const password =
+        $('password')
+          .value;
+
+
+      if(
+        !email ||
+        !password
+      ){
+
+        showStatus(
+          'Please enter your email and password.'
+        );
+
+        return;
+
+      }
+
+
+      showStatus(
+        'Logging in…'
+      );
+
+
+      const {error} =
+        await client.auth
+          .signInWithPassword({
+
+            email:
+              email,
+
+            password:
+              password
+
+          });
+
+
+      if(error){
+
+        showStatus(
+          error.message
+        );
+
+        return;
+
+      }
+
+
+      window.location.replace(
+        'index.html'
+      );
+
+    }
+  );
+
+
+/* =====================================================
+   CREATE ACCOUNT + EMAIL OTP
+===================================================== */
+
+$('signupBtn')
+  .addEventListener(
+    'click',
+    async() => {
+
+      const email =
+        $('email')
+          .value
+          .trim();
+
+      const password =
+        $('password')
+          .value;
+
+
+      /* =========================
+         VALIDATION
+      ========================= */
+
+      if(
+        !email ||
+        !password
+      ){
+
+        showStatus(
+          'Please enter an email and password.'
+        );
+
+        return;
+
+      }
+
+
+      if(
+        password.length < 6
+      ){
+
+        showStatus(
+          'Password must be at least 6 characters.'
+        );
+
+        return;
+
+      }
+
+
+      showStatus(
+        'Creating your account…'
+      );
+
+
+      /* =========================
+         CREATE SUPABASE ACCOUNT
+      ========================= */
+
+      const {data,error} =
+        await client.auth.signUp({
+
+          email:
+            email,
+
+          password:
+            password
+
+        });
+
+
+      if(error){
+
+        showStatus(
+          error.message
+        );
+
+        return;
+
+      }
+
+
+      /* =========================
+         IF SESSION EXISTS
+      ========================= */
+
+      if(data.session){
+
+        window.location.replace(
+          'index.html'
+        );
+
+        return;
+
+      }
+
+
+      /* =========================
+         OTP VERIFICATION REQUIRED
+      ========================= */
+
+      pendingSignupEmail =
+        email;
+
+
+      signupOtp.value =
+        '';
+
+
+      otpStatus.textContent =
+        'Check your inbox for the 6-digit code.';
+
+      otpStatus.style.color =
+        '#777';
+
+
+      showStatus(
+        ''
+      );
+
+
+      showCustomModal();
+
+    }
+  );
+
+
+/* =====================================================
+   FORGOT PASSWORD
+===================================================== */
+
+$('resetBtn')
+  .addEventListener(
+    'click',
+    async() => {
+
+      const email =
+        $('email')
+          .value
+          .trim();
+
+
+      if(!email){
+
+        showStatus(
+          'Enter your email address first.'
+        );
+
+        return;
+
+      }
+
+
+      showStatus(
+        'Sending password reset email…'
+      );
+
+
+      const {error} =
+        await client.auth
+          .resetPasswordForEmail(
+            email,
+            {
+              redirectTo:
+                window.location.origin +
+                '/reset-password.html'
+            }
+          );
+
+
+      if(error){
+
+        showStatus(
+          error.message
+        );
+
+        return;
+
+      }
+
+
+      showStatus(
+        'Password reset email sent. Check your inbox.',
+        true
+      );
+
+    }
+  );
+
+
+/* =====================================================
+   GUEST LOGIN
+   EXISTING FUNCTIONALITY — UNCHANGED
+===================================================== */
+
+$('guestBtn')
+  .addEventListener(
+    'click',
+    async() => {
+
+      const button =
+        $('guestBtn');
+
+
+      button.disabled =
+        true;
+
+
+      showStatus(
+        'Starting guest session…'
+      );
+
+
+      try{
+
+
+        /* =========================
+           ANDROID DEVICE ID
+        ========================= */
+
+        let deviceId =
+          String(
+            window.__JBStoreDeviceId ||
+            ''
+          ).trim();
+
+
+        if(
+          !/^[a-f0-9]{64}$/i.test(
+            deviceId
+          )
+        ){
+
+          try{
+
+            if(
+              window.JBStoreDevice &&
+              typeof
+                window.JBStoreDevice
+                  .getDeviceId
+                === 'function'
+            ){
+
+              deviceId =
+                String(
+                  window.JBStoreDevice
+                    .getDeviceId() ||
+                  ''
+                ).trim();
+
+            }
+
+          }catch(e){
+
+            console.error(
+              'Device ID bridge error:',
+              e
+            );
+
+          }
+
+        }
+
+
+        /* =========================
+           ANDROID GUEST LOGIN
+        ========================= */
+
+        if(
+          /^[a-f0-9]{64}$/i.test(
+            deviceId
+          )
+        ){
+
+          const response =
+            await fetch(
+              SUPABASE_URL +
+              '/functions/v1/guest-login',
+              {
+
+                method:'POST',
+
+                headers:{
+
+                  'Content-Type':
+                    'application/json',
+
+                  'apikey':
+                    SUPABASE_ANON,
+
+                  'Authorization':
+                    'Bearer ' +
+                    SUPABASE_ANON
+
+                },
+
+                body:
+                  JSON.stringify({
+
+                    device_id:
+                      deviceId
+
+                  })
+
+              }
+            );
+
+
+          const result =
+            await response
+              .json()
+              .catch(
+                () => ({})
+              );
+
+
+          if(
+            !response.ok ||
+            !result.access_token ||
+            !result.refresh_token
+          ){
+
+            console.error(
+              'Device guest login error:',
+              result
+            );
+
+
+            throw new Error(
+              result?.error ||
+              result?.message ||
+              'Guest login failed.'
+            );
+
+          }
+
+
+          const {
+            error:sessionError
+          } =
+            await client.auth
+              .setSession({
+
+                access_token:
+                  result.access_token,
+
+                refresh_token:
+                  result.refresh_token
+
+              });
+
+
+          if(sessionError){
+
+            throw sessionError;
+
+          }
+
+
+          window.location.replace(
+            'index.html'
+          );
+
+
+          return;
+
+        }
+
+
+        /* =========================
+           BROWSER GUEST LOGIN
+        ========================= */
+
+        const BROWSER_GUEST_ID_KEY =
+          'jbstore_browser_guest_device_id_v1';
+
+
+        let browserGuestId =
+          localStorage.getItem(
+            BROWSER_GUEST_ID_KEY
+          );
+
+
+        if(
+          !browserGuestId ||
+          browserGuestId.length < 16
+        ){
+
+          if(
+            window.crypto &&
+            typeof
+              crypto.randomUUID
+            === 'function'
+          ){
+
+            browserGuestId =
+              crypto.randomUUID();
+
+          }else{
+
+            browserGuestId =
+              Date.now()
+                .toString(36) +
+              '_' +
+              Math.random()
+                .toString(36)
+                .slice(2) +
+              '_' +
+              Math.random()
+                .toString(36)
+                .slice(2);
+
+          }
+
+
+          localStorage.setItem(
+            BROWSER_GUEST_ID_KEY,
+            browserGuestId
+          );
+
+        }
+
+
+        /* =========================
+           SHA-256
+        ========================= */
+
+        async function
+        sha256HexBrowser(value){
+
+          const data =
+            new TextEncoder()
+              .encode(value);
+
+
+          const hash =
+            await crypto.subtle.digest(
+              'SHA-256',
+              data
+            );
+
+
+          return Array.from(
+            new Uint8Array(hash)
+          )
+          .map(
+            byte =>
+              byte
+                .toString(16)
+                .padStart(2,'0')
+          )
+          .join('');
+
+        }
+
+
+        deviceId =
+          await sha256HexBrowser(
+            'JBSTORE_BROWSER_GUEST_V1:' +
+            browserGuestId
+          );
+
+
+        /* =========================
+           CALL GUEST FUNCTION
+        ========================= */
+
+        const browserGuestResponse =
+          await fetch(
+            SUPABASE_URL +
+            '/functions/v1/guest-login',
+            {
+
+              method:'POST',
+
+              headers:{
+
+                'Content-Type':
+                  'application/json',
+
+                'apikey':
+                  SUPABASE_ANON,
+
+                'Authorization':
+                  'Bearer ' +
+                  SUPABASE_ANON
+
+              },
+
+              body:
+                JSON.stringify({
+
+                  device_id:
+                    deviceId
+
+                })
+
+            }
+          );
+
+
+        const browserGuestResult =
+          await browserGuestResponse
+            .json()
+            .catch(
+              () => ({})
+            );
+
+
+        if(
+          !browserGuestResponse.ok ||
+          !browserGuestResult.access_token ||
+          !browserGuestResult.refresh_token
+        ){
+
+          console.error(
+            'Browser guest login error:',
+            browserGuestResult
+          );
+
+
+          throw new Error(
+            browserGuestResult?.error ||
+            browserGuestResult?.message ||
+            'Guest login failed.'
+          );
+
+        }
+
+
+        /* =========================
+           SAVE SESSION
+        ========================= */
+
+        const {
+          error:browserSessionError
+        } =
+          await client.auth.setSession({
+
+            access_token:
+              browserGuestResult.access_token,
+
+            refresh_token:
+              browserGuestResult.refresh_token
+
+          });
+
+
+        if(browserSessionError){
+
+          throw browserSessionError;
+
+        }
+
+
+        window.location.replace(
+          'index.html'
+        );
+
+
+      }catch(error){
+
+        console.error(
+          'Guest login failed:',
+          error
+        );
+
+
+        showStatus(
+          error?.message ||
+          'Guest login failed.'
+        );
+
+
+        button.disabled =
+          false;
+
+      }
+
+    }
+  );
 
 </script>
+
 </body>
 </html>
-
-
-
