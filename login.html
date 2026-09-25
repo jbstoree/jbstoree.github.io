@@ -549,7 +549,7 @@ input:focus{
 
   font:700 19px "Poppins",Arial,sans-serif;
 
-  margin:0 0 12px;
+  margin:0;
 }
 
 #signupOtp:focus{
@@ -562,6 +562,23 @@ input:focus{
   color:#aaa;
   letter-spacing:1px;
   font-size:12px;
+}
+
+
+/* =========================
+   SPAM/JUNK MESSAGE
+========================= */
+
+.otp-help{
+  margin:8px 2px 12px;
+  color:#999;
+  font:500 10px/1.5 "Poppins",Arial,sans-serif;
+  text-align:center;
+}
+
+.otp-help strong{
+  color:#8f7628;
+  font-weight:700;
 }
 
 
@@ -1063,19 +1080,31 @@ input:focus{
 
 
     <p>
-      We sent a 6-digit verification code
+      We sent an 8-digit verification code
       to your email address.
     </p>
 
+
+    <!-- 8-DIGIT OTP -->
 
     <input
       id="signupOtp"
       type="text"
       inputmode="numeric"
       autocomplete="one-time-code"
-      maxlength="6"
-      placeholder="Enter 6-digit code"
+      maxlength="8"
+      placeholder="Enter 8-digit code"
+      aria-label="8-digit verification code"
     >
+
+
+    <!-- SPAM / JUNK NOTICE -->
+
+    <div class="otp-help">
+      Didn't receive the code?
+      Please check your Gmail
+      <strong>Spam/Junk</strong> folder too.
+    </div>
 
 
     <button
@@ -1418,7 +1447,7 @@ async function sendSignupOtp(){
 
 
     otpStatus.textContent =
-      'A new code has been sent.';
+      'A new 8-digit code has been sent.';
 
     otpStatus.style.color =
       '#4d8a55';
@@ -1478,10 +1507,17 @@ verifyOtpBtn.addEventListener(
     }
 
 
-    if(!/^\d{6}$/.test(token)){
+    /* =========================
+       8-DIGIT VALIDATION
+    ========================= */
+
+    if(!/^\d{8}$/.test(token)){
 
       otpStatus.textContent =
-        'Please enter the 6-digit code.';
+        'Please enter the 8-digit code.';
+
+      otpStatus.style.color =
+        '#777';
 
       return;
 
@@ -1593,7 +1629,7 @@ signupOtp.addEventListener(
     signupOtp.value =
       signupOtp.value
         .replace(/\D/g,'')
-        .slice(0,6);
+        .slice(0,8);
 
   }
 );
@@ -2037,7 +2073,7 @@ $('signupBtn')
 
 
       otpStatus.textContent =
-        'Check your inbox for the 6-digit code.';
+        'Check your inbox for the 8-digit code.';
 
       otpStatus.style.color =
         '#777';
