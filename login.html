@@ -695,7 +695,7 @@ $('signupBtn').addEventListener('click', async () => {
 
   showStatus('Creating your account…');
 
-  const { data, error } = await supabase.auth.signUp({
+  const { data, error } = await client.auth.signUp({
     email: email,
     password: password,
     options: {
