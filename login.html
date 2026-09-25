@@ -14,6 +14,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
 *{
   box-sizing:border-box;
 }
@@ -784,11 +785,13 @@ input:focus{
     padding-top:11px;
   }
 }
+
 </style>
 
 
 <!-- MOBILE VIEWPORT -->
 <script>
+
 (function(){
 
   function forceViewport(){
@@ -820,6 +823,7 @@ input:focus{
   forceViewport();
 
 })();
+
 </script>
 
 </head>
@@ -1070,16 +1074,19 @@ input:focus{
   <div class="modal-box">
 
     <div class="modal-icon">
-      <i class="fa-regular fa-envelope"></i>
+      <i
+        id="modalIcon"
+        class="fa-regular fa-envelope"
+      ></i>
     </div>
 
 
-    <h2>
+    <h2 id="modalTitle">
       Verify Your Email
     </h2>
 
 
-    <p>
+    <p id="modalDescription">
       We sent an 8-digit verification code
       to your email address.
     </p>
@@ -1170,9 +1177,35 @@ let __jbRedirectingToHome =
   false;
 
 
+/* =====================================================
+   RECOVERY MODE
+===================================================== */
+
+/*
+ * IMPORTANT:
+ * When recovery OTP is verified, Supabase creates
+ * a session. We MUST NOT send that session to
+ * index.html.
+ *
+ * Instead we send the user to reset-password.html.
+ */
+
+let passwordRecoveryMode =
+  false;
+
+
 function goToHomeAfterLogin(){
 
   if(__jbRedirectingToHome){
+    return;
+  }
+
+  /*
+   * Do not redirect to home while password
+   * recovery is being processed.
+   */
+
+  if(passwordRecoveryMode){
     return;
   }
 
@@ -1188,8 +1221,34 @@ function goToHomeAfterLogin(){
 }
 
 
+/* =====================================================
+   AUTH STATE
+===================================================== */
+
 client.auth.onAuthStateChange(
   (event,session) => {
+
+    console.log(
+      'Supabase auth event:',
+      event
+    );
+
+
+    /*
+     * Password recovery:
+     * Do NOT go to index.html.
+     */
+
+    if(
+      passwordRecoveryMode &&
+      event === 'PASSWORD_RECOVERY' &&
+      session
+    ){
+
+      return;
+
+    }
+
 
     if(
       session &&
@@ -1218,12 +1277,22 @@ client.auth.onAuthStateChange(
     const {data} =
       await client.auth.getSession();
 
+
     if(
       data &&
       data.session
     ){
 
-      goToHomeAfterLogin();
+      /*
+       * Only redirect normal existing sessions.
+       * Recovery session is handled separately.
+       */
+
+      if(!passwordRecoveryMode){
+
+        goToHomeAfterLogin();
+
+      }
 
     }
 
@@ -1362,16 +1431,107 @@ const otpStatus =
     'otpStatus'
   );
 
+const modalTitle =
+  document.getElementById(
+    'modalTitle'
+  );
+
+const modalDescription =
+  document.getElementById(
+    'modalDescription'
+  );
+
+const modalIcon =
+  document.getElementById(
+    'modalIcon'
+  );
+
+
+/*
+ * This email is used for both:
+ *
+ * signup verification
+ * password recovery
+ */
 
 let pendingSignupEmail =
   '';
 
 
-function showCustomModal(){
+let pendingResetEmail =
+  '';
+
+
+/*
+ * signup or recovery
+ */
+
+let otpMode =
+  'signup';
+
+
+function showCustomModal(
+  mode='signup'
+){
+
+  otpMode =
+    mode;
+
+
+  /*
+   * SIGNUP MODE
+   */
+
+  if(mode === 'signup'){
+
+    modalTitle.textContent =
+      'Verify Your Email';
+
+    modalDescription.textContent =
+      'We sent an 8-digit verification code to your email address.';
+
+    modalIcon.className =
+      'fa-regular fa-envelope';
+
+    verifyOtpBtn.textContent =
+      'Verify & Continue';
+
+  }
+
+
+  /*
+   * PASSWORD RECOVERY MODE
+   */
+
+  if(mode === 'recovery'){
+
+    modalTitle.textContent =
+      'Reset Your Password';
+
+    modalDescription.textContent =
+      'We sent an 8-digit verification code to your email address.';
+
+    modalIcon.className =
+      'fa-solid fa-key';
+
+    verifyOtpBtn.textContent =
+      'Verify & Reset Password';
+
+  }
+
+
+  signupOtp.value =
+    '';
+
+
+  otpStatus.textContent =
+    '';
+
 
   customModal.classList.add(
     'active'
   );
+
 
   setTimeout(() => {
 
@@ -1408,12 +1568,43 @@ customModal.addEventListener(
 
 
 /* =====================================================
-   RESEND SIGNUP OTP
+   RESEND OTP
 ===================================================== */
 
-async function sendSignupOtp(){
+async function sendCurrentOtp(){
 
-  if(!pendingSignupEmail){
+  let email =
+    '';
+
+
+  /*
+   * SIGNUP
+   */
+
+  if(otpMode === 'signup'){
+
+    email =
+      pendingSignupEmail;
+
+  }
+
+
+  /*
+   * RECOVERY
+   */
+
+  if(otpMode === 'recovery'){
+
+    email =
+      pendingResetEmail;
+
+  }
+
+
+  if(!email){
+
+    otpStatus.textContent =
+      'Email address is missing. Please try again.';
 
     return;
 
@@ -1432,11 +1623,51 @@ async function sendSignupOtp(){
 
   try{
 
-    const {error} =
-      await client.auth.resend({
-        type:'signup',
-        email:pendingSignupEmail
-      });
+    let error =
+      null;
+
+
+    /*
+     * SIGNUP OTP RESEND
+     */
+
+    if(otpMode === 'signup'){
+
+      const result =
+        await client.auth.resend({
+          type:'signup',
+          email:email
+        });
+
+      error =
+        result.error;
+
+    }
+
+
+    /*
+     * RECOVERY OTP RESEND
+     *
+     * Password recovery uses
+     * resetPasswordForEmail again.
+     */
+
+    if(otpMode === 'recovery'){
+
+      const result =
+        await client.auth.resetPasswordForEmail(
+          email,
+          {
+            redirectTo:
+              window.location.origin +
+              '/reset-password.html'
+          }
+        );
+
+      error =
+        result.error;
+
+    }
 
 
     if(error){
@@ -1481,7 +1712,7 @@ async function sendSignupOtp(){
 
 resendOtpBtn.addEventListener(
   'click',
-  sendSignupOtp
+  sendCurrentOtp
 );
 
 
@@ -1497,19 +1728,32 @@ verifyOtpBtn.addEventListener(
       signupOtp.value.trim();
 
 
-    if(!pendingSignupEmail){
+    /*
+     * Determine email
+     */
+
+    const email =
+      otpMode === 'signup'
+        ? pendingSignupEmail
+        : pendingResetEmail;
+
+
+    if(!email){
 
       otpStatus.textContent =
         'Email address is missing. Please try again.';
+
+      otpStatus.style.color =
+        '#777';
 
       return;
 
     }
 
 
-    /* =========================
-       8-DIGIT VALIDATION
-    ========================= */
+    /*
+     * 8-DIGIT VALIDATION
+     */
 
     if(!/^\d{8}$/.test(token)){
 
@@ -1540,54 +1784,159 @@ verifyOtpBtn.addEventListener(
 
     try{
 
-      const {data,error} =
-        await client.auth.verifyOtp({
+      /*
+       * =================================================
+       * SIGNUP OTP
+       * =================================================
+       */
 
-          email:
-            pendingSignupEmail,
+      if(otpMode === 'signup'){
 
-          token:
-            token,
+        const {data,error} =
+          await client.auth.verifyOtp({
 
-          type:
-            'email'
+            email:
+              email,
 
-        });
+            token:
+              token,
+
+            type:
+              'email'
+
+          });
 
 
-      if(error){
+        if(error){
 
-        throw error;
+          throw error;
+
+        }
+
+
+        if(
+          !data ||
+          !data.session
+        ){
+
+          throw new Error(
+            'Verification succeeded, but no login session was returned.'
+          );
+
+        }
+
+
+        otpStatus.textContent =
+          'Email verified. Opening JB STORE…';
+
+        otpStatus.style.color =
+          '#4d8a55';
+
+
+        setTimeout(() => {
+
+          window.location.replace(
+            'index.html'
+          );
+
+        },250);
+
+
+        return;
 
       }
 
 
-      if(
-        !data ||
-        !data.session
-      ){
+      /*
+       * =================================================
+       * PASSWORD RECOVERY OTP
+       * =================================================
+       */
 
-        throw new Error(
-          'Verification succeeded, but no login session was returned.'
-        );
+      if(otpMode === 'recovery'){
+
+        /*
+         * IMPORTANT:
+         *
+         * Set this BEFORE verifyOtp().
+         * Supabase may fire PASSWORD_RECOVERY /
+         * SIGNED_IN immediately after the OTP is
+         * accepted.
+         *
+         * We do NOT want login.html's normal
+         * session handler sending the user to
+         * index.html.
+         */
+
+        passwordRecoveryMode =
+          true;
+
+
+        const {data,error} =
+          await client.auth.verifyOtp({
+
+            email:
+              email,
+
+            token:
+              token,
+
+            type:
+              'recovery'
+
+          });
+
+
+        if(error){
+
+          passwordRecoveryMode =
+            false;
+
+          throw error;
+
+        }
+
+
+        if(
+          !data ||
+          !data.session
+        ){
+
+          passwordRecoveryMode =
+            false;
+
+          throw new Error(
+            'Verification succeeded, but no recovery session was returned.'
+          );
+
+        }
+
+
+        otpStatus.textContent =
+          'Code verified. Opening password reset…';
+
+        otpStatus.style.color =
+          '#4d8a55';
+
+
+        /*
+         * Give Supabase a moment to persist
+         * the recovery session before opening
+         * reset-password.html.
+         */
+
+        setTimeout(() => {
+
+          window.location.replace(
+            'reset-password.html'
+          );
+
+        },300);
+
+
+        return;
 
       }
-
-
-      otpStatus.textContent =
-        'Email verified. Opening JB STORE…';
-
-      otpStatus.style.color =
-        '#4d8a55';
-
-
-      setTimeout(() => {
-
-        window.location.replace(
-          'index.html'
-        );
-
-      },250);
 
 
     }catch(error){
@@ -1596,6 +1945,10 @@ verifyOtpBtn.addEventListener(
         'OTP verification error:',
         error
       );
+
+
+      passwordRecoveryMode =
+        false;
 
 
       otpStatus.textContent =
@@ -2068,6 +2421,14 @@ $('signupBtn')
         email;
 
 
+      pendingResetEmail =
+        '';
+
+
+      otpMode =
+        'signup';
+
+
       signupOtp.value =
         '';
 
@@ -2084,7 +2445,9 @@ $('signupBtn')
       );
 
 
-      showCustomModal();
+      showCustomModal(
+        'signup'
+      );
 
     }
   );
@@ -2117,37 +2480,78 @@ $('resetBtn')
 
 
       showStatus(
-        'Sending password reset email…'
+        'Sending password reset code…'
       );
 
 
-      const {error} =
-        await client.auth
-          .resetPasswordForEmail(
-            email,
-            {
-              redirectTo:
-                window.location.origin +
-                '/reset-password.html'
-            }
-          );
+      try{
+
+        const {error} =
+          await client.auth
+            .resetPasswordForEmail(
+              email,
+              {
+                redirectTo:
+                  window.location.origin +
+                  '/reset-password.html'
+              }
+            );
 
 
-      if(error){
+        if(error){
+
+          throw error;
+
+        }
+
+
+        /*
+         * Save recovery email.
+         */
+
+        pendingResetEmail =
+          email;
+
+
+        pendingSignupEmail =
+          '';
+
+
+        /*
+         * Open recovery OTP popup.
+         */
 
         showStatus(
-          error.message
+          ''
         );
 
-        return;
+
+        showCustomModal(
+          'recovery'
+        );
+
+
+        otpStatus.textContent =
+          'Check your inbox for the 8-digit reset code.';
+
+        otpStatus.style.color =
+          '#777';
+
+
+      }catch(error){
+
+        console.error(
+          'Password reset error:',
+          error
+        );
+
+
+        showStatus(
+          error?.message ||
+          'Could not send password reset code.'
+        );
 
       }
-
-
-      showStatus(
-        'Password reset email sent. Check your inbox.',
-        true
-      );
 
     }
   );
