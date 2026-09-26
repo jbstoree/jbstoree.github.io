@@ -3,6 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!-- JB STORE: preserve the correct mobile/desktop layout after OAuth redirect.
+       Desktop screens are left completely unchanged. -->
+  <script>
+  (function () {
+    try {
+      var physicalWidth = Math.min(window.screen.width, window.screen.height);
+      var layoutWidth = window.innerWidth || document.documentElement.clientWidth || physicalWidth;
+      var isSmallDevice = physicalWidth <= 768;
+      var hasDesktopSizedViewport = layoutWidth > Math.max(physicalWidth * 1.5, 768);
+
+      if (isSmallDevice && hasDesktopSizedViewport) {
+        var viewport = document.querySelector('meta[name="viewport"]');
+        if (viewport) {
+          viewport.setAttribute(
+            'content',
+            'width=' + physicalWidth + ', initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
+          );
+        }
+      }
+    } catch (e) {}
+  })();
+  </script>
+
   <title>JB STORE</title>
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -261,9 +284,7 @@
 <!-- ===== HEADER ===== -->
 <header class="header">
   <div class="header-top">
-    <a href="index.html" class="logo">
-  <img src="images/jbstore-logo.png" alt="JB STORE">
-</a>
+    <a href="index.html" class="logo">JB <span>STORE</span></a>
     <a href="javascript:void(0)" class="account-link" id="headerAccountLink" aria-label="Login or Account">👤</a>
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
