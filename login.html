@@ -2024,226 +2024,70 @@ $('togglePassword')
 
 
 /* =====================================================
-   NATIVE ANDROID GOOGLE SIGN-IN
+   GOOGLE LOGIN
+   ANDROID APP: Supabase OAuth URL → Chrome → Google → jbstore://auth/callback
+   WEBSITE: Supabase OAuth → Google → index.html
 ===================================================== */
 
-window.__JBStoreNativeGoogleSignIn =
-  async function(
-    idToken,
-    nonce
-  ){
+$('googleBtn').addEventListener('click', async() => {
+
+  forceViewport();
+
+  const isAndroidApp = /JBStoreAndroidApp\/1/i.test(navigator.userAgent || '');
+
+  if(isAndroidApp){
+
+    showStatus('Opening Google accounts…');
 
     try{
+      if(window.JBStoreGoogleAuth && typeof window.JBStoreGoogleAuth.openOAuthUrl === 'function'){
 
-      showStatus(
-        'Signing in with Google…'
-      );
-
-
-      const {error} =
-        await client.auth.signInWithIdToken({
-
+        const {data,error} = await client.auth.signInWithOAuth({
           provider:'google',
-
-          token:idToken,
-
-          nonce:
-            nonce ||
-            undefined
-
+          options:{
+            redirectTo:'jbstore://auth/callback',
+            skipBrowserRedirect:true
+          }
         });
 
+        if(error){
+          console.error('Supabase Google OAuth error:', error);
+          showStatus(error.message || 'Google Sign-In failed.');
+          return;
+        }
 
-      if(error){
+        if(!data || !data.url){
+          showStatus('Could not start Google Sign-In.');
+          return;
+        }
 
-        console.error(
-          'Supabase native Google sign-in error:',
-          error
-        );
-
-        showStatus(
-          error.message ||
-          'Google Sign-In failed.'
-        );
-
+        window.JBStoreGoogleAuth.openOAuthUrl(data.url);
         return;
-
       }
 
-
-      window.location.replace(
-        'index.html'
-      );
-
+      showStatus('Google Sign-In could not start. Please reopen the app.');
 
     }catch(error){
-
-      console.error(
-        'Native Google sign-in error:',
-        error
-      );
-
-
-      showStatus(
-        error?.message ||
-        'Google Sign-In failed.'
-      );
-
+      console.error('Android Google OAuth error:', error);
+      showStatus(error?.message || 'Google Sign-In failed.');
     }
 
-  };
+    return;
+  }
 
+  showStatus('Opening Google…');
 
-window.__JBStoreNativeGoogleError =
-  function(message){
-
-    showStatus(
-      message ||
-      'Google Sign-In failed.'
-    );
-
-  };
-
-
-/* =====================================================
-   GOOGLE LOGIN BUTTON
-===================================================== */
-
-$('googleBtn')
-  .addEventListener(
-    'click',
-    async() => {
-
-      forceViewport();
-
-
-      const isAndroidApp =
-        /JBStoreAndroidApp\/1/i.test(
-          navigator.userAgent || ''
-        );
-
-
-      if(isAndroidApp){
-
-        showStatus(
-          'Opening your Google accounts…'
-        );
-
-
-        let started =
-          false;
-
-
-        try{
-
-          if(
-            window.JBStoreGoogleAuth &&
-            typeof
-              window.JBStoreGoogleAuth
-                .signInWithGoogle
-              === 'function'
-          ){
-
-            window.JBStoreGoogleAuth
-              .signInWithGoogle();
-
-            started =
-              true;
-
-          }
-
-        }catch(error){
-
-          console.error(
-            'Native Google bridge error:',
-            error
-          );
-
-        }
-
-
-        if(!started){
-
-          try{
-
-            const link =
-              document.createElement(
-                'a'
-              );
-
-            link.href =
-              'jbstore:native-google-signin';
-
-            link.style.display =
-              'none';
-
-            document.body.appendChild(
-              link
-            );
-
-            link.click();
-
-            setTimeout(
-              () => link.remove(),
-              0
-            );
-
-
-          }catch(error){
-
-            console.error(
-              'Native Google Sign-In fallback error:',
-              error
-            );
-
-
-            showStatus(
-              'Google Sign-In could not start. Please reopen the app.'
-            );
-
-          }
-
-        }
-
-
-        return;
-
-      }
-
-
-      /* =========================
-         NORMAL WEBSITE
-      ========================= */
-
-      showStatus(
-        'Opening Google…'
-      );
-
-
-      const {error} =
-        await client.auth.signInWithOAuth({
-
-          provider:'google',
-
-          options:{
-            redirectTo:
-              window.location.origin +
-              '/index.html'
-          }
-
-        });
-
-
-      if(error){
-
-        showStatus(
-          error.message
-        );
-
-      }
-
+  const {error} = await client.auth.signInWithOAuth({
+    provider:'google',
+    options:{
+      redirectTo:window.location.origin + '/index.html'
     }
-  );
+  });
+
+  if(error){
+    showStatus(error.message);
+  }
+});
 
 
 /* =====================================================
