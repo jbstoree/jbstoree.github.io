@@ -2035,6 +2035,33 @@ $('togglePassword')
    GOOGLE LOGIN
 ===================================================== */
 
+/* Wait briefly for the Android Google bridge on the very first app load.
+   The bridge can become available a moment after login.html starts, so
+   do not show the false 'Please reopen the app' message immediately. */
+async function waitForAndroidGoogleBridge(timeoutMs = 6000){
+
+  const startedAt = Date.now();
+
+  while((Date.now() - startedAt) < timeoutMs){
+
+    try{
+      if(
+        window.JBStoreGoogleAuth &&
+        typeof window.JBStoreGoogleAuth.openOAuthUrl === 'function'
+      ){
+        return true;
+      }
+    }catch(e){
+      console.error('Android Google bridge check error:', e);
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+
+  return false;
+}
+
+
 $('googleBtn').addEventListener('click', async() => {
 
   forceViewport();
@@ -2046,6 +2073,14 @@ $('googleBtn').addEventListener('click', async() => {
     showStatus('Opening Google accounts…');
 
     try{
+      const bridgeReady =
+        await waitForAndroidGoogleBridge(6000);
+
+      if(!bridgeReady){
+        showStatus('Google Sign-In could not start. Please reopen the app.');
+        return;
+      }
+
       if(window.JBStoreGoogleAuth && typeof window.JBStoreGoogleAuth.openOAuthUrl === 'function'){
 
         const {data,error} = await client.auth.signInWithOAuth({
