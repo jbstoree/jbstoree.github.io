@@ -2038,7 +2038,7 @@ $('togglePassword')
 /* Wait briefly for the Android Google bridge on the very first app load.
    The bridge can become available a moment after login.html starts, so
    do not show the false 'Please reopen the app' message immediately. */
-async function waitForAndroidGoogleBridge(timeoutMs = 6000){
+async function waitForAndroidGoogleBridge(timeoutMs = 12000){
 
   const startedAt = Date.now();
 
@@ -2047,7 +2047,11 @@ async function waitForAndroidGoogleBridge(timeoutMs = 6000){
     try{
       if(
         window.JBStoreGoogleAuth &&
-        typeof window.JBStoreGoogleAuth.openOAuthUrl === 'function'
+        typeof window.JBStoreGoogleAuth.openOAuthUrl === 'function' &&
+        (
+          typeof window.JBStoreGoogleAuth.isReady !== 'function' ||
+          window.JBStoreGoogleAuth.isReady() === true
+        )
       ){
         return true;
       }
@@ -2066,18 +2070,25 @@ $('googleBtn').addEventListener('click', async() => {
 
   forceViewport();
 
+  const button = $('googleBtn');
   const isAndroidApp = /JBStoreAndroidApp\/1/i.test(navigator.userAgent || '');
 
   if(isAndroidApp){
 
+    if(button.disabled){
+      return;
+    }
+
+    button.disabled = true;
     showStatus('Opening Google accounts…');
 
     try{
       const bridgeReady =
-        await waitForAndroidGoogleBridge(6000);
+        await waitForAndroidGoogleBridge(12000);
 
       if(!bridgeReady){
-        showStatus('Google Sign-In could not start. Please reopen the app.');
+        showStatus('Google Sign-In could not start. Please try again.');
+        button.disabled = false;
         return;
       }
 
@@ -2094,11 +2105,13 @@ $('googleBtn').addEventListener('click', async() => {
         if(error){
           console.error('Supabase Google OAuth error:', error);
           showStatus(error.message || 'Google Sign-In failed.');
+          button.disabled = false;
           return;
         }
 
         if(!data || !data.url){
           showStatus('Could not start Google Sign-In.');
+          button.disabled = false;
           return;
         }
 
@@ -2106,11 +2119,13 @@ $('googleBtn').addEventListener('click', async() => {
         return;
       }
 
-      showStatus('Google Sign-In could not start. Please reopen the app.');
+      showStatus('Google Sign-In could not start.');
+      button.disabled = false;
 
     }catch(error){
       console.error('Android Google OAuth error:', error);
       showStatus(error?.message || 'Google Sign-In failed.');
+      button.disabled = false;
     }
 
     return;
