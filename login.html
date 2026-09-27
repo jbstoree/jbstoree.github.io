@@ -32,7 +32,7 @@ body{
   font-family:"Poppins",Arial,sans-serif;
   display:flex;
   justify-content:center;
-  align-items:flex-start;
+  align-items:center;
   padding:12px 12px 18px;
   min-height:100vh;
   min-height:100dvh;
@@ -40,9 +40,7 @@ body{
 
 .page{
   width:100%;
-  max-width:520px;
-  min-height:calc(100vh - 30px);
-  min-height:calc(100dvh - 30px);
+  max-width:460px;
   display:flex;
   flex-direction:column;
 }
@@ -95,8 +93,6 @@ body{
 
 .login-card{
   position:relative;
-  flex:1 1 auto;
-  min-height:0;
   background:#fff;
   border:1px solid #e4d8ae;
   border-radius:25px;
@@ -398,8 +394,8 @@ input:focus{
 ========================= */
 
 .trust{
-  margin-top:auto;
-  padding-top:20px;
+  margin-top:22px;
+  padding-top:18px;
   display:grid;
   grid-template-columns:repeat(3,1fr);
   border-top:1px solid #eee6d2;
@@ -441,7 +437,7 @@ input:focus{
 .back{
   display:block;
   text-align:center;
-  margin:12px 0 0;
+  margin:14px 0 0;
   color:#777;
   text-decoration:none;
   font:500 10px "Poppins",Arial,sans-serif;
@@ -659,16 +655,120 @@ input:focus{
 }
 
 
-/* =========================
-   MOBILE
-========================= */
+/* =====================================================
+   DESKTOP — natural height, compact & centered
+===================================================== */
+
+@media(min-width:769px){
+
+  body{
+    padding:24px;
+    align-items:center;
+  }
+
+  .page{
+    max-width:440px;
+    /* No min-height — card sized to content */
+  }
+
+  .top{
+    padding:4px 0 12px;
+  }
+
+  .logo{
+    font-size:36px;
+  }
+
+  .tagline{
+    font-size:13px;
+  }
+
+  .gold-line{
+    margin-top:8px;
+  }
+
+  .login-card{
+    /* Natural height on desktop */
+    padding:32px 28px 26px;
+    padding-bottom:calc(26px + env(safe-area-inset-bottom, 0px));
+  }
+
+  h1{
+    font-size:28px;
+  }
+
+  .subtitle{
+    margin:8px auto 20px;
+    font-size:11.5px;
+  }
+
+  .google{
+    height:52px;
+  }
+
+  input{
+    height:49px;
+  }
+
+  .primary{
+    height:50px;
+    margin-top:14px;
+  }
+
+  .secondary{
+    height:48px;
+  }
+
+  .guest{
+    height:46px;
+  }
+
+  /* Tighter spacing on desktop */
+  .trust{
+    margin-top:20px;
+    padding-top:16px;
+  }
+
+  .back{
+    margin-top:12px;
+  }
+}
+
+
+/* =====================================================
+   MOBILE — fill viewport, safe area
+===================================================== */
+
+@media(max-width:768px){
+
+  body{
+    align-items:flex-start;
+    padding:10px 10px 14px;
+    min-height:100vh;
+    min-height:100dvh;
+  }
+
+  .page{
+    max-width:520px;
+    min-height:calc(100vh - 24px);
+    min-height:calc(100dvh - 24px);
+  }
+
+  .login-card{
+    flex:1 1 auto;
+    min-height:0;
+  }
+
+  .trust{
+    margin-top:auto;
+  }
+}
+
 
 @media(max-width:480px){
 
   body{
     padding:8px 10px 12px;
-    min-height:100vh;
-    min-height:100dvh;
   }
 
   .page{
@@ -738,7 +838,7 @@ input:focus{
 }
 
 
-@media(max-height:700px){
+@media(max-height:700px) and (max-width:768px){
 
   body{
     padding-top:5px;
@@ -1190,15 +1290,6 @@ let __jbRedirectingToHome =
    RECOVERY MODE
 ===================================================== */
 
-/*
- * IMPORTANT:
- * When recovery OTP is verified, Supabase creates
- * a session. We MUST NOT send that session to
- * index.html.
- *
- * Instead we send the user to reset-password.html.
- */
-
 let passwordRecoveryMode =
   false;
 
@@ -1208,11 +1299,6 @@ function goToHomeAfterLogin(){
   if(__jbRedirectingToHome){
     return;
   }
-
-  /*
-   * Do not redirect to home while password
-   * recovery is being processed.
-   */
 
   if(passwordRecoveryMode){
     return;
@@ -1242,11 +1328,6 @@ client.auth.onAuthStateChange(
       event
     );
 
-
-    /*
-     * Password recovery:
-     * Do NOT go to index.html.
-     */
 
     if(
       passwordRecoveryMode &&
@@ -1291,11 +1372,6 @@ client.auth.onAuthStateChange(
       data &&
       data.session
     ){
-
-      /*
-       * Only redirect normal existing sessions.
-       * Recovery session is handled separately.
-       */
 
       if(!passwordRecoveryMode){
 
@@ -1456,13 +1532,6 @@ const modalIcon =
   );
 
 
-/*
- * This email is used for both:
- *
- * signup verification
- * password recovery
- */
-
 let pendingSignupEmail =
   '';
 
@@ -1470,10 +1539,6 @@ let pendingSignupEmail =
 let pendingResetEmail =
   '';
 
-
-/*
- * signup or recovery
- */
 
 let otpMode =
   'signup';
@@ -1486,10 +1551,6 @@ function showCustomModal(
   otpMode =
     mode;
 
-
-  /*
-   * SIGNUP MODE
-   */
 
   if(mode === 'signup'){
 
@@ -1507,10 +1568,6 @@ function showCustomModal(
 
   }
 
-
-  /*
-   * PASSWORD RECOVERY MODE
-   */
 
   if(mode === 'recovery'){
 
@@ -1586,10 +1643,6 @@ async function sendCurrentOtp(){
     '';
 
 
-  /*
-   * SIGNUP
-   */
-
   if(otpMode === 'signup'){
 
     email =
@@ -1597,10 +1650,6 @@ async function sendCurrentOtp(){
 
   }
 
-
-  /*
-   * RECOVERY
-   */
 
   if(otpMode === 'recovery'){
 
@@ -1636,10 +1685,6 @@ async function sendCurrentOtp(){
       null;
 
 
-    /*
-     * SIGNUP OTP RESEND
-     */
-
     if(otpMode === 'signup'){
 
       const result =
@@ -1653,13 +1698,6 @@ async function sendCurrentOtp(){
 
     }
 
-
-    /*
-     * RECOVERY OTP RESEND
-     *
-     * Password recovery uses
-     * resetPasswordForEmail again.
-     */
 
     if(otpMode === 'recovery'){
 
@@ -1737,10 +1775,6 @@ verifyOtpBtn.addEventListener(
       signupOtp.value.trim();
 
 
-    /*
-     * Determine email
-     */
-
     const email =
       otpMode === 'signup'
         ? pendingSignupEmail
@@ -1759,10 +1793,6 @@ verifyOtpBtn.addEventListener(
 
     }
 
-
-    /*
-     * 8-DIGIT VALIDATION
-     */
 
     if(!/^\d{8}$/.test(token)){
 
@@ -1792,12 +1822,6 @@ verifyOtpBtn.addEventListener(
 
 
     try{
-
-      /*
-       * =================================================
-       * SIGNUP OTP
-       * =================================================
-       */
 
       if(otpMode === 'signup'){
 
@@ -1856,26 +1880,7 @@ verifyOtpBtn.addEventListener(
       }
 
 
-      /*
-       * =================================================
-       * PASSWORD RECOVERY OTP
-       * =================================================
-       */
-
       if(otpMode === 'recovery'){
-
-        /*
-         * IMPORTANT:
-         *
-         * Set this BEFORE verifyOtp().
-         * Supabase may fire PASSWORD_RECOVERY /
-         * SIGNED_IN immediately after the OTP is
-         * accepted.
-         *
-         * We do NOT want login.html's normal
-         * session handler sending the user to
-         * index.html.
-         */
 
         passwordRecoveryMode =
           true;
@@ -1927,12 +1932,6 @@ verifyOtpBtn.addEventListener(
         otpStatus.style.color =
           '#4d8a55';
 
-
-        /*
-         * Give Supabase a moment to persist
-         * the recovery session before opening
-         * reset-password.html.
-         */
 
         setTimeout(() => {
 
@@ -2034,10 +2033,6 @@ $('togglePassword')
 
 /* =====================================================
    GOOGLE LOGIN
-   ANDROID APP: Supabase OAuth URL → Chrome → Google → jbstore://auth/callback
-   WEBSITE: Supabase OAuth → Google → index.html?oauth=1
-   ✅ After OAuth, index.html detects ?oauth=1 and does a clean
-      location.replace('index.html') to reset Chrome's desktop-mode state.
 ===================================================== */
 
 $('googleBtn').addEventListener('click', async() => {
@@ -2088,10 +2083,6 @@ $('googleBtn').addEventListener('click', async() => {
 
   showStatus('Opening Google…');
 
-  // ✅ Redirect back to index.html with ?oauth=1 marker.
-  // The index.html page will detect ?oauth=1, wait for Supabase to
-  // consume the hash, then perform a clean location.replace('index.html')
-  // which resets Chrome's stuck desktop-mode flag.
   const {error} = await client.auth.signInWithOAuth({
     provider:'google',
     options:{
@@ -2194,10 +2185,6 @@ $('signupBtn')
           .value;
 
 
-      /* =========================
-         VALIDATION
-      ========================= */
-
       if(
         !email ||
         !password
@@ -2230,10 +2217,6 @@ $('signupBtn')
       );
 
 
-      /* =========================
-         CREATE SUPABASE ACCOUNT
-      ========================= */
-
       const {data,error} =
         await client.auth.signUp({
 
@@ -2257,10 +2240,6 @@ $('signupBtn')
       }
 
 
-      /* =========================
-         IF SESSION EXISTS
-      ========================= */
-
       if(data.session){
 
         window.location.replace(
@@ -2271,10 +2250,6 @@ $('signupBtn')
 
       }
 
-
-      /* =========================
-         OTP VERIFICATION REQUIRED
-      ========================= */
 
       pendingSignupEmail =
         email;
@@ -2364,10 +2339,6 @@ $('resetBtn')
         }
 
 
-        /*
-         * Save recovery email.
-         */
-
         pendingResetEmail =
           email;
 
@@ -2375,10 +2346,6 @@ $('resetBtn')
         pendingSignupEmail =
           '';
 
-
-        /*
-         * Open recovery OTP popup.
-         */
 
         showStatus(
           ''
@@ -2418,7 +2385,6 @@ $('resetBtn')
 
 /* =====================================================
    GUEST LOGIN
-   EXISTING FUNCTIONALITY — UNCHANGED
 ===================================================== */
 
 $('guestBtn')
@@ -2441,10 +2407,6 @@ $('guestBtn')
 
       try{
 
-
-        /* =========================
-           ANDROID DEVICE ID
-        ========================= */
 
         let deviceId =
           String(
@@ -2489,10 +2451,6 @@ $('guestBtn')
 
         }
 
-
-        /* =========================
-           ANDROID GUEST LOGIN
-        ========================= */
 
         if(
           /^[a-f0-9]{64}$/i.test(
@@ -2595,10 +2553,6 @@ $('guestBtn')
         }
 
 
-        /* =========================
-           BROWSER GUEST LOGIN
-        ========================= */
-
         const BROWSER_GUEST_ID_KEY =
           'jbstore_browser_guest_device_id_v1';
 
@@ -2649,10 +2603,6 @@ $('guestBtn')
         }
 
 
-        /* =========================
-           SHA-256
-        ========================= */
-
         async function
         sha256HexBrowser(value){
 
@@ -2688,10 +2638,6 @@ $('guestBtn')
             browserGuestId
           );
 
-
-        /* =========================
-           CALL GUEST FUNCTION
-        ========================= */
 
         const browserGuestResponse =
           await fetch(
@@ -2755,10 +2701,6 @@ $('guestBtn')
 
         }
 
-
-        /* =========================
-           SAVE SESSION
-        ========================= */
 
         const {
           error:browserSessionError
