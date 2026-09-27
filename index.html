@@ -2,12 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- ✅ OAUTH MOBILE VIEWPORT FIX: force fresh mobile viewport when returning from Google OAuth -->
-  <script>
-  if (location.search.indexOf('oauth=1') !== -1) {
-    document.write('<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">');
-  }
-  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <!-- JB STORE: preserve the correct mobile/desktop layout after OAuth redirect.
        Desktop screens are left completely unchanged. -->
@@ -260,27 +254,8 @@
   const SUPABASE_URL = 'https://iuucwxdkjqpecqwbsoyv.supabase.co';
   const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1dWN3eGRranFwZWNxd2Jzb3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0NjU4MTksImV4cCI6MjEwMzA0MTgxOX0.UPQ7jf3C_9DX9Jr1y-g6JIxBe2EHOlMAn4CZZyQgLDQ';
 
-  /* ✅ OAUTH MOBILE VIEWPORT FIX
-     Re-apply mobile viewport right after the session is confirmed,
-     because Chrome may still be stuck in desktop mode from accounts.google.com */
-  const fixViewportAfterOAuth = function(){
-    try {
-      var vp = document.querySelector('meta[name="viewport"]');
-      if (!vp) return;
-      var pw = Math.min(window.screen.width, window.screen.height);
-      var lw = window.innerWidth || document.documentElement.clientWidth || pw;
-      if (pw <= 768 && lw > Math.max(pw * 1.5, 768)) {
-        vp.setAttribute('content',
-          'width=' + pw + ', initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
-        document.body.style.zoom = '1';
-        setTimeout(function(){ document.body.style.zoom = ''; }, 50);
-      }
-    } catch (e) {}
-  };
-
   const unlock  = function(){
     document.documentElement.classList.remove('auth-pending');
-    fixViewportAfterOAuth();
   };
   const goLogin = function(){ window.location.replace('login.html'); };
 
@@ -1186,32 +1161,6 @@
   window.addEventListener('load', function () { setTimeout(applyPagination, 300); });
 
   console.log('✅ [top-deals] Pagination ready.');
-})();
-</script>
-
-<!-- ===== ✅ OAUTH MOBILE VIEWPORT FIX (final safety net) ===== -->
-<script>
-(function(){
-  function fixViewportAfterOAuth(){
-    try {
-      var vp = document.querySelector('meta[name="viewport"]');
-      if (!vp) return;
-      var pw = Math.min(window.screen.width, window.screen.height);
-      var lw = window.innerWidth || document.documentElement.clientWidth || pw;
-      if (pw <= 768 && lw > Math.max(pw * 1.5, 768)) {
-        vp.setAttribute('content',
-          'width=' + pw + ', initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
-        document.body.style.zoom = '1';
-        setTimeout(function(){ document.body.style.zoom = ''; }, 50);
-      }
-    } catch(e){}
-  }
-  window.addEventListener('pageshow', fixViewportAfterOAuth);
-  document.addEventListener('visibilitychange', function(){
-    if (!document.hidden) fixViewportAfterOAuth();
-  });
-  setTimeout(fixViewportAfterOAuth, 800);
-  setTimeout(fixViewportAfterOAuth, 2000);
 })();
 </script>
 
