@@ -32,13 +32,17 @@ body{
   font-family:"Poppins",Arial,sans-serif;
   display:flex;
   justify-content:center;
+  align-items:flex-start;
   padding:12px 12px 18px;
+  min-height:100vh;
+  min-height:100dvh;
 }
 
 .page{
   width:100%;
   max-width:520px;
   min-height:calc(100vh - 30px);
+  min-height:calc(100dvh - 30px);
   display:flex;
   flex-direction:column;
 }
@@ -98,6 +102,7 @@ body{
   border-radius:25px;
   box-shadow:0 12px 35px rgba(99,78,21,.10);
   padding:30px 24px 24px;
+  padding-bottom:calc(24px + env(safe-area-inset-bottom, 0px));
   display:flex;
   flex-direction:column;
   overflow:hidden;
@@ -662,10 +667,13 @@ input:focus{
 
   body{
     padding:8px 10px 12px;
+    min-height:100vh;
+    min-height:100dvh;
   }
 
   .page{
     min-height:calc(100vh - 20px);
+    min-height:calc(100dvh - 20px);
   }
 
   .top{
@@ -687,6 +695,7 @@ input:focus{
   .login-card{
     border-radius:23px;
     padding:27px 18px 18px;
+    padding-bottom:calc(18px + env(safe-area-inset-bottom, 0px));
   }
 
   h1{
