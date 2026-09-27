@@ -1164,5 +1164,38 @@
 })();
 </script>
 
+<!-- ===== ✅ OAUTH CLEAN REDIRECT (breaks Chrome stuck desktop mode) ===== -->
+<script>
+(function(){
+  if (location.search.indexOf('oauth=1') === -1) return;
+
+  console.log('[JB] OAuth callback detected — waiting for Supabase to process hash…');
+
+  var attempts = 0;
+  var maxAttempts = 25; // 25 × 150ms = ~3.75 seconds
+
+  var timer = setInterval(function(){
+    attempts++;
+
+    var hash = location.hash || '';
+    var hasToken = hash.indexOf('access_token') !== -1;
+
+    // Supabase has consumed and cleared the hash
+    if (!hasToken && attempts >= 3) {
+      clearInterval(timer);
+      console.log('[JB] Supabase done — clean redirect to reset Chrome desktop mode');
+      window.location.replace('index.html');
+      return;
+    }
+
+    if (attempts >= maxAttempts) {
+      clearInterval(timer);
+      console.log('[JB] Timeout — forcing clean redirect anyway');
+      window.location.replace('index.html');
+    }
+  }, 150);
+})();
+</script>
+
 </body>
 </html>
