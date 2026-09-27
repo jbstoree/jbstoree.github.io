@@ -2026,7 +2026,8 @@ $('togglePassword')
 /* =====================================================
    GOOGLE LOGIN
    ANDROID APP: Supabase OAuth URL → Chrome → Google → jbstore://auth/callback
-   WEBSITE: Supabase OAuth → Google → index.html
+   WEBSITE: Supabase OAuth → Google → index.html?oauth=1
+   ✅ FIX: ?oauth=1 forces fresh mobile viewport after OAuth return.
 ===================================================== */
 
 $('googleBtn').addEventListener('click', async() => {
@@ -2080,7 +2081,7 @@ $('googleBtn').addEventListener('click', async() => {
   const {error} = await client.auth.signInWithOAuth({
     provider:'google',
     options:{
-      redirectTo:window.location.origin + '/index.html'
+      redirectTo:window.location.origin + '/index.html?oauth=1'
     }
   });
 
