@@ -2102,7 +2102,14 @@ $('googleBtn').addEventListener('click', async() => {
           return;
         }
 
-        window.JBStoreGoogleAuth.openOAuthUrl(data.url);
+        // Use an Android custom-scheme handoff instead of depending on the
+        // JavaScript bridge being visible during the very first WebView load.
+        // MainActivity receives this URL and opens Chrome/default browser.
+        const browserOAuthUrl =
+          'jbstore:open-oauth?url=' +
+          encodeURIComponent(data.url);
+
+        window.location.href = browserOAuthUrl;
         return;
       }
 
