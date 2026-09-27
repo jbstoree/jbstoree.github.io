@@ -2037,8 +2037,9 @@ $('togglePassword')
 
 /* Wait briefly for the Android Google bridge on the very first app load.
    The bridge can become available a moment after login.html starts, so
-   do not show the false 'Please reopen the app' message immediately. */
-async function waitForAndroidGoogleBridge(timeoutMs = 6000){
+   we poll every 50ms for up to 10 seconds before giving up. This removes
+   the first-launch "Google Sign-In could not start" false negative. */
+async function waitForAndroidGoogleBridge(timeoutMs = 10000){
 
   const startedAt = Date.now();
 
@@ -2055,7 +2056,7 @@ async function waitForAndroidGoogleBridge(timeoutMs = 6000){
       console.error('Android Google bridge check error:', e);
     }
 
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 50));
   }
 
   return false;
@@ -2073,11 +2074,14 @@ $('googleBtn').addEventListener('click', async() => {
     showStatus('Opening Google accounts…');
 
     try{
+      // Wait up to 10s for the native bridge. On a cold app start the
+      // bridge is injected slightly after the first page paint, so give
+      // it a bit more room than the old 6s timeout.
       const bridgeReady =
-        await waitForAndroidGoogleBridge(6000);
+        await waitForAndroidGoogleBridge(10000);
 
       if(!bridgeReady){
-        showStatus('Google Sign-In could not start. Please reopen the app.');
+        showStatus('Google Sign-In is starting… please tap again.');
         return;
       }
 
