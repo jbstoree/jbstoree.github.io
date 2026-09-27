@@ -2026,8 +2026,8 @@ $('togglePassword')
 /* =====================================================
    GOOGLE LOGIN
    ANDROID APP: Supabase OAuth URL → Chrome → Google → jbstore://auth/callback
-   WEBSITE: Supabase OAuth → Google → index.html?oauth=1
-   ✅ FIX: ?oauth=1 forces fresh mobile viewport after OAuth return.
+   WEBSITE: Supabase OAuth → Google → auth-callback.html → index.html
+   ✅ FIX: intermediary page breaks Chrome's stuck desktop-mode state.
 ===================================================== */
 
 $('googleBtn').addEventListener('click', async() => {
@@ -2078,10 +2078,12 @@ $('googleBtn').addEventListener('click', async() => {
 
   showStatus('Opening Google…');
 
+  // ✅ NEW: redirect to auth-callback.html (intermediary page)
+  // This resets Chrome's desktop-mode flag that gets stuck after Google's page
   const {error} = await client.auth.signInWithOAuth({
     provider:'google',
     options:{
-      redirectTo:window.location.origin + '/index.html?oauth=1'
+      redirectTo: window.location.origin + '/auth-callback.html'
     }
   });
 
