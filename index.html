@@ -6,22 +6,51 @@
   <!-- JB STORE: preserve the correct mobile/desktop layout after OAuth redirect.
        Desktop screens are left completely unchanged. -->
   <script>
+  /* JB STORE MOBILE OAUTH FIX
+     Keep desktop unchanged. If a real mobile device returns from Google OAuth
+     with a desktop-sized CSS viewport, activate the existing mobile media rules
+     through a class as well. */
   (function () {
     try {
-      var physicalWidth = Math.min(window.screen.width, window.screen.height);
-      var layoutWidth = window.innerWidth || document.documentElement.clientWidth || physicalWidth;
-      var isSmallDevice = physicalWidth <= 768;
-      var hasDesktopSizedViewport = layoutWidth > Math.max(physicalWidth * 1.5, 768);
+      var ua = navigator.userAgent || '';
+      var touch = navigator.maxTouchPoints || 0;
+      var shortSide = Math.min(window.screen.width || 0, window.screen.height || 0);
+      var mobile = /Android|iPhone|iPad|iPod|Mobile/i.test(ua) || (touch > 1 && shortSide > 0 && shortSide <= 1100);
+      if (!mobile) return;
 
-      if (isSmallDevice && hasDesktopSizedViewport) {
-        var viewport = document.querySelector('meta[name="viewport"]');
-        if (viewport) {
-          viewport.setAttribute(
-            'content',
-            'width=' + physicalWidth + ', initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
-          );
+      document.documentElement.classList.add('jb-force-mobile');
+      var vp = document.querySelector('meta[name="viewport"]');
+      if (vp) vp.setAttribute('content','width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+
+      function applyMobileRules() {
+        if (document.getElementById('jb-force-mobile-css')) return;
+        var sheet = document.createElement('style');
+        sheet.id = 'jb-force-mobile-css';
+        var out = [];
+        for (var i = 0; i < document.styleSheets.length; i++) {
+          var ss = document.styleSheets[i];
+          try {
+            var rules = ss.cssRules || [];
+            for (var j = 0; j < rules.length; j++) {
+              var r = rules[j];
+              if (!r.cssRules || !r.conditionText || !/max-width\s*:\s*768px/i.test(r.conditionText)) continue;
+              for (var k = 0; k < r.cssRules.length; k++) {
+                var x = r.cssRules[k];
+                if (!x.selectorText) continue;
+                var selectors = x.selectorText.split(',');
+                var prefixed = selectors.map(function(sel){ return 'html.jb-force-mobile ' + sel.trim(); }).join(',\n');
+                out.push(prefixed + '{' + x.style.cssText + '}');
+              }
+            }
+          } catch (e) {}
+        }
+        if (out.length) {
+          sheet.textContent = out.join('\n');
+          document.head.appendChild(sheet);
         }
       }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyMobileRules);
+      else applyMobileRules();
     } catch (e) {}
   })();
   </script>
