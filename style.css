@@ -4561,3 +4561,345 @@
     font-size: 11.5px !important;
   }
 }
+
+/* ==========================================================
+   JB STORE — DESKTOP FLOATING BOTTOM NAV
+   MOBILE 768px AND BELOW = NO CHANGE
+   ========================================================== */
+
+@media (min-width: 769px) {
+
+    /* Main floating pill */
+    .bottom-bar {
+        position: fixed !important;
+
+        left: 50% !important;
+        bottom: 22px !important;
+
+        transform: translateX(-50%) !important;
+
+        width: min(650px, calc(100vw - 48px)) !important;
+        min-width: 0 !important;
+        max-width: 650px !important;
+
+        height: 64px !important;
+
+        padding: 6px 10px !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: rgba(255, 255, 255, 0.96) !important;
+
+        border: 1px solid rgba(212, 175, 55, 0.30) !important;
+        border-radius: 34px !important;
+
+        box-shadow:
+            0 18px 45px rgba(0, 0, 0, 0.14),
+            0 5px 18px rgba(212, 175, 55, 0.10),
+            inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+
+        backdrop-filter: blur(18px) saturate(160%) !important;
+        -webkit-backdrop-filter: blur(18px) saturate(160%) !important;
+
+        z-index: 99999 !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    /* Inner container */
+    .bottom-bar .bottom-container {
+        width: 100% !important;
+        height: 100% !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+
+        gap: 4px !important;
+
+        padding: 0 !important;
+        margin: 0 !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    /* Individual navigation items */
+    .bottom-bar .bottom-item {
+        position: relative !important;
+
+        flex: 1 1 0 !important;
+
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
+
+        height: 52px !important;
+
+        padding: 6px 12px !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        gap: 3px !important;
+
+        border: 0 !important;
+        outline: 0 !important;
+
+        border-radius: 26px !important;
+
+        background: transparent !important;
+
+        text-decoration: none !important;
+
+        transition:
+            background 0.22s ease,
+            transform 0.22s ease,
+            box-shadow 0.22s ease !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    /* Hover */
+    .bottom-bar .bottom-item:hover {
+        background: rgba(212, 175, 55, 0.09) !important;
+
+        transform: translateY(-2px) !important;
+
+        box-shadow:
+            0 5px 16px rgba(212, 175, 55, 0.08) !important;
+    }
+
+
+    /* Active item */
+    .bottom-bar .bottom-item.active {
+        background: rgba(212, 175, 55, 0.13) !important;
+    }
+
+
+    /* Icons */
+    .bottom-bar .bottom-icon {
+        display: flex !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        width: 27px !important;
+        height: 27px !important;
+
+        font-size: 21px !important;
+        line-height: 1 !important;
+
+        margin: 0 !important;
+
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+
+    /* Labels */
+    .bottom-bar .bottom-label {
+        display: block !important;
+
+        width: auto !important;
+        min-width: max-content !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        font-size: 11px !important;
+        line-height: 1.1 !important;
+
+        font-weight: 600 !important;
+
+        letter-spacing: 0.15px !important;
+
+        white-space: nowrap !important;
+
+        text-align: center !important;
+
+        color: #555 !important;
+    }
+
+
+    /* Home */
+    .bottom-bar #bottomHome .bottom-label {
+        color: #C49A20 !important;
+    }
+
+
+    /* Favorites */
+    .bottom-bar #bottomFav .bottom-label {
+        color: #ff1744 !important;
+    }
+
+
+    /* Call */
+    .bottom-bar .call-item .bottom-label {
+        color: #25D366 !important;
+    }
+
+
+    /* Cart */
+    .bottom-bar .cart-item .bottom-label {
+        color: #555 !important;
+    }
+
+
+    /* Cart + Favorites badges */
+    .bottom-bar .cart-badge,
+    .bottom-bar .fav-badge {
+        position: absolute !important;
+
+        top: 5px !important;
+        left: 50% !important;
+        right: auto !important;
+
+        margin-left: 8px !important;
+
+        width: 17px !important;
+        height: 17px !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        padding: 0 !important;
+
+        border-radius: 50% !important;
+
+        font-size: 9px !important;
+        line-height: 1 !important;
+        font-weight: 700 !important;
+
+        z-index: 20 !important;
+    }
+
+
+    /* Cart badge */
+    .bottom-bar .cart-badge {
+        background: linear-gradient(
+            135deg,
+            #D4AF37,
+            #F3CF55
+        ) !important;
+
+        color: #fff !important;
+    }
+
+
+    /* Favorites badge */
+    .bottom-bar .fav-badge {
+        background: #ff1744 !important;
+        color: #fff !important;
+    }
+
+
+    /* Remove old pseudo indicators */
+    .bottom-bar .bottom-item::before,
+    .bottom-bar .bottom-item::after,
+    .bottom-bar .bottom-item.active::before,
+    .bottom-bar .bottom-item.active::after {
+        display: none !important;
+    }
+}
+
+
+/* ==========================================================
+   LARGE DESKTOP — 1440px+
+   ========================================================== */
+
+@media (min-width: 1440px) {
+
+    .bottom-bar {
+        width: 700px !important;
+        max-width: 700px !important;
+
+        height: 68px !important;
+
+        bottom: 26px !important;
+
+        border-radius: 36px !important;
+    }
+
+    .bottom-bar .bottom-item {
+        height: 56px !important;
+
+        padding: 6px 18px !important;
+
+        border-radius: 28px !important;
+    }
+
+    .bottom-bar .bottom-icon {
+        width: 29px !important;
+        height: 29px !important;
+
+        font-size: 22px !important;
+    }
+
+    .bottom-bar .bottom-label {
+        font-size: 12px !important;
+    }
+
+    .bottom-bar .cart-badge,
+    .bottom-bar .fav-badge {
+        width: 18px !important;
+        height: 18px !important;
+
+        font-size: 9px !important;
+
+        margin-left: 9px !important;
+    }
+}
+
+
+/* ==========================================================
+   VERY LARGE SCREENS / TV
+   ========================================================== */
+
+@media (min-width: 1920px) {
+
+    .bottom-bar {
+        width: 760px !important;
+        max-width: 760px !important;
+
+        height: 74px !important;
+
+        bottom: 30px !important;
+
+        border-radius: 40px !important;
+    }
+
+    .bottom-bar .bottom-item {
+        height: 62px !important;
+
+        padding: 7px 22px !important;
+    }
+
+    .bottom-bar .bottom-icon {
+        width: 32px !important;
+        height: 32px !important;
+
+        font-size: 25px !important;
+    }
+
+    .bottom-bar .bottom-label {
+        font-size: 13px !important;
+    }
+
+    .bottom-bar .cart-badge,
+    .bottom-bar .fav-badge {
+        width: 20px !important;
+        height: 20px !important;
+
+        font-size: 10px !important;
+
+        margin-left: 10px !important;
+    }
+}
