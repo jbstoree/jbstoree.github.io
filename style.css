@@ -5461,37 +5461,7 @@ button {
     position: relative !important;
   }
 
-  .header .search input {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-
-    width: 100% !important;
-    height: 46px !important;
-
-    padding: 0 48px 0 18px !important;
-
-    border-radius: 24px !important;
-    box-sizing: border-box !important;
-  }
-
-  .header .search button {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-
-    position: absolute !important;
-    right: 5px !important;
-    top: 5px !important;
-
-    width: 36px !important;
-    height: 36px !important;
-
-    align-items: center !important;
-    justify-content: center !important;
-
-    border-radius: 50% !important;
-  }
+  
 
   .header .search-suggestions {
     position: absolute !important;
