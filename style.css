@@ -2300,6 +2300,9 @@
         overflow-x: hidden !important;
     }
 
+    .cart-item-total {
+        display: none !important;
+    }
     
 
     .header {
