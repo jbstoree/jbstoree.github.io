@@ -119,6 +119,7 @@
       overscroll-behavior: contain;
       overscroll-behavior-y: contain;
       touch-action: pan-y;
+      overscroll-behavior-inline: contain;
       z-index: 2147483646;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
       padding: 8px 0;
@@ -1179,11 +1180,40 @@
     positionPanel();
   }, true);
 
-  /* ✅ Panel lopala touchmove ayithe page ki propagate cheyyaku —
-     idi Android Chrome lo pull-to-refresh ni kuda block chestundi. */
-  suggestEl.addEventListener('touchmove', function (e) {
-    e.stopPropagation();
+  /* ✅ MOBILE: suggestions panel scroll boundary ni handle cheyyi.
+     Down-swipe at TOP / up-swipe at BOTTOM page ki vellakunda
+     Android Chrome/WebView pull-to-refresh ni block chestundi. */
+  var suggestionTouchY = 0;
+
+  suggestEl.addEventListener('touchstart', function (e) {
+    if (e.touches && e.touches.length) {
+      suggestionTouchY = e.touches[0].clientY;
+    }
   }, { passive: true });
+
+  suggestEl.addEventListener('touchmove', function (e) {
+    if (!e.touches || !e.touches.length) return;
+
+    var currentY = e.touches[0].clientY;
+    var deltaY = currentY - suggestionTouchY;
+    var atTop = suggestEl.scrollTop <= 0;
+    var atBottom =
+      suggestEl.scrollTop + suggestEl.clientHeight >= suggestEl.scrollHeight - 1;
+
+    /* Finger moving DOWN while panel is already at TOP:
+       browser must NOT pull/refresh the page. */
+    if (deltaY > 0 && atTop) {
+      e.preventDefault();
+    }
+
+    /* Finger moving UP while panel is already at BOTTOM:
+       browser must NOT pass the gesture to the page. */
+    if (deltaY < 0 && atBottom) {
+      e.preventDefault();
+    }
+
+    suggestionTouchY = currentY;
+  }, { passive: false });
 
   console.log('✅ [index-search] Suggestions ready (v3 — pull-to-refresh blocked).');
 })();
