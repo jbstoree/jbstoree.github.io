@@ -3867,9 +3867,9 @@
         }
 
         .hero-btns {
-            left: 24px;
-            bottom: 28px;
-        }
+    left: 24px;
+    bottom: 22%;
+}
 
         .categories,
         .filters,
