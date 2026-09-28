@@ -105,7 +105,7 @@
     .jb-delete-confirm{border:0;background:#c62828;color:#fff;}
   </style>
 
-  <!-- ✅ SEARCH SUGGESTIONS CSS -->
+  <!-- ✅ SEARCH SUGGESTIONS CSS (with scroll fix) -->
   <style>
     #searchSuggestions {
       position: fixed;
@@ -115,10 +115,12 @@
       border-radius: 16px;
       max-height: 60vh;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;   /* ✅ inner scroll chaining ni aapestundi */
+      touch-action: pan-y;            /* ✅ vertical scroll ni allow chestundi */
       z-index: 2147483646;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
       padding: 8px 0;
-      -webkit-overflow-scrolling: touch;
       box-sizing: border-box;
       font-family: 'Poppins', Arial, sans-serif;
     }
@@ -869,7 +871,7 @@
 })();
 </script>
 
-<!-- ===== ✅ SEARCH SUGGESTIONS LOGIC (v2 — individual products) ===== -->
+<!-- ===== ✅ SEARCH SUGGESTIONS LOGIC (v2 — individual products, scroll fixed) ===== -->
 <script>
 (function () {
   'use strict';
@@ -1146,11 +1148,16 @@
   window.addEventListener('resize', function () {
     if (suggestEl.classList.contains('show')) positionPanel();
   });
-  window.addEventListener('scroll', function () {
-    if (suggestEl.classList.contains('show')) positionPanel();
+
+  /* ✅ Panel lopala scroll chesthe reposition cheyyakoodadu.
+     Window/page scroll aithe maatrame reposition avvali. */
+  window.addEventListener('scroll', function (e) {
+    if (!suggestEl.classList.contains('show')) return;
+    if (e.target && (e.target === suggestEl || suggestEl.contains(e.target))) return;
+    positionPanel();
   }, true);
 
-  console.log('✅ [index-search] Suggestions ready (v2 — individual products).');
+  console.log('✅ [index-search] Suggestions ready (v2 — individual products, scroll fixed).');
 })();
 </script>
 
