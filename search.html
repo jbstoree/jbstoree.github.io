@@ -216,13 +216,6 @@
   var suggestEl = document.getElementById('searchSuggestions');
 
   var CAT_NAMES = { mobiles:'Mobiles', fridge:'Refrigerators', washing:'Washing Machines', ac:'AC', tv:'TV' };
-  var CAT_ALIASES = {
-    mobiles: ['mobiles','mobile','phone','smartphone','smartphones'],
-    fridge:  ['fridge','fridges','refrigerator','refrigerators'],
-    washing: ['washing','washer','washing machine','washing machines'],
-    ac:      ['ac','a/c','air conditioner','air conditioners'],
-    tv:      ['tv','tvs','television','televisions','smart tv','smart tvs']
-  };
 
   /* ============ 3. SET INPUT + TITLE ============ */
   if (brand && cat) {
@@ -240,20 +233,26 @@
       return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
     });
   }
+
+  /* ✅ Highlight EVERY typed word (not the whole phrase) */
   function highlight(text, q) {
     var safe = esc(text);
     if (!q) return safe;
+    var tokens = String(q).trim().split(/\s+/).filter(Boolean)
+      .map(function (t) { return t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); })
+      .sort(function (a, b) { return b.length - a.length; });
+    if (!tokens.length) return safe;
     try {
-      var escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      return safe.replace(new RegExp('(' + escaped + ')', 'ig'), '<strong>$1</strong>');
-    } catch(e) { return safe; }
+      return safe.replace(new RegExp('(' + tokens.join('|') + ')', 'ig'), '<strong>$1</strong>');
+    } catch (e) { return safe; }
   }
+
   window.__viewProduct = function (id) {
     try { localStorage.setItem('selectedProduct', JSON.stringify({ id: id })); } catch(e){}
     window.location.href = 'product.html?id=' + encodeURIComponent(id);
   };
 
-  /* ============ 5. FILTER GRID ============ */
+  /* ============ 5. NORMALIZE + MATCH ============ */
   function normalizeSearchText(value) {
     return String(value == null ? '' : value)
       .toLowerCase()
@@ -272,15 +271,13 @@
       p.variants.forEach(function (v) {
         if (!v) return;
         if (typeof v === 'string') parts.push(v);
-        else {
-          parts.push(v.label, v.name, v.model, v.title, v.color, v.storage, v.ram, v.rom);
-        }
+        else parts.push(v.label, v.name, v.model, v.title, v.color, v.storage, v.ram, v.rom);
       });
     }
     return parts.filter(Boolean).join(' ');
   }
 
-  /* Search across BRAND + PRODUCT NAME/MODEL + ID + CATEGORY + CONDITION + VARIANTS */
+  /* Everything searchable about one product, as a normalized string */
   function getProductSearchText(p) {
     if (!p) return '';
     return normalizeSearchText([
@@ -300,16 +297,51 @@
     ].filter(Boolean).join(' '));
   }
 
-  /* Every typed word must exist somewhere in the product data.
-     Example: "vivo y" matches brand="Vivo" + name/model="Y05". */
+  /* ✅ NEW MATCHING ENGINE
+     ------------------------------------------------------------------
+     1) Compact match  : query without spaces must appear inside product
+                         text without spaces.
+                         "vivo y"    -> "vivoy"     ✔ Vivo Y05 / Y21 / Y28
+                         "realme gt" -> "realmegt"  ✔ GT, GT 2, GT Neo, GT 5
+                         "iphone 16" -> "iphone16"  ✔ iPhone 16 / 16 Pro
+
+     2) Word match     : every typed word must consume a DIFFERENT product
+                         word (exact first, then prefix).
+                         "samsung s" -> samsung + s  ✔ Galaxy S24
+                                     -> samsung + s  ✘ Galaxy A54
+     ------------------------------------------------------------------ */
   function productMatchesQuery(p, query) {
     var q = normalizeSearchText(query);
     if (!q) return true;
+
     var searchable = getProductSearchText(p);
+    var qCompact   = q.replace(/\s+/g, '');
+    var sCompact   = searchable.replace(/\s+/g, '');
+
+    /* 1) compact substring match */
+    if (qCompact && sCompact.indexOf(qCompact) !== -1) return true;
+
+    /* 2) word-by-word match */
+    var words  = searchable.split(' ').filter(Boolean);
     var tokens = q.split(' ').filter(Boolean);
-    return tokens.every(function (token) {
-      return searchable.indexOf(token) !== -1;
-    });
+    var used   = [];
+
+    for (var i = 0; i < tokens.length; i++) {
+      var t = tokens[i];
+      var idx = -1;
+
+      for (var j = 0; j < words.length; j++) {
+        if (!used[j] && words[j] === t) { idx = j; break; }
+      }
+      if (idx === -1) {
+        for (var k = 0; k < words.length; k++) {
+          if (!used[k] && words[k].indexOf(t) === 0) { idx = k; break; }
+        }
+      }
+      if (idx === -1) return false;
+      used[idx] = true;
+    }
+    return true;
   }
 
   function filterProducts() {
@@ -323,9 +355,7 @@
       });
     }
     if (!term) return list;
-    return list.filter(function (p) {
-      return productMatchesQuery(p, term);
-    });
+    return list.filter(function (p) { return productMatchesQuery(p, term); });
   }
 
   /* ============ 6. RENDER GRID ============ */
@@ -379,90 +409,85 @@
   }
 
   /* ============ 7. SUGGESTIONS ============ */
-
-  /* Show INDIVIDUAL matching products instead of one Brand + Category group. */
   function getProductTitle(p) {
-    var brandText = String(p && p.brand || '').trim();
-    var nameText = String(
-      p && (p.name || p.modelName || p.model || p.productName || '') || ''
-    ).trim();
+    var brandText = String((p && p.brand) || '').trim();
+    var nameText  = String((p && (p.name || p.modelName || p.model || p.productName)) || '').trim();
 
     if (!nameText) return brandText || 'Product';
     if (!brandText) return nameText;
 
     var compactBrand = normalizeSearchText(brandText).replace(/\s+/g, '');
-    var compactName = normalizeSearchText(nameText).replace(/\s+/g, '');
-
-    /* Avoid "Vivo Vivo Y05" when name already contains the brand. */
+    var compactName  = normalizeSearchText(nameText).replace(/\s+/g, '');
     if (compactName.indexOf(compactBrand) === 0) return nameText;
     return brandText + ' ' + nameText;
   }
 
   function getProductModelText(p) {
-    var model = String(
-      p && (p.modelName || p.model || p.series || '') || ''
-    ).trim();
-    return model || String(p && p.name || '').trim();
+    var model = String((p && (p.modelName || p.model || p.series)) || '').trim();
+    return model || String((p && p.name) || '').trim();
   }
 
+  /* ✅ Returns EVERY matching product (not one brand group) */
   function buildSuggestions(text) {
     text = String(text || '').trim();
     if (!text) return [];
 
-    var all = window.__searchProducts || [];
-    var q = normalizeSearchText(text);
+    var all      = window.__searchProducts || [];
+    var q        = normalizeSearchText(text);
     var qCompact = q.replace(/\s+/g, '');
+    var out      = [];
 
-    return all.map(function (p, index) {
-      var searchable = getProductSearchText(p);
-      if (!productMatchesQuery(p, text)) return null;
+    for (var i = 0; i < all.length; i++) {
+      var p = all[i];
+      if (!productMatchesQuery(p, text)) continue;
 
-      var title = getProductTitle(p);
-      var titleNorm = normalizeSearchText(title);
-      var brandNorm = normalizeSearchText(p.brand);
-      var nameNorm = normalizeSearchText(p.name || p.modelName || p.model || p.productName);
-      var modelNorm = normalizeSearchText(getProductModelText(p));
+      var title      = getProductTitle(p);
+      var titleNorm  = normalizeSearchText(title);
+      var titleComp  = titleNorm.replace(/\s+/g, '');
+      var brandNorm  = normalizeSearchText(p.brand);
+      var nameNorm   = normalizeSearchText(p.name || p.modelName || p.model || p.productName || '');
+      var modelNorm  = normalizeSearchText(getProductModelText(p));
+
       var score = 0;
+      if (titleComp === qCompact)                score += 1000;
+      if (titleComp.indexOf(qCompact) === 0)     score += 600;
+      else if (titleComp.indexOf(qCompact) !== -1) score += 300;
+      if (titleNorm.indexOf(q) === 0)            score += 200;
+      if (nameNorm.indexOf(q) === 0)             score += 180;
+      if (modelNorm.indexOf(q) === 0)            score += 160;
+      if (brandNorm === q)                       score += 140;
+      else if (brandNorm.indexOf(q) === 0)       score += 90;
+      score += Math.max(0, 20 - i / 1000);       /* catalogue order = tie-break */
 
-      if (titleNorm.indexOf(q) === 0) score += 300;
-      else if (titleNorm.indexOf(q) !== -1) score += 180;
-      if (brandNorm.indexOf(q) === 0) score += 120;
-      if (nameNorm.indexOf(q) === 0) score += 160;
-      else if (nameNorm.indexOf(q) !== -1) score += 90;
-      if (modelNorm.indexOf(q) === 0) score += 140;
-      if (qCompact && searchable.replace(/\s+/g, '').indexOf(qCompact) !== -1) score += 40;
-      score += Math.max(0, 20 - index / 1000);
-
-      return {
+      out.push({
         id: p.id,
         brand: String(p.brand || '').trim(),
-        category: String(p.category || '').trim().toLowerCase(),
         categoryName: CAT_NAMES[String(p.category || '').trim().toLowerCase()] || String(p.category || '').trim(),
         image: p.image || (Array.isArray(p.images) ? p.images[0] : '') || '',
-        productName: p.name || p.modelName || p.model || p.productName || '',
         title: title,
-        model: getProductModelText(p),
         score: score
-      };
-    }).filter(Boolean)
-      .sort(function (a, b) {
-        return b.score - a.score || a.title.localeCompare(b.title);
-      })
-      ;
+      });
+    }
+
+    out.sort(function (a, b) {
+      return b.score - a.score || a.title.localeCompare(b.title);
+    });
+
+    return out;
   }
 
   /* ✅ FIXED POSITION HELPER */
   function positionSuggestions() {
     if (!inputEl || !suggestEl) return;
-    var rect = inputEl.getBoundingClientRect();
-    var top = rect.bottom + 6;
-    var left = Math.max(8, rect.left - 4);
+    var rect  = inputEl.getBoundingClientRect();
+    var top   = rect.bottom + 6;
+    var left  = Math.max(8, rect.left - 4);
     var width = Math.min(window.innerWidth - left - 8, rect.width + 8);
-    var maxH = Math.min(380, window.innerHeight - top - 20);
+    var maxH  = Math.min(380, window.innerHeight - top - 20);
 
-    suggestEl.style.top = top + 'px';
-    suggestEl.style.left = left + 'px';
-    suggestEl.style.width = width + 'px';
+    suggestEl.style.top      = top + 'px';
+    suggestEl.style.left     = left + 'px';
+    suggestEl.style.width    = width + 'px';
     suggestEl.style.maxHeight = maxH + 'px';
   }
 
@@ -480,7 +505,7 @@
     if (!text) { hideSuggestions(); return; }
 
     var results = buildSuggestions(text);
-    console.log('[search] Query:', text, '| Found:', results.length);
+    console.log('[search] Query:', text, '| Matches:', results.length);
 
     if (!results.length) {
       suggestEl.innerHTML = '<div class="search-no-result">No products found for "' + esc(text) + '"</div>';
@@ -496,18 +521,15 @@
           '</div>' +
           '<span class="suggestion-arrow">↗</span>';
         row.addEventListener('click', function () {
-          /* Clicked suggestion searches for that exact product title. */
           window.location.href = 'search.html?q=' + encodeURIComponent(item.title);
         });
         suggestEl.appendChild(row);
       });
     }
 
-    /* ✅ POSITION + FORCE VISIBLE */
     positionSuggestions();
     suggestEl.style.setProperty('display', 'block', 'important');
     suggestEl.classList.add('show');
-    console.log('[search] Panel opened. Top:', suggestEl.style.top, 'Left:', suggestEl.style.left, 'Width:', suggestEl.style.width);
   }
 
   /* ============ 8. EXPOSE FOR SUPABASE ============ */
@@ -560,9 +582,7 @@
   }
 
   document.addEventListener('click', function (e) {
-    if (inputEl && suggestEl &&
-        !inputEl.contains(e.target) &&
-        !suggestEl.contains(e.target)) {
+    if (inputEl && suggestEl && !inputEl.contains(e.target) && !suggestEl.contains(e.target)) {
       hideSuggestions();
     }
   });
