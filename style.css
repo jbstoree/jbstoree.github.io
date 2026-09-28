@@ -3878,11 +3878,12 @@ button {
   }
 
   .header {
-    height: 68px;
+    height: auto !important;
+    min-height: 0 !important;
     padding-left: 20px;
     padding-right: 20px;
     gap: 12px;
-  }
+}
 
   .logo {
     font-size: 19px;
