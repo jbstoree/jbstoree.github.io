@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Search | JB STORE</title>
+  <meta name="search-version" content="product-model-suggestions-v3">
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -252,8 +253,7 @@
     window.location.href = 'product.html?id=' + encodeURIComponent(id);
   };
 
-  /* ============ 5. SEARCH / FILTER ============ */
-
+  /* ============ 5. FILTER GRID ============ */
   function normalizeSearchText(value) {
     return String(value == null ? '' : value)
       .toLowerCase()
@@ -268,60 +268,21 @@
 
   function getProductVariantsText(p) {
     var parts = [];
-
     if (Array.isArray(p && p.variants)) {
       p.variants.forEach(function (v) {
         if (!v) return;
-
-        if (typeof v === 'string') {
-          parts.push(v);
-        } else {
-          parts.push(
-            v.label,
-            v.name,
-            v.model,
-            v.modelName,
-            v.title,
-            v.color,
-            v.storage,
-            v.ram,
-            v.rom
-          );
+        if (typeof v === 'string') parts.push(v);
+        else {
+          parts.push(v.label, v.name, v.model, v.title, v.color, v.storage, v.ram, v.rom);
         }
       });
     }
-
     return parts.filter(Boolean).join(' ');
   }
 
-  /* Brand is kept separate from model/name so:
-     "Vivo Y" = Vivo brand + Y inside the product model/name.
-     This prevents unrelated Vivo products whose description happens to
-     contain the letter "y" from appearing in the suggestions/count. */
-  function getProductBrandText(p) {
-    return normalizeSearchText([
-      p && p.brand
-    ].filter(Boolean).join(' '));
-  }
-
-  function getProductModelText(p) {
-    if (!p) return '';
-
-    return normalizeSearchText([
-      p.name,
-      p.model,
-      p.modelName,
-      p.model_name,
-      p.series,
-      p.productName,
-      p.product_name,
-      getProductVariantsText(p)
-    ].filter(Boolean).join(' '));
-  }
-
+  /* Search across BRAND + PRODUCT NAME/MODEL + ID + CATEGORY + CONDITION + VARIANTS */
   function getProductSearchText(p) {
     if (!p) return '';
-
     return normalizeSearchText([
       p.brand,
       p.name,
@@ -334,184 +295,96 @@
       p.id,
       p.category,
       p.condition,
+      p.description,
       getProductVariantsText(p)
     ].filter(Boolean).join(' '));
   }
 
+  /* Every typed word must exist somewhere in the product data.
+     Example: "vivo y" matches brand="Vivo" + name/model="Y05". */
   function productMatchesQuery(p, query) {
     var q = normalizeSearchText(query);
     if (!q) return true;
-
+    var searchable = getProductSearchText(p);
     var tokens = q.split(' ').filter(Boolean);
-    var brandText = getProductBrandText(p);
-    var modelText = getProductModelText(p);
-    var fullText = getProductSearchText(p);
-
-    /*
-      Brand + model search:
-      "vivo"          -> all Vivo products
-      "vivo y"        -> Vivo products whose model/name contains Y
-      "vivo y21"      -> Vivo Y21
-      "samsung s24"   -> Samsung S24
-    */
-    if (tokens.length > 1) {
-      var firstToken = tokens[0];
-
-      if (brandText.indexOf(firstToken) !== -1) {
-        return tokens.slice(1).every(function (token) {
-          return modelText.indexOf(token) !== -1;
-        });
-      }
-    }
-
-    /* Normal search when no brand+model structure is detected. */
     return tokens.every(function (token) {
-      return fullText.indexOf(token) !== -1;
+      return searchable.indexOf(token) !== -1;
     });
   }
 
   function filterProducts() {
     var list = window.__searchProducts || [];
-
     if (brand && cat) {
       var bl = normalizeSearchText(brand);
       var cl = normalizeSearchText(cat);
-
       return list.filter(function (p) {
         return normalizeSearchText(p.brand) === bl &&
                normalizeSearchText(p.category) === cl;
       });
     }
-
     if (!term) return list;
-
     return list.filter(function (p) {
       return productMatchesQuery(p, term);
     });
   }
 
   /* ============ 6. RENDER GRID ============ */
-
   function renderGrid() {
     if (!gridEl) return;
-
     var products = filterProducts();
     gridEl.innerHTML = '';
-
-    if (countEl) {
-      countEl.textContent = products.length + ' Products';
-    }
+    if (countEl) countEl.textContent = products.length + ' Products';
 
     if (!products.length) {
-      gridEl.innerHTML =
-        '<div class="search-empty">' +
-          '<div>🔍</div>' +
-          '<h2>No products found</h2>' +
-          '<p>Try another product or brand.</p>' +
-        '</div>';
+      gridEl.innerHTML = '<div class="search-empty"><div>🔍</div><h2>No products found</h2><p>Try another product or brand.</p></div>';
       return;
     }
 
     products.forEach(function (product) {
       var card = document.createElement('div');
       card.className = 'search-product-card';
-
-      var image =
-        product.image ||
-        (Array.isArray(product.images) && product.images[0]) ||
-        'images/placeholder.png';
-
-      var fv =
-        (Array.isArray(product.variants) && product.variants.length)
-          ? product.variants[0].label
-          : null;
-
-      var vh = fv
-        ? '<div class="search-variant-tag">📱 ' + esc(fv) + '</div>'
-        : '';
+      var image = product.image || (Array.isArray(product.images) && product.images[0]) || 'images/placeholder.png';
+      var fv = (Array.isArray(product.variants) && product.variants.length) ? product.variants[0].label : null;
+      var vh = fv ? '<div class="search-variant-tag">📱 ' + esc(fv) + '</div>' : '';
 
       card.innerHTML =
         '<div class="search-product-image">' +
-          '<span class="search-offer">' +
-            esc(product.discount || '') +
-          '</span>' +
+          '<span class="search-offer">' + esc(product.discount || '') + '</span>' +
           '<img src="' + esc(image) + '" alt="" onerror="this.onerror=null;this.style.opacity=.3">' +
         '</div>' +
-
         '<div class="search-product-info">' +
-          '<p class="search-brand">' +
-            esc(product.brand || '') +
-          '</p>' +
-
-          '<h3>' +
-            esc(product.name || product.modelName || product.model || product.productName || '') +
-          '</h3>' +
-
+          '<p class="search-brand">' + esc(product.brand || '') + '</p>' +
+          '<h3>' + esc(product.name || '') + '</h3>' +
           vh +
-
-          '<div class="search-rating">⭐ ' +
-            esc(product.rating || '4.5') +
-            ' <span>(' +
-            esc(product.reviews || 0) +
-            ')</span>' +
-          '</div>' +
-
-          '<p class="search-condition">' +
-            esc(product.condition || 'New') +
-          '</p>' +
-
+          '<div class="search-rating">⭐ ' + esc(product.rating || '4.5') + ' <span>(' + esc(product.reviews || 0) + ')</span></div>' +
+          '<p class="search-condition">' + esc(product.condition || 'New') + '</p>' +
           '<div class="search-price">' +
-            '<strong>₹' +
-              Number(product.price || 0).toLocaleString('en-IN') +
-            '</strong>' +
-            (
-              product.oldPrice
-                ? '<del>₹' +
-                  Number(product.oldPrice).toLocaleString('en-IN') +
-                  '</del>'
-                : ''
-            ) +
+            '<strong>₹' + Number(product.price || 0).toLocaleString('en-IN') + '</strong>' +
+            (product.oldPrice ? '<del>₹' + Number(product.oldPrice).toLocaleString('en-IN') + '</del>' : '') +
           '</div>' +
-
-          '<div class="deal-actions">' +
-            '<button type="button" class="view-details-btn">' +
-              '🔍 View Details' +
-            '</button>' +
-          '</div>' +
+          '<div class="deal-actions"><button type="button" class="view-details-btn">🔍 View Details</button></div>' +
         '</div>';
 
       card.addEventListener('click', function (e) {
         if (e.target.closest('button')) return;
         window.__viewProduct(product.id);
       });
-
       var btn = card.querySelector('.view-details-btn');
-
-      if (btn) {
-        btn.addEventListener('click', function (e) {
-          e.stopPropagation();
-          window.__viewProduct(product.id);
-        });
-      }
-
+      if (btn) btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        window.__viewProduct(product.id);
+      });
       gridEl.appendChild(card);
     });
   }
 
-  /* ============ 7. PRODUCT SUGGESTIONS ============ */
+  /* ============ 7. SUGGESTIONS ============ */
 
+  /* Show INDIVIDUAL matching products instead of one Brand + Category group. */
   function getProductTitle(p) {
     var brandText = String(p && p.brand || '').trim();
-
     var nameText = String(
-      p && (
-        p.name ||
-        p.modelName ||
-        p.model ||
-        p.productName ||
-        p.product_name ||
-        ''
-      ) || ''
+      p && (p.name || p.modelName || p.model || p.productName || '') || ''
     ).trim();
 
     if (!nameText) return brandText || 'Product';
@@ -521,134 +394,71 @@
     var compactName = normalizeSearchText(nameText).replace(/\s+/g, '');
 
     /* Avoid "Vivo Vivo Y05" when name already contains the brand. */
-    if (compactName.indexOf(compactBrand) === 0) {
-      return nameText;
-    }
-
+    if (compactName.indexOf(compactBrand) === 0) return nameText;
     return brandText + ' ' + nameText;
+  }
+
+  function getProductModelText(p) {
+    var model = String(
+      p && (p.modelName || p.model || p.series || '') || ''
+    ).trim();
+    return model || String(p && p.name || '').trim();
   }
 
   function buildSuggestions(text) {
     text = String(text || '').trim();
-
     if (!text) return [];
 
     var all = window.__searchProducts || [];
     var q = normalizeSearchText(text);
-    var tokens = q.split(' ').filter(Boolean);
-
-    /*
-      IMPORTANT:
-      Do NOT group suggestions by brand/category.
-      Every matching PRODUCT gets its own suggestion row.
-
-      Examples:
-        "Vivo"
-          -> Vivo Y21
-          -> Vivo Y17
-          -> Vivo Y60
-          -> Vivo V27
-          -> ...all Vivo products
-
-        "Vivo Y"
-          -> Vivo Y21
-          -> Vivo Y17
-          -> Vivo Y60
-          -> ...all Vivo models containing Y
-    */
-    var seen = {};
+    var qCompact = q.replace(/\s+/g, '');
 
     return all.map(function (p, index) {
+      var searchable = getProductSearchText(p);
       if (!productMatchesQuery(p, text)) return null;
-
-      var idKey = String(
-        p && p.id != null
-          ? p.id
-          : (getProductTitle(p) + '|' + String(index))
-      );
-
-      if (seen[idKey]) return null;
-      seen[idKey] = true;
 
       var title = getProductTitle(p);
       var titleNorm = normalizeSearchText(title);
-      var brandNorm = getProductBrandText(p);
-      var modelNorm = getProductModelText(p);
-
+      var brandNorm = normalizeSearchText(p.brand);
+      var nameNorm = normalizeSearchText(p.name || p.modelName || p.model || p.productName);
+      var modelNorm = normalizeSearchText(getProductModelText(p));
       var score = 0;
 
-      /* Brand-only query: put products from the matching brand first. */
-      if (tokens.length === 1 && brandNorm.indexOf(q) === 0) {
-        score += 300;
-      }
-
-      /* Brand + model query: prioritize exact model/name prefix matches. */
-      if (tokens.length > 1 && brandNorm.indexOf(tokens[0]) !== -1) {
-        score += 250;
-
-        var remainder = tokens.slice(1).join(' ');
-        if (remainder && modelNorm.indexOf(remainder) === 0) {
-          score += 250;
-        } else if (remainder && modelNorm.indexOf(remainder) !== -1) {
-          score += 150;
-        }
-      }
-
-      if (titleNorm.indexOf(q) === 0) {
-        score += 200;
-      } else if (titleNorm.indexOf(q) !== -1) {
-        score += 80;
-      }
-
-      /* Keep original product order as a small tie-breaker. */
+      if (titleNorm.indexOf(q) === 0) score += 300;
+      else if (titleNorm.indexOf(q) !== -1) score += 180;
+      if (brandNorm.indexOf(q) === 0) score += 120;
+      if (nameNorm.indexOf(q) === 0) score += 160;
+      else if (nameNorm.indexOf(q) !== -1) score += 90;
+      if (modelNorm.indexOf(q) === 0) score += 140;
+      if (qCompact && searchable.replace(/\s+/g, '').indexOf(qCompact) !== -1) score += 40;
       score += Math.max(0, 20 - index / 1000);
 
       return {
         id: p.id,
         brand: String(p.brand || '').trim(),
         category: String(p.category || '').trim().toLowerCase(),
-        categoryName:
-          CAT_NAMES[String(p.category || '').trim().toLowerCase()] ||
-          String(p.category || '').trim(),
-        image:
-          p.image ||
-          (Array.isArray(p.images) ? p.images[0] : '') ||
-          '',
-        productName:
-          p.name ||
-          p.modelName ||
-          p.model ||
-          p.productName ||
-          p.product_name ||
-          '',
+        categoryName: CAT_NAMES[String(p.category || '').trim().toLowerCase()] || String(p.category || '').trim(),
+        image: p.image || (Array.isArray(p.images) ? p.images[0] : '') || '',
+        productName: p.name || p.modelName || p.model || p.productName || '',
         title: title,
+        model: getProductModelText(p),
         score: score
       };
-    })
-    .filter(Boolean)
-    .sort(function (a, b) {
-      return b.score - a.score || a.title.localeCompare(b.title);
-    });
-    /* NO .slice(0, 12):
-       user asked to show ALL matching products in suggestions. */
+    }).filter(Boolean)
+      .sort(function (a, b) {
+        return b.score - a.score || a.title.localeCompare(b.title);
+      })
+      ;
   }
 
   /* ✅ FIXED POSITION HELPER */
-
   function positionSuggestions() {
     if (!inputEl || !suggestEl) return;
-
     var rect = inputEl.getBoundingClientRect();
     var top = rect.bottom + 6;
     var left = Math.max(8, rect.left - 4);
-    var width = Math.min(
-      window.innerWidth - left - 8,
-      rect.width + 8
-    );
-    var maxH = Math.min(
-      380,
-      window.innerHeight - top - 20
-    );
+    var width = Math.min(window.innerWidth - left - 8, rect.width + 8);
+    var maxH = Math.min(380, window.innerHeight - top - 20);
 
     suggestEl.style.top = top + 'px';
     suggestEl.style.left = left + 'px';
@@ -658,86 +468,46 @@
 
   function hideSuggestions() {
     if (!suggestEl) return;
-
     suggestEl.classList.remove('show');
-    suggestEl.style.setProperty(
-      'display',
-      'none',
-      'important'
-    );
+    suggestEl.style.setProperty('display', 'none', 'important');
   }
 
   function showSuggestions() {
     if (!inputEl || !suggestEl) return;
-
     var text = inputEl.value.trim();
     suggestEl.innerHTML = '';
 
-    if (!text) {
-      hideSuggestions();
-      return;
-    }
+    if (!text) { hideSuggestions(); return; }
 
     var results = buildSuggestions(text);
-
-    console.log(
-      '[search] Query:',
-      text,
-      '| Product suggestions:',
-      results.length
-    );
+    console.log('[search] Query:', text, '| Found:', results.length);
 
     if (!results.length) {
-      suggestEl.innerHTML =
-        '<div class="search-no-result">' +
-          'No products found for "' +
-          esc(text) +
-          '"' +
-        '</div>';
+      suggestEl.innerHTML = '<div class="search-no-result">No products found for "' + esc(text) + '"</div>';
     } else {
       results.forEach(function (item) {
         var row = document.createElement('div');
         row.className = 'search-suggestion';
-
         row.innerHTML =
-          '<img src="' +
-            esc(item.image) +
-            '" alt="" onerror="this.style.background=\'#f2efe9\'">' +
-
+          '<img src="' + esc(item.image) + '" alt="" onerror="this.style.background=\'#f2efe9\'">' +
           '<div class="suggestion-info">' +
-
-            '<div class="suggestion-name">' +
-              highlight(item.title, text) +
-            '</div>' +
-
-            '<div class="suggestion-category">' +
-              esc(item.brand + ' • ' + item.categoryName) +
-            '</div>' +
-
+            '<div class="suggestion-name">' + highlight(item.title, text) + '</div>' +
+            '<div class="suggestion-category">' + esc(item.brand + ' • ' + item.categoryName) + '</div>' +
           '</div>' +
-
           '<span class="suggestion-arrow">↗</span>';
-
         row.addEventListener('click', function () {
-          /* Clicking a suggestion opens the exact product search. */
-          window.location.href =
-            'search.html?q=' +
-            encodeURIComponent(item.title);
+          /* Clicked suggestion searches for that exact product title. */
+          window.location.href = 'search.html?q=' + encodeURIComponent(item.title);
         });
-
         suggestEl.appendChild(row);
       });
     }
 
+    /* ✅ POSITION + FORCE VISIBLE */
     positionSuggestions();
-
-    suggestEl.style.setProperty(
-      'display',
-      'block',
-      'important'
-    );
-
+    suggestEl.style.setProperty('display', 'block', 'important');
     suggestEl.classList.add('show');
+    console.log('[search] Panel opened. Top:', suggestEl.style.top, 'Left:', suggestEl.style.left, 'Width:', suggestEl.style.width);
   }
 
   /* ============ 8. EXPOSE FOR SUPABASE ============ */
