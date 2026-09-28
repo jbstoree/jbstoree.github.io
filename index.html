@@ -869,7 +869,7 @@
 })();
 </script>
 
-<!-- ===== ✅ SEARCH SUGGESTIONS LOGIC ===== -->
+<!-- ===== ✅ SEARCH SUGGESTIONS LOGIC (v2 — individual products) ===== -->
 <script>
 (function () {
   'use strict';
@@ -886,81 +886,180 @@
     ac:      'AC',
     tv:      'TV'
   };
-  var CAT_ALIASES = {
-    mobiles: ['mobiles','mobile','phone','smartphone','smartphones'],
-    fridge:  ['fridge','fridges','refrigerator','refrigerators'],
-    washing: ['washing','washer','washing machine','washing machines'],
-    ac:      ['ac','a/c','air conditioner','air conditioners'],
-    tv:      ['tv','tvs','television','televisions','smart tv','smart tvs']
-  };
 
+  /* ---------- helpers ---------- */
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
+  }
+
+  function highlight(text, q) {
+    var safe = esc(text);
+    if (!q) return safe;
+    var toks = String(q).trim().split(/\s+/).filter(Boolean)
+      .map(function (t) { return t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); })
+      .sort(function (a, b) { return b.length - a.length; });
+    if (!toks.length) return safe;
+    try {
+      return safe.replace(new RegExp('(' + toks.join('|') + ')', 'ig'), '<strong>$1</strong>');
+    } catch (e) { return safe; }
+  }
+
+  function normalize(v) {
+    return String(v == null ? '' : v)
+      .toLowerCase()
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/([a-z])([0-9])/gi, '$1 $2')
+      .replace(/([0-9])([a-z])/gi, '$1 $2')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  /* ---------- get products (from global allProducts) ---------- */
   function getProducts() {
     try {
-      if (typeof allProducts !== 'undefined' && Array.isArray(allProducts) && allProducts.length) {
+      if (typeof allProducts !== 'undefined' && Array.isArray(allProducts)) {
         return allProducts;
       }
     } catch (e) {}
     return [];
   }
 
-  function esc(s) {
-    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
-      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
-    });
+  /* ---------- field readers (any column name) ---------- */
+  function firstStr(o, keys) {
+    if (!o) return '';
+    for (var i = 0; i < keys.length; i++) {
+      var v = o[keys[i]];
+      if (v != null && String(v).trim()) return String(v).trim();
+    }
+    return '';
   }
-  function highlight(text, q) {
-    var safe = esc(text);
-    if (!q) return safe;
-    try {
-      var escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      return safe.replace(new RegExp('(' + escaped + ')', 'ig'), '<strong>$1</strong>');
-    } catch (e) { return safe; }
+  function getBrand(p) {
+    return firstStr(p, ['brand','brand_name','brandName','Brand','BrandName','manufacturer','company']);
+  }
+  function getName(p) {
+    return firstStr(p, ['name','Name','title','Title','product_name','productName','product_title','productTitle','model','Model','model_name','modelName','model_number','modelNumber','series','product']);
+  }
+  function getImg(p) {
+    if (!p) return '';
+    if (typeof p.image === 'string' && p.image) return p.image;
+    if (typeof p.img === 'string' && p.img) return p.img;
+    if (Array.isArray(p.images) && p.images.length) return p.images[0];
+    if (typeof p.images === 'string' && p.images) return p.images;
+    return '';
   }
 
+  /* ---------- deep collect all strings ---------- */
+  var SKIP = /^(image|img|images|photo|photos|thumbnail|thumb|icon|url|uri|link|href|src|video|video_url|pdf|file|path|filename|alt)$/i;
+  function collect(o, out, d) {
+    if (o == null || d > 5) return;
+    var t = typeof o;
+    if (t === 'string') { if (o.trim()) out.push(o); return; }
+    if (t === 'number' || t === 'boolean') { out.push(String(o)); return; }
+    if (Array.isArray(o)) { for (var i = 0; i < o.length; i++) collect(o[i], out, d + 1); return; }
+    if (t === 'object') {
+      for (var k in o) {
+        if (!Object.prototype.hasOwnProperty.call(o, k)) continue;
+        if (SKIP.test(k)) continue;
+        collect(o[k], out, d + 1);
+      }
+    }
+  }
+  function searchText(p) {
+    var a = []; collect(p, a, 0);
+    return normalize(a.join(' '));
+  }
+
+  /* ---------- matching engine (same as search.html) ---------- */
+  function matches(p, q) {
+    q = normalize(q);
+    if (!q) return true;
+    var s = searchText(p);
+    var qc = q.replace(/\s+/g, '');
+    var sc = s.replace(/\s+/g, '');
+    if (qc && sc.indexOf(qc) !== -1) return true;
+
+    var words = s.split(' ').filter(Boolean);
+    var toks  = q.split(' ').filter(Boolean);
+    var used  = [];
+    for (var i = 0; i < toks.length; i++) {
+      var t = toks[i], idx = -1;
+      for (var j = 0; j < words.length; j++) {
+        if (!used[j] && words[j] === t) { idx = j; break; }
+      }
+      if (idx === -1) {
+        for (var k = 0; k < words.length; k++) {
+          if (!used[k] && words[k].indexOf(t) === 0) { idx = k; break; }
+        }
+      }
+      if (idx === -1) return false;
+      used[idx] = true;
+    }
+    return true;
+  }
+
+  /* ---------- title ---------- */
+  function title(p) {
+    var b = getBrand(p), n = getName(p);
+    if (!n) return b || 'Product';
+    if (!b) return n;
+    var cb = normalize(b).replace(/\s+/g, '');
+    var cn = normalize(n).replace(/\s+/g, '');
+    if (cn.indexOf(cb) === 0) return n;
+    return b + ' ' + n;
+  }
+
+  /* ---------- build suggestions (individual products) ---------- */
   function buildSuggestions(text) {
-    text = String(text || '').trim().toLowerCase();
+    text = String(text || '').trim();
     if (!text) return [];
 
     var all = getProducts();
-    var combos = {};
+    var q  = normalize(text);
+    var qc = q.replace(/\s+/g, '');
+    var out = [];
 
-    all.forEach(function (p) {
-      var b = String(p.brand || '').trim();
-      var c = String(p.category || '').trim().toLowerCase();
-      if (!b || !c) return;
+    for (var i = 0; i < all.length; i++) {
+      var p = all[i];
+      if (!matches(p, text)) continue;
 
-      var bLower = b.toLowerCase();
-      var cName  = CAT_NAMES[c] || c;
-      var cAlias = CAT_ALIASES[c] || [c];
-      var nameLower = String(p.name || '').toLowerCase();
+      var tt = title(p);
+      var tn = normalize(tt);
+      var tc = tn.replace(/\s+/g, '');
+      var bn = normalize(getBrand(p));
+      var nn = normalize(getName(p));
 
-      var mBS = bLower.indexOf(text) === 0;
-      var mBC = bLower.indexOf(text) !== -1;
-      var mC  = cAlias.some(function (a) { return a.indexOf(text) !== -1; });
-      var mN  = nameLower.indexOf(text) !== -1;
+      var s = 0;
+      if (tc === qc) s += 1000;
+      if (tc.indexOf(qc) === 0) s += 600;
+      else if (tc.indexOf(qc) !== -1) s += 300;
+      if (tn.indexOf(q) === 0) s += 200;
+      if (nn.indexOf(q) === 0) s += 180;
+      if (bn === q) s += 140;
+      else if (bn.indexOf(q) === 0) s += 90;
+      s += Math.max(0, 20 - i / 1000);
 
-      if (!(mBC || mC || mN)) return;
+      out.push({
+        id: p.id,
+        brand: getBrand(p),
+        title: tt,
+        categoryName: CAT_NAMES[String(p.category || '').toLowerCase()] || String(p.category || ''),
+        image: getImg(p),
+        score: s
+      });
+    }
 
-      var key = bLower + '|' + c;
-      if (!combos[key]) {
-        combos[key] = {
-          brand: b, category: c, categoryName: cName,
-          image: p.image || (Array.isArray(p.images) ? p.images[0] : '') || '',
-          productName: p.name, score: 0
-        };
-      }
-      var s = combos[key].score;
-      if (mBS) s += 100; else if (mBC) s += 60;
-      if (mC) s += 40;
-      if (mN) s += 20;
-      combos[key].score = s;
+    out.sort(function (a, b) {
+      return b.score - a.score || a.title.localeCompare(b.title);
     });
 
-    return Object.keys(combos).map(function (k) { return combos[k]; })
-      .sort(function (a, b) { return b.score - a.score || a.brand.localeCompare(b.brand); })
-      .slice(0, 12);
+    return out.slice(0, 30);
   }
 
+  /* ---------- panel position / show / hide ---------- */
   function positionPanel() {
     var rect = inputEl.getBoundingClientRect();
     var top = rect.bottom + 6;
@@ -984,7 +1083,7 @@
     if (!text) { hidePanel(); return; }
 
     var results = buildSuggestions(text);
-    console.log('[index-search] query:', text, '| found:', results.length);
+    console.log('[index-search] query:', text, '| products:', getProducts().length, '| matches:', results.length);
 
     if (!results.length) {
       suggestEl.innerHTML = '<div class="search-no-result">No products found for "' + esc(text) + '"</div>';
@@ -995,15 +1094,13 @@
         row.innerHTML =
           '<img src="' + esc(item.image) + '" alt="" onerror="this.style.background=\'#f2efe9\'">' +
           '<div class="suggestion-info">' +
-            '<div class="suggestion-name">' + highlight(item.brand, text) + ' ' + esc(item.categoryName) + '</div>' +
-            '<div class="suggestion-category">' + esc(item.productName || (item.brand + ' ' + item.categoryName)) + '</div>' +
+            '<div class="suggestion-name">' + highlight(item.title, text) + '</div>' +
+            '<div class="suggestion-category">' + esc(item.brand + ' • ' + item.categoryName) + '</div>' +
           '</div>' +
           '<span class="suggestion-arrow">↗</span>';
 
         row.addEventListener('click', function () {
-          window.location.href =
-            'search.html?brand=' + encodeURIComponent(item.brand) +
-            '&category=' + encodeURIComponent(item.category);
+          window.location.href = 'search.html?q=' + encodeURIComponent(item.title);
         });
         suggestEl.appendChild(row);
       });
@@ -1020,6 +1117,7 @@
     }
   };
 
+  /* ---------- events ---------- */
   inputEl.addEventListener('input', showPanel);
   inputEl.addEventListener('focus', function () {
     if (inputEl.value.trim()) showPanel();
@@ -1052,7 +1150,7 @@
     if (suggestEl.classList.contains('show')) positionPanel();
   }, true);
 
-  console.log('✅ [index-search] Suggestions ready.');
+  console.log('✅ [index-search] Suggestions ready (v2 — individual products).');
 })();
 </script>
 
