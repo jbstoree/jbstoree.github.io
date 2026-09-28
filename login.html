@@ -1540,6 +1540,50 @@ const $ =
   id => document.getElementById(id);
 
 
+/* =====================================================
+   CHECK EXISTING ACCOUNT
+===================================================== */
+
+async function checkAccountExists(email){
+
+  const response =
+    await fetch(
+      SUPABASE_URL +
+      '/functions/v1/check-account-email',
+      {
+        method:'POST',
+
+        headers:{
+          'Content-Type':'application/json',
+          'apikey':SUPABASE_ANON,
+          'Authorization':'Bearer ' + SUPABASE_ANON
+        },
+
+        body:JSON.stringify({
+          email:email
+        })
+      }
+    );
+
+  const result =
+    await response
+      .json()
+      .catch(() => ({}));
+
+  if(!response.ok){
+
+    throw new Error(
+      result?.error ||
+      result?.message ||
+      'Unable to check account.'
+    );
+
+  }
+
+  return result.exists === true;
+}
+
+
 function showStatus(
   message,
   success=false
@@ -2476,6 +2520,46 @@ $('signupBtn')
 
         showStatus(
           'Password must be at least 6 characters.'
+        );
+
+        return;
+
+      }
+
+
+      showStatus(
+        'Checking account…'
+      );
+
+
+      try{
+
+        const exists =
+          await checkAccountExists(email);
+
+        if(exists){
+
+          showAlertModal(
+            'Account Already Exists',
+            'An account with this email already exists. Please use Login instead.',
+            'fa-solid fa-user-check'
+          );
+
+          showStatus('');
+
+          return;
+
+        }
+
+      }catch(checkError){
+
+        console.error(
+          'Account existence check error:',
+          checkError
+        );
+
+        showStatus(
+          'Unable to check account. Please try again.'
         );
 
         return;
