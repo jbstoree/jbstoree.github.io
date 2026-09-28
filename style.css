@@ -5321,6 +5321,27 @@
             flex-wrap: wrap;
         }
     }
+
+.cart-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+}
+
+.cart-item .bottom-icon {
+    position: relative !important;
+}
+
+.cart-item .bottom-label {
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    margin: 0 !important;
+}
+
   </style>
 </head>
 <body>
