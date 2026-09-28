@@ -803,10 +803,10 @@
     .hero-btns {
         position: absolute;
         bottom: 42%;
-        left: 5%;
+        left: 4%;
         z-index: 10;
         display: flex;
-        gap: 12px;
+        gap: 8px;
         flex-wrap: wrap;
     }
 
