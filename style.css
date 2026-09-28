@@ -4031,7 +4031,8 @@ button {
   }
 
   .header {
-    height: 74px;
+    height: auto !important;
+    min-height: 0 !important;
   }
 
   .menu {
