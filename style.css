@@ -5145,18 +5145,7 @@ button {
     font-size: 13px;
   }
 
-  .search input {
-    height: 28px;
-    font-size: 9px;
-    padding-inline: 7px;
-  }
-
-  .search button {
-    width: 29px;
-    flex-basis: 29px;
-    height: 28px;
-    font-size: 9px;
-  }
+  
 
   .menu {
     padding-inline: 4px;
