@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Search | JB STORE</title>
-  <meta name="search-version" content="product-model-suggestions-v3">
+  <meta name="search-version" content="product-model-suggestions-v4">
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -43,7 +43,6 @@
     .search-empty h2{color:#111;font-size:22px;font-weight:700;margin:0 0 8px}
     .search-empty p{color:#777;font-size:14px;margin:0}
 
-    /* ✅ SUGGESTIONS — FIXED POSITION, JS will set top/left */
     #searchSuggestions{
       position:fixed;
       display:none;
@@ -194,16 +193,23 @@
 (function () {
   'use strict';
 
-  /* ============ 1. COLLECT LOCAL PRODUCTS ============ */
+  /* ================================================================
+     1. COLLECT LOCAL PRODUCTS
+     ================================================================ */
   window.__searchProducts = [];
-  try { if (typeof mobileProducts !== 'undefined' && Array.isArray(mobileProducts)) window.__searchProducts = window.__searchProducts.concat(mobileProducts); } catch(e){}
-  try { if (typeof refrigeratorProducts !== 'undefined' && Array.isArray(refrigeratorProducts)) window.__searchProducts = window.__searchProducts.concat(refrigeratorProducts); } catch(e){}
-  try { if (typeof washingProducts !== 'undefined' && Array.isArray(washingProducts)) window.__searchProducts = window.__searchProducts.concat(washingProducts); } catch(e){}
-  try { if (typeof acProducts !== 'undefined' && Array.isArray(acProducts)) window.__searchProducts = window.__searchProducts.concat(acProducts); } catch(e){}
-  try { if (typeof tvProducts !== 'undefined' && Array.isArray(tvProducts)) window.__searchProducts = window.__searchProducts.concat(tvProducts); } catch(e){}
+  try { if (typeof mobileProducts        !== 'undefined' && Array.isArray(mobileProducts))        window.__searchProducts = window.__searchProducts.concat(mobileProducts);        } catch(e){}
+  try { if (typeof refrigeratorProducts  !== 'undefined' && Array.isArray(refrigeratorProducts))  window.__searchProducts = window.__searchProducts.concat(refrigeratorProducts);  } catch(e){}
+  try { if (typeof washingProducts       !== 'undefined' && Array.isArray(washingProducts))       window.__searchProducts = window.__searchProducts.concat(washingProducts);       } catch(e){}
+  try { if (typeof acProducts            !== 'undefined' && Array.isArray(acProducts))            window.__searchProducts = window.__searchProducts.concat(acProducts);            } catch(e){}
+  try { if (typeof tvProducts            !== 'undefined' && Array.isArray(tvProducts))            window.__searchProducts = window.__searchProducts.concat(tvProducts);            } catch(e){}
   console.log('[search] Local products:', window.__searchProducts.length);
+  if (window.__searchProducts[0]) {
+    console.log('[search] Sample product keys:', Object.keys(window.__searchProducts[0]));
+  }
 
-  /* ============ 2. PARAMS + DOM ============ */
+  /* ================================================================
+     2. PARAMS + DOM
+     ================================================================ */
   var params = new URLSearchParams(window.location.search);
   var term  = (params.get('q') || '').trim();
   var brand = (params.get('brand') || '').trim();
@@ -217,7 +223,9 @@
 
   var CAT_NAMES = { mobiles:'Mobiles', fridge:'Refrigerators', washing:'Washing Machines', ac:'AC', tv:'TV' };
 
-  /* ============ 3. SET INPUT + TITLE ============ */
+  /* ================================================================
+     3. SET INPUT + TITLE
+     ================================================================ */
   if (brand && cat) {
     var cName = CAT_NAMES[cat] || cat;
     if (inputEl) inputEl.value = brand + ' ' + cName;
@@ -227,14 +235,15 @@
     if (titleEl) titleEl.textContent = '"' + term + '"';
   }
 
-  /* ============ 4. HELPERS ============ */
+  /* ================================================================
+     4. HELPERS
+     ================================================================ */
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
       return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
     });
   }
 
-  /* ✅ Highlight EVERY typed word (not the whole phrase) */
   function highlight(text, q) {
     var safe = esc(text);
     if (!q) return safe;
@@ -252,7 +261,9 @@
     window.location.href = 'product.html?id=' + encodeURIComponent(id);
   };
 
-  /* ============ 5. NORMALIZE + MATCH ============ */
+  /* ================================================================
+     5. NORMALIZE
+     ================================================================ */
   function normalizeSearchText(value) {
     return String(value == null ? '' : value)
       .toLowerCase()
@@ -265,51 +276,75 @@
       .trim();
   }
 
-  function getProductVariantsText(p) {
-    var parts = [];
-    if (Array.isArray(p && p.variants)) {
-      p.variants.forEach(function (v) {
-        if (!v) return;
-        if (typeof v === 'string') parts.push(v);
-        else parts.push(v.label, v.name, v.model, v.title, v.color, v.storage, v.ram, v.rom);
-      });
+  /* ---------- FIRST NON-EMPTY STRING FROM A LIST OF KEYS ---------- */
+  function firstString(obj, keys) {
+    if (!obj) return '';
+    for (var i = 0; i < keys.length; i++) {
+      var v = obj[keys[i]];
+      if (v != null && String(v).trim()) return String(v).trim();
     }
-    return parts.filter(Boolean).join(' ');
+    return '';
   }
 
-  /* Everything searchable about one product, as a normalized string */
+  function getBrandText(p) {
+    return firstString(p, [
+      'brand', 'brand_name', 'brandName', 'Brand', 'BrandName',
+      'manufacturer', 'company', 'make', 'brands'
+    ]);
+  }
+
+  function getNameText(p) {
+    return firstString(p, [
+      'name', 'Name', 'title', 'Title',
+      'product_name', 'productName', 'product_title', 'productTitle',
+      'model', 'Model', 'model_name', 'modelName', 'model_number', 'modelNumber',
+      'series', 'Series', 'product'
+    ]);
+  }
+
+  /* ---------- RECURSIVE COLLECTOR ----------
+     Walk the ENTIRE product object and collect every string / number
+     value. This guarantees we never miss a model/name field no matter
+     what the Supabase column is called.                              */
+  var SKIP_KEYS = /^(image|img|images|photo|photos|thumbnail|thumb|icon|url|uri|link|href|src|video|video_url|pdf|file|path|filename|alt)$/i;
+
+  function collectSearchStrings(obj, out, depth) {
+    if (obj == null || depth > 5) return;
+    var t = typeof obj;
+    if (t === 'string') { if (obj.trim()) out.push(obj); return; }
+    if (t === 'number' || t === 'boolean') { out.push(String(obj)); return; }
+    if (Array.isArray(obj)) {
+      for (var i = 0; i < obj.length; i++) collectSearchStrings(obj[i], out, depth + 1);
+      return;
+    }
+    if (t === 'object') {
+      for (var k in obj) {
+        if (!Object.prototype.hasOwnProperty.call(obj, k)) continue;
+        if (SKIP_KEYS.test(k)) continue;
+        collectSearchStrings(obj[k], out, depth + 1);
+      }
+    }
+  }
+
   function getProductSearchText(p) {
     if (!p) return '';
-    return normalizeSearchText([
-      p.brand,
-      p.name,
-      p.model,
-      p.modelName,
-      p.model_name,
-      p.series,
-      p.productName,
-      p.product_name,
-      p.id,
-      p.category,
-      p.condition,
-      p.description,
-      getProductVariantsText(p)
-    ].filter(Boolean).join(' '));
+    var parts = [];
+    collectSearchStrings(p, parts, 0);
+    return normalizeSearchText(parts.join(' '));
   }
 
-  /* ✅ NEW MATCHING ENGINE
-     ------------------------------------------------------------------
-     1) Compact match  : query without spaces must appear inside product
-                         text without spaces.
-                         "vivo y"    -> "vivoy"     ✔ Vivo Y05 / Y21 / Y28
-                         "realme gt" -> "realmegt"  ✔ GT, GT 2, GT Neo, GT 5
-                         "iphone 16" -> "iphone16"  ✔ iPhone 16 / 16 Pro
+  /* ================================================================
+     6. MATCHING ENGINE
+     ----------------------------------------------------------------
+     1) Compact match : query with no spaces appears inside product
+                        text with no spaces.
+                        "vivo y"    -> "vivoy"     ✔ Vivo Y05 / Y21 / Y28
+                        "realme gt" -> "realmegt"  ✔ GT, GT 2, GT Neo, GT 5
+                        "iphone 16" -> "iphone16"  ✔ iPhone 16 / 16 Pro
 
-     2) Word match     : every typed word must consume a DIFFERENT product
-                         word (exact first, then prefix).
-                         "samsung s" -> samsung + s  ✔ Galaxy S24
-                                     -> samsung + s  ✘ Galaxy A54
-     ------------------------------------------------------------------ */
+     2) Word match    : every typed word must consume a DIFFERENT product
+                        word (exact first, then prefix).
+     ================================================================ */
   function productMatchesQuery(p, query) {
     var q = normalizeSearchText(query);
     if (!q) return true;
@@ -350,15 +385,27 @@
       var bl = normalizeSearchText(brand);
       var cl = normalizeSearchText(cat);
       return list.filter(function (p) {
-        return normalizeSearchText(p.brand) === bl &&
-               normalizeSearchText(p.category) === cl;
+        var pb = normalizeSearchText(getBrandText(p) || (p && p.brand) || '');
+        var pc = normalizeSearchText((p && p.category) || '');
+        return pb === bl && pc === cl;
       });
     }
     if (!term) return list;
     return list.filter(function (p) { return productMatchesQuery(p, term); });
   }
 
-  /* ============ 6. RENDER GRID ============ */
+  /* ================================================================
+     7. RENDER GRID
+     ================================================================ */
+  function firstImage(p) {
+    if (!p) return 'images/placeholder.png';
+    if (typeof p.image === 'string' && p.image) return p.image;
+    if (typeof p.img === 'string' && p.img) return p.img;
+    if (Array.isArray(p.images) && p.images.length) return p.images[0];
+    if (typeof p.images === 'string' && p.images) return p.images;
+    return 'images/placeholder.png';
+  }
+
   function renderGrid() {
     if (!gridEl) return;
     var products = filterProducts();
@@ -373,24 +420,30 @@
     products.forEach(function (product) {
       var card = document.createElement('div');
       card.className = 'search-product-card';
-      var image = product.image || (Array.isArray(product.images) && product.images[0]) || 'images/placeholder.png';
-      var fv = (Array.isArray(product.variants) && product.variants.length) ? product.variants[0].label : null;
+      var image = firstImage(product);
+      var fv = (Array.isArray(product.variants) && product.variants.length && product.variants[0] &&
+                (product.variants[0].label || product.variants[0].name)) || null;
       var vh = fv ? '<div class="search-variant-tag">📱 ' + esc(fv) + '</div>' : '';
+
+      var brandTxt = getBrandText(product) || product.brand || '';
+      var nameTxt  = getNameText(product)  || product.name  || '';
+      var priceTxt = Number(product.price || 0).toLocaleString('en-IN');
+      var oldPrice = product.oldPrice || product.old_price || product.mrp || 0;
 
       card.innerHTML =
         '<div class="search-product-image">' +
-          '<span class="search-offer">' + esc(product.discount || '') + '</span>' +
+          '<span class="search-offer">' + esc(product.discount || product.offer || '') + '</span>' +
           '<img src="' + esc(image) + '" alt="" onerror="this.onerror=null;this.style.opacity=.3">' +
         '</div>' +
         '<div class="search-product-info">' +
-          '<p class="search-brand">' + esc(product.brand || '') + '</p>' +
-          '<h3>' + esc(product.name || '') + '</h3>' +
+          '<p class="search-brand">' + esc(brandTxt) + '</p>' +
+          '<h3>' + esc(nameTxt) + '</h3>' +
           vh +
-          '<div class="search-rating">⭐ ' + esc(product.rating || '4.5') + ' <span>(' + esc(product.reviews || 0) + ')</span></div>' +
+          '<div class="search-rating">⭐ ' + esc(product.rating || '4.5') + ' <span>(' + esc(product.reviews || product.rating_count || 0) + ')</span></div>' +
           '<p class="search-condition">' + esc(product.condition || 'New') + '</p>' +
           '<div class="search-price">' +
-            '<strong>₹' + Number(product.price || 0).toLocaleString('en-IN') + '</strong>' +
-            (product.oldPrice ? '<del>₹' + Number(product.oldPrice).toLocaleString('en-IN') + '</del>' : '') +
+            '<strong>₹' + priceTxt + '</strong>' +
+            (oldPrice ? '<del>₹' + Number(oldPrice).toLocaleString('en-IN') + '</del>' : '') +
           '</div>' +
           '<div class="deal-actions"><button type="button" class="view-details-btn">🔍 View Details</button></div>' +
         '</div>';
@@ -408,26 +461,27 @@
     });
   }
 
-  /* ============ 7. SUGGESTIONS ============ */
+  /* ================================================================
+     8. SUGGESTIONS
+     ================================================================ */
   function getProductTitle(p) {
-    var brandText = String((p && p.brand) || '').trim();
-    var nameText  = String((p && (p.name || p.modelName || p.model || p.productName)) || '').trim();
+    var brandText = getBrandText(p);
+    var nameText  = getNameText(p);
 
     if (!nameText) return brandText || 'Product';
     if (!brandText) return nameText;
 
-    var compactBrand = normalizeSearchText(brandText).replace(/\s+/g, '');
-    var compactName  = normalizeSearchText(nameText).replace(/\s+/g, '');
-    if (compactName.indexOf(compactBrand) === 0) return nameText;
+    var cb = normalizeSearchText(brandText).replace(/\s+/g, '');
+    var cn = normalizeSearchText(nameText).replace(/\s+/g, '');
+    if (cn.indexOf(cb) === 0) return nameText;
     return brandText + ' ' + nameText;
   }
 
   function getProductModelText(p) {
-    var model = String((p && (p.modelName || p.model || p.series)) || '').trim();
-    return model || String((p && p.name) || '').trim();
+    var model = firstString(p, ['model_name','modelName','model','Model','model_number','modelNumber','series','Series']);
+    return model || getNameText(p);
   }
 
-  /* ✅ Returns EVERY matching product (not one brand group) */
   function buildSuggestions(text) {
     text = String(text || '').trim();
     if (!text) return [];
@@ -444,26 +498,26 @@
       var title      = getProductTitle(p);
       var titleNorm  = normalizeSearchText(title);
       var titleComp  = titleNorm.replace(/\s+/g, '');
-      var brandNorm  = normalizeSearchText(p.brand);
-      var nameNorm   = normalizeSearchText(p.name || p.modelName || p.model || p.productName || '');
+      var brandNorm  = normalizeSearchText(getBrandText(p));
+      var nameNorm   = normalizeSearchText(getNameText(p));
       var modelNorm  = normalizeSearchText(getProductModelText(p));
 
       var score = 0;
-      if (titleComp === qCompact)                score += 1000;
-      if (titleComp.indexOf(qCompact) === 0)     score += 600;
+      if (titleComp === qCompact)                  score += 1000;
+      if (titleComp.indexOf(qCompact) === 0)       score += 600;
       else if (titleComp.indexOf(qCompact) !== -1) score += 300;
-      if (titleNorm.indexOf(q) === 0)            score += 200;
-      if (nameNorm.indexOf(q) === 0)             score += 180;
-      if (modelNorm.indexOf(q) === 0)            score += 160;
-      if (brandNorm === q)                       score += 140;
-      else if (brandNorm.indexOf(q) === 0)       score += 90;
-      score += Math.max(0, 20 - i / 1000);       /* catalogue order = tie-break */
+      if (titleNorm.indexOf(q) === 0)              score += 200;
+      if (nameNorm.indexOf(q) === 0)               score += 180;
+      if (modelNorm.indexOf(q) === 0)              score += 160;
+      if (brandNorm === q)                         score += 140;
+      else if (brandNorm.indexOf(q) === 0)         score += 90;
+      score += Math.max(0, 20 - i / 1000);
 
       out.push({
         id: p.id,
-        brand: String(p.brand || '').trim(),
+        brand: getBrandText(p),
         categoryName: CAT_NAMES[String(p.category || '').trim().toLowerCase()] || String(p.category || '').trim(),
-        image: p.image || (Array.isArray(p.images) ? p.images[0] : '') || '',
+        image: firstImage(p),
         title: title,
         score: score
       });
@@ -476,7 +530,6 @@
     return out;
   }
 
-  /* ✅ FIXED POSITION HELPER */
   function positionSuggestions() {
     if (!inputEl || !suggestEl) return;
     var rect  = inputEl.getBoundingClientRect();
@@ -485,9 +538,9 @@
     var width = Math.min(window.innerWidth - left - 8, rect.width + 8);
     var maxH  = Math.min(380, window.innerHeight - top - 20);
 
-    suggestEl.style.top      = top + 'px';
-    suggestEl.style.left     = left + 'px';
-    suggestEl.style.width    = width + 'px';
+    suggestEl.style.top       = top + 'px';
+    suggestEl.style.left      = left + 'px';
+    suggestEl.style.width     = width + 'px';
     suggestEl.style.maxHeight = maxH + 'px';
   }
 
@@ -505,7 +558,7 @@
     if (!text) { hideSuggestions(); return; }
 
     var results = buildSuggestions(text);
-    console.log('[search] Query:', text, '| Matches:', results.length);
+    console.log('[search] Query:', JSON.stringify(text), '| Total products:', (window.__searchProducts||[]).length, '| Matches:', results.length);
 
     if (!results.length) {
       suggestEl.innerHTML = '<div class="search-no-result">No products found for "' + esc(text) + '"</div>';
@@ -532,19 +585,55 @@
     suggestEl.classList.add('show');
   }
 
-  /* ============ 8. EXPOSE FOR SUPABASE ============ */
+  /* ================================================================
+     9. MERGE SUPABASE DATA (do NOT replace local)
+     ================================================================ */
+  function productKey(p) {
+    var name = normalizeSearchText((getBrandText(p) || '') + ' ' + (getNameText(p) || ''));
+    if (name) return 'nm:' + name;
+    if (p && p.id != null) return 'id:' + String(p.id);
+    return 'rnd:' + Math.random();
+  }
+
   window.__setAllProducts = function (data) {
-    if (Array.isArray(data) && data.length) {
-      window.__searchProducts = data;
-      console.log('✅ [search] Supabase products set:', data.length);
-      renderGrid();
+    if (!Array.isArray(data) || !data.length) return;
+
+    console.log('[search] Supabase returned:', data.length, 'products. Sample keys:', Object.keys(data[0]));
+
+    var existing = window.__searchProducts || [];
+    var seen = {};
+    var merged = [];
+
+    /* remote first (priority) */
+    data.forEach(function (p) {
+      var k = productKey(p);
+      if (!seen[k]) { seen[k] = true; merged.push(p); }
+    });
+    /* then local, only if not duplicated */
+    existing.forEach(function (p) {
+      var k = productKey(p);
+      if (!seen[k]) { seen[k] = true; merged.push(p); }
+    });
+
+    window.__searchProducts = merged;
+    console.log('✅ [search] Products merged →', merged.length, 'total');
+
+    renderGrid();
+
+    /* if user is currently typing, refresh the suggestion panel */
+    if (inputEl && inputEl.value.trim() && suggestEl && suggestEl.classList.contains('show')) {
+      showSuggestions();
     }
   };
 
-  /* ============ 9. INITIAL ============ */
+  /* ================================================================
+     10. INITIAL RENDER
+     ================================================================ */
   renderGrid();
 
-  /* ============ 10. SUPABASE FETCH ============ */
+  /* ================================================================
+     11. SUPABASE FETCH
+     ================================================================ */
   try {
     if (typeof supabase !== 'undefined') {
       var sb = supabase.createClient(
@@ -553,14 +642,19 @@
       );
       sb.from('products').select('*').order('id', { ascending: true })
         .then(function (res) {
-          if (res.error) return console.warn('[search] fetch error:', res.error.message);
+          if (res.error) { console.warn('[search] fetch error:', res.error.message); return; }
           if (res.data && res.data.length) window.__setAllProducts(res.data);
+          else console.warn('[search] Supabase returned empty.');
         })
         .catch(function (e) { console.warn('[search] fetch failed:', e); });
+    } else {
+      console.warn('[search] supabase SDK not loaded — using local products only.');
     }
   } catch (e) { console.warn('[search] Supabase init error:', e); }
 
-  /* ============ 11. BIND EVENTS ============ */
+  /* ================================================================
+     12. BIND EVENTS
+     ================================================================ */
   if (inputEl) {
     inputEl.addEventListener('input', showSuggestions);
     inputEl.addEventListener('focus', function () { if (inputEl.value.trim()) showSuggestions(); });
@@ -589,6 +683,23 @@
 
   window.addEventListener('resize', function () { if (suggestEl && suggestEl.classList.contains('show')) positionSuggestions(); });
   window.addEventListener('scroll', function () { if (suggestEl && suggestEl.classList.contains('show')) positionSuggestions(); }, true);
+
+  /* ================================================================
+     13. DEBUG HELPER  →  open DevTools and type:
+         __debugSearch('vivo y')
+     ================================================================ */
+  window.__debugSearch = function (q) {
+    var all = window.__searchProducts || [];
+    var hits = all.filter(function (p) { return productMatchesQuery(p, q); });
+    console.log('=========================================');
+    console.log('Query:', JSON.stringify(q));
+    console.log('Total products:', all.length);
+    console.log('Matches:', hits.length);
+    console.log('Searchable text of first product:', getProductSearchText(all[0]));
+    console.log('Titles matched:', hits.slice(0, 20).map(getProductTitle));
+    console.log('=========================================');
+    return hits;
+  };
 
   console.log('✅ [search] Ready. Total:', (window.__searchProducts || []).length);
 })();
