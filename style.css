@@ -2359,6 +2359,11 @@
             font-size: 10px;
         }
 
+      .search {
+    margin-bottom: 8px !important;
+  }
+    
+
         .menu-drawer {
     width: 50vw !important;
     max-width: 50vw !important;
