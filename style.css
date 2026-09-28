@@ -2525,42 +2525,30 @@
         }
 
         .hero-btns {
-            bottom: 42%;
-            left: 4%;
-            gap: 8px;
-        }
+    left: 4%;
+    right: auto;
+    bottom: 30% !important;
+    width: auto;
+    max-width: none;
+    transform: none;
+    display: flex;
+    gap: 7px;
+}
 
-        .gold-btn,
-        .line-btn {
-            flex: 1;
-            padding: 6px 9px !important;
-            font-size: 6.5px !important;
-            justify-content: center;
-            min-width: 60px !important;
-            text-decoration: none;
-            border-radius: 25px !important;
-        }
-
-        .gold-btn {
-            color: #FFFFFF;
-        }
-
-        .gold-btn:hover {
-            color: #FFFFFF;
-        }
-
-        .line-btn {
-            color: #1C1C1C;
-        }
-
-        .line-btn:hover {
-            color: #1C1C1C;
-        }
-
-        .gold-btn i,
-        .line-btn i {
-            font-size: 7px !important;
-        }
+.gold-btn,
+.line-btn {
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    width: 96px;
+    height: 34px;
+    padding: 6px 8px !important;
+    font-size: 8px !important;
+    gap: 5px;
+    justify-content: center;
+    border-radius: 20px !important;
+    white-space: nowrap;
+}
         .categories {
             padding: 12px 6px;
         }
