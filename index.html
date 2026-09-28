@@ -105,7 +105,7 @@
     .jb-delete-confirm{border:0;background:#c62828;color:#fff;}
   </style>
 
-  <!-- ✅ SEARCH SUGGESTIONS CSS (with scroll fix) -->
+  <!-- ✅ SEARCH SUGGESTIONS CSS (with full scroll + pull-to-refresh fix) -->
   <style>
     #searchSuggestions {
       position: fixed;
@@ -116,8 +116,9 @@
       max-height: 60vh;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;   /* ✅ inner scroll chaining ni aapestundi */
-      touch-action: pan-y;            /* ✅ vertical scroll ni allow chestundi */
+      overscroll-behavior: contain;
+      overscroll-behavior-y: contain;
+      touch-action: pan-y;
       z-index: 2147483646;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
       padding: 8px 0;
@@ -125,6 +126,14 @@
       font-family: 'Poppins', Arial, sans-serif;
     }
     #searchSuggestions.show { display: block !important; }
+
+    /* ✅ PANEL OPEN UNNAPUDU PULL-TO-REFRESH NI AAPU */
+    html.jb-search-open,
+    html.jb-search-open body {
+      overscroll-behavior-y: none !important;
+      overscroll-behavior: none !important;
+    }
+
     .search-suggestion {
       display: flex;
       align-items: center;
@@ -871,7 +880,7 @@
 })();
 </script>
 
-<!-- ===== ✅ SEARCH SUGGESTIONS LOGIC (v2 — individual products, scroll fixed) ===== -->
+<!-- ===== ✅ SEARCH SUGGESTIONS LOGIC (v3 — pull-to-refresh fully blocked) ===== -->
 <script>
 (function () {
   'use strict';
@@ -1074,9 +1083,19 @@
     suggestEl.style.maxHeight = maxH + 'px';
   }
 
+  function lockPagePullToRefresh() {
+    document.documentElement.classList.add('jb-search-open');
+    document.body.classList.add('jb-search-open');
+  }
+  function unlockPagePullToRefresh() {
+    document.documentElement.classList.remove('jb-search-open');
+    document.body.classList.remove('jb-search-open');
+  }
+
   function hidePanel() {
     suggestEl.classList.remove('show');
     suggestEl.style.setProperty('display', 'none', 'important');
+    unlockPagePullToRefresh();
   }
 
   function showPanel() {
@@ -1111,6 +1130,9 @@
     positionPanel();
     suggestEl.style.setProperty('display', 'block', 'important');
     suggestEl.classList.add('show');
+
+    /* ✅ Page pull-to-refresh ni block cheyyi, panel open unapudu */
+    lockPagePullToRefresh();
   }
 
   window.__refreshSuggestions = function () {
@@ -1157,7 +1179,13 @@
     positionPanel();
   }, true);
 
-  console.log('✅ [index-search] Suggestions ready (v2 — individual products, scroll fixed).');
+  /* ✅ Panel lopala touchmove ayithe page ki propagate cheyyaku —
+     idi Android Chrome lo pull-to-refresh ni kuda block chestundi. */
+  suggestEl.addEventListener('touchmove', function (e) {
+    e.stopPropagation();
+  }, { passive: true });
+
+  console.log('✅ [index-search] Suggestions ready (v3 — pull-to-refresh blocked).');
 })();
 </script>
 
