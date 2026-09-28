@@ -4281,14 +4281,14 @@
         }
 
         .hero-btns {
-            left: 50%;
-            right: auto;
-            bottom: 18px;
-            width: calc(100% - 24px);
-            max-width: 520px;
-            transform: translateX(-50%);
-            gap: 7px;
-        }
+    left: 50%;
+    right: auto;
+    bottom: 38%;
+    width: calc(100% - 24px);
+    max-width: 520px;
+    transform: translateX(-50%);
+    gap: 7px;
+}
 
         .gold-btn,
         .line-btn {
