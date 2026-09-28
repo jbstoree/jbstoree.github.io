@@ -689,6 +689,68 @@ input:focus{
 
 
 /* =====================================================
+   GENERAL ALERT POPUP
+===================================================== */
+
+.alert-box{
+  background:#fff;
+  border:1px solid #e4d8ae;
+  border-radius:20px;
+  padding:28px 22px 22px;
+  width:90%;
+  max-width:360px;
+  text-align:center;
+  box-shadow:0 20px 50px rgba(0,0,0,.18);
+  transform:translateY(20px) scale(.95);
+  transition:all .3s cubic-bezier(.175,.885,.32,1.275);
+}
+
+.alert-modal.active .alert-box{
+  transform:translateY(0) scale(1);
+}
+
+.alert-icon{
+  width:56px;
+  height:56px;
+  margin:0 auto 15px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#fbf7e8;
+  color:#d4af37;
+  font-size:25px;
+}
+
+.alert-box h2{
+  margin:0 0 9px;
+  color:#171717;
+  font:700 22px "Playfair Display",Georgia,serif;
+}
+
+.alert-box p{
+  margin:0 0 20px;
+  color:#666;
+  font:500 12px/1.6 "Poppins",Arial,sans-serif;
+}
+
+.alert-ok{
+  width:100%;
+  height:47px;
+  border:1px solid #c79e12;
+  border-radius:12px;
+  background:#d4af37;
+  color:#000;
+  font:700 13px "Poppins",Arial,sans-serif;
+  cursor:pointer;
+  transition:background .2s;
+}
+
+.alert-ok:hover{
+  background:#e1bd45;
+}
+
+/* =====================================================
    DESKTOP — natural height, compact & centered
 ===================================================== */
 
@@ -1295,6 +1357,38 @@ input:focus{
 </div>
 
 
+<!-- =====================================================
+     GENERAL ALERT POPUP
+===================================================== -->
+
+<div
+  class="modal-overlay alert-modal"
+  id="alertModal"
+>
+
+  <div class="alert-box">
+
+    <div class="alert-icon">
+      <i id="alertIcon" class="fa-solid fa-circle-exclamation"></i>
+    </div>
+
+    <h2 id="alertTitle">Notice</h2>
+
+    <p id="alertDescription">Please check your details and try again.</p>
+
+    <button
+      class="alert-ok"
+      id="alertOkBtn"
+      type="button"
+    >
+      OK
+    </button>
+
+  </div>
+
+</div>
+
+
 <script>
 
 /* =====================================================
@@ -1660,6 +1754,81 @@ function closeCustomModal(){
   );
 
 }
+
+
+/* =====================================================
+   GENERAL ALERT POPUP
+===================================================== */
+
+const alertModal =
+  document.getElementById(
+    'alertModal'
+  );
+
+const alertTitle =
+  document.getElementById(
+    'alertTitle'
+  );
+
+const alertDescription =
+  document.getElementById(
+    'alertDescription'
+  );
+
+const alertIcon =
+  document.getElementById(
+    'alertIcon'
+  );
+
+const alertOkBtn =
+  document.getElementById(
+    'alertOkBtn'
+  );
+
+function showAlertModal(
+  title,
+  description,
+  icon='fa-solid fa-circle-exclamation'
+){
+
+  alertTitle.textContent =
+    title;
+
+  alertDescription.textContent =
+    description;
+
+  alertIcon.className =
+    icon;
+
+  alertModal.classList.add(
+    'active'
+  );
+
+}
+
+function closeAlertModal(){
+
+  alertModal.classList.remove(
+    'active'
+  );
+
+}
+
+alertOkBtn.addEventListener(
+  'click',
+  closeAlertModal
+);
+
+alertModal.addEventListener(
+  'click',
+  (e) => {
+
+    if(e.target === alertModal){
+      closeAlertModal();
+    }
+
+  }
+);
 
 
 customModal.addEventListener(
@@ -2244,8 +2413,15 @@ $('loginBtn')
 
       if(error){
 
-        showStatus(
-          error.message
+        console.error(
+          'Login error:',
+          error
+        );
+
+        showAlertModal(
+          'Incorrect Email or Password',
+          'The email or password you entered is incorrect. Please check your details and try again.',
+          'fa-solid fa-circle-exclamation'
         );
 
         return;
@@ -2326,8 +2502,59 @@ $('signupBtn')
 
       if(error){
 
-        showStatus(
-          error.message
+        console.error(
+          'Signup error:',
+          error
+        );
+
+        const message =
+          String(error?.message || '')
+            .toLowerCase();
+
+        if(
+          message.includes('user already registered') ||
+          message.includes('already registered') ||
+          message.includes('already exists')
+        ){
+
+          showAlertModal(
+            'Account Already Exists',
+            'An account with this email already exists. Please use Login instead.',
+            'fa-solid fa-user-check'
+          );
+
+        }else{
+
+          showStatus(
+            error.message
+          );
+
+        }
+
+        return;
+
+      }
+
+
+      /*
+         Supabase can return an obfuscated/fake user with an empty
+         identities array when this email already belongs to an
+         existing confirmed account. Detect that before opening OTP.
+      */
+      const existingAccount =
+        !!(
+          data &&
+          data.user &&
+          Array.isArray(data.user.identities) &&
+          data.user.identities.length === 0
+        );
+
+      if(existingAccount){
+
+        showAlertModal(
+          'Account Already Exists',
+          'An account with this email already exists. Please use Login instead.',
+          'fa-solid fa-user-check'
         );
 
         return;
@@ -2346,6 +2573,7 @@ $('signupBtn')
       }
 
 
+      // OTP is the email-verification step for new accounts.
       pendingSignupEmail =
         email;
 
