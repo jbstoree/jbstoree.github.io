@@ -2303,7 +2303,11 @@
     .cart-item-total {
         display: none !important;
     }
-    
+
+      .cart-item-info {
+        align-self: center !important;
+        transform: translateY(26px) !important;
+      }
 
     .header {
         padding-left: 5px !important;
