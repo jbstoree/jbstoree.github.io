@@ -5334,9 +5334,10 @@ button {
 /* Nee existing CSS code */
 /* ... */
 /* ... */
-
 /* ================================================================
-   JB STORE — BOTTOM BAR CART ITEM FIX
+   JB STORE — CART BOTTOM BAR FIX
+   Works on mobile, tablet, desktop and TV
+   Existing bottom bar design preserved
    ================================================================ */
 
 .bottom-bar .cart-item {
@@ -5345,11 +5346,14 @@ button {
     align-items: center !important;
     justify-content: center !important;
     gap: 2px !important;
+
     width: 70px !important;
     min-width: 70px !important;
     max-width: 70px !important;
+
     padding: 4px 8px !important;
     position: relative !important;
+
     grid-template-columns: none !important;
     grid-template-rows: none !important;
 }
@@ -5360,23 +5364,34 @@ button {
     height: auto !important;
     margin: 0 !important;
     line-height: 1 !important;
+    flex-shrink: 0 !important;
 }
 
 .bottom-bar .cart-item .bottom-label {
     display: block !important;
     width: auto !important;
     max-width: none !important;
+
     overflow: visible !important;
     white-space: nowrap !important;
     text-overflow: clip !important;
+
     text-align: center !important;
     line-height: 1.2 !important;
 }
 
 .bottom-bar .cart-item .cart-badge {
+    position: absolute !important;
+
     top: -2px !important;
     right: 2px !important;
+
     width: 20px !important;
     height: 20px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
     z-index: 20 !important;
 }
