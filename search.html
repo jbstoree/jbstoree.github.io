@@ -34,10 +34,6 @@
     .search-price{display:flex;align-items:baseline;gap:8px;margin:4px 0 12px;flex-wrap:wrap}
     .search-price strong{color:#111;font-size:18px;font-weight:700}
     .search-price del{color:#999;font-size:12px}
-    .search-product-card .deal-actions{display:flex;gap:10px;margin-top:auto;width:100%}
-    .search-product-card .deal-actions button{flex:1;height:40px;border:none;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer;transition:all .3s ease;font-family:"Poppins",sans-serif}
-    .search-product-card .view-details-btn{background:linear-gradient(135deg,#D4AF37,#C9A030);color:#0A0A0A}
-    .search-product-card .view-details-btn:hover{background:linear-gradient(135deg,#E8C84A,#D4AF37);transform:translateY(-2px)}
     .search-empty{grid-column:1/-1;text-align:center;padding:60px 20px;background:#fff;border-radius:20px;border:1px solid rgba(212,175,55,.15)}
     .search-empty div{font-size:60px;margin-bottom:14px}
     .search-empty h2{color:#111;font-size:22px;font-weight:700;margin:0 0 8px}
@@ -101,7 +97,6 @@
       .search-condition{font-size:10px}
       .search-price strong{font-size:15px}
       .search-price del{font-size:10px}
-      .search-product-card .deal-actions button{height:34px;font-size:11px}
       .search-variant-tag{font-size:9.5px;padding:1px 8px}
       .search-suggestion{padding:10px 14px;gap:12px}
       .search-suggestion img{width:40px;height:40px}
@@ -445,16 +440,9 @@
             '<strong>₹' + priceTxt + '</strong>' +
             (oldPrice ? '<del>₹' + Number(oldPrice).toLocaleString('en-IN') + '</del>' : '') +
           '</div>' +
-          '<div class="deal-actions"><button type="button" class="view-details-btn">🔍 View Details</button></div>' +
         '</div>';
 
-      card.addEventListener('click', function (e) {
-        if (e.target.closest('button')) return;
-        window.__viewProduct(product.id);
-      });
-      var btn = card.querySelector('.view-details-btn');
-      if (btn) btn.addEventListener('click', function (e) {
-        e.stopPropagation();
+      card.addEventListener('click', function () {
         window.__viewProduct(product.id);
       });
       gridEl.appendChild(card);
