@@ -34,6 +34,83 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+    /* ===== PREMIUM DEVELOPER CREDIT ===== */
+    .developer-credit {
+      text-align: center;
+      padding: 14px 16px 18px;
+      border-top: 1px solid rgba(212, 175, 55, 0.10);
+    }
+
+    .developer-credit-label {
+      margin: 0 0 8px;
+      color: #a4862a;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+    }
+
+    .developer-credit-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 8px 16px;
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      border-radius: 999px;
+      background: linear-gradient(180deg, #fffdf7, #f8f1dc);
+      color: #292929;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .35px;
+      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.10);
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+
+    .developer-credit-link:hover,
+    .developer-credit-link:active {
+      transform: translateY(-1px);
+      border-color: #D4AF37;
+      box-shadow: 0 6px 18px rgba(212, 175, 55, 0.18);
+    }
+
+    .developer-credit-link .fa-instagram {
+      font-size: 19px;
+      color: #d62976;
+    }
+
+    .developer-credit-name {
+      color: #8f6f08;
+      font-weight: 800;
+      letter-spacing: .6px;
+    }
+
+    .developer-credit-external {
+      color: #a4862a;
+      font-size: 11px;
+      margin-left: 1px;
+    }
+
+    @media (max-width: 768px) {
+      .developer-credit {
+        padding: 13px 12px 16px;
+      }
+
+      .developer-credit-label {
+        font-size: 11px;
+        letter-spacing: 1.4px;
+      }
+
+      .developer-credit-link {
+        padding: 8px 14px;
+        font-size: 13px;
+      }
+    }
+  </style>
+
+  <style>
     /* ===== JB STORE CONTACT BUTTONS ===== */
     .contact-buttons {
       align-items: center;
@@ -556,15 +633,13 @@
         </a>
       </li>
       <li>
-        <li>
-  <li>
-  <a href="contact-us.html"
-     class="contact-action email-link"
-     aria-label="Contact JB STORE">
-    <i class="fa-solid fa-envelope"></i>
-    <span>Email</span>
-  </a>
-</li>
+        <a href="contact-us.html"
+           class="contact-action email-link"
+           aria-label="Contact JB STORE">
+          <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+          <span>Email</span>
+        </a>
+      </li>
     </ul>
   </div>
   <div class="footer-row policy-row">
@@ -586,6 +661,21 @@
   <div class="footer-bottom">
     <p>© 2026 JB STORE &bull; All Rights Reserved</p>
     <p class="made">Made with <span>❤️</span> in India</p>
+  </div>
+
+  <div class="developer-credit">
+    <p class="developer-credit-label">Designed &amp; Developed by</p>
+    <a
+      href="https://www.instagram.com/OMG_X_NOOR/"
+      class="developer-credit-link"
+      aria-label="Open OMG_X_NOOR on Instagram"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+      <span class="developer-credit-name">OMG_X_NOOR</span>
+      <span class="developer-credit-external">↗</span>
+    </a>
   </div>
 </footer>
 
