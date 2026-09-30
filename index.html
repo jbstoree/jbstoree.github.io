@@ -34,6 +34,67 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+    /* ===== JB STORE CONTACT BUTTONS ===== */
+    .contact-buttons {
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+
+    .contact-buttons li {
+      list-style: none;
+    }
+
+    .contact-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .contact-action i {
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .contact-action .fa-whatsapp {
+      color: #25D366;
+      font-size: 22px;
+    }
+
+    .contact-action .fa-phone {
+      color: #333;
+    }
+
+    .contact-action .fa-envelope {
+      color: #4b6b8a;
+    }
+
+    @media (max-width: 768px) {
+      .contact-buttons {
+        gap: 18px;
+      }
+
+      .contact-action {
+        font-size: 14px;
+      }
+
+      .contact-action i {
+        font-size: 18px;
+      }
+
+      .contact-action .fa-whatsapp {
+        font-size: 21px;
+      }
+    }
+  </style>
+
+  <style>
     .account-link{
       width:42px;height:42px;display:flex;align-items:center;justify-content:center;
       text-decoration:none;border:1px solid rgba(212,175,55,.55);border-radius:50%;
@@ -474,10 +535,35 @@
   </div>
   <div class="footer-row support-row">
     <span class="row-label">Contact Us</span>
-    <ul class="inline-list">
-      <li><a href="#" class="whatsapp-link">💬 WhatsApp</a></li>
-      <li><a href="#" id="footerCallLink">📞 Call Us</a></li>
-      <li><a href="#">📧 Email</a></li>
+    <ul class="inline-list contact-buttons">
+      <li>
+        <a href="https://wa.me/919652699702"
+           class="whatsapp-link contact-action"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Contact JB STORE on WhatsApp">
+          <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+          <span>WhatsApp</span>
+        </a>
+      </li>
+      <li>
+        <a href="tel:+919652699702"
+           id="footerCallLink"
+           class="contact-action"
+           aria-label="Call JB STORE">
+          <i class="fa-solid fa-phone" aria-hidden="true"></i>
+          <span>Call Us</span>
+        </a>
+      </li>
+      <li>
+        <a href="mailto:jbstore01012@gmail.com"
+           id="footerEmailLink"
+           class="contact-action email-link"
+           aria-label="Email JB STORE">
+          <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+          <span>Email</span>
+        </a>
+      </li>
     </ul>
   </div>
   <div class="footer-row policy-row">
@@ -501,6 +587,40 @@
     <p class="made">Made with <span>❤️</span> in India</p>
   </div>
 </footer>
+
+<!-- ===== JB STORE CONTACT ACTIONS ===== -->
+<script>
+(function () {
+  'use strict';
+
+  var EMAIL = 'jbstore01012@gmail.com';
+  var PHONE = '+919652699702';
+
+  var emailLink = document.getElementById('footerEmailLink');
+  if (emailLink) {
+    emailLink.addEventListener('click', function (e) {
+      var isAndroid = /Android/i.test(navigator.userAgent || '');
+
+      if (isAndroid) {
+        e.preventDefault();
+
+        var subject = encodeURIComponent('JB STORE Enquiry');
+        var intentUrl =
+          'intent://compose?to=' + encodeURIComponent(EMAIL) +
+          '&subject=' + subject +
+          '#Intent;scheme=mailto;package=com.google.android.gm;end';
+
+        window.location.href = intentUrl;
+      }
+      /* On non-Android devices the normal mailto: link remains active. */
+    });
+  }
+
+  /* Keep the footer call link synchronized with the JB STORE number. */
+  var callLink = document.getElementById('footerCallLink');
+  if (callLink) callLink.href = 'tel:' + PHONE;
+})();
+</script>
 
 <!-- ===== BOTTOM BAR ===== -->
 <div class="bottom-bar">
