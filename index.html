@@ -491,13 +491,46 @@
       <span class="item-icon">🛒</span> Cart
       <span class="cart-badge" id="menuCartBadge" style="margin-left:auto;background:#D4AF37;color:#000;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 12px rgba(212,175,55,0.3);">0</span>
     </a>
-    <a href="about-us.html" class="menu-item"><span class="item-icon">ℹ️</span> About Us</a>
-    <a href="contact-us.html" class="menu-item"><span class="item-icon">📞</span> Contact Us</a>
+    <a href="about-us.html" class="menu-item" id="menuAboutUs" target="_self">
+      <span class="item-icon">ℹ️</span> About Us
+    </a>
+    <a href="contact-us.html" class="menu-item" id="menuContactUs" target="_self">
+      <span class="item-icon">📞</span> Contact Us
+    </a>
   </nav>
   <div class="menu-footer">
     <div class="menu-version">✦ JB STORE <span>Premium Electronics</span> ✦</div>
   </div>
 </div>
+
+<!-- ===== DRAWER ABOUT / CONTACT NAVIGATION FIX ===== -->
+<script>
+(function () {
+  'use strict';
+
+  function goFromDrawer(id, url) {
+    var item = document.getElementById(id);
+    if (!item) return;
+
+    item.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      var closeBtn = document.getElementById('menuClose');
+      if (closeBtn) {
+        try { closeBtn.click(); } catch (_) {}
+      }
+
+      setTimeout(function () {
+        window.location.assign(url);
+      }, 120);
+    }, true);
+  }
+
+  goFromDrawer('menuAboutUs', 'about-us.html');
+  goFromDrawer('menuContactUs', 'contact-us.html');
+})();
+</script>
 
 <!-- ===== HERO ===== -->
 <section class="hero">
