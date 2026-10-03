@@ -408,39 +408,35 @@
   </style>
 
 
-<style id="jb-bottom-cart-badge-fix">
-/* ===== BOTTOM CART BADGE FIX ===== */
+<style id="jb-cart-badge-final-fix">
+/* ===== FINAL: BOTTOM CART COUNT ===== */
 .bottom-bar .bottom-cart-item {
   position: relative !important;
   overflow: visible !important;
 }
-
-.bottom-bar .bottom-cart-item .cart-badge {
+.bottom-bar .bottom-cart-item #cartBadge {
   position: absolute !important;
-  top: -4px !important;
-  right: 6px !important;
-  width: 20px !important;
-  height: 20px !important;
-  min-width: 20px !important;
-  min-height: 20px !important;
+  top: 0 !important;
+  right: 8px !important;
+  display: none !important;
+  width: 21px !important;
+  height: 21px !important;
+  min-width: 21px !important;
+  min-height: 21px !important;
   padding: 0 !important;
   margin: 0 !important;
-  display: none;
-  align-items: center !important;
-  justify-content: center !important;
   border-radius: 50% !important;
   background: #D4AF37 !important;
   color: #fff !important;
-  font-size: 10px !important;
-  font-weight: 700 !important;
-  line-height: 20px !important;
+  font: 700 11px/21px Arial, sans-serif !important;
   text-align: center !important;
-  z-index: 99999 !important;
-  box-sizing: border-box !important;
+  z-index: 999999 !important;
   pointer-events: none !important;
-  box-shadow: 0 2px 8px rgba(212,175,55,.35) !important;
+  box-sizing: border-box !important;
+  box-shadow: 0 2px 7px rgba(0,0,0,.22) !important;
 }
 </style>
+
 </head>
 <body>
 
@@ -1644,43 +1640,80 @@
 </script>
 
 
-<script id="jb-bottom-cart-badge-sync">
+<script id="jb-cart-badge-final-js">
 (function () {
   'use strict';
 
-  function updateBottomCartBadge() {
+  function getCartCount() {
+    try {
+      var raw = localStorage.getItem('cart');
+      var cart = raw ? JSON.parse(raw) : [];
+      if (!Array.isArray(cart)) return 0;
+      return cart.reduce(function (total, item) {
+        var q = parseInt(item && item.quantity, 10);
+        return total + (isNaN(q) || q < 1 ? 0 : q);
+      }, 0);
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  function syncCartBadge() {
     var badge = document.getElementById('cartBadge');
     if (!badge) return;
 
-    var total = 0;
-    try {
-      var cart = JSON.parse(localStorage.getItem('cart') || '[]');
-      if (Array.isArray(cart)) {
-        total = cart.reduce(function (sum, item) {
-          var qty = Number(item && item.quantity);
-          return sum + (Number.isFinite(qty) && qty > 0 ? qty : 0);
-        }, 0);
-      }
-    } catch (e) {
-      total = 0;
-    }
+    var count = getCartCount();
+    badge.textContent = String(count);
 
-    badge.textContent = String(total);
-    badge.style.display = total > 0 ? 'flex' : 'none';
+    if (count > 0) {
+      badge.style.setProperty('display', 'flex', 'important');
+      badge.style.setProperty('visibility', 'visible', 'important');
+      badge.style.setProperty('opacity', '1', 'important');
+    } else {
+      badge.style.setProperty('display', 'none', 'important');
+    }
   }
 
-  updateBottomCartBadge();
-  document.addEventListener('DOMContentLoaded', updateBottomCartBadge);
-  window.addEventListener('pageshow', updateBottomCartBadge);
-  window.addEventListener('storage', updateBottomCartBadge);
+  function startSync() {
+    syncCartBadge();
+    setTimeout(syncCartBadge, 100);
+    setTimeout(syncCartBadge, 500);
+    setTimeout(syncCartBadge, 1000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startSync);
+  } else {
+    startSync();
+  }
+
+  window.addEventListener('pageshow', startSync);
+  window.addEventListener('focus', syncCartBadge);
   document.addEventListener('visibilitychange', function () {
-    if (!document.hidden) updateBottomCartBadge();
+    if (!document.hidden) syncCartBadge();
+  });
+  window.addEventListener('storage', function (e) {
+    if (!e.key || e.key === 'cart') syncCartBadge();
   });
 
-  setTimeout(updateBottomCartBadge, 100);
-  setTimeout(updateBottomCartBadge, 500);
-  setTimeout(updateBottomCartBadge, 1000);
+  /* Same-page cart changes: immediately refresh the badge after cart is saved. */
+  var originalSetItem = Storage.prototype.setItem;
+  Storage.prototype.setItem = function (key, value) {
+    originalSetItem.apply(this, arguments);
+    if (this === localStorage && key === 'cart') {
+      setTimeout(syncCartBadge, 0);
+    }
+  };
+
+  var originalRemoveItem = Storage.prototype.removeItem;
+  Storage.prototype.removeItem = function (key) {
+    originalRemoveItem.apply(this, arguments);
+    if (this === localStorage && key === 'cart') {
+      setTimeout(syncCartBadge, 0);
+    }
+  };
 })();
 </script>
+
 </body>
 </html>
