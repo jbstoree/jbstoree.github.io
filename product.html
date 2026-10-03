@@ -2755,60 +2755,11 @@
         typeof allProducts === 'undefined' ||
         allProducts.length === 0
     ) {
-        console.warn('allProducts not loaded, retrying...');
+        console.warn('⏳ Waiting for product data...');
 
         setTimeout(() => {
-
-            if (
-                typeof allProducts !== 'undefined' &&
-                allProducts.length > 0
-            ) {
-                loadProduct();
-            } else {
-
-                document.getElementById('productPage').innerHTML = `
-                    <div style="
-                        text-align:center;
-                        padding:60px 20px;
-                        grid-column:1/-1;
-                        background:#FFFFFF;
-                        border:1px solid #D4AF37;
-                        border-radius:16px;
-                        box-shadow:0 0 4px rgba(212,175,55,0.05);
-                    ">
-                        <div style="
-                            font-size:50px;
-                            margin-bottom:16px;
-                        ">
-                            ⚠️
-                        </div>
-
-                        <h2 style="
-                            color:#D4AF37;
-                            font-size:24px;
-                        ">
-                            Data Not Loaded
-                        </h2>
-
-                        <p style="
-                            color:#4A4742;
-                            margin:8px 0 20px;
-                            font-size:14px;
-                        ">
-                            Please check if all JavaScript files are loaded correctly.
-                        </p>
-
-                        <p style="
-                            color:#9A958A;
-                            font-size:12px;
-                        ">
-                            Check Console (F12) for errors.
-                        </p>
-                    </div>
-                `;
-            }
-
-        }, 500);
+            loadProduct();
+        }, 300);
 
         return;
     }
