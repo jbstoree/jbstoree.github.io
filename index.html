@@ -425,6 +425,39 @@
   box-shadow: none !important;
 }
 </style>
+
+<style>
+/* ===== CATEGORY MENU: SEARCH-BAR STYLE ROUNDED OUTER BOX ===== */
+@media (max-width: 768px) {
+  #categoryMenu.menu {
+    margin: 10px 10px 14px !important;
+    padding: 6px 8px !important;
+    width: calc(100% - 20px) !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    background: #fff !important;
+    border: 1px solid #e2d7b5 !important;
+    border-radius: 30px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    box-shadow: none !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  #categoryMenu.menu::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  #categoryMenu .cat {
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+  }
+}
+</style>
+
 </head>
 <body>
 
