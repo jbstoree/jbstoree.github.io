@@ -620,7 +620,8 @@
   /* ================================================================
      10. INITIAL RENDER
      ================================================================ */
-  renderGrid();
+  // Wait for Supabase before the first render to prevent the
+  // temporary "No products found" flash on refresh.
 
   /* ================================================================
      11. SUPABASE FETCH
@@ -633,13 +634,24 @@
       );
       sb.from('products').select('*').order('id', { ascending: true })
         .then(function (res) {
-          if (res.error) { console.warn('[search] fetch error:', res.error.message); return; }
+          if (res.error) {
+            console.warn('[search] fetch error:', res.error.message);
+            renderGrid();
+            return;
+          }
           if (res.data && res.data.length) window.__setAllProducts(res.data);
-          else console.warn('[search] Supabase returned empty.');
+          else {
+            console.warn('[search] Supabase returned empty.');
+            renderGrid();
+          }
         })
-        .catch(function (e) { console.warn('[search] fetch failed:', e); });
+        .catch(function (e) {
+          console.warn('[search] fetch failed:', e);
+          renderGrid();
+        });
     } else {
       console.warn('[search] supabase SDK not loaded — using local products only.');
+      renderGrid();
     }
   } catch (e) { console.warn('[search] Supabase init error:', e); }
 
