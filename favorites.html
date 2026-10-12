@@ -136,14 +136,43 @@
       <span class="cart-badge" id="menuCartBadge" style="margin-left:auto;background:#D4AF37;color:#000;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 12px rgba(212,175,55,0.3);">0</span>
     </a>
 
-    <a href="#" class="menu-item">
+    <a href="about-us.html" class="menu-item" id="menuAboutUs" target="_self">
       <span class="item-icon">ℹ️</span> About Us
     </a>
 
-    <a href="#" class="menu-item">
+    <a href="contact-us.html" class="menu-item" id="menuContactUs" target="_self">
       <span class="item-icon">📞</span> Contact Us
     </a>
   </nav>
+
+  <!-- ===== DRAWER ABOUT / CONTACT NAVIGATION FIX ===== -->
+  <script>
+  (function () {
+    'use strict';
+
+    function goFromDrawer(id, url) {
+      var item = document.getElementById(id);
+      if (!item) return;
+
+      item.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var closeBtn = document.getElementById('menuClose');
+        if (closeBtn) {
+          try { closeBtn.click(); } catch (_) {}
+        }
+
+        setTimeout(function () {
+          window.location.assign(url);
+        }, 120);
+      }, true);
+    }
+
+    goFromDrawer('menuAboutUs', 'about-us.html');
+    goFromDrawer('menuContactUs', 'contact-us.html');
+  })();
+  </script>
 
   <div class="menu-footer">
     <div class="menu-version">✦ JB STORE <span>Premium Electronics</span> ✦</div>
@@ -369,7 +398,6 @@
   }
 
   /* ---------- Badges from localStorage ---------- */
-  let FAVORITES_SUPABASE_VERIFIED = false;
   function refreshBadges() {
     try {
       const cartKeys = ['cart','jb_cart','jbstore_cart','jbCart','cartItems'];
@@ -380,15 +408,13 @@
       }
       document.querySelectorAll('.cart-badge,#cartBadge,#menuCartBadge').forEach(el => { el.textContent = cartQty; el.style.display = cartQty > 0 ? 'flex' : 'none'; });
 
-      if (FAVORITES_SUPABASE_VERIFIED) {
-        const favKeys = ['favorites','jb_favorites','favoritesList','jbFav'];
-        let favCount = 0;
-        for (const k of favKeys) {
-          const raw = localStorage.getItem(k);
-          if (raw) { const v = JSON.parse(raw); if (Array.isArray(v)) { favCount = v.length; break; } }
-        }
-        document.querySelectorAll('.fav-badge,#favBadge,#menuFavBadge').forEach(el => { el.textContent = favCount; el.style.display = favCount > 0 ? 'flex' : 'none'; });
+      const favKeys = ['favorites','jb_favorites','favoritesList','jbFav'];
+      let favCount = 0;
+      for (const k of favKeys) {
+        const raw = localStorage.getItem(k);
+        if (raw) { const v = JSON.parse(raw); if (Array.isArray(v)) { favCount = v.length; break; } }
       }
+      document.querySelectorAll('.fav-badge,#favBadge,#menuFavBadge').forEach(el => { el.textContent = favCount; el.style.display = favCount > 0 ? 'flex' : 'none'; });
     } catch(e){}
   }
   refreshBadges();
@@ -411,6 +437,7 @@
     if (!grid) return;
 
     const savedIds = typeof getFavorites === 'function' ? getFavorites().map(normalizeFavoriteId).filter(Boolean) : [];
+    if (countEl) countEl.textContent = savedIds.length + (savedIds.length === 1 ? ' item' : ' items');
 
     if (savedIds.length === 0) {
       grid.innerHTML = `
@@ -430,19 +457,14 @@
 
       const products = Array.isArray(data) ? data : [];
       const favorites = products.filter(product => savedIds.includes(normalizeFavoriteId(product.id)));
-      const verifiedIds = favorites.map(product => normalizeFavoriteId(product.id));
-
-      // Supabase is the source of truth: remove stale IDs first.
-      if (typeof saveFavorites === 'function') {
-        saveFavorites(verifiedIds);
-      } else {
-        localStorage.setItem('jb_favorites', JSON.stringify(verifiedIds));
-      }
-
-      FAVORITES_SUPABASE_VERIFIED = true;
-      if (typeof refreshBadges === 'function') refreshBadges();
 
       if (favorites.length === 0) {
+        if (typeof saveFavorites === 'function') {
+          saveFavorites([]);
+        } else {
+          localStorage.removeItem('jb_favorites');
+        }
+        
         if (countEl) countEl.textContent = '0 items';
 
         grid.innerHTML = `
