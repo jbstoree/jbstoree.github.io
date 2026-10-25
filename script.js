@@ -52,7 +52,7 @@ console.log('Supabase products only. Waiting for products...');
 // ==========================================
 
 const brands = {
-  mobiles: ["iPhone", "OnePlus", "Samsung", "Google Pixel", "Vivo", "OPPO", "Realme"],
+  mobiles: ["iPhone", "OnePlus", "Samsung", "Google Pixel", "Vivo", "OPPO", "Realme", "Nothing", "Motorola", "Iqoo"],
   fridge: ["LG", "Samsung", "Godrej", "Haier", "Whirlpool"],
   washing: ["LG", "Samsung", "IFB", "Bosch", "Haier", "Whirlpool"],
   ac: ["Daikin", "LG", "Voltas", "Blue Star", "Samsung"],
