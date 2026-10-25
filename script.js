@@ -111,7 +111,7 @@ function loadBrands(category) {
       "Iqoo": "images/iqoo.png",
       "Poco": "images/poco.png",
       "Infinix": "images/infinix.png",
-      "Laca": "images/lava.png",
+      "Lava": "images/lava.png",
       "LG": "images/lg.png",
       "Godrej": "images/godrej.png",
       "Haier": "images/haier.png",
