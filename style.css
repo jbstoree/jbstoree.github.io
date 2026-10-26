@@ -815,25 +815,22 @@
     position: relative;
     width: 100%;
     overflow: hidden;
+    display: grid;              /* ✅ stack all slides in one cell */
 }
 
 /* Each Hero Image */
 .hero-slide {
-    position: absolute;
-    inset: 0;
+    grid-area: 1 / 1;           /* ✅ all slides occupy same grid cell */
     width: 100%;
     opacity: 0;
     transition: opacity 0.8s ease-in-out;
     pointer-events: none;
-    z-index: 1;
 }
 
 /* Active Image */
 .hero-slide.active {
-    position: relative;
     opacity: 1;
     pointer-events: auto;
-    z-index: 2;
 }
 
 /* Hero Image */
@@ -2112,19 +2109,6 @@
         transition: width 0.3s ease;
     }
 
-    .bottom-item::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 2px;
-    background: #D4AF37;
-    border-radius: 2px;
-    transition: width 0.3s ease;
-}
-
 .bottom-item.active::after {
     width: 60%;
 }
@@ -2513,20 +2497,20 @@
 
         .menu {
     display: flex !important;
-    flex-wrap: nowrap !important;          /* ఐటమ్స్ కిందికి పడకుండా */
-    overflow-x: auto !important;           /* ఎడమ-కుడి స్క్రోల్ */
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
     overflow-y: hidden !important;
-    -webkit-overflow-scrolling: touch !important; /* మొబైల్‌లో స్మూత్ స్క్రోల్ */
-    justify-content: flex-start !important; /* ఎడమ నుండి మొదలు */
+    -webkit-overflow-scrolling: touch !important;
+    justify-content: flex-start !important;
     padding: 10px 12px !important;
     gap: 2px !important;
-    scrollbar-width: none !important;      /* స్క్రోల్ బార్ దాచడానికి */
+    scrollbar-width: none !important;
 }
 .menu::-webkit-scrollbar {
-    display: none !important;              /* Chrome/Safari కోసం */
+    display: none !important;
 }
 .menu .cat {
-    flex-shrink: 0 !important;             /* బటన్లు కుదించుకుపోకుండా */
+    flex-shrink: 0 !important;
 }
 
         .cat-icon {
@@ -2618,17 +2602,17 @@
     /* ---- Hero Section Fix for Mobile ---- */
 
     .hero {
-        height: auto !important;      /* Fixed height ni override chestundi */
-        max-height: none !important;  /* Max height limit teeseyyadaniki */
-        min-height: unset !important; /* Min height limit teeseyyadaniki */
-        aspect-ratio: unset !important; /* Force chesina ratio ni remove chestundi */
+        height: auto !important;
+        max-height: none !important;
+        min-height: unset !important;
+        aspect-ratio: unset !important;
         margin: 0 !important;
         padding: 0 !important;
     }
 
     .hero-bg {
         width: 100% !important;
-        height: auto !important;      /* Image original ratio maintain avutundi */
+        height: auto !important;
         object-fit: unset !important;
     }
 
@@ -3411,18 +3395,9 @@
    ----------------------------------------------------------------
    768px and below: NOT TOUCHED.
    Applies only from 769px upward.
-
-   Goals:
-   • Desktop/laptop: clean 2-column cart layout
-   • 1440px+: more breathing room without over-stretching
-   • 1920px+ (TV): centered premium width, fluid scaling
-   • Prevent horizontal overflow
-   • Hide mobile bottom navigation on desktop cart page
-   • Keep existing cart / checkout JavaScript untouched
    ================================================================ */
 
 @media (min-width: 769px) {
-    /* ---- Cart page shell ---- */
     body:has(.cart-page) {
         padding-bottom: 0 !important;
         overflow-x: hidden !important;
@@ -3437,13 +3412,11 @@
         box-sizing: border-box !important;
     }
 
-    /* ---- Desktop cart: no mobile bottom bar ---- */
     .cart-page ~ .bottom-bar {
         display: none !important;
         visibility: hidden !important;
     }
 
-    /* ---- Header ---- */
     .cart-header {
         display: flex !important;
         align-items: center !important;
@@ -3496,11 +3469,6 @@
         white-space: nowrap !important;
     }
 
-    /* ============================================================
-       CART CONTENT
-       At 1024px and above the summary stays on the right.
-       ============================================================ */
-
     #cartItemsContainer {
         width: 100% !important;
         display: grid !important;
@@ -3523,7 +3491,6 @@
         margin: 0 !important;
     }
 
-    /* ---- Cart item card ---- */
     .cart-item {
         width: 100% !important;
         min-width: 0 !important;
@@ -3602,7 +3569,6 @@
         white-space: nowrap !important;
     }
 
-    /* ---- Quantity ---- */
     .cart-item-qty {
         align-self: end !important;
         display: inline-flex !important;
@@ -3647,13 +3613,10 @@
         line-height: 1 !important;
     }
 
-    /* ---- Desktop reference keeps only the product price.
-       The JS-generated cart total remains available to mobile layouts. ---- */
     .cart-item-total {
         display: none !important;
     }
 
-    /* ---- Remove button ---- */
     .remove-btn {
         align-self: start !important;
         width: clamp(34px, 2.7vw, 42px) !important;
@@ -3674,10 +3637,6 @@
         border-color: #e99b9b !important;
         transform: scale(1.04) !important;
     }
-
-    /* ============================================================
-       SUMMARY — RIGHT COLUMN
-       ============================================================ */
 
     .cart-summary {
         width: 100% !important;
@@ -3766,13 +3725,10 @@
         box-shadow: 0 9px 24px rgba(212, 175, 55, 0.25) !important;
     }
 
-    /* Image reference does not show Clear Cart on desktop. Keep the 768px
-       and below version completely untouched. */
     .clear-cart-btn {
         display: none !important;
     }
 
-    /* ---- Empty state / success card scale nicely on big screens ---- */
     .empty-cart {
         width: 100% !important;
         padding: clamp(70px, 7vw, 120px) 24px !important;
@@ -3804,7 +3760,6 @@
         max-width: clamp(380px, 28vw, 500px) !important;
     }
 
-    /* Toast sits above page content once the mobile bottom bar is gone. */
     body:has(.cart-page) .toast-notification {
         bottom: 28px !important;
     }
@@ -3812,8 +3767,6 @@
 
 /* ================================================================
    769px — 1023px
-   Keep the layout comfortable at narrow desktop / large tablet widths.
-   768px itself remains completely untouched.
    ================================================================ */
 @media (min-width: 769px) and (max-width: 1023px) {
     .cart-page {
@@ -3962,13 +3915,6 @@
         padding: 0 24px !important;
     }
 }
-
-/* ==========================================================
-   JB STORE — SMALL MOBILE PROFESSIONAL CART RESPONSIVE
-   768px EXACT DESIGN UNCHANGED
-   Applies ONLY below 768px
-   ========================================================== */
-
 
 /* ==========================================================
    767px — SMALL TABLET / LARGE MOBILE
@@ -4370,7 +4316,6 @@
 
 /* ==========================================================
    390px — COMPACT MOBILE
-   Galaxy / iPhone compact widths
    ========================================================== */
 @media (max-width: 390px) {
 
@@ -4655,4 +4600,4 @@
     height: 42px !important;
     font-size: 11.5px !important;
   }
-      }
+          }
