@@ -797,24 +797,112 @@
    ========================================== */
 
 /* ---- Desktop & Mobile Common ---- */
+/* ==========================================
+   JB STORE - MAIN HERO SLIDER
+   FULL RESPONSIVE
+   ========================================== */
+
 .hero {
     position: relative;
-    width: 100%;            /* Full width */
-    height: auto;           /* Height automatically adjusts to image width */
+    width: 100%;
+    margin: 0;
+    padding: 0;
     overflow: hidden;
     background: #F0EDE6;
-    margin: 0;              /* Side gaps teeseyyadaniki */
-    padding: 0;
 }
 
-/* Hero image - ఇదే magic */
-.hero-bg {
+.hero-slides {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Each Hero Image */
+.hero-slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease-in-out;
+    pointer-events: none;
+}
+
+/* Active Image */
+.hero-slide.active {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* Hero Image */
+.hero-slide img {
     display: block;
-    width: 100%;            /* Container width full */
-    height: auto;           /* Original height:width ratio maintain avutundi */
-    /* object-fit: cover;  (DONT use this - it crops) */
-    /* object-fit: contain; (DONT use this - side white lines vastayi) */
-    object-fit: unset;      /* Default behavior - stretch to width, height auto */
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+
+/* ==========================================
+   DESKTOP
+   ========================================== */
+
+@media (min-width: 1025px) {
+
+    .hero,
+    .hero-slides,
+    .hero-slide {
+        width: 100%;
+    }
+
+    .hero-slide img {
+        width: 100%;
+        height: auto;
+    }
+
+}
+
+
+/* ==========================================
+   TABLET
+   ========================================== */
+
+@media (min-width: 601px) and (max-width: 1024px) {
+
+    .hero,
+    .hero-slides,
+    .hero-slide {
+        width: 100%;
+    }
+
+    .hero-slide img {
+        width: 100%;
+        height: auto;
+    }
+
+}
+
+
+/* ==========================================
+   MOBILE
+   ========================================== */
+
+@media (max-width: 600px) {
+
+    .hero,
+    .hero-slides,
+    .hero-slide {
+        width: 100%;
+    }
+
+    .hero-slide img {
+        width: 100%;
+        height: auto;
+    }
+
 }
 
 /* ---- Hero Buttons (always relative to image) ---- */
