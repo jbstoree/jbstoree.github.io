@@ -37,6 +37,30 @@ if (slides.length > 1) {
 }
 
 // ==========================================
+// MAIN HERO IMAGE SLIDER
+// ==========================================
+
+const heroSlides = document.querySelectorAll(".hero-slide");
+
+let heroCurrent = 0;
+
+function showHeroSlide(index) {
+    heroSlides.forEach((slide, i) => {
+        slide.classList.toggle("active", i === index);
+    });
+}
+
+// Only auto-slide when there is more than 1 image
+if (heroSlides.length > 1) {
+
+    setInterval(() => {
+        heroCurrent = (heroCurrent + 1) % heroSlides.length;
+        showHeroSlide(heroCurrent);
+    }, 5000);
+
+}
+
+// ==========================================
 // 2. ALL PRODUCTS
 // SUPABASE PRODUCTS ONLY
 // ==========================================
