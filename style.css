@@ -771,8 +771,14 @@ body.menu-open {
 }
 
 /* ==========================================
-   HERO SLIDER - RIGHT TO LEFT SLIDE
+   HERO SLIDER - RIGHT TO LEFT SLIDE & LINE ANIMATION
    ========================================== */
+.hero-wrapper {
+    width: 100%;
+    background: #F7F5F0;
+    padding-bottom: 10px;
+}
+
 .hero {
     position: relative;
     width: 100%;
@@ -785,15 +791,15 @@ body.menu-open {
 .hero-slides {
     position: relative;
     width: 100%;
-    display: flex !important;
+    display: flex !important; 
     flex-wrap: nowrap;
-    transition: transform 0.5s ease-in-out;
+    transition: transform 0.5s ease-in-out; 
 }
 
 .hero-slide {
     flex: 0 0 100% !important;
     width: 100% !important;
-    opacity: 1 !important;
+    opacity: 1 !important; 
     display: block !important;
     pointer-events: auto !important;
 }
@@ -806,75 +812,63 @@ body.menu-open {
     object-fit: contain;
 }
 
-/* Dots (Lines) */
+/* Dots (Lines) - Banner kinda */
 .hero-dots {
-    position: absolute;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 8px;
-    z-index: 10;
+    margin-top: 12px; /* Image ki line ki madhya gap */
+    padding: 5px 0;
 }
 
+/* Line Background (Empty state) */
 .hero-dot {
-    width: 25px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 2px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-.hero-dot.active {
-    background: #D4AF37;
     width: 35px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.1); /* Light grey/white empty line */
+    border-radius: 4px;
+    cursor: pointer;
+    overflow: hidden; /* Yellow fill ni control cheyadaniki */
+    position: relative;
 }
 
-/* ==========================================
-   DESKTOP
-   ========================================== */
-@media (min-width: 1025px) {
-    .hero,
-    .hero-slides,
-    .hero-slide {
-        width: 100%;
-    }
-    .hero-slide img {
-        width: 100%;
-        height: auto;
-    }
+/* Yellow Fill Animation */
+.hero-dot-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: #D4AF37; /* Yellow color */
+    border-radius: 4px;
 }
 
-/* ==========================================
-   TABLET
-   ========================================== */
-@media (min-width: 601px) and (max-width: 1024px) {
-    .hero,
-    .hero-slides,
-    .hero-slide {
-        width: 100%;
-    }
-    .hero-slide img {
-        width: 100%;
-        height: auto;
-    }
+/* Active dot animation trigger */
+.hero-dot.active .hero-dot-fill {
+    animation: fillProgress 5s linear forwards;
 }
 
-/* ==========================================
-   MOBILE
-   ========================================== */
-@media (max-width: 600px) {
-    .hero,
-    .hero-slides,
-    .hero-slide {
-        width: 100%;
-    }
-    .hero-slide img {
-        width: 100%;
-        height: auto;
-    }
+@keyframes fillProgress {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
+
+/* Responsive adjustments */
+@media (min-width: 1025px) { 
+    .hero, .hero-slides, .hero-slide { width: 100%; } 
+    .hero-slide img { width: 100%; height: auto; } 
+}
+@media (min-width: 601px) and (max-width: 1024px) { 
+    .hero, .hero-slides, .hero-slide { width: 100%; } 
+    .hero-slide img { width: 100%; height: auto; } 
+}
+@media (max-width: 600px) { 
+    .hero, .hero-slides, .hero-slide { width: 100%; } 
+    .hero-slide img { width: 100%; height: auto; } 
+    .hero-dots { margin-top: 8px; }
+    .hero-dot { width: 25px; }
 }
 
 /* ==========================================
