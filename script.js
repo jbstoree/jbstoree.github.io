@@ -1,20 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JB STORE - FINAL HERO FIX - script.js</title>
-<style>
-body { font-family: Arial, sans-serif; background:#111; color:#fff; padding:20px; }
-h1 { color:#FFD700; }
-p { color:#ddd; }
-textarea { width:100%; height:75vh; background:#050505; color:#eee; border:1px solid #D4AF37; border-radius:10px; padding:15px; box-sizing:border-box; font-family:monospace; font-size:13px; line-height:1.45; }
-</style>
-</head>
-<body>
-<h1>JB STORE — FINAL HERO FIX</h1>
-<p>Copy everything inside the box and replace your existing <b>script.js</b>. Existing code is preserved; only the hero slider enhancement is added at the end.</p>
-<textarea spellcheck="false">// ==========================================
+
 // JB STORE - MAIN JAVASCRIPT
 // ==========================================
 
