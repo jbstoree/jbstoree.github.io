@@ -93,17 +93,9 @@
     }
 
     @media (max-width: 768px) {
-      .developer-credit {
-        padding: 13px 12px 16px;
-      }
-      .developer-credit-label {
-        font-size: 11px;
-        letter-spacing: 1.4px;
-      }
-      .developer-credit-link {
-        padding: 8px 14px;
-        font-size: 13px;
-      }
+      .developer-credit { padding: 13px 12px 16px; }
+      .developer-credit-label { font-size: 11px; letter-spacing: 1.4px; }
+      .developer-credit-link { padding: 8px 14px; font-size: 13px; }
     }
   </style>
 
@@ -150,38 +142,28 @@
     }
 
     @media (max-width: 768px) {
-      .contact-buttons {
-        gap: 18px;
-      }
-      .contact-action {
-        font-size: 14px;
-      }
-      .contact-action i {
-        font-size: 18px;
-      }
-      .contact-action .fa-whatsapp {
-        font-size: 21px;
-      }
+      .contact-buttons { gap: 18px; }
+      .contact-action { font-size: 14px; }
+      .contact-action i { font-size: 18px; }
+      .contact-action .fa-whatsapp { font-size: 21px; }
     }
   </style>
 
   <style>
-    .account-link {
-      width: 42px;
-      height: 42px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      border: 1px solid rgba(212, 175, 55, .55);
-      border-radius: 50%;
-      background: rgba(212, 175, 55, .08);
-      font-size: 19px;
-      flex-shrink: 0;
+    .account-link{
+      width:42px;
+      height:42px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      border:1px solid rgba(212,175,55,.55);
+      border-radius:50%;
+      background:rgba(212,175,55,.08);
+      font-size:19px;
+      flex-shrink:0;
     }
-    .menu-item.account-active {
-      border-left: 2px solid #D4AF37;
-    }
+    .menu-item.account-active{border-left:2px solid #D4AF37;}
   </style>
 
   <style>
@@ -220,170 +202,31 @@
       box-sizing: border-box;
       padding-bottom: calc(30px + env(safe-area-inset-bottom, 20px));
     }
-    .jb-profile-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 18px;
-    }
-    .jb-profile-head h2 {
-      margin: 0;
-      font-family: Georgia, serif;
-      font-size: 25px;
-    }
-    .jb-profile-close {
-      border: 1px solid #e4d7ad;
-      background: #fff;
-      border-radius: 50%;
-      width: 38px;
-      height: 38px;
-      font-size: 24px;
-      cursor: pointer;
-      color: #777;
-    }
-    .jb-profile-avatar {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      margin: 0 auto 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #fffaf0;
-      border: 2px solid #dfbd4a;
-      font-size: 35px;
-    }
-    .jb-profile-email {
-      text-align: center;
-      color: #777;
-      font-size: 13px;
-      margin-bottom: 22px;
-    }
-    .jb-profile-field { margin: 0 0 14px; }
-    .jb-profile-field label {
-      display: block;
-      font-weight: 700;
-      font-size: 13px;
-      margin-bottom: 7px;
-      color: #555;
-    }
-    .jb-profile-field input,
-    .jb-profile-field textarea {
-      width: 100%;
-      box-sizing: border-box;
-      border: 1px solid #ddd8ca;
-      border-radius: 13px;
-      background: #faf9f5;
-      padding: 13px 14px;
-      font-size: 15px;
-      outline: none;
-      font-family: inherit;
-    }
-    .jb-profile-field input:focus,
-    .jb-profile-field textarea:focus {
-      border-color: #d5ad22;
-      box-shadow: 0 0 0 3px rgba(213, 173, 34, .12);
-    }
-    .jb-profile-field textarea {
-      min-height: 82px;
-      resize: vertical;
-    }
-    .jb-profile-save {
-      width: 100%;
-      border: 0;
-      border-radius: 14px;
-      padding: 14px;
-      background: #dfb500;
-      color: #111;
-      font-size: 16px;
-      font-weight: 800;
-      cursor: pointer;
-      margin-top: 5px;
-    }
-    .jb-profile-status {
-      text-align: center;
-      min-height: 20px;
-      margin-top: 10px;
-      font-size: 13px;
-      color: #777;
-    }
-    .jb-profile-note {
-      text-align: center;
-      font-size: 11px;
-      color: #999;
-      margin-top: 9px;
-    }
-    .jb-profile-field input[readonly] {
-      background: #f4f2ec;
-      color: #666;
-    }
-    .jb-profile-logout {
-      width: 100%;
-      border: 1px solid #e6c9c9;
-      border-radius: 14px;
-      padding: 13px;
-      background: #fff;
-      color: #b00020;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 10px;
-      font-family: inherit;
-    }
-    .jb-profile-logout:hover { background: #fff5f5; }
-    .jb-profile-delete {
-      width: 100%;
-      border: 1px solid #f0b7b7;
-      border-radius: 14px;
-      padding: 13px;
-      background: #fff;
-      color: #c62828;
-      font-size: 15px;
-      font-weight: 800;
-      cursor: pointer;
-      margin-top: 10px;
-      font-family: inherit;
-    }
-    .jb-profile-delete:hover {
-      background: #fff2f2;
-      border-color: #d95353;
-    }
-    .jb-delete-warning {
-      display: none;
-      margin-top: 12px;
-      padding: 13px;
-      border: 1px solid #f0caca;
-      border-radius: 12px;
-      background: #fff7f7;
-      color: #7d2020;
-      font-size: 12px;
-      line-height: 1.55;
-    }
-    .jb-delete-warning.show { display: block; }
-    .jb-delete-actions {
-      display: none;
-      gap: 8px;
-      margin-top: 10px;
-    }
-    .jb-delete-actions.show { display: flex; }
-    .jb-delete-actions button {
-      flex: 1;
-      border-radius: 12px;
-      padding: 12px;
-      font-family: inherit;
-      font-weight: 800;
-      cursor: pointer;
-    }
-    .jb-delete-cancel {
-      border: 1px solid #ddd;
-      background: #fff;
-      color: #555;
-    }
-    .jb-delete-confirm {
-      border: 0;
-      background: #c62828;
-      color: #fff;
-    }
+    .jb-profile-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .jb-profile-head h2{margin:0;font-family:Georgia,serif;font-size:25px}
+    .jb-profile-close{border:1px solid #e4d7ad;background:#fff;border-radius:50%;width:38px;height:38px;font-size:24px;cursor:pointer;color:#777}
+    .jb-profile-avatar{width:72px;height:72px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background:#fffaf0;border:2px solid #dfbd4a;font-size:35px;}
+    .jb-profile-email{text-align:center;color:#777;font-size:13px;margin-bottom:22px}
+    .jb-profile-field{margin:0 0 14px}
+    .jb-profile-field label{display:block;font-weight:700;font-size:13px;margin-bottom:7px;color:#555}
+    .jb-profile-field input,.jb-profile-field textarea{width:100%;box-sizing:border-box;border:1px solid #ddd8ca;border-radius:13px;background:#faf9f5;padding:13px 14px;font-size:15px;outline:none;font-family:inherit;}
+    .jb-profile-field input:focus,.jb-profile-field textarea:focus{border-color:#d5ad22;box-shadow:0 0 0 3px rgba(213,173,34,.12)}
+    .jb-profile-field textarea{min-height:82px;resize:vertical}
+    .jb-profile-save{width:100%;border:0;border-radius:14px;padding:14px;background:#dfb500;color:#111;font-size:16px;font-weight:800;cursor:pointer;margin-top:5px;}
+    .jb-profile-status{text-align:center;min-height:20px;margin-top:10px;font-size:13px;color:#777}
+    .jb-profile-note{text-align:center;font-size:11px;color:#999;margin-top:9px}
+    .jb-profile-field input[readonly]{background:#f4f2ec;color:#666;}
+    .jb-profile-logout{width:100%;border:1px solid #e6c9c9;border-radius:14px;padding:13px;background:#fff;color:#b00020;font-size:15px;font-weight:700;cursor:pointer;margin-top:10px;font-family:inherit;}
+    .jb-profile-logout:hover{background:#fff5f5;}
+    .jb-profile-delete{width:100%;border:1px solid #f0b7b7;border-radius:14px;padding:13px;background:#fff;color:#c62828;font-size:15px;font-weight:800;cursor:pointer;margin-top:10px;font-family:inherit;}
+    .jb-profile-delete:hover{background:#fff2f2;border-color:#d95353;}
+    .jb-delete-warning{display:none;margin-top:12px;padding:13px;border:1px solid #f0caca;border-radius:12px;background:#fff7f7;color:#7d2020;font-size:12px;line-height:1.55;}
+    .jb-delete-warning.show{display:block;}
+    .jb-delete-actions{display:none;gap:8px;margin-top:10px;}
+    .jb-delete-actions.show{display:flex;}
+    .jb-delete-actions button{flex:1;border-radius:12px;padding:12px;font-family:inherit;font-weight:800;cursor:pointer;}
+    .jb-delete-cancel{border:1px solid #ddd;background:#fff;color:#555;}
+    .jb-delete-confirm{border:0;background:#c62828;color:#fff;}
   </style>
 
   <style>
@@ -436,10 +279,7 @@
       padding: 5px;
       flex-shrink: 0;
     }
-    .suggestion-info {
-      flex: 1;
-      min-width: 0;
-    }
+    .suggestion-info { flex: 1; min-width: 0; }
     .suggestion-name {
       color: #111;
       font-size: 14px;
@@ -449,10 +289,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .suggestion-name strong {
-      color: #D4AF37;
-      font-weight: 800;
-    }
+    .suggestion-name strong { color: #D4AF37; font-weight: 800; }
     .suggestion-category {
       color: #8a8580;
       font-size: 11.5px;
@@ -637,8 +474,8 @@
 <header class="header">
   <div class="header-top">
     <a href="index.html" class="logo">
-      <img src="images/jbstore-logo.png" alt="JB STORE">
-    </a>
+  <img src="images/jbstore-logo.png" alt="JB STORE">
+</a>
     <a href="javascript:void(0)" class="account-link" id="headerAccountLink" aria-label="Login or Account">👤</a>
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
@@ -695,55 +532,62 @@
 <script>
 (function () {
   'use strict';
+
   function goFromDrawer(id, url) {
     var item = document.getElementById(id);
     if (!item) return;
+
     item.addEventListener('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
+
       var closeBtn = document.getElementById('menuClose');
       if (closeBtn) {
         try { closeBtn.click(); } catch (_) {}
       }
+
       setTimeout(function () {
         window.location.assign(url);
       }, 120);
     }, true);
   }
+
   goFromDrawer('menuAboutUs', 'about-us.html');
   goFromDrawer('menuContactUs', 'contact-us.html');
 })();
 </script>
 
 <!-- ===== HERO (UPDATED SLIDER) ===== -->
-<section class="hero hero-slider" id="heroSlider">
-    <div class="hero-slides" id="heroSlidesContainer">
-        <div class="hero-slide active">
-            <img src="images/hero.png" alt="JB STORE">
+<div class="hero-wrapper">
+    <section class="hero hero-slider" id="heroSlider">
+        <div class="hero-slides" id="heroSlidesContainer">
+            <div class="hero-slide">
+                <img src="images/hero.png" alt="JB STORE">
+            </div>
+            <div class="hero-slide">
+                <img src="images/hero2.png" alt="JB STORE">
+            </div>
+            <div class="hero-slide">
+                <img src="images/hero3.png" alt="JB STORE">
+            </div>
+            <div class="hero-slide">
+                <img src="images/hero4.png" alt="JB STORE">
+            </div>
+            <div class="hero-slide">
+                <img src="images/hero5.png" alt="JB STORE">
+            </div>
+            <div class="hero-slide">
+                <img src="images/hero6.png" alt="JB STORE">
+            </div>
+            <div class="hero-slide">
+                <img src="images/hero7.png" alt="JB STORE">
+            </div>
         </div>
-        <div class="hero-slide">
-            <img src="images/hero2.png" alt="JB STORE">
-        </div>
-        <div class="hero-slide">
-            <img src="images/hero3.png" alt="JB STORE">
-        </div>
-        <div class="hero-slide">
-            <img src="images/hero4.png" alt="JB STORE">
-        </div>
-        <div class="hero-slide">
-            <img src="images/hero5.png" alt="JB STORE">
-        </div>
-        <div class="hero-slide">
-            <img src="images/hero6.png" alt="JB STORE">
-        </div>
-        <div class="hero-slide">
-            <img src="images/hero7.png" alt="JB STORE">
-        </div>
-    </div>
+    </section>
     
-    <!-- Dots Container -->
+    <!-- Dots Container (Banner kinda vastundi) -->
     <div class="hero-dots" id="heroDots"></div>
-</section>
+</div>
 
 <!-- ===== SHOP BY CATEGORY ===== -->
 <section class="categories">
@@ -803,6 +647,7 @@
 <section class="deals" id="products">
   <div class="section-head">
     <h2 id="productTitle">Top Deals <span class="fire-icon">🔥</span></h2>
+
   </div>
   <div id="productGrid" class="deal-grid"></div>
   <div id="topDealsPagination" class="top-deals-pagination"></div>
@@ -822,6 +667,7 @@
   </div>
   <div class="dots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
 </section>
+
 
 <!-- ===== TOP BRANDS ===== -->
 <section class="brands">
@@ -860,19 +706,28 @@
     <span class="row-label">Contact Us</span>
     <ul class="inline-list contact-buttons">
       <li>
-        <a href="https://wa.me/919652699702" class="whatsapp-link contact-action" target="_blank" rel="noopener noreferrer" aria-label="Contact JB STORE on WhatsApp">
+        <a href="https://wa.me/919652699702"
+           class="whatsapp-link contact-action"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Contact JB STORE on WhatsApp">
           <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
           <span>WhatsApp</span>
         </a>
       </li>
       <li>
-        <a href="tel:+919652699702" id="footerCallLink" class="contact-action" aria-label="Call JB STORE">
+        <a href="tel:+919652699702"
+           id="footerCallLink"
+           class="contact-action"
+           aria-label="Call JB STORE">
           <i class="fa-solid fa-phone" aria-hidden="true"></i>
           <span>Call Us</span>
         </a>
       </li>
       <li>
-        <a href="contact-us.html" class="contact-action email-link" aria-label="Contact JB STORE">
+        <a href="contact-us.html"
+           class="contact-action email-link"
+           aria-label="Contact JB STORE">
           <i class="fa-solid fa-envelope" aria-hidden="true"></i>
           <span>Email</span>
         </a>
@@ -902,7 +757,13 @@
 
   <div class="developer-credit">
     <p class="developer-credit-label">Designed &amp; Developed by</p>
-    <a href="https://www.instagram.com/OMG_X_NOOR/" class="developer-credit-link" aria-label="Open OMG_X_NOOR on Instagram" target="_blank" rel="noopener noreferrer">
+    <a
+      href="https://www.instagram.com/OMG_X_NOOR/"
+      class="developer-credit-link"
+      aria-label="Open OMG_X_NOOR on Instagram"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <i class="fa-brands fa-instagram" aria-hidden="true"></i>
       <span class="developer-credit-name">OMG_X_NOOR</span>
       <span class="developer-credit-external">↗</span>
@@ -914,20 +775,31 @@
 <script>
 (function () {
   'use strict';
+
   var EMAIL = 'jbstore01012@gmail.com';
   var PHONE = '+919652699702';
+
   var emailLink = document.getElementById('footerEmailLink');
   if (emailLink) {
     emailLink.addEventListener('click', function (e) {
       var isAndroid = /Android/i.test(navigator.userAgent || '');
+
       if (isAndroid) {
         e.preventDefault();
+
         var subject = encodeURIComponent('JB STORE Enquiry');
-        var intentUrl = 'intent://compose?to=' + encodeURIComponent(EMAIL) + '&subject=' + subject + '#Intent;scheme=mailto;package=com.google.android.gm;end';
+        var intentUrl =
+          'intent://compose?to=' + encodeURIComponent(EMAIL) +
+          '&subject=' + subject +
+          '#Intent;scheme=mailto;package=com.google.android.gm;end';
+
         window.location.href = intentUrl;
       }
+      /* On non-Android devices the normal mailto: link remains active. */
     });
   }
+
+  /* Keep the footer call link synchronized with the JB STORE number. */
   var callLink = document.getElementById('footerCallLink');
   if (callLink) callLink.href = 'tel:' + PHONE;
 })();
@@ -1308,61 +1180,323 @@
     tv:      'TV'
   };
 
-  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]; }); }
-  function highlight(text, q) { var safe = esc(text); if (!q) return safe; var toks = String(q).trim().split(/\s+/).filter(Boolean).map(function (t) { return t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }).sort(function (a, b) { return b.length - a.length; }); if (!toks.length) return safe; try { return safe.replace(new RegExp('(' + toks.join('|') + ')', 'ig'), '<strong>$1</strong>'); } catch (e) { return safe; } }
-  function normalize(v) { return String(v == null ? '' : v).toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/([a-z])([0-9])/gi, '$1 $2').replace(/([0-9])([a-z])/gi, '$1 $2').replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim(); }
-  function getProducts() { try { if (typeof allProducts !== 'undefined' && Array.isArray(allProducts)) return allProducts; } catch (e) {} return []; }
-  function firstStr(o, keys) { if (!o) return ''; for (var i = 0; i < keys.length; i++) { var v = o[keys[i]]; if (v != null && String(v).trim()) return String(v).trim(); } return ''; }
-  function getBrand(p) { return firstStr(p, ['brand','brand_name','brandName','Brand','BrandName','manufacturer','company']); }
-  function getName(p) { return firstStr(p, ['name','Name','title','Title','product_name','productName','product_title','productTitle','model','Model','model_name','modelName','model_number','modelNumber','series','product']); }
-  function getImg(p) { if (!p) return ''; if (typeof p.image === 'string' && p.image) return p.image; if (typeof p.img === 'string' && p.img) return p.img; if (Array.isArray(p.images) && p.images.length) return p.images[0]; if (typeof p.images === 'string' && p.images) return p.images; return ''; }
+  /* ---------- helpers ---------- */
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
+  }
 
+  function highlight(text, q) {
+    var safe = esc(text);
+    if (!q) return safe;
+    var toks = String(q).trim().split(/\s+/).filter(Boolean)
+      .map(function (t) { return t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); })
+      .sort(function (a, b) { return b.length - a.length; });
+    if (!toks.length) return safe;
+    try {
+      return safe.replace(new RegExp('(' + toks.join('|') + ')', 'ig'), '<strong>$1</strong>');
+    } catch (e) { return safe; }
+  }
+
+  function normalize(v) {
+    return String(v == null ? '' : v)
+      .toLowerCase()
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/([a-z])([0-9])/gi, '$1 $2')
+      .replace(/([0-9])([a-z])/gi, '$1 $2')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  /* ---------- get products (from global allProducts) ---------- */
+  function getProducts() {
+    try {
+      if (typeof allProducts !== 'undefined' && Array.isArray(allProducts)) {
+        return allProducts;
+      }
+    } catch (e) {}
+    return [];
+  }
+
+  /* ---------- field readers (any column name) ---------- */
+  function firstStr(o, keys) {
+    if (!o) return '';
+    for (var i = 0; i < keys.length; i++) {
+      var v = o[keys[i]];
+      if (v != null && String(v).trim()) return String(v).trim();
+    }
+    return '';
+  }
+  function getBrand(p) {
+    return firstStr(p, ['brand','brand_name','brandName','Brand','BrandName','manufacturer','company']);
+  }
+  function getName(p) {
+    return firstStr(p, ['name','Name','title','Title','product_name','productName','product_title','productTitle','model','Model','model_name','modelName','model_number','modelNumber','series','product']);
+  }
+  function getImg(p) {
+    if (!p) return '';
+    if (typeof p.image === 'string' && p.image) return p.image;
+    if (typeof p.img === 'string' && p.img) return p.img;
+    if (Array.isArray(p.images) && p.images.length) return p.images[0];
+    if (typeof p.images === 'string' && p.images) return p.images;
+    return '';
+  }
+
+  /* ---------- deep collect all strings ---------- */
   var SKIP = /^(image|img|images|photo|photos|thumbnail|thumb|icon|url|uri|link|href|src|video|video_url|pdf|file|path|filename|alt)$/i;
-  function collect(o, out, d) { if (o == null || d > 5) return; var t = typeof o; if (t === 'string') { if (o.trim()) out.push(o); return; } if (t === 'number' || t === 'boolean') { out.push(String(o)); return; } if (Array.isArray(o)) { for (var i = 0; i < o.length; i++) collect(o[i], out, d + 1); return; } if (t === 'object') { for (var k in o) { if (!Object.prototype.hasOwnProperty.call(o, k)) continue; if (SKIP.test(k)) continue; collect(o[k], out, d + 1); } } }
-  function searchText(p) { var a = []; collect(p, a, 0); return normalize(a.join(' ')); }
-  function matches(p, q) { q = normalize(q); if (!q) return true; var s = searchText(p); var qc = q.replace(/\s+/g, ''); var sc = s.replace(/\s+/g, ''); if (qc && sc.indexOf(qc) !== -1) return true; var words = s.split(' ').filter(Boolean); var toks  = q.split(' ').filter(Boolean); var used  = []; for (var i = 0; i < toks.length; i++) { var t = toks[i], idx = -1; for (var j = 0; j < words.length; j++) { if (!used[j] && words[j] === t) { idx = j; break; } } if (idx === -1) { for (var k = 0; k < words.length; k++) { if (!used[k] && words[k].indexOf(t) === 0) { idx = k; break; } } } if (idx === -1) return false; used[idx] = true; } return true; }
-  function title(p) { var b = getBrand(p), n = getName(p); if (!n) return b || 'Product'; if (!b) return n; var cb = normalize(b).replace(/\s+/g, ''); var cn = normalize(n).replace(/\s+/g, ''); if (cn.indexOf(cb) === 0) return n; return b + ' ' + n; }
-  function buildSuggestions(text) { text = String(text || '').trim(); if (!text) return []; var all = getProducts(); var q  = normalize(text); var qc = q.replace(/\s+/g, ''); var out = []; for (var i = 0; i < all.length; i++) { var p = all[i]; if (!matches(p, text)) continue; var tt = title(p); var tn = normalize(tt); var tc = tn.replace(/\s+/g, ''); var bn = normalize(getBrand(p)); var nn = normalize(getName(p)); var s = 0; if (tc === qc) s += 1000; if (tc.indexOf(qc) === 0) s += 600; else if (tc.indexOf(qc) !== -1) s += 300; if (tn.indexOf(q) === 0) s += 200; if (nn.indexOf(q) === 0) s += 180; if (bn === q) s += 140; else if (bn.indexOf(q) === 0) s += 90; s += Math.max(0, 20 - i / 1000); out.push({ id: p.id, brand: getBrand(p), title: tt, categoryName: CAT_NAMES[String(p.category || '').toLowerCase()] || String(p.category || ''), image: getImg(p), score: s }); } out.sort(function (a, b) { return b.score - a.score || a.title.localeCompare(b.title); }); return out.slice(0, 30); }
+  function collect(o, out, d) {
+    if (o == null || d > 5) return;
+    var t = typeof o;
+    if (t === 'string') { if (o.trim()) out.push(o); return; }
+    if (t === 'number' || t === 'boolean') { out.push(String(o)); return; }
+    if (Array.isArray(o)) { for (var i = 0; i < o.length; i++) collect(o[i], out, d + 1); return; }
+    if (t === 'object') {
+      for (var k in o) {
+        if (!Object.prototype.hasOwnProperty.call(o, k)) continue;
+        if (SKIP.test(k)) continue;
+        collect(o[k], out, d + 1);
+      }
+    }
+  }
+  function searchText(p) {
+    var a = []; collect(p, a, 0);
+    return normalize(a.join(' '));
+  }
 
-  function positionPanel() { var rect = inputEl.getBoundingClientRect(); var top = rect.bottom + 6; var left = Math.max(8, rect.left - 4); var width = Math.min(window.innerWidth - left - 8, rect.width + 8); var maxH = Math.min(380, window.innerHeight - top - 20); suggestEl.style.top = top + 'px'; suggestEl.style.left = left + 'px'; suggestEl.style.width = width + 'px'; suggestEl.style.maxHeight = maxH + 'px'; }
-  function lockPagePullToRefresh() { document.documentElement.classList.add('jb-search-open'); document.body.classList.add('jb-search-open'); }
-  function unlockPagePullToRefresh() { document.documentElement.classList.remove('jb-search-open'); document.body.classList.remove('jb-search-open'); }
-  function hidePanel() { suggestEl.classList.remove('show'); suggestEl.style.setProperty('display', 'none', 'important'); unlockPagePullToRefresh(); }
+  /* ---------- matching engine (same as search.html) ---------- */
+  function matches(p, q) {
+    q = normalize(q);
+    if (!q) return true;
+    var s = searchText(p);
+    var qc = q.replace(/\s+/g, '');
+    var sc = s.replace(/\s+/g, '');
+    if (qc && sc.indexOf(qc) !== -1) return true;
+
+    var words = s.split(' ').filter(Boolean);
+    var toks  = q.split(' ').filter(Boolean);
+    var used  = [];
+    for (var i = 0; i < toks.length; i++) {
+      var t = toks[i], idx = -1;
+      for (var j = 0; j < words.length; j++) {
+        if (!used[j] && words[j] === t) { idx = j; break; }
+      }
+      if (idx === -1) {
+        for (var k = 0; k < words.length; k++) {
+          if (!used[k] && words[k].indexOf(t) === 0) { idx = k; break; }
+        }
+      }
+      if (idx === -1) return false;
+      used[idx] = true;
+    }
+    return true;
+  }
+
+  /* ---------- title ---------- */
+  function title(p) {
+    var b = getBrand(p), n = getName(p);
+    if (!n) return b || 'Product';
+    if (!b) return n;
+    var cb = normalize(b).replace(/\s+/g, '');
+    var cn = normalize(n).replace(/\s+/g, '');
+    if (cn.indexOf(cb) === 0) return n;
+    return b + ' ' + n;
+  }
+
+  /* ---------- build suggestions (individual products) ---------- */
+  function buildSuggestions(text) {
+    text = String(text || '').trim();
+    if (!text) return [];
+
+    var all = getProducts();
+    var q  = normalize(text);
+    var qc = q.replace(/\s+/g, '');
+    var out = [];
+
+    for (var i = 0; i < all.length; i++) {
+      var p = all[i];
+      if (!matches(p, text)) continue;
+
+      var tt = title(p);
+      var tn = normalize(tt);
+      var tc = tn.replace(/\s+/g, '');
+      var bn = normalize(getBrand(p));
+      var nn = normalize(getName(p));
+
+      var s = 0;
+      if (tc === qc) s += 1000;
+      if (tc.indexOf(qc) === 0) s += 600;
+      else if (tc.indexOf(qc) !== -1) s += 300;
+      if (tn.indexOf(q) === 0) s += 200;
+      if (nn.indexOf(q) === 0) s += 180;
+      if (bn === q) s += 140;
+      else if (bn.indexOf(q) === 0) s += 90;
+      s += Math.max(0, 20 - i / 1000);
+
+      out.push({
+        id: p.id,
+        brand: getBrand(p),
+        title: tt,
+        categoryName: CAT_NAMES[String(p.category || '').toLowerCase()] || String(p.category || ''),
+        image: getImg(p),
+        score: s
+      });
+    }
+
+    out.sort(function (a, b) {
+      return b.score - a.score || a.title.localeCompare(b.title);
+    });
+
+    return out.slice(0, 30);
+  }
+
+  /* ---------- panel position / show / hide ---------- */
+  function positionPanel() {
+    var rect = inputEl.getBoundingClientRect();
+    var top = rect.bottom + 6;
+    var left = Math.max(8, rect.left - 4);
+    var width = Math.min(window.innerWidth - left - 8, rect.width + 8);
+    var maxH = Math.min(380, window.innerHeight - top - 20);
+    suggestEl.style.top = top + 'px';
+    suggestEl.style.left = left + 'px';
+    suggestEl.style.width = width + 'px';
+    suggestEl.style.maxHeight = maxH + 'px';
+  }
+
+  function lockPagePullToRefresh() {
+    document.documentElement.classList.add('jb-search-open');
+    document.body.classList.add('jb-search-open');
+  }
+  function unlockPagePullToRefresh() {
+    document.documentElement.classList.remove('jb-search-open');
+    document.body.classList.remove('jb-search-open');
+  }
+
+  function hidePanel() {
+    suggestEl.classList.remove('show');
+    suggestEl.style.setProperty('display', 'none', 'important');
+    unlockPagePullToRefresh();
+  }
 
   function showPanel() {
     var text = inputEl.value.trim();
     suggestEl.innerHTML = '';
     if (!text) { hidePanel(); return; }
+
     var results = buildSuggestions(text);
+    console.log('[index-search] query:', text, '| products:', getProducts().length, '| matches:', results.length);
+
     if (!results.length) {
       suggestEl.innerHTML = '<div class="search-no-result">No products found for "' + esc(text) + '"</div>';
     } else {
       results.forEach(function (item) {
         var row = document.createElement('div');
         row.className = 'search-suggestion';
-        row.innerHTML = '<img src="' + esc(item.image) + '" alt="" onerror="this.style.background=\'#f2efe9\'"><div class="suggestion-info"><div class="suggestion-name">' + highlight(item.title, text) + '</div><div class="suggestion-category">' + esc(item.brand + ' • ' + item.categoryName) + '</div></div><span class="suggestion-arrow">↗</span>';
-        row.addEventListener('click', function () { window.location.href = 'search.html?q=' + encodeURIComponent(item.title); });
+        row.innerHTML =
+          '<img src="' + esc(item.image) + '" alt="" onerror="this.style.background=\'#f2efe9\'">' +
+          '<div class="suggestion-info">' +
+            '<div class="suggestion-name">' + highlight(item.title, text) + '</div>' +
+            '<div class="suggestion-category">' + esc(item.brand + ' • ' + item.categoryName) + '</div>' +
+          '</div>' +
+          '<span class="suggestion-arrow">↗</span>';
+
+        row.addEventListener('click', function () {
+          window.location.href = 'search.html?q=' + encodeURIComponent(item.title);
+        });
         suggestEl.appendChild(row);
       });
     }
+
     positionPanel();
     suggestEl.style.setProperty('display', 'block', 'important');
     suggestEl.classList.add('show');
+
+    /* ✅ Page pull-to-refresh ni block cheyyi, panel open unapudu */
     lockPagePullToRefresh();
   }
 
-  window.__refreshSuggestions = function () { if (suggestEl.classList.contains('show') && inputEl.value.trim()) { showPanel(); } };
+  window.__refreshSuggestions = function () {
+    if (suggestEl.classList.contains('show') && inputEl.value.trim()) {
+      showPanel();
+    }
+  };
+
+  /* ---------- events ---------- */
   inputEl.addEventListener('input', showPanel);
-  inputEl.addEventListener('focus', function () { if (inputEl.value.trim()) showPanel(); });
-  inputEl.addEventListener('keydown', function (e) { if (e.key === 'Enter') { var v = inputEl.value.trim(); if (v) window.location.href = 'search.html?q=' + encodeURIComponent(v); } if (e.key === 'Escape') hidePanel(); });
-  if (searchBtn) { searchBtn.addEventListener('click', function () { var v = inputEl.value.trim(); if (v) window.location.href = 'search.html?q=' + encodeURIComponent(v); }); }
-  document.addEventListener('click', function (e) { if (!inputEl.contains(e.target) && !suggestEl.contains(e.target)) { hidePanel(); } });
-  window.addEventListener('resize', function () { if (suggestEl.classList.contains('show')) positionPanel(); });
-  window.addEventListener('scroll', function (e) { if (!suggestEl.classList.contains('show')) return; if (e.target && (e.target === suggestEl || suggestEl.contains(e.target))) return; positionPanel(); }, true);
-  
+  inputEl.addEventListener('focus', function () {
+    if (inputEl.value.trim()) showPanel();
+  });
+  inputEl.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      var v = inputEl.value.trim();
+      if (v) window.location.href = 'search.html?q=' + encodeURIComponent(v);
+    }
+    if (e.key === 'Escape') hidePanel();
+  });
+
+  if (searchBtn) {
+    searchBtn.addEventListener('click', function () {
+      var v = inputEl.value.trim();
+      if (v) window.location.href = 'search.html?q=' + encodeURIComponent(v);
+    });
+  }
+
+  document.addEventListener('click', function (e) {
+    if (!inputEl.contains(e.target) && !suggestEl.contains(e.target)) {
+      hidePanel();
+    }
+  });
+
+  window.addEventListener('resize', function () {
+    if (suggestEl.classList.contains('show')) positionPanel();
+  });
+
+  /* ✅ Panel lopala scroll chesthe reposition cheyyakoodadu.
+     Window/page scroll aithe maatrame reposition avvali. */
+  window.addEventListener('scroll', function (e) {
+    if (!suggestEl.classList.contains('show')) return;
+    if (e.target && (e.target === suggestEl || suggestEl.contains(e.target))) return;
+    positionPanel();
+  }, true);
+
+  /* ✅ MOBILE: suggestions panel scroll boundary ni handle cheyyi.
+     Down-swipe at TOP / up-swipe at BOTTOM page ki vellakunda
+     Android Chrome/WebView pull-to-refresh ni block chestundi. */
   var suggestionTouchY = 0;
-  suggestEl.addEventListener('touchstart', function (e) { if (e.touches && e.touches.length) { suggestionTouchY = e.touches[0].clientY; } }, { passive: true });
-  suggestEl.addEventListener('touchmove', function (e) { if (!e.touches || !e.touches.length) return; var currentY = e.touches[0].clientY; var deltaY = currentY - suggestionTouchY; var atTop = suggestEl.scrollTop <= 0; var atBottom = suggestEl.scrollTop + suggestEl.clientHeight >= suggestEl.scrollHeight - 1; if (deltaY > 0 && atTop) { e.preventDefault(); } if (deltaY < 0 && atBottom) { e.preventDefault(); } suggestionTouchY = currentY; }, { passive: false });
+
+  suggestEl.addEventListener('touchstart', function (e) {
+    if (e.touches && e.touches.length) {
+      suggestionTouchY = e.touches[0].clientY;
+    }
+  }, { passive: true });
+
+  suggestEl.addEventListener('touchmove', function (e) {
+    if (!e.touches || !e.touches.length) return;
+
+    var currentY = e.touches[0].clientY;
+    var deltaY = currentY - suggestionTouchY;
+    var atTop = suggestEl.scrollTop <= 0;
+    var atBottom =
+      suggestEl.scrollTop + suggestEl.clientHeight >= suggestEl.scrollHeight - 1;
+
+    /* Finger moving DOWN while panel is already at TOP:
+       browser must NOT pull/refresh the page. */
+    if (deltaY > 0 && atTop) {
+      e.preventDefault();
+    }
+
+    /* Finger moving UP while panel is already at BOTTOM:
+       browser must NOT pass the gesture to the page. */
+    if (deltaY < 0 && atBottom) {
+      e.preventDefault();
+    }
+
+    suggestionTouchY = currentY;
+  }, { passive: false });
+
+  console.log('✅ [index-search] Suggestions ready (v3 — pull-to-refresh blocked).');
 })();
 </script>
 
@@ -1370,6 +1504,7 @@
 <script>
 (function () {
   'use strict';
+
   var PER_PAGE = 20;
   var currentPage = 1;
   var gridEl = document.getElementById('productGrid');
@@ -1379,38 +1514,47 @@
   function applyPagination() {
     var cards = gridEl.querySelectorAll('.deal-card');
     var total = cards.length;
+
     if (total <= PER_PAGE) {
       pagEl.innerHTML = '';
       cards.forEach(function (c) { c.style.display = ''; });
       return;
     }
+
     var totalPages = Math.ceil(total / PER_PAGE);
     if (currentPage > totalPages) currentPage = totalPages;
     if (currentPage < 1) currentPage = 1;
+
     cards.forEach(function (card, idx) {
       var page = Math.floor(idx / PER_PAGE) + 1;
       card.style.display = (page === currentPage) ? '' : 'none';
     });
+
     renderPagination(totalPages);
   }
 
   function renderPagination(totalPages) {
     var html = '';
     html += '<button type="button" data-page="prev" ' + (currentPage === 1 ? 'disabled' : '') + '>‹ Prev</button>';
+
     var startP = Math.max(1, currentPage - 2);
     var endP   = Math.min(totalPages, startP + 4);
     if (endP - startP < 4) startP = Math.max(1, endP - 4);
+
     if (startP > 1) {
       html += '<button type="button" data-page="1">1</button>';
       if (startP > 2) html += '<span class="page-info">…</span>';
     }
+
     for (var i = startP; i <= endP; i++) {
       html += '<button type="button" data-page="' + i + '" class="' + (i === currentPage ? 'active' : '') + '">' + i + '</button>';
     }
+
     if (endP < totalPages) {
       if (endP < totalPages - 1) html += '<span class="page-info">…</span>';
       html += '<button type="button" data-page="' + totalPages + '">' + totalPages + '</button>';
     }
+
     html += '<button type="button" data-page="next" ' + (currentPage === totalPages ? 'disabled' : '') + '>Next ›</button>';
     pagEl.innerHTML = html;
   }
@@ -1418,13 +1562,21 @@
   pagEl.addEventListener('click', function (e) {
     var btn = e.target.closest('button[data-page]');
     if (!btn || btn.disabled) return;
+
     var p = btn.getAttribute('data-page');
     var cards = gridEl.querySelectorAll('.deal-card');
     var totalPages = Math.ceil(cards.length / PER_PAGE);
-    if (p === 'prev') { if (currentPage > 1) currentPage--; }
-    else if (p === 'next') { if (currentPage < totalPages) currentPage++; }
-    else { currentPage = parseInt(p, 10); }
+
+    if (p === 'prev') {
+      if (currentPage > 1) currentPage--;
+    } else if (p === 'next') {
+      if (currentPage < totalPages) currentPage++;
+    } else {
+      currentPage = parseInt(p, 10);
+    }
+
     applyPagination();
+
     var section = document.getElementById('products');
     if (section) {
       var y = section.getBoundingClientRect().top + window.pageYOffset - 80;
@@ -1432,37 +1584,59 @@
     }
   });
 
+  /* Reset on filter / category change */
   var observeTimeout;
   var observer = new MutationObserver(function () {
     clearTimeout(observeTimeout);
-    observeTimeout = setTimeout(function () { currentPage = 1; applyPagination(); }, 80);
+    observeTimeout = setTimeout(function () {
+      currentPage = 1;
+      applyPagination();
+    }, 80);
   });
   observer.observe(gridEl, { childList: true });
 
-  window.__applyTopDealsPagination = function () { currentPage = 1; applyPagination(); };
+  /* Expose for Supabase update */
+  window.__applyTopDealsPagination = function () {
+    currentPage = 1;
+    applyPagination();
+  };
+
+  /* Initial runs */
   setTimeout(applyPagination, 400);
   setTimeout(applyPagination, 1200);
   window.addEventListener('load', function () { setTimeout(applyPagination, 300); });
+
+  console.log('✅ [top-deals] Pagination ready.');
 })();
 </script>
 
-<!-- ===== ✅ OAUTH CLEAN REDIRECT ===== -->
+<!-- ===== ✅ OAUTH CLEAN REDIRECT (breaks Chrome stuck desktop mode) ===== -->
 <script>
 (function(){
   if (location.search.indexOf('oauth=1') === -1) return;
+
+  console.log('[JB] OAuth callback detected — waiting for Supabase to process hash…');
+
   var attempts = 0;
-  var maxAttempts = 25;
+  var maxAttempts = 25; // 25 × 150ms = ~3.75 seconds
+
   var timer = setInterval(function(){
     attempts++;
+
     var hash = location.hash || '';
     var hasToken = hash.indexOf('access_token') !== -1;
+
+    // Supabase has consumed and cleared the hash
     if (!hasToken && attempts >= 3) {
       clearInterval(timer);
+      console.log('[JB] Supabase done — clean redirect to reset Chrome desktop mode');
       window.location.replace('index.html');
       return;
     }
+
     if (attempts >= maxAttempts) {
       clearInterval(timer);
+      console.log('[JB] Timeout — forcing clean redirect anyway');
       window.location.replace('index.html');
     }
   }, 150);
