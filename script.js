@@ -878,3 +878,142 @@ window.clearFilters = clearFilters;
   console.log('✅ Menu drawer initialized.');
 })();
 
+
+
+/* =========================================================
+   JB STORE HERO SLIDER ENHANCEMENT
+   - 5 second auto slide
+   - horizontal slide movement
+   - dots
+   - swipe left/right
+   - press/hold pauses autoplay
+   - release resumes
+   ========================================================= */
+(function () {
+  const slides = Array.from(document.querySelectorAll(".hero-slide"));
+  const viewport = document.querySelector(".hero-slides");
+
+  if (!slides.length || !viewport) return;
+
+  let current = 0;
+  let paused = false;
+  let startX = 0;
+  let startY = 0;
+  let pointerId = null;
+
+  viewport.style.overflow = "hidden";
+  viewport.style.position = "relative";
+  viewport.style.touchAction = "pan-y";
+
+  // Create a track without changing the original HTML.
+  let track = viewport.querySelector(".jb-hero-track");
+  if (!track) {
+    track = document.createElement("div");
+    track.className = "jb-hero-track";
+    track.style.display = "flex";
+    track.style.width = `${slides.length * 100}%`;
+    track.style.height = "100%";
+    track.style.transition = "transform 0.6s ease";
+    slides.forEach((slide) => {
+      slide.parentNode && track.appendChild(slide);
+      slide.style.flex = "0 0 100%";
+      slide.style.width = "100%";
+      slide.style.position = "relative";
+      slide.style.opacity = "1";
+      slide.style.pointerEvents = "auto";
+    });
+    viewport.appendChild(track);
+  }
+
+  // Create dots.
+  let dots = viewport.parentElement.querySelector(".jb-hero-dots");
+  if (!dots) {
+    dots = document.createElement("div");
+    dots.className = "jb-hero-dots";
+    dots.style.display = "flex";
+    dots.style.justifyContent = "center";
+    dots.style.alignItems = "center";
+    dots.style.gap = "8px";
+    dots.style.marginTop = "10px";
+
+    slides.forEach((_, index) => {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = "jb-hero-dot";
+      dot.setAttribute("aria-label", `Show banner ${index + 1}`);
+      dot.style.width = "8px";
+      dot.style.height = "8px";
+      dot.style.padding = "0";
+      dot.style.border = "0";
+      dot.style.borderRadius = "50%";
+      dot.style.background = "rgba(255,255,255,.45)";
+      dot.style.cursor = "pointer";
+
+      dot.addEventListener("click", () => {
+        current = index;
+        update();
+      });
+
+      dots.appendChild(dot);
+    });
+
+    viewport.parentElement.appendChild(dots);
+  }
+
+  function update() {
+    track.style.transform = `translate3d(-${current * (100 / slides.length)}%, 0, 0)`;
+
+    Array.from(dots.children).forEach((dot, index) => {
+      dot.style.background =
+        index === current ? "#FFD700" : "rgba(255,255,255,.45)";
+      dot.style.transform = index === current ? "scale(1.25)" : "scale(1)";
+    });
+  }
+
+  function next() {
+    if (paused) return;
+    current = (current + 1) % slides.length;
+    update();
+  }
+
+  // Keep the requested 5-second automatic interval.
+  window.setInterval(next, 5000);
+
+  viewport.addEventListener("pointerdown", (event) => {
+    paused = true;
+    pointerId = event.pointerId;
+    startX = event.clientX;
+    startY = event.clientY;
+
+    try {
+      viewport.setPointerCapture(event.pointerId);
+    } catch (_) {}
+  });
+
+  function finishPointer(event) {
+    if (pointerId !== null && event.pointerId !== pointerId) return;
+
+    const dx = event.clientX - startX;
+    const dy = event.clientY - startY;
+
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) {
+        current = (current + 1) % slides.length;
+      } else {
+        current = (current - 1 + slides.length) % slides.length;
+      }
+      update();
+    }
+
+    paused = false;
+    pointerId = null;
+  }
+
+  viewport.addEventListener("pointerup", finishPointer);
+  viewport.addEventListener("pointercancel", () => {
+    paused = false;
+    pointerId = null;
+  });
+
+  update();
+})();
