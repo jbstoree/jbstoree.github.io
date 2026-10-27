@@ -1075,6 +1075,3 @@ window.clearFilters = clearFilters;
     initJBHeroSlider();
   }
 })();
-</textarea>
-</body>
-</html>
