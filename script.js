@@ -912,12 +912,11 @@ window.clearFilters = clearFilters;
     track.className = "jb-hero-track";
     track.style.display = "flex";
     track.style.width = `${slides.length * 100}%`;
-    track.style.height = "100%";
     track.style.transition = "transform 0.6s ease";
     slides.forEach((slide) => {
       slide.parentNode && track.appendChild(slide);
-      slide.style.flex = "0 0 100%";
-      slide.style.width = "100%";
+      slide.style.flex = `0 0 ${100 / slides.length}%`;
+      slide.style.width = `${100 / slides.length}%`;
       slide.style.position = "relative";
       slide.style.opacity = "1";
       slide.style.pointerEvents = "auto";
