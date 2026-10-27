@@ -2,10 +2,19 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>JB Store Script - Hero Slider Fixed</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JB STORE - FINAL HERO FIX - script.js</title>
+<style>
+body { font-family: Arial, sans-serif; background:#111; color:#fff; padding:20px; }
+h1 { color:#FFD700; }
+p { color:#ddd; }
+textarea { width:100%; height:75vh; background:#050505; color:#eee; border:1px solid #D4AF37; border-radius:10px; padding:15px; box-sizing:border-box; font-family:monospace; font-size:13px; line-height:1.45; }
+</style>
 </head>
 <body>
-<pre style="white-space:pre-wrap;word-wrap:break-word;">// ==========================================
+<h1>JB STORE — FINAL HERO FIX</h1>
+<p>Copy everything inside the box and replace your existing <b>script.js</b>. Existing code is preserved; only the hero slider enhancement is added at the end.</p>
+<textarea spellcheck="false">// ==========================================
 // JB STORE - MAIN JAVASCRIPT
 // ==========================================
 
@@ -13,8 +22,8 @@
 // 1. BANNER SLIDER
 // ==========================================
 
-const slides = document.querySelectorAll(&quot;.slide&quot;);
-const dots = document.querySelectorAll(&quot;.dot&quot;);
+const slides = document.querySelectorAll(".slide");
+const dots = document.querySelectorAll(".dot");
 
 let current = 0;
 
@@ -22,17 +31,17 @@ function showSlide(index) {
   if (!slides.length) return;
 
   slides.forEach(slide =&gt; {
-    slide.classList.remove(&quot;active&quot;);
+    slide.classList.remove("active");
   });
 
   dots.forEach(dot =&gt; {
-    dot.classList.remove(&quot;active&quot;);
+    dot.classList.remove("active");
   });
 
-  slides[index].classList.add(&quot;active&quot;);
+  slides[index].classList.add("active");
 
   if (dots[index]) {
-    dots[index].classList.add(&quot;active&quot;);
+    dots[index].classList.add("active");
   }
 }
 
@@ -47,13 +56,13 @@ if (slides.length &gt; 1) {
 // MAIN HERO IMAGE SLIDER
 // ==========================================
 
-const heroSlides = document.querySelectorAll(&quot;.hero-slide&quot;);
+const heroSlides = document.querySelectorAll(".hero-slide");
 
 let heroCurrent = 0;
 
 function showHeroSlide(index) {
     heroSlides.forEach((slide, i) =&gt; {
-        slide.classList.toggle(&quot;active&quot;, i === index);
+        slide.classList.toggle("active", i === index);
     });
 }
 
@@ -74,7 +83,7 @@ if (heroSlides.length &gt; 1) {
 
 const allProducts = [];
 
-console.log(&#x27;Supabase products only. Waiting for products...&#x27;);
+console.log('Supabase products only. Waiting for products...');
 
 
 
@@ -83,28 +92,28 @@ console.log(&#x27;Supabase products only. Waiting for products...&#x27;);
 // ==========================================
 
 const brands = {
-  mobiles: [&quot;iPhone&quot;, &quot;OnePlus&quot;, &quot;Samsung&quot;, &quot;Google Pixel&quot;, &quot;Vivo&quot;, &quot;OPPO&quot;, &quot;Realme&quot;, &quot;Nothing&quot;, &quot;Motorola&quot;, &quot;Iqoo&quot;, &quot;Poco&quot;, &quot;Infinix&quot;, &quot;Lava&quot;],
-  fridge: [&quot;LG&quot;, &quot;Samsung&quot;, &quot;Godrej&quot;, &quot;Haier&quot;, &quot;Whirlpool&quot;],
-  washing: [&quot;LG&quot;, &quot;Samsung&quot;, &quot;IFB&quot;, &quot;Bosch&quot;, &quot;Haier&quot;, &quot;Whirlpool&quot;],
-  ac: [&quot;Daikin&quot;, &quot;LG&quot;, &quot;Voltas&quot;, &quot;Blue Star&quot;, &quot;Samsung&quot;],
-  tv: [&quot;Sony&quot;, &quot;Samsung&quot;, &quot;LG&quot;, &quot;TCL&quot;, &quot;Xiaomi&quot;]
+  mobiles: ["iPhone", "OnePlus", "Samsung", "Google Pixel", "Vivo", "OPPO", "Realme", "Nothing", "Motorola", "Iqoo", "Poco", "Infinix", "Lava"],
+  fridge: ["LG", "Samsung", "Godrej", "Haier", "Whirlpool"],
+  washing: ["LG", "Samsung", "IFB", "Bosch", "Haier", "Whirlpool"],
+  ac: ["Daikin", "LG", "Voltas", "Blue Star", "Samsung"],
+  tv: ["Sony", "Samsung", "LG", "TCL", "Xiaomi"]
 };
 
 // ==========================================
 // 4. CURRENT FILTER
 // ==========================================
 
-let currentCategory = &quot;mobiles&quot;;
+let currentCategory = "mobiles";
 let selectedBrand = null;
 
 // ==========================================
 // 5. ELEMENTS
 // ==========================================
 
-const brandBox = document.getElementById(&quot;brandFilters&quot;);
-const productGrid = document.getElementById(&quot;productGrid&quot;);
-const productTitle = document.getElementById(&quot;productTitle&quot;);
-const clearFilter = document.getElementById(&quot;clearFilter&quot;);
+const brandBox = document.getElementById("brandFilters");
+const productGrid = document.getElementById("productGrid");
+const productTitle = document.getElementById("productTitle");
+const clearFilter = document.getElementById("clearFilter");
 
 // ==========================================
 // 6. LOAD BRAND BUTTONS
@@ -113,63 +122,63 @@ const clearFilter = document.getElementById(&quot;clearFilter&quot;);
 function loadBrands(category) {
   if (!brandBox) return;
 
-  brandBox.innerHTML = &quot;&quot;;
+  brandBox.innerHTML = "";
   selectedBrand = null;
 
   let brandCategory = category;
-  if (category === &#x27;sealpack&#x27; || category === &#x27;sealcut&#x27; || category === &#x27;second&#x27;) {
-    brandCategory = &#x27;mobiles&#x27;;
+  if (category === 'sealpack' || category === 'sealcut' || category === 'second') {
+    brandCategory = 'mobiles';
   }
 
   const categoryBrands = brands[brandCategory] || [];
   const uniqueBrands = [...new Set(categoryBrands)];
 
   uniqueBrands.forEach(brand =&gt; {
-    const chip = document.createElement(&quot;button&quot;);
-    chip.type = &quot;button&quot;;
-    chip.className = &quot;chip&quot;;
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "chip";
 
     const logoMap = {
-      &quot;iPhone&quot;: &quot;images/apple.png&quot;,
-      &quot;OnePlus&quot;: &quot;images/oneplus.png&quot;,
-      &quot;Samsung&quot;: &quot;images/samsung-logo.png&quot;,
-      &quot;Google Pixel&quot;: &quot;images/google.png&quot;,
-      &quot;Vivo&quot;: &quot;images/vivo.png&quot;,
-      &quot;OPPO&quot;: &quot;images/oppo.png&quot;,
-      &quot;Realme&quot;: &quot;images/realme.png&quot;,
-      &quot;Nothing&quot;: &quot;images/nothing.png&quot;,
-      &quot;Motorola&quot;: &quot;images/motorola.png&quot;,
-      &quot;Iqoo&quot;: &quot;images/iqoo.png&quot;,
-      &quot;Poco&quot;: &quot;images/poco.png&quot;,
-      &quot;Infinix&quot;: &quot;images/infinix.png&quot;,
-      &quot;Lava&quot;: &quot;images/lava.png&quot;,
-      &quot;LG&quot;: &quot;images/lg.png&quot;,
-      &quot;Godrej&quot;: &quot;images/godrej.png&quot;,
-      &quot;Haier&quot;: &quot;images/haier.png&quot;,
-      &quot;Whirlpool&quot;: &quot;images/whirlpool.png&quot;,
-      &quot;IFB&quot;: &quot;images/ifb.png&quot;,
-      &quot;Bosch&quot;: &quot;images/bosch.png&quot;,
-      &quot;Daikin&quot;: &quot;images/daikin.png&quot;,
-      &quot;Voltas&quot;: &quot;images/voltas.png&quot;,
-      &quot;Blue Star&quot;: &quot;images/bluestar.png&quot;,
-      &quot;Sony&quot;: &quot;images/sony.png&quot;,
-      &quot;TCL&quot;: &quot;images/tcl.png&quot;,
-      &quot;Xiaomi&quot;: &quot;images/xiaomi.png&quot;
+      "iPhone": "images/apple.png",
+      "OnePlus": "images/oneplus.png",
+      "Samsung": "images/samsung-logo.png",
+      "Google Pixel": "images/google.png",
+      "Vivo": "images/vivo.png",
+      "OPPO": "images/oppo.png",
+      "Realme": "images/realme.png",
+      "Nothing": "images/nothing.png",
+      "Motorola": "images/motorola.png",
+      "Iqoo": "images/iqoo.png",
+      "Poco": "images/poco.png",
+      "Infinix": "images/infinix.png",
+      "Lava": "images/lava.png",
+      "LG": "images/lg.png",
+      "Godrej": "images/godrej.png",
+      "Haier": "images/haier.png",
+      "Whirlpool": "images/whirlpool.png",
+      "IFB": "images/ifb.png",
+      "Bosch": "images/bosch.png",
+      "Daikin": "images/daikin.png",
+      "Voltas": "images/voltas.png",
+      "Blue Star": "images/bluestar.png",
+      "Sony": "images/sony.png",
+      "TCL": "images/tcl.png",
+      "Xiaomi": "images/xiaomi.png"
     };
 
-    const logo = document.createElement(&quot;img&quot;);
-    logo.src = logoMap[brand] || &quot;&quot;;
+    const logo = document.createElement("img");
+    logo.src = logoMap[brand] || "";
     logo.alt = brand;
 
-    const name = document.createElement(&quot;span&quot;);
+    const name = document.createElement("span");
     name.textContent = brand;
 
     chip.appendChild(logo);
     chip.appendChild(name);
 
-    chip.addEventListener(&quot;click&quot;, () =&gt; {
-      document.querySelectorAll(&quot;.chip&quot;).forEach(c =&gt; c.classList.remove(&quot;on&quot;));
-      chip.classList.add(&quot;on&quot;);
+    chip.addEventListener("click", () =&gt; {
+      document.querySelectorAll(".chip").forEach(c =&gt; c.classList.remove("on"));
+      chip.classList.add("on");
       selectedBrand = brand;
       displayProducts();
     });
@@ -196,23 +205,23 @@ function getFirstVariant(product) {
 function displayProducts() {
   if (!productGrid) return;
 
-  productGrid.innerHTML = &quot;&quot;;
+  productGrid.innerHTML = "";
 
   let products = [];
 
-  if (currentCategory === &quot;mobiles&quot;) {
-    products = allProducts.filter(product =&gt; product.category === &quot;mobiles&quot;);
-  } else if (currentCategory === &quot;sealpack&quot;) {
-    products = allProducts.filter(product =&gt; product.category === &quot;mobiles&quot; &amp;&amp; product.condition === &quot;Seal Pack&quot;);
-  } else if (currentCategory === &quot;sealcut&quot;) {
-    products = allProducts.filter(product =&gt; product.category === &quot;mobiles&quot; &amp;&amp; product.condition === &quot;Seal Cut&quot;);
-  } else if (currentCategory === &quot;second&quot;) {
-    products = allProducts.filter(product =&gt; product.category === &quot;mobiles&quot; &amp;&amp; product.condition === &quot;2nd Hand&quot;);
+  if (currentCategory === "mobiles") {
+    products = allProducts.filter(product =&gt; product.category === "mobiles");
+  } else if (currentCategory === "sealpack") {
+    products = allProducts.filter(product =&gt; product.category === "mobiles" &amp;&amp; product.condition === "Seal Pack");
+  } else if (currentCategory === "sealcut") {
+    products = allProducts.filter(product =&gt; product.category === "mobiles" &amp;&amp; product.condition === "Seal Cut");
+  } else if (currentCategory === "second") {
+    products = allProducts.filter(product =&gt; product.category === "mobiles" &amp;&amp; product.condition === "2nd Hand");
   } else {
     products = allProducts.filter(product =&gt; product.category === currentCategory);
   }
 
-  const condFilter = document.getElementById(&#x27;conditionFilter&#x27;);
+  const condFilter = document.getElementById('conditionFilter');
   if (condFilter &amp;&amp; condFilter.value) {
     const cond = condFilter.value;
     products = products.filter(product =&gt; product.condition === cond);
@@ -224,7 +233,7 @@ function displayProducts() {
 
   if (products.length === 0) {
     productGrid.innerHTML = `
-      &lt;div class=&quot;no-products&quot;&gt;
+      &lt;div class="no-products"&gt;
         &lt;h3&gt;No products found&lt;/h3&gt;
         &lt;p&gt;Try changing filters.&lt;/p&gt;
       &lt;/div&gt;
@@ -233,30 +242,30 @@ function displayProducts() {
   }
 
   products.forEach(product =&gt; {
-    const card = document.createElement(&quot;div&quot;);
-    card.className = &quot;deal-card&quot;;
-card.style.cursor = &quot;pointer&quot;;
-card.addEventListener(&quot;click&quot;, () =&gt; viewProduct(product.id));
+    const card = document.createElement("div");
+    card.className = "deal-card";
+card.style.cursor = "pointer";
+card.addEventListener("click", () =&gt; viewProduct(product.id));
 
     const firstVariant = getFirstVariant(product);
-    let variantHTML = &#x27;&#x27;;
+    let variantHTML = '';
     if (firstVariant) {
-      variantHTML = `&lt;div style=&quot;display:inline-block;background:rgba(212,175,55,0.12);color:#D4AF37;font-size:11px;font-weight:600;padding:2px 10px;border-radius:12px;margin:4px 0;border:1px solid rgba(212,175,55,0.15);&quot;&gt;📱 ${firstVariant}&lt;/div&gt;`;
+      variantHTML = `&lt;div style="display:inline-block;background:rgba(212,175,55,0.12);color:#D4AF37;font-size:11px;font-weight:600;padding:2px 10px;border-radius:12px;margin:4px 0;border:1px solid rgba(212,175,55,0.15);"&gt;📱 ${firstVariant}&lt;/div&gt;`;
     }
 
-    let imgSrc = product.image || (product.images &amp;&amp; product.images[0]) || &#x27;#&#x27;;
+    let imgSrc = product.image || (product.images &amp;&amp; product.images[0]) || '#';
 
     card.innerHTML = `
-      &lt;span class=&quot;offer&quot;&gt;${product.discount || &#x27;&#x27;}&lt;/span&gt;
-      &lt;img src=&quot;${imgSrc}&quot; alt=&quot;${product.name}&quot;&gt;
+      &lt;span class="offer"&gt;${product.discount || ''}&lt;/span&gt;
+      &lt;img src="${imgSrc}" alt="${product.name}"&gt;
       &lt;h3&gt;${product.name}&lt;/h3&gt;
-      &lt;p class=&quot;brand&quot;&gt;Brand: ${product.brand}&lt;/p&gt;
-      &lt;p class=&quot;condition&quot;&gt;Condition: ${product.condition || &quot;New&quot;}&lt;/p&gt;
+      &lt;p class="brand"&gt;Brand: ${product.brand}&lt;/p&gt;
+      &lt;p class="condition"&gt;Condition: ${product.condition || "New"}&lt;/p&gt;
       ${variantHTML}
-      &lt;div class=&quot;rating&quot;&gt;⭐ ${product.rating || &#x27;4.5&#x27;} &lt;span&gt;(${product.reviews || 0})&lt;/span&gt;&lt;/div&gt;
-      &lt;div class=&quot;price-row&quot;&gt;
-        &lt;p class=&quot;price&quot;&gt;₹${(product.price || 0).toLocaleString(&quot;en-IN&quot;)}&lt;/p&gt;
-        &lt;p class=&quot;old-price&quot;&gt;₹${(product.oldPrice || 0).toLocaleString(&quot;en-IN&quot;)}&lt;/p&gt;
+      &lt;div class="rating"&gt;⭐ ${product.rating || '4.5'} &lt;span&gt;(${product.reviews || 0})&lt;/span&gt;&lt;/div&gt;
+      &lt;div class="price-row"&gt;
+        &lt;p class="price"&gt;₹${(product.price || 0).toLocaleString("en-IN")}&lt;/p&gt;
+        &lt;p class="old-price"&gt;₹${(product.oldPrice || 0).toLocaleString("en-IN")}&lt;/p&gt;
       &lt;/div&gt;
     
     `;
@@ -269,10 +278,10 @@ card.addEventListener(&quot;click&quot;, () =&gt; viewProduct(product.id));
 // 9. CATEGORY BUTTONS
 // ==========================================
 
-document.querySelectorAll(&quot;.cat&quot;).forEach(button =&gt; {
-  button.addEventListener(&quot;click&quot;, () =&gt; {
-    document.querySelectorAll(&quot;.cat&quot;).forEach(btn =&gt; btn.classList.remove(&quot;active&quot;));
-    button.classList.add(&quot;active&quot;);
+document.querySelectorAll(".cat").forEach(button =&gt; {
+  button.addEventListener("click", () =&gt; {
+    document.querySelectorAll(".cat").forEach(btn =&gt; btn.classList.remove("active"));
+    button.classList.add("active");
     currentCategory = button.dataset.cat;
     selectedBrand = null;
     loadBrands(currentCategory);
@@ -285,30 +294,30 @@ document.querySelectorAll(&quot;.cat&quot;).forEach(button =&gt; {
 // ==========================================
 
 if (clearFilter) {
-  clearFilter.addEventListener(&quot;click&quot;, () =&gt; {
+  clearFilter.addEventListener("click", () =&gt; {
     selectedBrand = null;
-    document.querySelectorAll(&quot;.chip&quot;).forEach(chip =&gt; chip.classList.remove(&quot;on&quot;));
+    document.querySelectorAll(".chip").forEach(chip =&gt; chip.classList.remove("on"));
     
-    const catFilter = document.getElementById(&#x27;categoryFilter&#x27;);
-    const condFilter = document.getElementById(&#x27;conditionFilter&#x27;);
-    if (catFilter) catFilter.value = &#x27;&#x27;;
-    if (condFilter) condFilter.value = &#x27;&#x27;;
+    const catFilter = document.getElementById('categoryFilter');
+    const condFilter = document.getElementById('conditionFilter');
+    if (catFilter) catFilter.value = '';
+    if (condFilter) condFilter.value = '';
     
     displayProducts();
   });
 }
 
 function clearFilters() {
-  const catFilter = document.getElementById(&#x27;categoryFilter&#x27;);
-  const condFilter = document.getElementById(&#x27;conditionFilter&#x27;);
-  const search = document.getElementById(&#x27;globalSearch&#x27;);
+  const catFilter = document.getElementById('categoryFilter');
+  const condFilter = document.getElementById('conditionFilter');
+  const search = document.getElementById('globalSearch');
   
-  if (catFilter) catFilter.value = &#x27;&#x27;;
-  if (condFilter) condFilter.value = &#x27;&#x27;;
-  if (search) search.value = &#x27;&#x27;;
+  if (catFilter) catFilter.value = '';
+  if (condFilter) condFilter.value = '';
+  if (search) search.value = '';
   
   selectedBrand = null;
-  document.querySelectorAll(&quot;.chip&quot;).forEach(chip =&gt; chip.classList.remove(&quot;on&quot;));
+  document.querySelectorAll(".chip").forEach(chip =&gt; chip.classList.remove("on"));
   displayProducts();
 }
 
@@ -317,17 +326,17 @@ function clearFilters() {
 // ==========================================
 
 function viewProduct(id) {
-  console.log(&#x27;Viewing product with ID:&#x27;, id);
+  console.log('Viewing product with ID:', id);
   
   const product = allProducts.find(item =&gt; item.id === id);
   
   if (!product) {
-    console.error(&#x27;Product not found with ID:&#x27;, id);
-    showToast(&#x27;Product not found!&#x27;);
+    console.error('Product not found with ID:', id);
+    showToast('Product not found!');
     return;
   }
   
-  sessionStorage.setItem(&#x27;selectedProduct&#x27;, JSON.stringify(product));
+  sessionStorage.setItem('selectedProduct', JSON.stringify(product));
   
   window.location.href = `product.html?id=${product.id}`;
 }
@@ -340,14 +349,14 @@ function addToCart(productId, variantLabel) {
   const product = allProducts.find(item =&gt; item.id === productId);
   
   if (!product) {
-    showToast(&#x27;Product not found!&#x27;);
+    showToast('Product not found!');
     return;
   }
   
-  let cart = JSON.parse(localStorage.getItem(&#x27;cart&#x27;)) || [];
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
   
   let price = product.price;
-  let variantName = &#x27;&#x27;;
+  let variantName = '';
   
   if (variantLabel &amp;&amp; product.variants) {
     const variant = product.variants.find(v =&gt; v.label === variantLabel);
@@ -370,24 +379,24 @@ function addToCart(productId, variantLabel) {
       name: product.name,
       brand: product.brand,
       price: price,
-      image: product.image || product.images?.[0] || &#x27;&#x27;,
+      image: product.image || product.images?.[0] || '',
       quantity: 1,
-      variant: variantName || &#x27;Default&#x27;
+      variant: variantName || 'Default'
     });
     showToast(`✅ ${displayName} added to cart!`);
   }
   
-  localStorage.setItem(&#x27;cart&#x27;, JSON.stringify(cart));
+  localStorage.setItem('cart', JSON.stringify(cart));
   updateCartBadge();
 }
 
 function updateCartBadge() {
-  const cart = JSON.parse(localStorage.getItem(&#x27;cart&#x27;)) || [];
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
   const totalItems = cart.reduce((sum, item) =&gt; sum + item.quantity, 0);
   
-  document.querySelectorAll(&#x27;.cart-badge&#x27;).forEach(badge =&gt; {
+  document.querySelectorAll('.cart-badge').forEach(badge =&gt; {
     badge.textContent = totalItems;
-    badge.style.display = totalItems &gt; 0 ? &#x27;flex&#x27; : &#x27;none&#x27;;
+    badge.style.display = totalItems &gt; 0 ? 'flex' : 'none';
   });
 }
 
@@ -396,20 +405,20 @@ function updateCartBadge() {
 // ==========================================
 
 function showToast(message) {
-  const existingToast = document.querySelector(&#x27;.toast-notification&#x27;);
+  const existingToast = document.querySelector('.toast-notification');
   if (existingToast) existingToast.remove();
   
-  const toast = document.createElement(&#x27;div&#x27;);
-  toast.className = &#x27;toast-notification&#x27;;
+  const toast = document.createElement('div');
+  toast.className = 'toast-notification';
   toast.innerHTML = `
     &lt;span&gt;${message}&lt;/span&gt;
-    &lt;button onclick=&quot;this.parentElement.remove()&quot;&gt;✕&lt;/button&gt;
+    &lt;button onclick="this.parentElement.remove()"&gt;✕&lt;/button&gt;
   `;
   document.body.appendChild(toast);
   
   setTimeout(() =&gt; {
     if (toast) {
-      toast.classList.add(&#x27;fade-out&#x27;);
+      toast.classList.add('fade-out');
       setTimeout(() =&gt; toast.remove(), 300);
     }
   }, 3000);
@@ -419,14 +428,14 @@ function showToast(message) {
 // 14. INITIAL LOAD
 // ==========================================
 
-loadBrands(&quot;mobiles&quot;);
+loadBrands("mobiles");
 displayProducts();
 
-document.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; {
+document.addEventListener("DOMContentLoaded", () =&gt; {
   updateCartBadge();
 });
 
-window.addEventListener(&quot;pageshow&quot;, () =&gt; {
+window.addEventListener("pageshow", () =&gt; {
   updateCartBadge();
 });
 
@@ -434,13 +443,13 @@ window.addEventListener(&quot;pageshow&quot;, () =&gt; {
 // 15. SHOP BY CATEGORY CARDS
 // ==========================================
 
-document.querySelectorAll(&quot;.category-card&quot;).forEach(card =&gt; {
-  card.addEventListener(&quot;click&quot;, () =&gt; {
+document.querySelectorAll(".category-card").forEach(card =&gt; {
+  card.addEventListener("click", () =&gt; {
     const category = card.dataset.category;
-    const categoryButton = document.querySelector(`.cat[data-cat=&quot;${category}&quot;]`);
+    const categoryButton = document.querySelector(`.cat[data-cat="${category}"]`);
     if (categoryButton) categoryButton.click();
-    const products = document.querySelector(&quot;.deals&quot;);
-    if (products) products.scrollIntoView({ behavior: &quot;smooth&quot;, block: &quot;start&quot; });
+    const products = document.querySelector(".deals");
+    if (products) products.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 });
 
@@ -448,34 +457,34 @@ document.querySelectorAll(&quot;.category-card&quot;).forEach(card =&gt; {
 // 16. SEARCH
 // ==========================================
 
-const searchInput = document.getElementById(&quot;searchInput&quot;);
-const searchButton = document.getElementById(&quot;searchButton&quot;);
-const searchSuggestions = document.getElementById(&quot;searchSuggestions&quot;);
+const searchInput = document.getElementById("searchInput");
+const searchButton = document.getElementById("searchButton");
+const searchSuggestions = document.getElementById("searchSuggestions");
 
 const categoryNames = {
-  mobiles: &quot;Mobiles&quot;,
-  fridge: &quot;Refrigerators&quot;,
-  washing: &quot;Washing Machines&quot;,
-  ac: &quot;AC&quot;,
-  tv: &quot;TV&quot;
+  mobiles: "Mobiles",
+  fridge: "Refrigerators",
+  washing: "Washing Machines",
+  ac: "AC",
+  tv: "TV"
 };
 
 function createSearchSuggestions() {
   if (!searchInput || !searchSuggestions) return;
 
   const text = searchInput.value.trim().toLowerCase();
-  searchSuggestions.innerHTML = &quot;&quot;;
+  searchSuggestions.innerHTML = "";
 
-  if (text === &quot;&quot;) {
-    searchSuggestions.classList.remove(&quot;show&quot;);
+  if (text === "") {
+    searchSuggestions.classList.remove("show");
     return;
   }
 
   const combinations = new Map();
 
   allProducts.forEach(product =&gt; {
-    const brand = String(product.brand || &quot;&quot;).trim();
-    const category = String(product.category || &quot;&quot;).trim();
+    const brand = String(product.brand || "").trim();
+    const category = String(product.category || "").trim();
     if (!brand || !category) return;
 
     const brandLower = brand.toLowerCase();
@@ -487,7 +496,7 @@ function createSearchSuggestions() {
         combinations.set(key, {
           brand: brand,
           category: category,
-          image: product.image || product.images?.[0] || &#x27;&#x27;,
+          image: product.image || product.images?.[0] || '',
           productName: product.name,
           productId: product.id
         });
@@ -510,82 +519,82 @@ function createSearchSuggestions() {
   const finalResults = suggestions.slice(0, 10);
 
   if (finalResults.length === 0) {
-    searchSuggestions.innerHTML = `&lt;div class=&quot;search-no-result&quot;&gt;No products found&lt;/div&gt;`;
-    searchSuggestions.classList.add(&quot;show&quot;);
+    searchSuggestions.innerHTML = `&lt;div class="search-no-result"&gt;No products found&lt;/div&gt;`;
+    searchSuggestions.classList.add("show");
     return;
   }
 
   finalResults.forEach(item =&gt; {
-    const row = document.createElement(&quot;div&quot;);
-    row.className = &quot;search-suggestion&quot;;
+    const row = document.createElement("div");
+    row.className = "search-suggestion";
     const displayCategory = categoryNames[item.category] || item.category;
 
     row.innerHTML = `
-      &lt;img src=&quot;${item.image}&quot; alt=&quot;&quot;&gt;
-      &lt;div class=&quot;suggestion-info&quot;&gt;
-        &lt;div class=&quot;suggestion-name&quot;&gt;
+      &lt;img src="${item.image}" alt=""&gt;
+      &lt;div class="suggestion-info"&gt;
+        &lt;div class="suggestion-name"&gt;
           ${highlightSearch(item.brand, text)}
           ${displayCategory}
         &lt;/div&gt;
-        &lt;div class=&quot;suggestion-category&quot;&gt;
-          ${item.productName || item.brand + &#x27; &#x27; + displayCategory}
+        &lt;div class="suggestion-category"&gt;
+          ${item.productName || item.brand + ' ' + displayCategory}
         &lt;/div&gt;
       &lt;/div&gt;
-      &lt;span class=&quot;suggestion-arrow&quot;&gt;↗&lt;/span&gt;
+      &lt;span class="suggestion-arrow"&gt;↗&lt;/span&gt;
     `;
 
-    row.addEventListener(&quot;click&quot;, () =&gt; {
+    row.addEventListener("click", () =&gt; {
       window.location.href =
-        &quot;search.html?brand=&quot; +
+        "search.html?brand=" +
         encodeURIComponent(item.brand) +
-        &quot;&amp;category=&quot; +
+        "&amp;category=" +
         encodeURIComponent(item.category);
     });
 
     searchSuggestions.appendChild(row);
   });
 
-  searchSuggestions.classList.add(&quot;show&quot;);
+  searchSuggestions.classList.add("show");
 }
 
 function highlightSearch(text, search) {
-  const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, &quot;\\$&amp;&quot;);
-  return text.replace(new RegExp(`(${escaped})`, &quot;ig&quot;), &quot;&lt;strong&gt;$1&lt;/strong&gt;&quot;);
+  const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&amp;");
+  return text.replace(new RegExp(`(${escaped})`, "ig"), "&lt;strong&gt;$1&lt;/strong&gt;");
 }
 
 function openSearchResults(value) {
   if (!value) return;
-  window.location.href = &quot;search.html?q=&quot; + encodeURIComponent(value);
+  window.location.href = "search.html?q=" + encodeURIComponent(value);
 }
 
 if (searchInput) {
-  searchInput.addEventListener(&quot;input&quot;, createSearchSuggestions);
+  searchInput.addEventListener("input", createSearchSuggestions);
 }
 
 if (searchButton) {
-  searchButton.addEventListener(&quot;click&quot;, () =&gt; {
+  searchButton.addEventListener("click", () =&gt; {
     const value = searchInput.value.trim();
     if (value) openSearchResults(value);
   });
 }
 
 if (searchInput) {
-  searchInput.addEventListener(&quot;keydown&quot;, event =&gt; {
-    if (event.key === &quot;Enter&quot;) {
+  searchInput.addEventListener("keydown", event =&gt; {
+    if (event.key === "Enter") {
       const value = searchInput.value.trim();
       if (value) openSearchResults(value);
     }
   });
 }
 
-document.addEventListener(&quot;click&quot;, event =&gt; {
+document.addEventListener("click", event =&gt; {
   if (
     searchInput &amp;&amp;
     searchSuggestions &amp;&amp;
     !searchInput.contains(event.target) &amp;&amp;
     !searchSuggestions.contains(event.target)
   ) {
-    searchSuggestions.classList.remove(&quot;show&quot;);
+    searchSuggestions.classList.remove("show");
   }
 });
 
@@ -593,12 +602,12 @@ document.addEventListener(&quot;click&quot;, event =&gt; {
 // 17. BOTTOM BAR
 // ==========================================
 
-const bottomItems = document.querySelectorAll(&#x27;.bottom-item&#x27;);
+const bottomItems = document.querySelectorAll('.bottom-item');
 
 bottomItems.forEach(item =&gt; {
-  item.addEventListener(&#x27;click&#x27;, function() {
-    bottomItems.forEach(i =&gt; i.classList.remove(&#x27;active&#x27;));
-    this.classList.add(&#x27;active&#x27;);
+  item.addEventListener('click', function() {
+    bottomItems.forEach(i =&gt; i.classList.remove('active'));
+    this.classList.add('active');
   });
 });
 
@@ -607,38 +616,38 @@ bottomItems.forEach(item =&gt; {
 // ==========================================
 
 function isCartPage() {
-  return window.location.pathname.includes(&#x27;cart.html&#x27;);
+  return window.location.pathname.includes('cart.html');
 }
 
 function getCartElements() {
   return {
-    container: document.getElementById(&#x27;cartItems&#x27;),
-    summary: document.getElementById(&#x27;cartSummary&#x27;),
-    empty: document.getElementById(&#x27;emptyCart&#x27;),
-    count: document.getElementById(&#x27;cartCount&#x27;),
-    subtotal: document.getElementById(&#x27;cartSubtotal&#x27;),
-    totalPrice: document.getElementById(&#x27;cartTotalPrice&#x27;)
+    container: document.getElementById('cartItems'),
+    summary: document.getElementById('cartSummary'),
+    empty: document.getElementById('emptyCart'),
+    count: document.getElementById('cartCount'),
+    subtotal: document.getElementById('cartSubtotal'),
+    totalPrice: document.getElementById('cartTotalPrice')
   };
 }
 
 function loadCart() {
   if (!isCartPage()) return;
 
-  const cart = JSON.parse(localStorage.getItem(&#x27;cart&#x27;)) || [];
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
   const el = getCartElements();
   
   if (cart.length === 0) {
-    el.container.innerHTML = &#x27;&#x27;;
-    el.summary.style.display = &#x27;none&#x27;;
-    el.empty.style.display = &#x27;block&#x27;;
-    el.count.textContent = &#x27;0 items&#x27;;
+    el.container.innerHTML = '';
+    el.summary.style.display = 'none';
+    el.empty.style.display = 'block';
+    el.count.textContent = '0 items';
     updateBadge(0);
     return;
   }
   
-  el.container.innerHTML = &#x27;&#x27;;
-  el.summary.style.display = &#x27;block&#x27;;
-  el.empty.style.display = &#x27;none&#x27;;
+  el.container.innerHTML = '';
+  el.summary.style.display = 'block';
+  el.empty.style.display = 'none';
   
   let subtotal = 0;
   let totalItems = 0;
@@ -648,43 +657,43 @@ function loadCart() {
     subtotal += itemTotal;
     totalItems += item.quantity;
     
-    const displayName = item.variant &amp;&amp; item.variant !== &#x27;Default&#x27; 
+    const displayName = item.variant &amp;&amp; item.variant !== 'Default' 
       ? `${item.name} (${item.variant})` 
       : item.name;
     
-    const cartItem = document.createElement(&#x27;div&#x27;);
-    cartItem.className = &#x27;cart-item&#x27;;
+    const cartItem = document.createElement('div');
+    cartItem.className = 'cart-item';
     cartItem.innerHTML = `
-      &lt;div class=&quot;cart-item-image&quot;&gt;
-        &lt;img src=&quot;${item.image || &#x27;images/placeholder.png&#x27;}&quot; alt=&quot;${item.name}&quot;&gt;
+      &lt;div class="cart-item-image"&gt;
+        &lt;img src="${item.image || 'images/placeholder.png'}" alt="${item.name}"&gt;
       &lt;/div&gt;
-      &lt;div class=&quot;cart-item-info&quot;&gt;
+      &lt;div class="cart-item-info"&gt;
         &lt;h3&gt;${displayName}&lt;/h3&gt;
-        &lt;p class=&quot;cart-item-brand&quot;&gt;${item.brand} ${item.variant &amp;&amp; item.variant !== &#x27;Default&#x27; ? &#x27;• &#x27; + item.variant : &#x27;&#x27;}&lt;/p&gt;
-        &lt;p class=&quot;cart-item-price&quot;&gt;₹${item.price.toLocaleString(&quot;en-IN&quot;)}&lt;/p&gt;
+        &lt;p class="cart-item-brand"&gt;${item.brand} ${item.variant &amp;&amp; item.variant !== 'Default' ? '• ' + item.variant : ''}&lt;/p&gt;
+        &lt;p class="cart-item-price"&gt;₹${item.price.toLocaleString("en-IN")}&lt;/p&gt;
       &lt;/div&gt;
-      &lt;div class=&quot;cart-item-qty&quot;&gt;
-        &lt;button class=&quot;qty-btn&quot; onclick=&quot;updateQuantity(${index}, -1)&quot;&gt;−&lt;/button&gt;
-        &lt;span class=&quot;qty-number&quot;&gt;${item.quantity}&lt;/span&gt;
-        &lt;button class=&quot;qty-btn&quot; onclick=&quot;updateQuantity(${index}, 1)&quot;&gt;+&lt;/button&gt;
+      &lt;div class="cart-item-qty"&gt;
+        &lt;button class="qty-btn" onclick="updateQuantity(${index}, -1)"&gt;−&lt;/button&gt;
+        &lt;span class="qty-number"&gt;${item.quantity}&lt;/span&gt;
+        &lt;button class="qty-btn" onclick="updateQuantity(${index}, 1)"&gt;+&lt;/button&gt;
       &lt;/div&gt;
-      &lt;div class=&quot;cart-item-total&quot;&gt;
-        ₹${itemTotal.toLocaleString(&quot;en-IN&quot;)}
+      &lt;div class="cart-item-total"&gt;
+        ₹${itemTotal.toLocaleString("en-IN")}
       &lt;/div&gt;
-      &lt;button class=&quot;remove-btn&quot; onclick=&quot;removeItem(${index})&quot; title=&quot;Remove item&quot;&gt;✕&lt;/button&gt;
+      &lt;button class="remove-btn" onclick="removeItem(${index})" title="Remove item"&gt;✕&lt;/button&gt;
     `;
     el.container.appendChild(cartItem);
   });
   
-  el.count.textContent = `${totalItems} ${totalItems === 1 ? &#x27;item&#x27; : &#x27;items&#x27;}`;
-  el.subtotal.textContent = `₹${subtotal.toLocaleString(&quot;en-IN&quot;)}`;
-  el.totalPrice.textContent = `₹${subtotal.toLocaleString(&quot;en-IN&quot;)}`;
+  el.count.textContent = `${totalItems} ${totalItems === 1 ? 'item' : 'items'}`;
+  el.subtotal.textContent = `₹${subtotal.toLocaleString("en-IN")}`;
+  el.totalPrice.textContent = `₹${subtotal.toLocaleString("en-IN")}`;
   
   updateBadge(totalItems);
 }
 
 function updateQuantity(index, change) {
-  let cart = JSON.parse(localStorage.getItem(&#x27;cart&#x27;)) || [];
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
   
   if (cart[index]) {
     cart[index].quantity += change;
@@ -693,62 +702,62 @@ function updateQuantity(index, change) {
     }
   }
   
-  localStorage.setItem(&#x27;cart&#x27;, JSON.stringify(cart));
+  localStorage.setItem('cart', JSON.stringify(cart));
   loadCart();
   updateCartBadge();
 }
 
 function removeItem(index) {
-  let cart = JSON.parse(localStorage.getItem(&#x27;cart&#x27;)) || [];
-  const itemName = cart[index]?.name || &#x27;Item&#x27;;
-  const variant = cart[index]?.variant || &#x27;&#x27;;
-  const displayName = variant &amp;&amp; variant !== &#x27;Default&#x27; ? `${itemName} (${variant})` : itemName;
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const itemName = cart[index]?.name || 'Item';
+  const variant = cart[index]?.variant || '';
+  const displayName = variant &amp;&amp; variant !== 'Default' ? `${itemName} (${variant})` : itemName;
   cart.splice(index, 1);
-  localStorage.setItem(&#x27;cart&#x27;, JSON.stringify(cart));
+  localStorage.setItem('cart', JSON.stringify(cart));
   loadCart();
   updateCartBadge();
   showToast(`${displayName} removed from cart`);
 }
 
 function clearCart() {
-  if (confirm(&#x27;Are you sure you want to clear your cart?&#x27;)) {
-    localStorage.removeItem(&#x27;cart&#x27;);
+  if (confirm('Are you sure you want to clear your cart?')) {
+    localStorage.removeItem('cart');
     loadCart();
     updateCartBadge();
-    showToast(&#x27;Cart cleared&#x27;);
+    showToast('Cart cleared');
   }
 }
 
 function checkout() {
-  const cart = JSON.parse(localStorage.getItem(&#x27;cart&#x27;)) || [];
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
   if (cart.length === 0) {
-    showToast(&#x27;Your cart is empty!&#x27;);
+    showToast('Your cart is empty!');
     return;
   }
   
-  let message = &#x27;🛍️ *JB STORE - New Order*%0A%0A&#x27;;
+  let message = '🛍️ *JB STORE - New Order*%0A%0A';
   let total = 0;
   
   cart.forEach(item =&gt; {
     const itemTotal = item.price * item.quantity;
-    const displayName = item.variant &amp;&amp; item.variant !== &#x27;Default&#x27; 
+    const displayName = item.variant &amp;&amp; item.variant !== 'Default' 
       ? `${item.name} (${item.variant})` 
       : item.name;
-    message += `📱 ${displayName}%0A   × ${item.quantity} = ₹${itemTotal.toLocaleString(&quot;en-IN&quot;)}%0A`;
+    message += `📱 ${displayName}%0A   × ${item.quantity} = ₹${itemTotal.toLocaleString("en-IN")}%0A`;
     total += itemTotal;
   });
   
-  message += `%0A💰 *Total: ₹${total.toLocaleString(&quot;en-IN&quot;)}*%0A%0A`;
+  message += `%0A💰 *Total: ₹${total.toLocaleString("en-IN")}*%0A%0A`;
   message += `📞 Please confirm my order. Thank you!`;
   
-  window.open(`https://wa.me/${STORE_PHONE}?text=${message}`, &#x27;_blank&#x27;);
+  window.open(`https://wa.me/${STORE_PHONE}?text=${message}`, '_blank');
 }
 
 function updateBadge(count) {
-  const badge = document.getElementById(&#x27;cartBadge&#x27;);
+  const badge = document.getElementById('cartBadge');
   if (badge) {
     badge.textContent = count;
-    badge.style.display = count &gt; 0 ? &#x27;flex&#x27; : &#x27;none&#x27;;
+    badge.style.display = count &gt; 0 ? 'flex' : 'none';
   }
 }
 
@@ -756,13 +765,13 @@ function updateBadge(count) {
 // 19. INIT
 // ==========================================
 
-document.addEventListener(&#x27;DOMContentLoaded&#x27;, function() {
+document.addEventListener('DOMContentLoaded', function() {
   if (isCartPage()) {
     loadCart();
   }
   updateCartBadge();
   
-  if (typeof updateFavBadge === &#x27;function&#x27;) {
+  if (typeof updateFavBadge === 'function') {
     updateFavBadge();
   }
 });
@@ -790,36 +799,36 @@ window.clearFilters = clearFilters;
 // ==========================================
 
 (function() {
-  &#x27;use strict&#x27;;
+  'use strict';
 
-  const toggle = document.getElementById(&#x27;menuToggle&#x27;);
-  const drawer = document.getElementById(&#x27;menuDrawer&#x27;);
-  const overlay = document.getElementById(&#x27;menuOverlay&#x27;);
-  const closeBtn = document.getElementById(&#x27;menuClose&#x27;);
+  const toggle = document.getElementById('menuToggle');
+  const drawer = document.getElementById('menuDrawer');
+  const overlay = document.getElementById('menuOverlay');
+  const closeBtn = document.getElementById('menuClose');
   const body = document.body;
 
   if (!toggle || !drawer || !overlay || !closeBtn) {
-    console.warn(&#x27;⚠️ Menu drawer elements not found. Skipping initialization.&#x27;);
+    console.warn('⚠️ Menu drawer elements not found. Skipping initialization.');
     return;
   }
 
   function openMenu() {
-    drawer.classList.add(&#x27;open&#x27;);
-    overlay.classList.add(&#x27;open&#x27;);
-    toggle.classList.add(&#x27;active&#x27;);
-    body.classList.add(&#x27;menu-open&#x27;);
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+    toggle.classList.add('active');
+    body.classList.add('menu-open');
     updateMenuBadges();
   }
 
   function closeMenu() {
-    drawer.classList.remove(&#x27;open&#x27;);
-    overlay.classList.remove(&#x27;open&#x27;);
-    toggle.classList.remove(&#x27;active&#x27;);
-    body.classList.remove(&#x27;menu-open&#x27;);
+    drawer.classList.remove('open');
+    overlay.classList.remove('open');
+    toggle.classList.remove('active');
+    body.classList.remove('menu-open');
   }
 
   function toggleMenu() {
-    if (drawer.classList.contains(&#x27;open&#x27;)) {
+    if (drawer.classList.contains('open')) {
       closeMenu();
     } else {
       openMenu();
@@ -827,37 +836,37 @@ window.clearFilters = clearFilters;
   }
 
   function updateMenuBadges() {
-    const cartBadge = document.getElementById(&#x27;cartBadge&#x27;);
-    const menuCart = document.getElementById(&#x27;menuCartBadge&#x27;);
+    const cartBadge = document.getElementById('cartBadge');
+    const menuCart = document.getElementById('menuCartBadge');
     if (cartBadge &amp;&amp; menuCart) {
       const val = parseInt(cartBadge.textContent, 10) || 0;
       menuCart.textContent = val;
-      menuCart.style.display = val &gt; 0 ? &#x27;flex&#x27; : &#x27;none&#x27;;
+      menuCart.style.display = val &gt; 0 ? 'flex' : 'none';
     }
 
-    const favBadge = document.getElementById(&#x27;favBadge&#x27;);
-    const menuFav = document.getElementById(&#x27;menuFavBadge&#x27;);
+    const favBadge = document.getElementById('favBadge');
+    const menuFav = document.getElementById('menuFavBadge');
     if (favBadge &amp;&amp; menuFav) {
       const val = parseInt(favBadge.textContent, 10) || 0;
       menuFav.textContent = val;
-      menuFav.style.display = val &gt; 0 ? &#x27;flex&#x27; : &#x27;none&#x27;;
+      menuFav.style.display = val &gt; 0 ? 'flex' : 'none';
     }
   }
 
-  toggle.addEventListener(&#x27;click&#x27;, toggleMenu);
-  closeBtn.addEventListener(&#x27;click&#x27;, closeMenu);
-  overlay.addEventListener(&#x27;click&#x27;, closeMenu);
+  toggle.addEventListener('click', toggleMenu);
+  closeBtn.addEventListener('click', closeMenu);
+  overlay.addEventListener('click', closeMenu);
 
-  document.addEventListener(&#x27;keydown&#x27;, function(e) {
-    if (e.key === &#x27;Escape&#x27; &amp;&amp; drawer.classList.contains(&#x27;open&#x27;)) {
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' &amp;&amp; drawer.classList.contains('open')) {
       closeMenu();
     }
   });
 
-  document.querySelectorAll(&#x27;.menu-item&#x27;).forEach(function(item) {
-    item.addEventListener(&#x27;click&#x27;, function(e) {
-      const href = this.getAttribute(&#x27;href&#x27;);
-      if (href &amp;&amp; href !== &#x27;#&#x27; &amp;&amp; href !== &#x27;javascript:void(0)&#x27;) {
+  document.querySelectorAll('.menu-item').forEach(function(item) {
+    item.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href &amp;&amp; href !== '#' &amp;&amp; href !== 'javascript:void(0)') {
         setTimeout(closeMenu, 150);
       } else {
         e.preventDefault();
@@ -873,108 +882,131 @@ window.clearFilters = clearFilters;
   const badgeObserver = new MutationObserver(function() {
     updateMenuBadges();
   });
-  const cartBadge = document.getElementById(&#x27;cartBadge&#x27;);
-  const favBadge = document.getElementById(&#x27;favBadge&#x27;);
+  const cartBadge = document.getElementById('cartBadge');
+  const favBadge = document.getElementById('favBadge');
   if (cartBadge) badgeObserver.observe(cartBadge, { childList: true, characterData: true, subtree: true });
   if (favBadge) badgeObserver.observe(favBadge, { childList: true, characterData: true, subtree: true });
 
-  window.addEventListener(&#x27;load&#x27;, function() {
+  window.addEventListener('load', function() {
     setTimeout(updateMenuBadges, 300);
   });
 
-  console.log(&#x27;✅ Menu drawer initialized.&#x27;);
+  console.log('✅ Menu drawer initialized.');
 })();
 
-
-
 /* =========================================================
-   JB STORE HERO SLIDER ENHANCEMENT
-   - 5 second auto slide
-   - full banner horizontal movement
-   - dots
-   - swipe left/right
-   - press/hold pauses autoplay
-   - release resumes
-   - image keeps its natural aspect ratio
+   JB STORE HERO SLIDER - ADD ONLY
+   - Keeps existing product / Supabase code untouched
+   - 7 banners -&gt; 7 dots automatically
+   - One full banner per slide
+   - Uses image aspect ratio (no crop / zoom / stretch)
+   - 5 second autoplay
+   - Swipe + press/hold pause
    ========================================================= */
 (function () {
-  const slides = Array.from(document.querySelectorAll(&quot;.hero-slide&quot;));
-  const viewport = document.querySelector(&quot;.hero-slides&quot;);
+  function initJBHeroSlider() {
+    const slides = Array.from(document.querySelectorAll(".hero-slide"));
+    const viewport = document.querySelector(".hero-slides");
 
-  if (!slides.length || !viewport) return;
+    if (!viewport || !slides.length) return;
 
-  let current = 0;
-  let paused = false;
-  let startX = 0;
-  let startY = 0;
-  let pointerId = null;
-  let timer = null;
+    let current = 0;
+    let paused = false;
+    let timer = null;
+    let startX = 0;
+    let startY = 0;
+    let pointerId = null;
 
-  viewport.style.overflow = &quot;hidden&quot;;
-  viewport.style.position = &quot;relative&quot;;
-  viewport.style.touchAction = &quot;pan-y&quot;;
+    /* Build a clean horizontal track without changing the HTML. */
+    let track = viewport.querySelector(".jb-hero-track");
 
-  let track = viewport.querySelector(&quot;.jb-hero-track&quot;);
+    if (!track) {
+      track = document.createElement("div");
+      track.className = "jb-hero-track";
 
-  if (!track) {
-    track = document.createElement(&quot;div&quot;);
-    track.className = &quot;jb-hero-track&quot;;
+      track.style.display = "flex";
+      track.style.width = "100%";
+      track.style.margin = "0";
+      track.style.padding = "0";
+      track.style.transition = "transform 0.6s ease";
+      track.style.willChange = "transform";
 
-    track.style.display = &quot;flex&quot;;
-    track.style.width = `${slides.length * 100}%`;
-    track.style.transition = &quot;transform 0.6s ease&quot;;
-    track.style.alignItems = &quot;flex-start&quot;;
+      slides.forEach((slide) =&gt; {
+        track.appendChild(slide);
 
+        slide.style.flex = "0 0 100%";
+        slide.style.width = "100%";
+        slide.style.minWidth = "100%";
+        slide.style.position = "relative";
+        slide.style.opacity = "1";
+        slide.style.pointerEvents = "auto";
+        slide.style.gridArea = "auto";
+      });
+
+      viewport.appendChild(track);
+    }
+
+    viewport.style.width = "100%";
+    viewport.style.overflow = "hidden";
+    viewport.style.position = "relative";
+    viewport.style.touchAction = "pan-y";
+
+    /* Make every hero image keep its original aspect ratio. */
     slides.forEach((slide) =&gt; {
-      track.appendChild(slide);
+      const img = slide.querySelector("img");
 
-      slide.style.flex = `0 0 ${100 / slides.length}%`;
-      slide.style.width = `${100 / slides.length}%`;
-      slide.style.minWidth = `${100 / slides.length}%`;
-      slide.style.position = &quot;relative&quot;;
-      slide.style.opacity = &quot;1&quot;;
-      slide.style.pointerEvents = &quot;auto&quot;;
-      slide.style.gridArea = &quot;auto&quot;;
-
-      const img = slide.querySelector(&quot;img&quot;);
       if (img) {
-        img.style.display = &quot;block&quot;;
-        img.style.width = &quot;100%&quot;;
-        img.style.maxWidth = &quot;100%&quot;;
-        img.style.height = &quot;auto&quot;;
-        img.style.objectFit = &quot;contain&quot;;
+        img.style.display = "block";
+        img.style.width = "100%";
+        img.style.maxWidth = "100%";
+        img.style.height = "auto";
+        img.style.objectFit = "contain";
       }
     });
 
-    viewport.appendChild(track);
-  }
+    /* 7 banners = 7 dots. */
+    let dots = viewport.parentElement.querySelector(".hero-dots");
 
-  let dots = viewport.parentElement.querySelector(&quot;.jb-hero-dots&quot;);
+    if (!dots) {
+      dots = document.createElement("div");
+      dots.className = "hero-dots";
+      viewport.parentElement.appendChild(dots);
+    }
 
-  if (!dots) {
-    dots = document.createElement(&quot;div&quot;);
-    dots.className = &quot;jb-hero-dots&quot;;
-    dots.style.display = &quot;flex&quot;;
-    dots.style.justifyContent = &quot;center&quot;;
-    dots.style.alignItems = &quot;center&quot;;
-    dots.style.gap = &quot;8px&quot;;
-    dots.style.marginTop = &quot;10px&quot;;
+    dots.innerHTML = "";
+    dots.style.display = "flex";
+    dots.style.justifyContent = "center";
+    dots.style.alignItems = "center";
+    dots.style.flexWrap = "wrap";
+    dots.style.gap = "10px";
+    dots.style.width = "100%";
+    dots.style.padding = "12px 10px 16px";
+    dots.style.background = "#F0EDE6";
+    dots.style.position = "relative";
+    dots.style.zIndex = "20";
 
     slides.forEach((_, index) =&gt; {
-      const dot = document.createElement(&quot;button&quot;);
-      dot.type = &quot;button&quot;;
-      dot.className = &quot;jb-hero-dot&quot;;
-      dot.setAttribute(&quot;aria-label&quot;, `Show banner ${index + 1}`);
-      dot.style.width = &quot;8px&quot;;
-      dot.style.height = &quot;8px&quot;;
-      dot.style.padding = &quot;0&quot;;
-      dot.style.border = &quot;0&quot;;
-      dot.style.borderRadius = &quot;50%&quot;;
-      dot.style.background = &quot;rgba(255,255,255,.45)&quot;;
-      dot.style.cursor = &quot;pointer&quot;;
+      const dot = document.createElement("button");
 
-      dot.addEventListener(&quot;click&quot;, () =&gt; {
+      dot.type = "button";
+      dot.className = "hero-dot";
+      dot.setAttribute("aria-label", `Show banner ${index + 1}`);
+
+      dot.style.display = "block";
+      dot.style.width = "10px";
+      dot.style.height = "10px";
+      dot.style.minWidth = "10px";
+      dot.style.minHeight = "10px";
+      dot.style.padding = "0";
+      dot.style.margin = "0";
+      dot.style.border = "0";
+      dot.style.borderRadius = "50%";
+      dot.style.background = "#C8C3BA";
+      dot.style.cursor = "pointer";
+
+      dot.addEventListener("click", function () {
         current = index;
+        paused = false;
         update();
         restartTimer();
       });
@@ -982,75 +1014,83 @@ window.clearFilters = clearFilters;
       dots.appendChild(dot);
     });
 
-    viewport.parentElement.appendChild(dots);
-  }
+    function update() {
+      /* One complete banner moves exactly one viewport width. */
+      track.style.transform = `translate3d(-${current * 100}%, 0, 0)`;
 
-  function update() {
-    track.style.transform =
-      `translate3d(-${current * (100 / slides.length)}%, 0, 0)`;
+      Array.from(dots.children).forEach((dot, index) =&gt; {
+        if (index === current) {
+          dot.style.background = "#D4AF37";
+          dot.style.transform = "scale(1.25)";
+        } else {
+          dot.style.background = "#C8C3BA";
+          dot.style.transform = "scale(1)";
+        }
+      });
+    }
 
-    Array.from(dots.children).forEach((dot, index) =&gt; {
-      dot.style.background =
-        index === current ? &quot;#FFD700&quot; : &quot;rgba(255,255,255,.45)&quot;;
-      dot.style.transform =
-        index === current ? &quot;scale(1.25)&quot; : &quot;scale(1)&quot;;
-    });
-  }
-
-  function next() {
-    if (paused) return;
-    current = (current + 1) % slides.length;
-    update();
-  }
-
-  function restartTimer() {
-    clearInterval(timer);
-    timer = window.setInterval(next, 5000);
-  }
-
-  restartTimer();
-
-  viewport.addEventListener(&quot;pointerdown&quot;, (event) =&gt; {
-    paused = true;
-    pointerId = event.pointerId;
-    startX = event.clientX;
-    startY = event.clientY;
-
-    try {
-      viewport.setPointerCapture(event.pointerId);
-    } catch (_) {}
-  });
-
-  function finishPointer(event) {
-    if (pointerId !== null &amp;&amp; event.pointerId !== pointerId) return;
-
-    const dx = event.clientX - startX;
-    const dy = event.clientY - startY;
-
-    if (Math.abs(dx) &gt; 50 &amp;&amp; Math.abs(dx) &gt; Math.abs(dy)) {
-      if (dx &lt; 0) {
-        current = (current + 1) % slides.length;
-      } else {
-        current = (current - 1 + slides.length) % slides.length;
-      }
+    function next() {
+      if (paused) return;
+      current = (current + 1) % slides.length;
       update();
     }
 
-    paused = false;
-    pointerId = null;
+    function restartTimer() {
+      if (timer) clearInterval(timer);
+      timer = window.setInterval(next, 5000);
+    }
+
+    viewport.addEventListener("pointerdown", function (event) {
+      paused = true;
+      pointerId = event.pointerId;
+      startX = event.clientX;
+      startY = event.clientY;
+
+      try {
+        viewport.setPointerCapture(event.pointerId);
+      } catch (_) {}
+    });
+
+    function finishPointer(event) {
+      if (pointerId !== null &amp;&amp; event.pointerId !== pointerId) return;
+
+      const dx = event.clientX - startX;
+      const dy = event.clientY - startY;
+
+      if (Math.abs(dx) &gt; 50 &amp;&amp; Math.abs(dx) &gt; Math.abs(dy)) {
+        if (dx &lt; 0) {
+          current = (current + 1) % slides.length;
+        } else {
+          current = (current - 1 + slides.length) % slides.length;
+        }
+        update();
+      }
+
+      paused = false;
+      pointerId = null;
+      restartTimer();
+    }
+
+    viewport.addEventListener("pointerup", finishPointer);
+
+    viewport.addEventListener("pointercancel", function () {
+      paused = false;
+      pointerId = null;
+      restartTimer();
+    });
+
+    update();
     restartTimer();
+
+    console.log(`✅ JB Hero Slider ready: ${slides.length} banners / ${dots.children.length} dots`);
   }
 
-  viewport.addEventListener(&quot;pointerup&quot;, finishPointer);
-
-  viewport.addEventListener(&quot;pointercancel&quot;, () =&gt; {
-    paused = false;
-    pointerId = null;
-    restartTimer();
-  });
-
-  update();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initJBHeroSlider);
+  } else {
+    initJBHeroSlider();
+  }
 })();
-</pre>
+</textarea>
 </body>
 </html>
