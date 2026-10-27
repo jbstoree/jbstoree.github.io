@@ -1,16 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JBStore script.js Code</title>
-<style>
-body{margin:0;background:#111;color:#eee;font-family:monospace}
-pre{white-space:pre-wrap;word-break:break-word;padding:20px;margin:0}
-</style>
-</head>
-<body>
-<pre>// ==========================================
+// ==========================================
 // JB STORE - MAIN JAVASCRIPT
 // ==========================================
 
@@ -26,11 +14,11 @@ let current = 0;
 function showSlide(index) {
   if (!slides.length) return;
 
-  slides.forEach(slide =&gt; {
+  slides.forEach(slide => {
     slide.classList.remove("active");
   });
 
-  dots.forEach(dot =&gt; {
+  dots.forEach(dot => {
     dot.classList.remove("active");
   });
 
@@ -41,8 +29,8 @@ function showSlide(index) {
   }
 }
 
-if (slides.length &gt; 1) {
-  setInterval(() =&gt; {
+if (slides.length > 1) {
+  setInterval(() => {
     current = (current + 1) % slides.length;
     showSlide(current);
   }, 3500);
@@ -57,15 +45,15 @@ const heroSlides = document.querySelectorAll(".hero-slide");
 let heroCurrent = 0;
 
 function showHeroSlide(index) {
-    heroSlides.forEach((slide, i) =&gt; {
+    heroSlides.forEach((slide, i) => {
         slide.classList.toggle("active", i === index);
     });
 }
 
 // Only auto-slide when there is more than 1 image
-if (heroSlides.length &gt; 1) {
+if (heroSlides.length > 1) {
 
-    setInterval(() =&gt; {
+    setInterval(() => {
         heroCurrent = (heroCurrent + 1) % heroSlides.length;
         showHeroSlide(heroCurrent);
     }, 5000);
@@ -129,7 +117,7 @@ function loadBrands(category) {
   const categoryBrands = brands[brandCategory] || [];
   const uniqueBrands = [...new Set(categoryBrands)];
 
-  uniqueBrands.forEach(brand =&gt; {
+  uniqueBrands.forEach(brand => {
     const chip = document.createElement("button");
     chip.type = "button";
     chip.className = "chip";
@@ -172,8 +160,8 @@ function loadBrands(category) {
     chip.appendChild(logo);
     chip.appendChild(name);
 
-    chip.addEventListener("click", () =&gt; {
-      document.querySelectorAll(".chip").forEach(c =&gt; c.classList.remove("on"));
+    chip.addEventListener("click", () => {
+      document.querySelectorAll(".chip").forEach(c => c.classList.remove("on"));
       chip.classList.add("on");
       selectedBrand = brand;
       displayProducts();
@@ -188,7 +176,7 @@ function loadBrands(category) {
 // ==========================================
 
 function getFirstVariant(product) {
-  if (product.variants &amp;&amp; product.variants.length &gt; 0) {
+  if (product.variants && product.variants.length > 0) {
     return product.variants[0].label;
   }
   return null;
@@ -206,63 +194,63 @@ function displayProducts() {
   let products = [];
 
   if (currentCategory === "mobiles") {
-    products = allProducts.filter(product =&gt; product.category === "mobiles");
+    products = allProducts.filter(product => product.category === "mobiles");
   } else if (currentCategory === "sealpack") {
-    products = allProducts.filter(product =&gt; product.category === "mobiles" &amp;&amp; product.condition === "Seal Pack");
+    products = allProducts.filter(product => product.category === "mobiles" && product.condition === "Seal Pack");
   } else if (currentCategory === "sealcut") {
-    products = allProducts.filter(product =&gt; product.category === "mobiles" &amp;&amp; product.condition === "Seal Cut");
+    products = allProducts.filter(product => product.category === "mobiles" && product.condition === "Seal Cut");
   } else if (currentCategory === "second") {
-    products = allProducts.filter(product =&gt; product.category === "mobiles" &amp;&amp; product.condition === "2nd Hand");
+    products = allProducts.filter(product => product.category === "mobiles" && product.condition === "2nd Hand");
   } else {
-    products = allProducts.filter(product =&gt; product.category === currentCategory);
+    products = allProducts.filter(product => product.category === currentCategory);
   }
 
   const condFilter = document.getElementById('conditionFilter');
-  if (condFilter &amp;&amp; condFilter.value) {
+  if (condFilter && condFilter.value) {
     const cond = condFilter.value;
-    products = products.filter(product =&gt; product.condition === cond);
+    products = products.filter(product => product.condition === cond);
   }
 
   if (selectedBrand) {
-    products = products.filter(product =&gt; product.brand === selectedBrand);
+    products = products.filter(product => product.brand === selectedBrand);
   }
 
   if (products.length === 0) {
     productGrid.innerHTML = `
-      &lt;div class="no-products"&gt;
-        &lt;h3&gt;No products found&lt;/h3&gt;
-        &lt;p&gt;Try changing filters.&lt;/p&gt;
-      &lt;/div&gt;
+      <div class="no-products">
+        <h3>No products found</h3>
+        <p>Try changing filters.</p>
+      </div>
     `;
     return;
   }
 
-  products.forEach(product =&gt; {
+  products.forEach(product => {
     const card = document.createElement("div");
     card.className = "deal-card";
 card.style.cursor = "pointer";
-card.addEventListener("click", () =&gt; viewProduct(product.id));
+card.addEventListener("click", () => viewProduct(product.id));
 
     const firstVariant = getFirstVariant(product);
     let variantHTML = '';
     if (firstVariant) {
-      variantHTML = `&lt;div style="display:inline-block;background:rgba(212,175,55,0.12);color:#D4AF37;font-size:11px;font-weight:600;padding:2px 10px;border-radius:12px;margin:4px 0;border:1px solid rgba(212,175,55,0.15);"&gt;📱 ${firstVariant}&lt;/div&gt;`;
+      variantHTML = `<div style="display:inline-block;background:rgba(212,175,55,0.12);color:#D4AF37;font-size:11px;font-weight:600;padding:2px 10px;border-radius:12px;margin:4px 0;border:1px solid rgba(212,175,55,0.15);">📱 ${firstVariant}</div>`;
     }
 
-    let imgSrc = product.image || (product.images &amp;&amp; product.images[0]) || '#';
+    let imgSrc = product.image || (product.images && product.images[0]) || '#';
 
     card.innerHTML = `
-      &lt;span class="offer"&gt;${product.discount || ''}&lt;/span&gt;
-      &lt;img src="${imgSrc}" alt="${product.name}"&gt;
-      &lt;h3&gt;${product.name}&lt;/h3&gt;
-      &lt;p class="brand"&gt;Brand: ${product.brand}&lt;/p&gt;
-      &lt;p class="condition"&gt;Condition: ${product.condition || "New"}&lt;/p&gt;
+      <span class="offer">${product.discount || ''}</span>
+      <img src="${imgSrc}" alt="${product.name}">
+      <h3>${product.name}</h3>
+      <p class="brand">Brand: ${product.brand}</p>
+      <p class="condition">Condition: ${product.condition || "New"}</p>
       ${variantHTML}
-      &lt;div class="rating"&gt;⭐ ${product.rating || '4.5'} &lt;span&gt;(${product.reviews || 0})&lt;/span&gt;&lt;/div&gt;
-      &lt;div class="price-row"&gt;
-        &lt;p class="price"&gt;₹${(product.price || 0).toLocaleString("en-IN")}&lt;/p&gt;
-        &lt;p class="old-price"&gt;₹${(product.oldPrice || 0).toLocaleString("en-IN")}&lt;/p&gt;
-      &lt;/div&gt;
+      <div class="rating">⭐ ${product.rating || '4.5'} <span>(${product.reviews || 0})</span></div>
+      <div class="price-row">
+        <p class="price">₹${(product.price || 0).toLocaleString("en-IN")}</p>
+        <p class="old-price">₹${(product.oldPrice || 0).toLocaleString("en-IN")}</p>
+      </div>
     
     `;
 
@@ -274,9 +262,9 @@ card.addEventListener("click", () =&gt; viewProduct(product.id));
 // 9. CATEGORY BUTTONS
 // ==========================================
 
-document.querySelectorAll(".cat").forEach(button =&gt; {
-  button.addEventListener("click", () =&gt; {
-    document.querySelectorAll(".cat").forEach(btn =&gt; btn.classList.remove("active"));
+document.querySelectorAll(".cat").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".cat").forEach(btn => btn.classList.remove("active"));
     button.classList.add("active");
     currentCategory = button.dataset.cat;
     selectedBrand = null;
@@ -290,9 +278,9 @@ document.querySelectorAll(".cat").forEach(button =&gt; {
 // ==========================================
 
 if (clearFilter) {
-  clearFilter.addEventListener("click", () =&gt; {
+  clearFilter.addEventListener("click", () => {
     selectedBrand = null;
-    document.querySelectorAll(".chip").forEach(chip =&gt; chip.classList.remove("on"));
+    document.querySelectorAll(".chip").forEach(chip => chip.classList.remove("on"));
     
     const catFilter = document.getElementById('categoryFilter');
     const condFilter = document.getElementById('conditionFilter');
@@ -313,7 +301,7 @@ function clearFilters() {
   if (search) search.value = '';
   
   selectedBrand = null;
-  document.querySelectorAll(".chip").forEach(chip =&gt; chip.classList.remove("on"));
+  document.querySelectorAll(".chip").forEach(chip => chip.classList.remove("on"));
   displayProducts();
 }
 
@@ -324,7 +312,7 @@ function clearFilters() {
 function viewProduct(id) {
   console.log('Viewing product with ID:', id);
   
-  const product = allProducts.find(item =&gt; item.id === id);
+  const product = allProducts.find(item => item.id === id);
   
   if (!product) {
     console.error('Product not found with ID:', id);
@@ -342,7 +330,7 @@ function viewProduct(id) {
 // ==========================================
 
 function addToCart(productId, variantLabel) {
-  const product = allProducts.find(item =&gt; item.id === productId);
+  const product = allProducts.find(item => item.id === productId);
   
   if (!product) {
     showToast('Product not found!');
@@ -354,8 +342,8 @@ function addToCart(productId, variantLabel) {
   let price = product.price;
   let variantName = '';
   
-  if (variantLabel &amp;&amp; product.variants) {
-    const variant = product.variants.find(v =&gt; v.label === variantLabel);
+  if (variantLabel && product.variants) {
+    const variant = product.variants.find(v => v.label === variantLabel);
     if (variant) {
       price = variant.price;
       variantName = variantLabel;
@@ -363,7 +351,7 @@ function addToCart(productId, variantLabel) {
   }
   
   const uniqueId = variantName ? `${product.id}_${variantName}` : product.id;
-  const existingItem = cart.find(item =&gt; item.id === uniqueId);
+  const existingItem = cart.find(item => item.id === uniqueId);
   const displayName = variantName ? `${product.name} (${variantName})` : product.name;
   
   if (existingItem) {
@@ -388,11 +376,11 @@ function addToCart(productId, variantLabel) {
 
 function updateCartBadge() {
   const cart = JSON.parse(localStorage.getItem('cart')) || [];
-  const totalItems = cart.reduce((sum, item) =&gt; sum + item.quantity, 0);
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   
-  document.querySelectorAll('.cart-badge').forEach(badge =&gt; {
+  document.querySelectorAll('.cart-badge').forEach(badge => {
     badge.textContent = totalItems;
-    badge.style.display = totalItems &gt; 0 ? 'flex' : 'none';
+    badge.style.display = totalItems > 0 ? 'flex' : 'none';
   });
 }
 
@@ -407,15 +395,15 @@ function showToast(message) {
   const toast = document.createElement('div');
   toast.className = 'toast-notification';
   toast.innerHTML = `
-    &lt;span&gt;${message}&lt;/span&gt;
-    &lt;button onclick="this.parentElement.remove()"&gt;✕&lt;/button&gt;
+    <span>${message}</span>
+    <button onclick="this.parentElement.remove()">✕</button>
   `;
   document.body.appendChild(toast);
   
-  setTimeout(() =&gt; {
+  setTimeout(() => {
     if (toast) {
       toast.classList.add('fade-out');
-      setTimeout(() =&gt; toast.remove(), 300);
+      setTimeout(() => toast.remove(), 300);
     }
   }, 3000);
 }
@@ -427,11 +415,11 @@ function showToast(message) {
 loadBrands("mobiles");
 displayProducts();
 
-document.addEventListener("DOMContentLoaded", () =&gt; {
+document.addEventListener("DOMContentLoaded", () => {
   updateCartBadge();
 });
 
-window.addEventListener("pageshow", () =&gt; {
+window.addEventListener("pageshow", () => {
   updateCartBadge();
 });
 
@@ -439,8 +427,8 @@ window.addEventListener("pageshow", () =&gt; {
 // 15. SHOP BY CATEGORY CARDS
 // ==========================================
 
-document.querySelectorAll(".category-card").forEach(card =&gt; {
-  card.addEventListener("click", () =&gt; {
+document.querySelectorAll(".category-card").forEach(card => {
+  card.addEventListener("click", () => {
     const category = card.dataset.category;
     const categoryButton = document.querySelector(`.cat[data-cat="${category}"]`);
     if (categoryButton) categoryButton.click();
@@ -478,7 +466,7 @@ function createSearchSuggestions() {
 
   const combinations = new Map();
 
-  allProducts.forEach(product =&gt; {
+  allProducts.forEach(product => {
     const brand = String(product.brand || "").trim();
     const category = String(product.category || "").trim();
     if (!brand || !category) return;
@@ -502,48 +490,48 @@ function createSearchSuggestions() {
 
   const suggestions = Array.from(combinations.values());
 
-  suggestions.sort((a, b) =&gt; {
+  suggestions.sort((a, b) => {
     const aBrand = a.brand.toLowerCase();
     const bBrand = b.brand.toLowerCase();
     const aStarts = aBrand.startsWith(text);
     const bStarts = bBrand.startsWith(text);
-    if (aStarts &amp;&amp; !bStarts) return -1;
-    if (!aStarts &amp;&amp; bStarts) return 1;
+    if (aStarts && !bStarts) return -1;
+    if (!aStarts && bStarts) return 1;
     return aBrand.localeCompare(bBrand);
   });
 
   const finalResults = suggestions.slice(0, 10);
 
   if (finalResults.length === 0) {
-    searchSuggestions.innerHTML = `&lt;div class="search-no-result"&gt;No products found&lt;/div&gt;`;
+    searchSuggestions.innerHTML = `<div class="search-no-result">No products found</div>`;
     searchSuggestions.classList.add("show");
     return;
   }
 
-  finalResults.forEach(item =&gt; {
+  finalResults.forEach(item => {
     const row = document.createElement("div");
     row.className = "search-suggestion";
     const displayCategory = categoryNames[item.category] || item.category;
 
     row.innerHTML = `
-      &lt;img src="${item.image}" alt=""&gt;
-      &lt;div class="suggestion-info"&gt;
-        &lt;div class="suggestion-name"&gt;
+      <img src="${item.image}" alt="">
+      <div class="suggestion-info">
+        <div class="suggestion-name">
           ${highlightSearch(item.brand, text)}
           ${displayCategory}
-        &lt;/div&gt;
-        &lt;div class="suggestion-category"&gt;
+        </div>
+        <div class="suggestion-category">
           ${item.productName || item.brand + ' ' + displayCategory}
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;span class="suggestion-arrow"&gt;↗&lt;/span&gt;
+        </div>
+      </div>
+      <span class="suggestion-arrow">↗</span>
     `;
 
-    row.addEventListener("click", () =&gt; {
+    row.addEventListener("click", () => {
       window.location.href =
         "search.html?brand=" +
         encodeURIComponent(item.brand) +
-        "&amp;category=" +
+        "&category=" +
         encodeURIComponent(item.category);
     });
 
@@ -554,8 +542,8 @@ function createSearchSuggestions() {
 }
 
 function highlightSearch(text, search) {
-  const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&amp;");
-  return text.replace(new RegExp(`(${escaped})`, "ig"), "&lt;strong&gt;$1&lt;/strong&gt;");
+  const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return text.replace(new RegExp(`(${escaped})`, "ig"), "<strong>$1</strong>");
 }
 
 function openSearchResults(value) {
@@ -568,14 +556,14 @@ if (searchInput) {
 }
 
 if (searchButton) {
-  searchButton.addEventListener("click", () =&gt; {
+  searchButton.addEventListener("click", () => {
     const value = searchInput.value.trim();
     if (value) openSearchResults(value);
   });
 }
 
 if (searchInput) {
-  searchInput.addEventListener("keydown", event =&gt; {
+  searchInput.addEventListener("keydown", event => {
     if (event.key === "Enter") {
       const value = searchInput.value.trim();
       if (value) openSearchResults(value);
@@ -583,11 +571,11 @@ if (searchInput) {
   });
 }
 
-document.addEventListener("click", event =&gt; {
+document.addEventListener("click", event => {
   if (
-    searchInput &amp;&amp;
-    searchSuggestions &amp;&amp;
-    !searchInput.contains(event.target) &amp;&amp;
+    searchInput &&
+    searchSuggestions &&
+    !searchInput.contains(event.target) &&
     !searchSuggestions.contains(event.target)
   ) {
     searchSuggestions.classList.remove("show");
@@ -600,9 +588,9 @@ document.addEventListener("click", event =&gt; {
 
 const bottomItems = document.querySelectorAll('.bottom-item');
 
-bottomItems.forEach(item =&gt; {
+bottomItems.forEach(item => {
   item.addEventListener('click', function() {
-    bottomItems.forEach(i =&gt; i.classList.remove('active'));
+    bottomItems.forEach(i => i.classList.remove('active'));
     this.classList.add('active');
   });
 });
@@ -648,35 +636,35 @@ function loadCart() {
   let subtotal = 0;
   let totalItems = 0;
   
-  cart.forEach((item, index) =&gt; {
+  cart.forEach((item, index) => {
     const itemTotal = item.price * item.quantity;
     subtotal += itemTotal;
     totalItems += item.quantity;
     
-    const displayName = item.variant &amp;&amp; item.variant !== 'Default' 
+    const displayName = item.variant && item.variant !== 'Default' 
       ? `${item.name} (${item.variant})` 
       : item.name;
     
     const cartItem = document.createElement('div');
     cartItem.className = 'cart-item';
     cartItem.innerHTML = `
-      &lt;div class="cart-item-image"&gt;
-        &lt;img src="${item.image || 'images/placeholder.png'}" alt="${item.name}"&gt;
-      &lt;/div&gt;
-      &lt;div class="cart-item-info"&gt;
-        &lt;h3&gt;${displayName}&lt;/h3&gt;
-        &lt;p class="cart-item-brand"&gt;${item.brand} ${item.variant &amp;&amp; item.variant !== 'Default' ? '• ' + item.variant : ''}&lt;/p&gt;
-        &lt;p class="cart-item-price"&gt;₹${item.price.toLocaleString("en-IN")}&lt;/p&gt;
-      &lt;/div&gt;
-      &lt;div class="cart-item-qty"&gt;
-        &lt;button class="qty-btn" onclick="updateQuantity(${index}, -1)"&gt;−&lt;/button&gt;
-        &lt;span class="qty-number"&gt;${item.quantity}&lt;/span&gt;
-        &lt;button class="qty-btn" onclick="updateQuantity(${index}, 1)"&gt;+&lt;/button&gt;
-      &lt;/div&gt;
-      &lt;div class="cart-item-total"&gt;
+      <div class="cart-item-image">
+        <img src="${item.image || 'images/placeholder.png'}" alt="${item.name}">
+      </div>
+      <div class="cart-item-info">
+        <h3>${displayName}</h3>
+        <p class="cart-item-brand">${item.brand} ${item.variant && item.variant !== 'Default' ? '• ' + item.variant : ''}</p>
+        <p class="cart-item-price">₹${item.price.toLocaleString("en-IN")}</p>
+      </div>
+      <div class="cart-item-qty">
+        <button class="qty-btn" onclick="updateQuantity(${index}, -1)">−</button>
+        <span class="qty-number">${item.quantity}</span>
+        <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
+      </div>
+      <div class="cart-item-total">
         ₹${itemTotal.toLocaleString("en-IN")}
-      &lt;/div&gt;
-      &lt;button class="remove-btn" onclick="removeItem(${index})" title="Remove item"&gt;✕&lt;/button&gt;
+      </div>
+      <button class="remove-btn" onclick="removeItem(${index})" title="Remove item">✕</button>
     `;
     el.container.appendChild(cartItem);
   });
@@ -693,7 +681,7 @@ function updateQuantity(index, change) {
   
   if (cart[index]) {
     cart[index].quantity += change;
-    if (cart[index].quantity &lt;= 0) {
+    if (cart[index].quantity <= 0) {
       cart.splice(index, 1);
     }
   }
@@ -707,7 +695,7 @@ function removeItem(index) {
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
   const itemName = cart[index]?.name || 'Item';
   const variant = cart[index]?.variant || '';
-  const displayName = variant &amp;&amp; variant !== 'Default' ? `${itemName} (${variant})` : itemName;
+  const displayName = variant && variant !== 'Default' ? `${itemName} (${variant})` : itemName;
   cart.splice(index, 1);
   localStorage.setItem('cart', JSON.stringify(cart));
   loadCart();
@@ -734,9 +722,9 @@ function checkout() {
   let message = '🛍️ *JB STORE - New Order*%0A%0A';
   let total = 0;
   
-  cart.forEach(item =&gt; {
+  cart.forEach(item => {
     const itemTotal = item.price * item.quantity;
-    const displayName = item.variant &amp;&amp; item.variant !== 'Default' 
+    const displayName = item.variant && item.variant !== 'Default' 
       ? `${item.name} (${item.variant})` 
       : item.name;
     message += `📱 ${displayName}%0A   × ${item.quantity} = ₹${itemTotal.toLocaleString("en-IN")}%0A`;
@@ -753,7 +741,7 @@ function updateBadge(count) {
   const badge = document.getElementById('cartBadge');
   if (badge) {
     badge.textContent = count;
-    badge.style.display = count &gt; 0 ? 'flex' : 'none';
+    badge.style.display = count > 0 ? 'flex' : 'none';
   }
 }
 
@@ -834,18 +822,18 @@ window.clearFilters = clearFilters;
   function updateMenuBadges() {
     const cartBadge = document.getElementById('cartBadge');
     const menuCart = document.getElementById('menuCartBadge');
-    if (cartBadge &amp;&amp; menuCart) {
+    if (cartBadge && menuCart) {
       const val = parseInt(cartBadge.textContent, 10) || 0;
       menuCart.textContent = val;
-      menuCart.style.display = val &gt; 0 ? 'flex' : 'none';
+      menuCart.style.display = val > 0 ? 'flex' : 'none';
     }
 
     const favBadge = document.getElementById('favBadge');
     const menuFav = document.getElementById('menuFavBadge');
-    if (favBadge &amp;&amp; menuFav) {
+    if (favBadge && menuFav) {
       const val = parseInt(favBadge.textContent, 10) || 0;
       menuFav.textContent = val;
-      menuFav.style.display = val &gt; 0 ? 'flex' : 'none';
+      menuFav.style.display = val > 0 ? 'flex' : 'none';
     }
   }
 
@@ -854,7 +842,7 @@ window.clearFilters = clearFilters;
   overlay.addEventListener('click', closeMenu);
 
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' &amp;&amp; drawer.classList.contains('open')) {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) {
       closeMenu();
     }
   });
@@ -862,7 +850,7 @@ window.clearFilters = clearFilters;
   document.querySelectorAll('.menu-item').forEach(function(item) {
     item.addEventListener('click', function(e) {
       const href = this.getAttribute('href');
-      if (href &amp;&amp; href !== '#' &amp;&amp; href !== 'javascript:void(0)') {
+      if (href && href !== '#' && href !== 'javascript:void(0)') {
         setTimeout(closeMenu, 150);
       } else {
         e.preventDefault();
@@ -926,10 +914,10 @@ window.clearFilters = clearFilters;
     track.style.width = `${slides.length * 100}%`;
     track.style.height = "100%";
     track.style.transition = "transform 0.6s ease";
-    slides.forEach((slide) =&gt; {
-      slide.parentNode &amp;&amp; track.appendChild(slide);
-      slide.style.flex = `0 0 ${100 / slides.length}%`;
-      slide.style.width = `${100 / slides.length}%`;
+    slides.forEach((slide) => {
+      slide.parentNode && track.appendChild(slide);
+      slide.style.flex = "0 0 100%";
+      slide.style.width = "100%";
       slide.style.position = "relative";
       slide.style.opacity = "1";
       slide.style.pointerEvents = "auto";
@@ -948,7 +936,7 @@ window.clearFilters = clearFilters;
     dots.style.gap = "8px";
     dots.style.marginTop = "10px";
 
-    slides.forEach((_, index) =&gt; {
+    slides.forEach((_, index) => {
       const dot = document.createElement("button");
       dot.type = "button";
       dot.className = "jb-hero-dot";
@@ -961,7 +949,7 @@ window.clearFilters = clearFilters;
       dot.style.background = "rgba(255,255,255,.45)";
       dot.style.cursor = "pointer";
 
-      dot.addEventListener("click", () =&gt; {
+      dot.addEventListener("click", () => {
         current = index;
         update();
       });
@@ -975,7 +963,7 @@ window.clearFilters = clearFilters;
   function update() {
     track.style.transform = `translate3d(-${current * (100 / slides.length)}%, 0, 0)`;
 
-    Array.from(dots.children).forEach((dot, index) =&gt; {
+    Array.from(dots.children).forEach((dot, index) => {
       dot.style.background =
         index === current ? "#FFD700" : "rgba(255,255,255,.45)";
       dot.style.transform = index === current ? "scale(1.25)" : "scale(1)";
@@ -991,7 +979,7 @@ window.clearFilters = clearFilters;
   // Keep the requested 5-second automatic interval.
   window.setInterval(next, 5000);
 
-  viewport.addEventListener("pointerdown", (event) =&gt; {
+  viewport.addEventListener("pointerdown", (event) => {
     paused = true;
     pointerId = event.pointerId;
     startX = event.clientX;
@@ -1003,13 +991,13 @@ window.clearFilters = clearFilters;
   });
 
   function finishPointer(event) {
-    if (pointerId !== null &amp;&amp; event.pointerId !== pointerId) return;
+    if (pointerId !== null && event.pointerId !== pointerId) return;
 
     const dx = event.clientX - startX;
     const dy = event.clientY - startY;
 
-    if (Math.abs(dx) &gt; 50 &amp;&amp; Math.abs(dx) &gt; Math.abs(dy)) {
-      if (dx &lt; 0) {
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) {
         current = (current + 1) % slides.length;
       } else {
         current = (current - 1 + slides.length) % slides.length;
@@ -1022,13 +1010,10 @@ window.clearFilters = clearFilters;
   }
 
   viewport.addEventListener("pointerup", finishPointer);
-  viewport.addEventListener("pointercancel", () =&gt; {
+  viewport.addEventListener("pointercancel", () => {
     paused = false;
     pointerId = null;
   });
 
   update();
 })();
-</pre>
-</body>
-</html>
