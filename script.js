@@ -1,4 +1,11 @@
-// ==========================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>JB Store Script - Hero Slider Fixed</title>
+</head>
+<body>
+<pre style="white-space:pre-wrap;word-wrap:break-word;">// ==========================================
 // JB STORE - MAIN JAVASCRIPT
 // ==========================================
 
@@ -6,31 +13,31 @@
 // 1. BANNER SLIDER
 // ==========================================
 
-const slides = document.querySelectorAll(".slide");
-const dots = document.querySelectorAll(".dot");
+const slides = document.querySelectorAll(&quot;.slide&quot;);
+const dots = document.querySelectorAll(&quot;.dot&quot;);
 
 let current = 0;
 
 function showSlide(index) {
   if (!slides.length) return;
 
-  slides.forEach(slide => {
-    slide.classList.remove("active");
+  slides.forEach(slide =&gt; {
+    slide.classList.remove(&quot;active&quot;);
   });
 
-  dots.forEach(dot => {
-    dot.classList.remove("active");
+  dots.forEach(dot =&gt; {
+    dot.classList.remove(&quot;active&quot;);
   });
 
-  slides[index].classList.add("active");
+  slides[index].classList.add(&quot;active&quot;);
 
   if (dots[index]) {
-    dots[index].classList.add("active");
+    dots[index].classList.add(&quot;active&quot;);
   }
 }
 
-if (slides.length > 1) {
-  setInterval(() => {
+if (slides.length &gt; 1) {
+  setInterval(() =&gt; {
     current = (current + 1) % slides.length;
     showSlide(current);
   }, 3500);
@@ -40,20 +47,20 @@ if (slides.length > 1) {
 // MAIN HERO IMAGE SLIDER
 // ==========================================
 
-const heroSlides = document.querySelectorAll(".hero-slide");
+const heroSlides = document.querySelectorAll(&quot;.hero-slide&quot;);
 
 let heroCurrent = 0;
 
 function showHeroSlide(index) {
-    heroSlides.forEach((slide, i) => {
-        slide.classList.toggle("active", i === index);
+    heroSlides.forEach((slide, i) =&gt; {
+        slide.classList.toggle(&quot;active&quot;, i === index);
     });
 }
 
 // Only auto-slide when there is more than 1 image
-if (heroSlides.length > 1) {
+if (heroSlides.length &gt; 1) {
 
-    setInterval(() => {
+    setInterval(() =&gt; {
         heroCurrent = (heroCurrent + 1) % heroSlides.length;
         showHeroSlide(heroCurrent);
     }, 5000);
@@ -67,7 +74,7 @@ if (heroSlides.length > 1) {
 
 const allProducts = [];
 
-console.log('Supabase products only. Waiting for products...');
+console.log(&#x27;Supabase products only. Waiting for products...&#x27;);
 
 
 
@@ -76,28 +83,28 @@ console.log('Supabase products only. Waiting for products...');
 // ==========================================
 
 const brands = {
-  mobiles: ["iPhone", "OnePlus", "Samsung", "Google Pixel", "Vivo", "OPPO", "Realme", "Nothing", "Motorola", "Iqoo", "Poco", "Infinix", "Lava"],
-  fridge: ["LG", "Samsung", "Godrej", "Haier", "Whirlpool"],
-  washing: ["LG", "Samsung", "IFB", "Bosch", "Haier", "Whirlpool"],
-  ac: ["Daikin", "LG", "Voltas", "Blue Star", "Samsung"],
-  tv: ["Sony", "Samsung", "LG", "TCL", "Xiaomi"]
+  mobiles: [&quot;iPhone&quot;, &quot;OnePlus&quot;, &quot;Samsung&quot;, &quot;Google Pixel&quot;, &quot;Vivo&quot;, &quot;OPPO&quot;, &quot;Realme&quot;, &quot;Nothing&quot;, &quot;Motorola&quot;, &quot;Iqoo&quot;, &quot;Poco&quot;, &quot;Infinix&quot;, &quot;Lava&quot;],
+  fridge: [&quot;LG&quot;, &quot;Samsung&quot;, &quot;Godrej&quot;, &quot;Haier&quot;, &quot;Whirlpool&quot;],
+  washing: [&quot;LG&quot;, &quot;Samsung&quot;, &quot;IFB&quot;, &quot;Bosch&quot;, &quot;Haier&quot;, &quot;Whirlpool&quot;],
+  ac: [&quot;Daikin&quot;, &quot;LG&quot;, &quot;Voltas&quot;, &quot;Blue Star&quot;, &quot;Samsung&quot;],
+  tv: [&quot;Sony&quot;, &quot;Samsung&quot;, &quot;LG&quot;, &quot;TCL&quot;, &quot;Xiaomi&quot;]
 };
 
 // ==========================================
 // 4. CURRENT FILTER
 // ==========================================
 
-let currentCategory = "mobiles";
+let currentCategory = &quot;mobiles&quot;;
 let selectedBrand = null;
 
 // ==========================================
 // 5. ELEMENTS
 // ==========================================
 
-const brandBox = document.getElementById("brandFilters");
-const productGrid = document.getElementById("productGrid");
-const productTitle = document.getElementById("productTitle");
-const clearFilter = document.getElementById("clearFilter");
+const brandBox = document.getElementById(&quot;brandFilters&quot;);
+const productGrid = document.getElementById(&quot;productGrid&quot;);
+const productTitle = document.getElementById(&quot;productTitle&quot;);
+const clearFilter = document.getElementById(&quot;clearFilter&quot;);
 
 // ==========================================
 // 6. LOAD BRAND BUTTONS
@@ -106,63 +113,63 @@ const clearFilter = document.getElementById("clearFilter");
 function loadBrands(category) {
   if (!brandBox) return;
 
-  brandBox.innerHTML = "";
+  brandBox.innerHTML = &quot;&quot;;
   selectedBrand = null;
 
   let brandCategory = category;
-  if (category === 'sealpack' || category === 'sealcut' || category === 'second') {
-    brandCategory = 'mobiles';
+  if (category === &#x27;sealpack&#x27; || category === &#x27;sealcut&#x27; || category === &#x27;second&#x27;) {
+    brandCategory = &#x27;mobiles&#x27;;
   }
 
   const categoryBrands = brands[brandCategory] || [];
   const uniqueBrands = [...new Set(categoryBrands)];
 
-  uniqueBrands.forEach(brand => {
-    const chip = document.createElement("button");
-    chip.type = "button";
-    chip.className = "chip";
+  uniqueBrands.forEach(brand =&gt; {
+    const chip = document.createElement(&quot;button&quot;);
+    chip.type = &quot;button&quot;;
+    chip.className = &quot;chip&quot;;
 
     const logoMap = {
-      "iPhone": "images/apple.png",
-      "OnePlus": "images/oneplus.png",
-      "Samsung": "images/samsung-logo.png",
-      "Google Pixel": "images/google.png",
-      "Vivo": "images/vivo.png",
-      "OPPO": "images/oppo.png",
-      "Realme": "images/realme.png",
-      "Nothing": "images/nothing.png",
-      "Motorola": "images/motorola.png",
-      "Iqoo": "images/iqoo.png",
-      "Poco": "images/poco.png",
-      "Infinix": "images/infinix.png",
-      "Lava": "images/lava.png",
-      "LG": "images/lg.png",
-      "Godrej": "images/godrej.png",
-      "Haier": "images/haier.png",
-      "Whirlpool": "images/whirlpool.png",
-      "IFB": "images/ifb.png",
-      "Bosch": "images/bosch.png",
-      "Daikin": "images/daikin.png",
-      "Voltas": "images/voltas.png",
-      "Blue Star": "images/bluestar.png",
-      "Sony": "images/sony.png",
-      "TCL": "images/tcl.png",
-      "Xiaomi": "images/xiaomi.png"
+      &quot;iPhone&quot;: &quot;images/apple.png&quot;,
+      &quot;OnePlus&quot;: &quot;images/oneplus.png&quot;,
+      &quot;Samsung&quot;: &quot;images/samsung-logo.png&quot;,
+      &quot;Google Pixel&quot;: &quot;images/google.png&quot;,
+      &quot;Vivo&quot;: &quot;images/vivo.png&quot;,
+      &quot;OPPO&quot;: &quot;images/oppo.png&quot;,
+      &quot;Realme&quot;: &quot;images/realme.png&quot;,
+      &quot;Nothing&quot;: &quot;images/nothing.png&quot;,
+      &quot;Motorola&quot;: &quot;images/motorola.png&quot;,
+      &quot;Iqoo&quot;: &quot;images/iqoo.png&quot;,
+      &quot;Poco&quot;: &quot;images/poco.png&quot;,
+      &quot;Infinix&quot;: &quot;images/infinix.png&quot;,
+      &quot;Lava&quot;: &quot;images/lava.png&quot;,
+      &quot;LG&quot;: &quot;images/lg.png&quot;,
+      &quot;Godrej&quot;: &quot;images/godrej.png&quot;,
+      &quot;Haier&quot;: &quot;images/haier.png&quot;,
+      &quot;Whirlpool&quot;: &quot;images/whirlpool.png&quot;,
+      &quot;IFB&quot;: &quot;images/ifb.png&quot;,
+      &quot;Bosch&quot;: &quot;images/bosch.png&quot;,
+      &quot;Daikin&quot;: &quot;images/daikin.png&quot;,
+      &quot;Voltas&quot;: &quot;images/voltas.png&quot;,
+      &quot;Blue Star&quot;: &quot;images/bluestar.png&quot;,
+      &quot;Sony&quot;: &quot;images/sony.png&quot;,
+      &quot;TCL&quot;: &quot;images/tcl.png&quot;,
+      &quot;Xiaomi&quot;: &quot;images/xiaomi.png&quot;
     };
 
-    const logo = document.createElement("img");
-    logo.src = logoMap[brand] || "";
+    const logo = document.createElement(&quot;img&quot;);
+    logo.src = logoMap[brand] || &quot;&quot;;
     logo.alt = brand;
 
-    const name = document.createElement("span");
+    const name = document.createElement(&quot;span&quot;);
     name.textContent = brand;
 
     chip.appendChild(logo);
     chip.appendChild(name);
 
-    chip.addEventListener("click", () => {
-      document.querySelectorAll(".chip").forEach(c => c.classList.remove("on"));
-      chip.classList.add("on");
+    chip.addEventListener(&quot;click&quot;, () =&gt; {
+      document.querySelectorAll(&quot;.chip&quot;).forEach(c =&gt; c.classList.remove(&quot;on&quot;));
+      chip.classList.add(&quot;on&quot;);
       selectedBrand = brand;
       displayProducts();
     });
@@ -176,7 +183,7 @@ function loadBrands(category) {
 // ==========================================
 
 function getFirstVariant(product) {
-  if (product.variants && product.variants.length > 0) {
+  if (product.variants &amp;&amp; product.variants.length &gt; 0) {
     return product.variants[0].label;
   }
   return null;
@@ -189,68 +196,68 @@ function getFirstVariant(product) {
 function displayProducts() {
   if (!productGrid) return;
 
-  productGrid.innerHTML = "";
+  productGrid.innerHTML = &quot;&quot;;
 
   let products = [];
 
-  if (currentCategory === "mobiles") {
-    products = allProducts.filter(product => product.category === "mobiles");
-  } else if (currentCategory === "sealpack") {
-    products = allProducts.filter(product => product.category === "mobiles" && product.condition === "Seal Pack");
-  } else if (currentCategory === "sealcut") {
-    products = allProducts.filter(product => product.category === "mobiles" && product.condition === "Seal Cut");
-  } else if (currentCategory === "second") {
-    products = allProducts.filter(product => product.category === "mobiles" && product.condition === "2nd Hand");
+  if (currentCategory === &quot;mobiles&quot;) {
+    products = allProducts.filter(product =&gt; product.category === &quot;mobiles&quot;);
+  } else if (currentCategory === &quot;sealpack&quot;) {
+    products = allProducts.filter(product =&gt; product.category === &quot;mobiles&quot; &amp;&amp; product.condition === &quot;Seal Pack&quot;);
+  } else if (currentCategory === &quot;sealcut&quot;) {
+    products = allProducts.filter(product =&gt; product.category === &quot;mobiles&quot; &amp;&amp; product.condition === &quot;Seal Cut&quot;);
+  } else if (currentCategory === &quot;second&quot;) {
+    products = allProducts.filter(product =&gt; product.category === &quot;mobiles&quot; &amp;&amp; product.condition === &quot;2nd Hand&quot;);
   } else {
-    products = allProducts.filter(product => product.category === currentCategory);
+    products = allProducts.filter(product =&gt; product.category === currentCategory);
   }
 
-  const condFilter = document.getElementById('conditionFilter');
-  if (condFilter && condFilter.value) {
+  const condFilter = document.getElementById(&#x27;conditionFilter&#x27;);
+  if (condFilter &amp;&amp; condFilter.value) {
     const cond = condFilter.value;
-    products = products.filter(product => product.condition === cond);
+    products = products.filter(product =&gt; product.condition === cond);
   }
 
   if (selectedBrand) {
-    products = products.filter(product => product.brand === selectedBrand);
+    products = products.filter(product =&gt; product.brand === selectedBrand);
   }
 
   if (products.length === 0) {
     productGrid.innerHTML = `
-      <div class="no-products">
-        <h3>No products found</h3>
-        <p>Try changing filters.</p>
-      </div>
+      &lt;div class=&quot;no-products&quot;&gt;
+        &lt;h3&gt;No products found&lt;/h3&gt;
+        &lt;p&gt;Try changing filters.&lt;/p&gt;
+      &lt;/div&gt;
     `;
     return;
   }
 
-  products.forEach(product => {
-    const card = document.createElement("div");
-    card.className = "deal-card";
-card.style.cursor = "pointer";
-card.addEventListener("click", () => viewProduct(product.id));
+  products.forEach(product =&gt; {
+    const card = document.createElement(&quot;div&quot;);
+    card.className = &quot;deal-card&quot;;
+card.style.cursor = &quot;pointer&quot;;
+card.addEventListener(&quot;click&quot;, () =&gt; viewProduct(product.id));
 
     const firstVariant = getFirstVariant(product);
-    let variantHTML = '';
+    let variantHTML = &#x27;&#x27;;
     if (firstVariant) {
-      variantHTML = `<div style="display:inline-block;background:rgba(212,175,55,0.12);color:#D4AF37;font-size:11px;font-weight:600;padding:2px 10px;border-radius:12px;margin:4px 0;border:1px solid rgba(212,175,55,0.15);">📱 ${firstVariant}</div>`;
+      variantHTML = `&lt;div style=&quot;display:inline-block;background:rgba(212,175,55,0.12);color:#D4AF37;font-size:11px;font-weight:600;padding:2px 10px;border-radius:12px;margin:4px 0;border:1px solid rgba(212,175,55,0.15);&quot;&gt;📱 ${firstVariant}&lt;/div&gt;`;
     }
 
-    let imgSrc = product.image || (product.images && product.images[0]) || '#';
+    let imgSrc = product.image || (product.images &amp;&amp; product.images[0]) || &#x27;#&#x27;;
 
     card.innerHTML = `
-      <span class="offer">${product.discount || ''}</span>
-      <img src="${imgSrc}" alt="${product.name}">
-      <h3>${product.name}</h3>
-      <p class="brand">Brand: ${product.brand}</p>
-      <p class="condition">Condition: ${product.condition || "New"}</p>
+      &lt;span class=&quot;offer&quot;&gt;${product.discount || &#x27;&#x27;}&lt;/span&gt;
+      &lt;img src=&quot;${imgSrc}&quot; alt=&quot;${product.name}&quot;&gt;
+      &lt;h3&gt;${product.name}&lt;/h3&gt;
+      &lt;p class=&quot;brand&quot;&gt;Brand: ${product.brand}&lt;/p&gt;
+      &lt;p class=&quot;condition&quot;&gt;Condition: ${product.condition || &quot;New&quot;}&lt;/p&gt;
       ${variantHTML}
-      <div class="rating">⭐ ${product.rating || '4.5'} <span>(${product.reviews || 0})</span></div>
-      <div class="price-row">
-        <p class="price">₹${(product.price || 0).toLocaleString("en-IN")}</p>
-        <p class="old-price">₹${(product.oldPrice || 0).toLocaleString("en-IN")}</p>
-      </div>
+      &lt;div class=&quot;rating&quot;&gt;⭐ ${product.rating || &#x27;4.5&#x27;} &lt;span&gt;(${product.reviews || 0})&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;price-row&quot;&gt;
+        &lt;p class=&quot;price&quot;&gt;₹${(product.price || 0).toLocaleString(&quot;en-IN&quot;)}&lt;/p&gt;
+        &lt;p class=&quot;old-price&quot;&gt;₹${(product.oldPrice || 0).toLocaleString(&quot;en-IN&quot;)}&lt;/p&gt;
+      &lt;/div&gt;
     
     `;
 
@@ -262,10 +269,10 @@ card.addEventListener("click", () => viewProduct(product.id));
 // 9. CATEGORY BUTTONS
 // ==========================================
 
-document.querySelectorAll(".cat").forEach(button => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".cat").forEach(btn => btn.classList.remove("active"));
-    button.classList.add("active");
+document.querySelectorAll(&quot;.cat&quot;).forEach(button =&gt; {
+  button.addEventListener(&quot;click&quot;, () =&gt; {
+    document.querySelectorAll(&quot;.cat&quot;).forEach(btn =&gt; btn.classList.remove(&quot;active&quot;));
+    button.classList.add(&quot;active&quot;);
     currentCategory = button.dataset.cat;
     selectedBrand = null;
     loadBrands(currentCategory);
@@ -278,30 +285,30 @@ document.querySelectorAll(".cat").forEach(button => {
 // ==========================================
 
 if (clearFilter) {
-  clearFilter.addEventListener("click", () => {
+  clearFilter.addEventListener(&quot;click&quot;, () =&gt; {
     selectedBrand = null;
-    document.querySelectorAll(".chip").forEach(chip => chip.classList.remove("on"));
+    document.querySelectorAll(&quot;.chip&quot;).forEach(chip =&gt; chip.classList.remove(&quot;on&quot;));
     
-    const catFilter = document.getElementById('categoryFilter');
-    const condFilter = document.getElementById('conditionFilter');
-    if (catFilter) catFilter.value = '';
-    if (condFilter) condFilter.value = '';
+    const catFilter = document.getElementById(&#x27;categoryFilter&#x27;);
+    const condFilter = document.getElementById(&#x27;conditionFilter&#x27;);
+    if (catFilter) catFilter.value = &#x27;&#x27;;
+    if (condFilter) condFilter.value = &#x27;&#x27;;
     
     displayProducts();
   });
 }
 
 function clearFilters() {
-  const catFilter = document.getElementById('categoryFilter');
-  const condFilter = document.getElementById('conditionFilter');
-  const search = document.getElementById('globalSearch');
+  const catFilter = document.getElementById(&#x27;categoryFilter&#x27;);
+  const condFilter = document.getElementById(&#x27;conditionFilter&#x27;);
+  const search = document.getElementById(&#x27;globalSearch&#x27;);
   
-  if (catFilter) catFilter.value = '';
-  if (condFilter) condFilter.value = '';
-  if (search) search.value = '';
+  if (catFilter) catFilter.value = &#x27;&#x27;;
+  if (condFilter) condFilter.value = &#x27;&#x27;;
+  if (search) search.value = &#x27;&#x27;;
   
   selectedBrand = null;
-  document.querySelectorAll(".chip").forEach(chip => chip.classList.remove("on"));
+  document.querySelectorAll(&quot;.chip&quot;).forEach(chip =&gt; chip.classList.remove(&quot;on&quot;));
   displayProducts();
 }
 
@@ -310,17 +317,17 @@ function clearFilters() {
 // ==========================================
 
 function viewProduct(id) {
-  console.log('Viewing product with ID:', id);
+  console.log(&#x27;Viewing product with ID:&#x27;, id);
   
-  const product = allProducts.find(item => item.id === id);
+  const product = allProducts.find(item =&gt; item.id === id);
   
   if (!product) {
-    console.error('Product not found with ID:', id);
-    showToast('Product not found!');
+    console.error(&#x27;Product not found with ID:&#x27;, id);
+    showToast(&#x27;Product not found!&#x27;);
     return;
   }
   
-  sessionStorage.setItem('selectedProduct', JSON.stringify(product));
+  sessionStorage.setItem(&#x27;selectedProduct&#x27;, JSON.stringify(product));
   
   window.location.href = `product.html?id=${product.id}`;
 }
@@ -330,20 +337,20 @@ function viewProduct(id) {
 // ==========================================
 
 function addToCart(productId, variantLabel) {
-  const product = allProducts.find(item => item.id === productId);
+  const product = allProducts.find(item =&gt; item.id === productId);
   
   if (!product) {
-    showToast('Product not found!');
+    showToast(&#x27;Product not found!&#x27;);
     return;
   }
   
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  let cart = JSON.parse(localStorage.getItem(&#x27;cart&#x27;)) || [];
   
   let price = product.price;
-  let variantName = '';
+  let variantName = &#x27;&#x27;;
   
-  if (variantLabel && product.variants) {
-    const variant = product.variants.find(v => v.label === variantLabel);
+  if (variantLabel &amp;&amp; product.variants) {
+    const variant = product.variants.find(v =&gt; v.label === variantLabel);
     if (variant) {
       price = variant.price;
       variantName = variantLabel;
@@ -351,7 +358,7 @@ function addToCart(productId, variantLabel) {
   }
   
   const uniqueId = variantName ? `${product.id}_${variantName}` : product.id;
-  const existingItem = cart.find(item => item.id === uniqueId);
+  const existingItem = cart.find(item =&gt; item.id === uniqueId);
   const displayName = variantName ? `${product.name} (${variantName})` : product.name;
   
   if (existingItem) {
@@ -363,24 +370,24 @@ function addToCart(productId, variantLabel) {
       name: product.name,
       brand: product.brand,
       price: price,
-      image: product.image || product.images?.[0] || '',
+      image: product.image || product.images?.[0] || &#x27;&#x27;,
       quantity: 1,
-      variant: variantName || 'Default'
+      variant: variantName || &#x27;Default&#x27;
     });
     showToast(`✅ ${displayName} added to cart!`);
   }
   
-  localStorage.setItem('cart', JSON.stringify(cart));
+  localStorage.setItem(&#x27;cart&#x27;, JSON.stringify(cart));
   updateCartBadge();
 }
 
 function updateCartBadge() {
-  const cart = JSON.parse(localStorage.getItem('cart')) || [];
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const cart = JSON.parse(localStorage.getItem(&#x27;cart&#x27;)) || [];
+  const totalItems = cart.reduce((sum, item) =&gt; sum + item.quantity, 0);
   
-  document.querySelectorAll('.cart-badge').forEach(badge => {
+  document.querySelectorAll(&#x27;.cart-badge&#x27;).forEach(badge =&gt; {
     badge.textContent = totalItems;
-    badge.style.display = totalItems > 0 ? 'flex' : 'none';
+    badge.style.display = totalItems &gt; 0 ? &#x27;flex&#x27; : &#x27;none&#x27;;
   });
 }
 
@@ -389,21 +396,21 @@ function updateCartBadge() {
 // ==========================================
 
 function showToast(message) {
-  const existingToast = document.querySelector('.toast-notification');
+  const existingToast = document.querySelector(&#x27;.toast-notification&#x27;);
   if (existingToast) existingToast.remove();
   
-  const toast = document.createElement('div');
-  toast.className = 'toast-notification';
+  const toast = document.createElement(&#x27;div&#x27;);
+  toast.className = &#x27;toast-notification&#x27;;
   toast.innerHTML = `
-    <span>${message}</span>
-    <button onclick="this.parentElement.remove()">✕</button>
+    &lt;span&gt;${message}&lt;/span&gt;
+    &lt;button onclick=&quot;this.parentElement.remove()&quot;&gt;✕&lt;/button&gt;
   `;
   document.body.appendChild(toast);
   
-  setTimeout(() => {
+  setTimeout(() =&gt; {
     if (toast) {
-      toast.classList.add('fade-out');
-      setTimeout(() => toast.remove(), 300);
+      toast.classList.add(&#x27;fade-out&#x27;);
+      setTimeout(() =&gt; toast.remove(), 300);
     }
   }, 3000);
 }
@@ -412,14 +419,14 @@ function showToast(message) {
 // 14. INITIAL LOAD
 // ==========================================
 
-loadBrands("mobiles");
+loadBrands(&quot;mobiles&quot;);
 displayProducts();
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; {
   updateCartBadge();
 });
 
-window.addEventListener("pageshow", () => {
+window.addEventListener(&quot;pageshow&quot;, () =&gt; {
   updateCartBadge();
 });
 
@@ -427,13 +434,13 @@ window.addEventListener("pageshow", () => {
 // 15. SHOP BY CATEGORY CARDS
 // ==========================================
 
-document.querySelectorAll(".category-card").forEach(card => {
-  card.addEventListener("click", () => {
+document.querySelectorAll(&quot;.category-card&quot;).forEach(card =&gt; {
+  card.addEventListener(&quot;click&quot;, () =&gt; {
     const category = card.dataset.category;
-    const categoryButton = document.querySelector(`.cat[data-cat="${category}"]`);
+    const categoryButton = document.querySelector(`.cat[data-cat=&quot;${category}&quot;]`);
     if (categoryButton) categoryButton.click();
-    const products = document.querySelector(".deals");
-    if (products) products.scrollIntoView({ behavior: "smooth", block: "start" });
+    const products = document.querySelector(&quot;.deals&quot;);
+    if (products) products.scrollIntoView({ behavior: &quot;smooth&quot;, block: &quot;start&quot; });
   });
 });
 
@@ -441,34 +448,34 @@ document.querySelectorAll(".category-card").forEach(card => {
 // 16. SEARCH
 // ==========================================
 
-const searchInput = document.getElementById("searchInput");
-const searchButton = document.getElementById("searchButton");
-const searchSuggestions = document.getElementById("searchSuggestions");
+const searchInput = document.getElementById(&quot;searchInput&quot;);
+const searchButton = document.getElementById(&quot;searchButton&quot;);
+const searchSuggestions = document.getElementById(&quot;searchSuggestions&quot;);
 
 const categoryNames = {
-  mobiles: "Mobiles",
-  fridge: "Refrigerators",
-  washing: "Washing Machines",
-  ac: "AC",
-  tv: "TV"
+  mobiles: &quot;Mobiles&quot;,
+  fridge: &quot;Refrigerators&quot;,
+  washing: &quot;Washing Machines&quot;,
+  ac: &quot;AC&quot;,
+  tv: &quot;TV&quot;
 };
 
 function createSearchSuggestions() {
   if (!searchInput || !searchSuggestions) return;
 
   const text = searchInput.value.trim().toLowerCase();
-  searchSuggestions.innerHTML = "";
+  searchSuggestions.innerHTML = &quot;&quot;;
 
-  if (text === "") {
-    searchSuggestions.classList.remove("show");
+  if (text === &quot;&quot;) {
+    searchSuggestions.classList.remove(&quot;show&quot;);
     return;
   }
 
   const combinations = new Map();
 
-  allProducts.forEach(product => {
-    const brand = String(product.brand || "").trim();
-    const category = String(product.category || "").trim();
+  allProducts.forEach(product =&gt; {
+    const brand = String(product.brand || &quot;&quot;).trim();
+    const category = String(product.category || &quot;&quot;).trim();
     if (!brand || !category) return;
 
     const brandLower = brand.toLowerCase();
@@ -480,7 +487,7 @@ function createSearchSuggestions() {
         combinations.set(key, {
           brand: brand,
           category: category,
-          image: product.image || product.images?.[0] || '',
+          image: product.image || product.images?.[0] || &#x27;&#x27;,
           productName: product.name,
           productId: product.id
         });
@@ -490,95 +497,95 @@ function createSearchSuggestions() {
 
   const suggestions = Array.from(combinations.values());
 
-  suggestions.sort((a, b) => {
+  suggestions.sort((a, b) =&gt; {
     const aBrand = a.brand.toLowerCase();
     const bBrand = b.brand.toLowerCase();
     const aStarts = aBrand.startsWith(text);
     const bStarts = bBrand.startsWith(text);
-    if (aStarts && !bStarts) return -1;
-    if (!aStarts && bStarts) return 1;
+    if (aStarts &amp;&amp; !bStarts) return -1;
+    if (!aStarts &amp;&amp; bStarts) return 1;
     return aBrand.localeCompare(bBrand);
   });
 
   const finalResults = suggestions.slice(0, 10);
 
   if (finalResults.length === 0) {
-    searchSuggestions.innerHTML = `<div class="search-no-result">No products found</div>`;
-    searchSuggestions.classList.add("show");
+    searchSuggestions.innerHTML = `&lt;div class=&quot;search-no-result&quot;&gt;No products found&lt;/div&gt;`;
+    searchSuggestions.classList.add(&quot;show&quot;);
     return;
   }
 
-  finalResults.forEach(item => {
-    const row = document.createElement("div");
-    row.className = "search-suggestion";
+  finalResults.forEach(item =&gt; {
+    const row = document.createElement(&quot;div&quot;);
+    row.className = &quot;search-suggestion&quot;;
     const displayCategory = categoryNames[item.category] || item.category;
 
     row.innerHTML = `
-      <img src="${item.image}" alt="">
-      <div class="suggestion-info">
-        <div class="suggestion-name">
+      &lt;img src=&quot;${item.image}&quot; alt=&quot;&quot;&gt;
+      &lt;div class=&quot;suggestion-info&quot;&gt;
+        &lt;div class=&quot;suggestion-name&quot;&gt;
           ${highlightSearch(item.brand, text)}
           ${displayCategory}
-        </div>
-        <div class="suggestion-category">
-          ${item.productName || item.brand + ' ' + displayCategory}
-        </div>
-      </div>
-      <span class="suggestion-arrow">↗</span>
+        &lt;/div&gt;
+        &lt;div class=&quot;suggestion-category&quot;&gt;
+          ${item.productName || item.brand + &#x27; &#x27; + displayCategory}
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;span class=&quot;suggestion-arrow&quot;&gt;↗&lt;/span&gt;
     `;
 
-    row.addEventListener("click", () => {
+    row.addEventListener(&quot;click&quot;, () =&gt; {
       window.location.href =
-        "search.html?brand=" +
+        &quot;search.html?brand=&quot; +
         encodeURIComponent(item.brand) +
-        "&category=" +
+        &quot;&amp;category=&quot; +
         encodeURIComponent(item.category);
     });
 
     searchSuggestions.appendChild(row);
   });
 
-  searchSuggestions.classList.add("show");
+  searchSuggestions.classList.add(&quot;show&quot;);
 }
 
 function highlightSearch(text, search) {
-  const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return text.replace(new RegExp(`(${escaped})`, "ig"), "<strong>$1</strong>");
+  const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, &quot;\\$&amp;&quot;);
+  return text.replace(new RegExp(`(${escaped})`, &quot;ig&quot;), &quot;&lt;strong&gt;$1&lt;/strong&gt;&quot;);
 }
 
 function openSearchResults(value) {
   if (!value) return;
-  window.location.href = "search.html?q=" + encodeURIComponent(value);
+  window.location.href = &quot;search.html?q=&quot; + encodeURIComponent(value);
 }
 
 if (searchInput) {
-  searchInput.addEventListener("input", createSearchSuggestions);
+  searchInput.addEventListener(&quot;input&quot;, createSearchSuggestions);
 }
 
 if (searchButton) {
-  searchButton.addEventListener("click", () => {
+  searchButton.addEventListener(&quot;click&quot;, () =&gt; {
     const value = searchInput.value.trim();
     if (value) openSearchResults(value);
   });
 }
 
 if (searchInput) {
-  searchInput.addEventListener("keydown", event => {
-    if (event.key === "Enter") {
+  searchInput.addEventListener(&quot;keydown&quot;, event =&gt; {
+    if (event.key === &quot;Enter&quot;) {
       const value = searchInput.value.trim();
       if (value) openSearchResults(value);
     }
   });
 }
 
-document.addEventListener("click", event => {
+document.addEventListener(&quot;click&quot;, event =&gt; {
   if (
-    searchInput &&
-    searchSuggestions &&
-    !searchInput.contains(event.target) &&
+    searchInput &amp;&amp;
+    searchSuggestions &amp;&amp;
+    !searchInput.contains(event.target) &amp;&amp;
     !searchSuggestions.contains(event.target)
   ) {
-    searchSuggestions.classList.remove("show");
+    searchSuggestions.classList.remove(&quot;show&quot;);
   }
 });
 
@@ -586,12 +593,12 @@ document.addEventListener("click", event => {
 // 17. BOTTOM BAR
 // ==========================================
 
-const bottomItems = document.querySelectorAll('.bottom-item');
+const bottomItems = document.querySelectorAll(&#x27;.bottom-item&#x27;);
 
-bottomItems.forEach(item => {
-  item.addEventListener('click', function() {
-    bottomItems.forEach(i => i.classList.remove('active'));
-    this.classList.add('active');
+bottomItems.forEach(item =&gt; {
+  item.addEventListener(&#x27;click&#x27;, function() {
+    bottomItems.forEach(i =&gt; i.classList.remove(&#x27;active&#x27;));
+    this.classList.add(&#x27;active&#x27;);
   });
 });
 
@@ -600,148 +607,148 @@ bottomItems.forEach(item => {
 // ==========================================
 
 function isCartPage() {
-  return window.location.pathname.includes('cart.html');
+  return window.location.pathname.includes(&#x27;cart.html&#x27;);
 }
 
 function getCartElements() {
   return {
-    container: document.getElementById('cartItems'),
-    summary: document.getElementById('cartSummary'),
-    empty: document.getElementById('emptyCart'),
-    count: document.getElementById('cartCount'),
-    subtotal: document.getElementById('cartSubtotal'),
-    totalPrice: document.getElementById('cartTotalPrice')
+    container: document.getElementById(&#x27;cartItems&#x27;),
+    summary: document.getElementById(&#x27;cartSummary&#x27;),
+    empty: document.getElementById(&#x27;emptyCart&#x27;),
+    count: document.getElementById(&#x27;cartCount&#x27;),
+    subtotal: document.getElementById(&#x27;cartSubtotal&#x27;),
+    totalPrice: document.getElementById(&#x27;cartTotalPrice&#x27;)
   };
 }
 
 function loadCart() {
   if (!isCartPage()) return;
 
-  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const cart = JSON.parse(localStorage.getItem(&#x27;cart&#x27;)) || [];
   const el = getCartElements();
   
   if (cart.length === 0) {
-    el.container.innerHTML = '';
-    el.summary.style.display = 'none';
-    el.empty.style.display = 'block';
-    el.count.textContent = '0 items';
+    el.container.innerHTML = &#x27;&#x27;;
+    el.summary.style.display = &#x27;none&#x27;;
+    el.empty.style.display = &#x27;block&#x27;;
+    el.count.textContent = &#x27;0 items&#x27;;
     updateBadge(0);
     return;
   }
   
-  el.container.innerHTML = '';
-  el.summary.style.display = 'block';
-  el.empty.style.display = 'none';
+  el.container.innerHTML = &#x27;&#x27;;
+  el.summary.style.display = &#x27;block&#x27;;
+  el.empty.style.display = &#x27;none&#x27;;
   
   let subtotal = 0;
   let totalItems = 0;
   
-  cart.forEach((item, index) => {
+  cart.forEach((item, index) =&gt; {
     const itemTotal = item.price * item.quantity;
     subtotal += itemTotal;
     totalItems += item.quantity;
     
-    const displayName = item.variant && item.variant !== 'Default' 
+    const displayName = item.variant &amp;&amp; item.variant !== &#x27;Default&#x27; 
       ? `${item.name} (${item.variant})` 
       : item.name;
     
-    const cartItem = document.createElement('div');
-    cartItem.className = 'cart-item';
+    const cartItem = document.createElement(&#x27;div&#x27;);
+    cartItem.className = &#x27;cart-item&#x27;;
     cartItem.innerHTML = `
-      <div class="cart-item-image">
-        <img src="${item.image || 'images/placeholder.png'}" alt="${item.name}">
-      </div>
-      <div class="cart-item-info">
-        <h3>${displayName}</h3>
-        <p class="cart-item-brand">${item.brand} ${item.variant && item.variant !== 'Default' ? '• ' + item.variant : ''}</p>
-        <p class="cart-item-price">₹${item.price.toLocaleString("en-IN")}</p>
-      </div>
-      <div class="cart-item-qty">
-        <button class="qty-btn" onclick="updateQuantity(${index}, -1)">−</button>
-        <span class="qty-number">${item.quantity}</span>
-        <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
-      </div>
-      <div class="cart-item-total">
-        ₹${itemTotal.toLocaleString("en-IN")}
-      </div>
-      <button class="remove-btn" onclick="removeItem(${index})" title="Remove item">✕</button>
+      &lt;div class=&quot;cart-item-image&quot;&gt;
+        &lt;img src=&quot;${item.image || &#x27;images/placeholder.png&#x27;}&quot; alt=&quot;${item.name}&quot;&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;cart-item-info&quot;&gt;
+        &lt;h3&gt;${displayName}&lt;/h3&gt;
+        &lt;p class=&quot;cart-item-brand&quot;&gt;${item.brand} ${item.variant &amp;&amp; item.variant !== &#x27;Default&#x27; ? &#x27;• &#x27; + item.variant : &#x27;&#x27;}&lt;/p&gt;
+        &lt;p class=&quot;cart-item-price&quot;&gt;₹${item.price.toLocaleString(&quot;en-IN&quot;)}&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;cart-item-qty&quot;&gt;
+        &lt;button class=&quot;qty-btn&quot; onclick=&quot;updateQuantity(${index}, -1)&quot;&gt;−&lt;/button&gt;
+        &lt;span class=&quot;qty-number&quot;&gt;${item.quantity}&lt;/span&gt;
+        &lt;button class=&quot;qty-btn&quot; onclick=&quot;updateQuantity(${index}, 1)&quot;&gt;+&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;cart-item-total&quot;&gt;
+        ₹${itemTotal.toLocaleString(&quot;en-IN&quot;)}
+      &lt;/div&gt;
+      &lt;button class=&quot;remove-btn&quot; onclick=&quot;removeItem(${index})&quot; title=&quot;Remove item&quot;&gt;✕&lt;/button&gt;
     `;
     el.container.appendChild(cartItem);
   });
   
-  el.count.textContent = `${totalItems} ${totalItems === 1 ? 'item' : 'items'}`;
-  el.subtotal.textContent = `₹${subtotal.toLocaleString("en-IN")}`;
-  el.totalPrice.textContent = `₹${subtotal.toLocaleString("en-IN")}`;
+  el.count.textContent = `${totalItems} ${totalItems === 1 ? &#x27;item&#x27; : &#x27;items&#x27;}`;
+  el.subtotal.textContent = `₹${subtotal.toLocaleString(&quot;en-IN&quot;)}`;
+  el.totalPrice.textContent = `₹${subtotal.toLocaleString(&quot;en-IN&quot;)}`;
   
   updateBadge(totalItems);
 }
 
 function updateQuantity(index, change) {
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  let cart = JSON.parse(localStorage.getItem(&#x27;cart&#x27;)) || [];
   
   if (cart[index]) {
     cart[index].quantity += change;
-    if (cart[index].quantity <= 0) {
+    if (cart[index].quantity &lt;= 0) {
       cart.splice(index, 1);
     }
   }
   
-  localStorage.setItem('cart', JSON.stringify(cart));
+  localStorage.setItem(&#x27;cart&#x27;, JSON.stringify(cart));
   loadCart();
   updateCartBadge();
 }
 
 function removeItem(index) {
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
-  const itemName = cart[index]?.name || 'Item';
-  const variant = cart[index]?.variant || '';
-  const displayName = variant && variant !== 'Default' ? `${itemName} (${variant})` : itemName;
+  let cart = JSON.parse(localStorage.getItem(&#x27;cart&#x27;)) || [];
+  const itemName = cart[index]?.name || &#x27;Item&#x27;;
+  const variant = cart[index]?.variant || &#x27;&#x27;;
+  const displayName = variant &amp;&amp; variant !== &#x27;Default&#x27; ? `${itemName} (${variant})` : itemName;
   cart.splice(index, 1);
-  localStorage.setItem('cart', JSON.stringify(cart));
+  localStorage.setItem(&#x27;cart&#x27;, JSON.stringify(cart));
   loadCart();
   updateCartBadge();
   showToast(`${displayName} removed from cart`);
 }
 
 function clearCart() {
-  if (confirm('Are you sure you want to clear your cart?')) {
-    localStorage.removeItem('cart');
+  if (confirm(&#x27;Are you sure you want to clear your cart?&#x27;)) {
+    localStorage.removeItem(&#x27;cart&#x27;);
     loadCart();
     updateCartBadge();
-    showToast('Cart cleared');
+    showToast(&#x27;Cart cleared&#x27;);
   }
 }
 
 function checkout() {
-  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const cart = JSON.parse(localStorage.getItem(&#x27;cart&#x27;)) || [];
   if (cart.length === 0) {
-    showToast('Your cart is empty!');
+    showToast(&#x27;Your cart is empty!&#x27;);
     return;
   }
   
-  let message = '🛍️ *JB STORE - New Order*%0A%0A';
+  let message = &#x27;🛍️ *JB STORE - New Order*%0A%0A&#x27;;
   let total = 0;
   
-  cart.forEach(item => {
+  cart.forEach(item =&gt; {
     const itemTotal = item.price * item.quantity;
-    const displayName = item.variant && item.variant !== 'Default' 
+    const displayName = item.variant &amp;&amp; item.variant !== &#x27;Default&#x27; 
       ? `${item.name} (${item.variant})` 
       : item.name;
-    message += `📱 ${displayName}%0A   × ${item.quantity} = ₹${itemTotal.toLocaleString("en-IN")}%0A`;
+    message += `📱 ${displayName}%0A   × ${item.quantity} = ₹${itemTotal.toLocaleString(&quot;en-IN&quot;)}%0A`;
     total += itemTotal;
   });
   
-  message += `%0A💰 *Total: ₹${total.toLocaleString("en-IN")}*%0A%0A`;
+  message += `%0A💰 *Total: ₹${total.toLocaleString(&quot;en-IN&quot;)}*%0A%0A`;
   message += `📞 Please confirm my order. Thank you!`;
   
-  window.open(`https://wa.me/${STORE_PHONE}?text=${message}`, '_blank');
+  window.open(`https://wa.me/${STORE_PHONE}?text=${message}`, &#x27;_blank&#x27;);
 }
 
 function updateBadge(count) {
-  const badge = document.getElementById('cartBadge');
+  const badge = document.getElementById(&#x27;cartBadge&#x27;);
   if (badge) {
     badge.textContent = count;
-    badge.style.display = count > 0 ? 'flex' : 'none';
+    badge.style.display = count &gt; 0 ? &#x27;flex&#x27; : &#x27;none&#x27;;
   }
 }
 
@@ -749,13 +756,13 @@ function updateBadge(count) {
 // 19. INIT
 // ==========================================
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener(&#x27;DOMContentLoaded&#x27;, function() {
   if (isCartPage()) {
     loadCart();
   }
   updateCartBadge();
   
-  if (typeof updateFavBadge === 'function') {
+  if (typeof updateFavBadge === &#x27;function&#x27;) {
     updateFavBadge();
   }
 });
@@ -783,36 +790,36 @@ window.clearFilters = clearFilters;
 // ==========================================
 
 (function() {
-  'use strict';
+  &#x27;use strict&#x27;;
 
-  const toggle = document.getElementById('menuToggle');
-  const drawer = document.getElementById('menuDrawer');
-  const overlay = document.getElementById('menuOverlay');
-  const closeBtn = document.getElementById('menuClose');
+  const toggle = document.getElementById(&#x27;menuToggle&#x27;);
+  const drawer = document.getElementById(&#x27;menuDrawer&#x27;);
+  const overlay = document.getElementById(&#x27;menuOverlay&#x27;);
+  const closeBtn = document.getElementById(&#x27;menuClose&#x27;);
   const body = document.body;
 
   if (!toggle || !drawer || !overlay || !closeBtn) {
-    console.warn('⚠️ Menu drawer elements not found. Skipping initialization.');
+    console.warn(&#x27;⚠️ Menu drawer elements not found. Skipping initialization.&#x27;);
     return;
   }
 
   function openMenu() {
-    drawer.classList.add('open');
-    overlay.classList.add('open');
-    toggle.classList.add('active');
-    body.classList.add('menu-open');
+    drawer.classList.add(&#x27;open&#x27;);
+    overlay.classList.add(&#x27;open&#x27;);
+    toggle.classList.add(&#x27;active&#x27;);
+    body.classList.add(&#x27;menu-open&#x27;);
     updateMenuBadges();
   }
 
   function closeMenu() {
-    drawer.classList.remove('open');
-    overlay.classList.remove('open');
-    toggle.classList.remove('active');
-    body.classList.remove('menu-open');
+    drawer.classList.remove(&#x27;open&#x27;);
+    overlay.classList.remove(&#x27;open&#x27;);
+    toggle.classList.remove(&#x27;active&#x27;);
+    body.classList.remove(&#x27;menu-open&#x27;);
   }
 
   function toggleMenu() {
-    if (drawer.classList.contains('open')) {
+    if (drawer.classList.contains(&#x27;open&#x27;)) {
       closeMenu();
     } else {
       openMenu();
@@ -820,37 +827,37 @@ window.clearFilters = clearFilters;
   }
 
   function updateMenuBadges() {
-    const cartBadge = document.getElementById('cartBadge');
-    const menuCart = document.getElementById('menuCartBadge');
-    if (cartBadge && menuCart) {
+    const cartBadge = document.getElementById(&#x27;cartBadge&#x27;);
+    const menuCart = document.getElementById(&#x27;menuCartBadge&#x27;);
+    if (cartBadge &amp;&amp; menuCart) {
       const val = parseInt(cartBadge.textContent, 10) || 0;
       menuCart.textContent = val;
-      menuCart.style.display = val > 0 ? 'flex' : 'none';
+      menuCart.style.display = val &gt; 0 ? &#x27;flex&#x27; : &#x27;none&#x27;;
     }
 
-    const favBadge = document.getElementById('favBadge');
-    const menuFav = document.getElementById('menuFavBadge');
-    if (favBadge && menuFav) {
+    const favBadge = document.getElementById(&#x27;favBadge&#x27;);
+    const menuFav = document.getElementById(&#x27;menuFavBadge&#x27;);
+    if (favBadge &amp;&amp; menuFav) {
       const val = parseInt(favBadge.textContent, 10) || 0;
       menuFav.textContent = val;
-      menuFav.style.display = val > 0 ? 'flex' : 'none';
+      menuFav.style.display = val &gt; 0 ? &#x27;flex&#x27; : &#x27;none&#x27;;
     }
   }
 
-  toggle.addEventListener('click', toggleMenu);
-  closeBtn.addEventListener('click', closeMenu);
-  overlay.addEventListener('click', closeMenu);
+  toggle.addEventListener(&#x27;click&#x27;, toggleMenu);
+  closeBtn.addEventListener(&#x27;click&#x27;, closeMenu);
+  overlay.addEventListener(&#x27;click&#x27;, closeMenu);
 
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && drawer.classList.contains('open')) {
+  document.addEventListener(&#x27;keydown&#x27;, function(e) {
+    if (e.key === &#x27;Escape&#x27; &amp;&amp; drawer.classList.contains(&#x27;open&#x27;)) {
       closeMenu();
     }
   });
 
-  document.querySelectorAll('.menu-item').forEach(function(item) {
-    item.addEventListener('click', function(e) {
-      const href = this.getAttribute('href');
-      if (href && href !== '#' && href !== 'javascript:void(0)') {
+  document.querySelectorAll(&#x27;.menu-item&#x27;).forEach(function(item) {
+    item.addEventListener(&#x27;click&#x27;, function(e) {
+      const href = this.getAttribute(&#x27;href&#x27;);
+      if (href &amp;&amp; href !== &#x27;#&#x27; &amp;&amp; href !== &#x27;javascript:void(0)&#x27;) {
         setTimeout(closeMenu, 150);
       } else {
         e.preventDefault();
@@ -866,16 +873,16 @@ window.clearFilters = clearFilters;
   const badgeObserver = new MutationObserver(function() {
     updateMenuBadges();
   });
-  const cartBadge = document.getElementById('cartBadge');
-  const favBadge = document.getElementById('favBadge');
+  const cartBadge = document.getElementById(&#x27;cartBadge&#x27;);
+  const favBadge = document.getElementById(&#x27;favBadge&#x27;);
   if (cartBadge) badgeObserver.observe(cartBadge, { childList: true, characterData: true, subtree: true });
   if (favBadge) badgeObserver.observe(favBadge, { childList: true, characterData: true, subtree: true });
 
-  window.addEventListener('load', function() {
+  window.addEventListener(&#x27;load&#x27;, function() {
     setTimeout(updateMenuBadges, 300);
   });
 
-  console.log('✅ Menu drawer initialized.');
+  console.log(&#x27;✅ Menu drawer initialized.&#x27;);
 })();
 
 
@@ -883,15 +890,16 @@ window.clearFilters = clearFilters;
 /* =========================================================
    JB STORE HERO SLIDER ENHANCEMENT
    - 5 second auto slide
-   - horizontal slide movement
+   - full banner horizontal movement
    - dots
    - swipe left/right
    - press/hold pauses autoplay
    - release resumes
+   - image keeps its natural aspect ratio
    ========================================================= */
 (function () {
-  const slides = Array.from(document.querySelectorAll(".hero-slide"));
-  const viewport = document.querySelector(".hero-slides");
+  const slides = Array.from(document.querySelectorAll(&quot;.hero-slide&quot;));
+  const viewport = document.querySelector(&quot;.hero-slides&quot;);
 
   if (!slides.length || !viewport) return;
 
@@ -900,57 +908,75 @@ window.clearFilters = clearFilters;
   let startX = 0;
   let startY = 0;
   let pointerId = null;
+  let timer = null;
 
-  viewport.style.overflow = "hidden";
-  viewport.style.position = "relative";
-  viewport.style.touchAction = "pan-y";
+  viewport.style.overflow = &quot;hidden&quot;;
+  viewport.style.position = &quot;relative&quot;;
+  viewport.style.touchAction = &quot;pan-y&quot;;
 
-  // Create a track without changing the original HTML.
-  let track = viewport.querySelector(".jb-hero-track");
+  let track = viewport.querySelector(&quot;.jb-hero-track&quot;);
+
   if (!track) {
-    track = document.createElement("div");
-    track.className = "jb-hero-track";
-    track.style.display = "flex";
+    track = document.createElement(&quot;div&quot;);
+    track.className = &quot;jb-hero-track&quot;;
+
+    track.style.display = &quot;flex&quot;;
     track.style.width = `${slides.length * 100}%`;
-    track.style.transition = "transform 0.6s ease";
-    slides.forEach((slide) => {
-      slide.parentNode && track.appendChild(slide);
+    track.style.transition = &quot;transform 0.6s ease&quot;;
+    track.style.alignItems = &quot;flex-start&quot;;
+
+    slides.forEach((slide) =&gt; {
+      track.appendChild(slide);
+
       slide.style.flex = `0 0 ${100 / slides.length}%`;
       slide.style.width = `${100 / slides.length}%`;
-      slide.style.position = "relative";
-      slide.style.opacity = "1";
-      slide.style.pointerEvents = "auto";
+      slide.style.minWidth = `${100 / slides.length}%`;
+      slide.style.position = &quot;relative&quot;;
+      slide.style.opacity = &quot;1&quot;;
+      slide.style.pointerEvents = &quot;auto&quot;;
+      slide.style.gridArea = &quot;auto&quot;;
+
+      const img = slide.querySelector(&quot;img&quot;);
+      if (img) {
+        img.style.display = &quot;block&quot;;
+        img.style.width = &quot;100%&quot;;
+        img.style.maxWidth = &quot;100%&quot;;
+        img.style.height = &quot;auto&quot;;
+        img.style.objectFit = &quot;contain&quot;;
+      }
     });
+
     viewport.appendChild(track);
   }
 
-  // Create dots.
-  let dots = viewport.parentElement.querySelector(".jb-hero-dots");
+  let dots = viewport.parentElement.querySelector(&quot;.jb-hero-dots&quot;);
+
   if (!dots) {
-    dots = document.createElement("div");
-    dots.className = "jb-hero-dots";
-    dots.style.display = "flex";
-    dots.style.justifyContent = "center";
-    dots.style.alignItems = "center";
-    dots.style.gap = "8px";
-    dots.style.marginTop = "10px";
+    dots = document.createElement(&quot;div&quot;);
+    dots.className = &quot;jb-hero-dots&quot;;
+    dots.style.display = &quot;flex&quot;;
+    dots.style.justifyContent = &quot;center&quot;;
+    dots.style.alignItems = &quot;center&quot;;
+    dots.style.gap = &quot;8px&quot;;
+    dots.style.marginTop = &quot;10px&quot;;
 
-    slides.forEach((_, index) => {
-      const dot = document.createElement("button");
-      dot.type = "button";
-      dot.className = "jb-hero-dot";
-      dot.setAttribute("aria-label", `Show banner ${index + 1}`);
-      dot.style.width = "8px";
-      dot.style.height = "8px";
-      dot.style.padding = "0";
-      dot.style.border = "0";
-      dot.style.borderRadius = "50%";
-      dot.style.background = "rgba(255,255,255,.45)";
-      dot.style.cursor = "pointer";
+    slides.forEach((_, index) =&gt; {
+      const dot = document.createElement(&quot;button&quot;);
+      dot.type = &quot;button&quot;;
+      dot.className = &quot;jb-hero-dot&quot;;
+      dot.setAttribute(&quot;aria-label&quot;, `Show banner ${index + 1}`);
+      dot.style.width = &quot;8px&quot;;
+      dot.style.height = &quot;8px&quot;;
+      dot.style.padding = &quot;0&quot;;
+      dot.style.border = &quot;0&quot;;
+      dot.style.borderRadius = &quot;50%&quot;;
+      dot.style.background = &quot;rgba(255,255,255,.45)&quot;;
+      dot.style.cursor = &quot;pointer&quot;;
 
-      dot.addEventListener("click", () => {
+      dot.addEventListener(&quot;click&quot;, () =&gt; {
         current = index;
         update();
+        restartTimer();
       });
 
       dots.appendChild(dot);
@@ -960,12 +986,14 @@ window.clearFilters = clearFilters;
   }
 
   function update() {
-    track.style.transform = `translate3d(-${current * (100 / slides.length)}%, 0, 0)`;
+    track.style.transform =
+      `translate3d(-${current * (100 / slides.length)}%, 0, 0)`;
 
-    Array.from(dots.children).forEach((dot, index) => {
+    Array.from(dots.children).forEach((dot, index) =&gt; {
       dot.style.background =
-        index === current ? "#FFD700" : "rgba(255,255,255,.45)";
-      dot.style.transform = index === current ? "scale(1.25)" : "scale(1)";
+        index === current ? &quot;#FFD700&quot; : &quot;rgba(255,255,255,.45)&quot;;
+      dot.style.transform =
+        index === current ? &quot;scale(1.25)&quot; : &quot;scale(1)&quot;;
     });
   }
 
@@ -975,10 +1003,14 @@ window.clearFilters = clearFilters;
     update();
   }
 
-  // Keep the requested 5-second automatic interval.
-  window.setInterval(next, 5000);
+  function restartTimer() {
+    clearInterval(timer);
+    timer = window.setInterval(next, 5000);
+  }
 
-  viewport.addEventListener("pointerdown", (event) => {
+  restartTimer();
+
+  viewport.addEventListener(&quot;pointerdown&quot;, (event) =&gt; {
     paused = true;
     pointerId = event.pointerId;
     startX = event.clientX;
@@ -990,13 +1022,13 @@ window.clearFilters = clearFilters;
   });
 
   function finishPointer(event) {
-    if (pointerId !== null && event.pointerId !== pointerId) return;
+    if (pointerId !== null &amp;&amp; event.pointerId !== pointerId) return;
 
     const dx = event.clientX - startX;
     const dy = event.clientY - startY;
 
-    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
-      if (dx < 0) {
+    if (Math.abs(dx) &gt; 50 &amp;&amp; Math.abs(dx) &gt; Math.abs(dy)) {
+      if (dx &lt; 0) {
         current = (current + 1) % slides.length;
       } else {
         current = (current - 1 + slides.length) % slides.length;
@@ -1006,13 +1038,19 @@ window.clearFilters = clearFilters;
 
     paused = false;
     pointerId = null;
+    restartTimer();
   }
 
-  viewport.addEventListener("pointerup", finishPointer);
-  viewport.addEventListener("pointercancel", () => {
+  viewport.addEventListener(&quot;pointerup&quot;, finishPointer);
+
+  viewport.addEventListener(&quot;pointercancel&quot;, () =&gt; {
     paused = false;
     pointerId = null;
+    restartTimer();
   });
 
   update();
 })();
+</pre>
+</body>
+</html>
