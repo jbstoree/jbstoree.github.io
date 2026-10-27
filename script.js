@@ -51,49 +51,55 @@ document.addEventListener("DOMContentLoaded", () => {
     let heroInterval;
     let touchStartX = 0;
     let touchEndX = 0;
+    let isSwiping = false;
 
-    // Dots Create
+    // 1. Dots & Fill Elements Create Cheyadam
     heroSlides.forEach((_, index) => {
         const dot = document.createElement('div');
         dot.classList.add('hero-dot');
         
-        if (index === 0) {
-            dot.classList.add('active');
-        }
+        // Line lopala yellow fill koraku
+        const fill = document.createElement('div');
+        fill.classList.add('hero-dot-fill');
+        dot.appendChild(fill);
 
+        if (index === 0) dot.classList.add('active');
+        
+        // Dot click chesinappudu
         dot.addEventListener('click', () => {
             goToHeroSlide(index);
-            resetAutoSlide();
+            resetAutoSlide(); 
         });
-        
         heroDotsContainer.appendChild(dot);
     });
 
     const heroDots = document.querySelectorAll('.hero-dot');
 
-    // Slide Change Function (Right to Left)
+    // 2. Slide Change Function
     function goToHeroSlide(index) {
-        if (index < 0) {
-            index = heroSlides.length - 1;
-        }
-        if (index >= heroSlides.length) {
-            index = 0;
-        }
-
+        if (index < 0) index = heroSlides.length - 1;
+        if (index >= heroSlides.length) index = 0;
+        
         heroCurrent = index;
         heroContainer.style.transform = `translateX(-${heroCurrent * 100}%)`;
-
+        
         heroDots.forEach((dot, i) => {
-            dot.classList.toggle('active', i === heroCurrent);
+            dot.classList.remove('active'); // Pata line animation remove
+            // Force reflow to restart animation
+            void dot.offsetWidth; 
+            
+            if (i === heroCurrent) {
+                dot.classList.add('active'); // Kottha line animation start
+            }
         });
     }
 
-    // Auto Slide 5 Seconds
+    // 3. Auto Slide (5 Seconds)
     function startAutoSlide() {
         if (heroSlides.length > 1) {
             heroInterval = setInterval(() => {
                 goToHeroSlide(heroCurrent + 1);
-            }, 5000);
+            }, 5000); // 5 seconds
         }
     }
 
@@ -106,34 +112,50 @@ document.addEventListener("DOMContentLoaded", () => {
         startAutoSlide();
     }
 
-    // Touch Events (Pause & Swipe)
+    // 4. Touch & Swipe Events (Left to Right & Right to Left Fix)
     heroSlider.addEventListener('touchstart', (e) => {
         stopAutoSlide();
         touchStartX = e.changedTouches[0].screenX;
+        isSwiping = true;
     }, { passive: true });
 
+    heroSlider.addEventListener('touchmove', (e) => {
+        if (!isSwiping) return;
+        const currentX = e.changedTouches[0].screenX;
+        const diff = touchStartX - currentX;
+        
+        // Horizontal ga ekkuva move aithe scroll aapadaniki
+        if (Math.abs(diff) > 10 && e.cancelable) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+
     heroSlider.addEventListener('touchend', (e) => {
+        if (!isSwiping) return;
         touchEndX = e.changedTouches[0].screenX;
         handleSwipe();
-        startAutoSlide();
+        startAutoSlide(); 
+        isSwiping = false;
     }, { passive: true });
 
     function handleSwipe() {
-        const swipeThreshold = 50;
+        const swipeThreshold = 40; 
         const diff = touchStartX - touchEndX;
-
+        
         if (diff > swipeThreshold) {
+            // Left swipe (Start nunchi end ki velthe) -> Next Banner
             goToHeroSlide(heroCurrent + 1);
         } else if (diff < -swipeThreshold) {
+            // Right swipe (End nunchi start ki velthe) -> Previous Banner
             goToHeroSlide(heroCurrent - 1);
         }
     }
 
-    // Mouse Events (Pause on Hover)
+    // 5. Mouse Events (Desktop kosam)
     heroSlider.addEventListener('mouseenter', stopAutoSlide);
     heroSlider.addEventListener('mouseleave', startAutoSlide);
 
-    // Initial Start
+    // Start Slider
     goToHeroSlide(0);
     startAutoSlide();
 });
