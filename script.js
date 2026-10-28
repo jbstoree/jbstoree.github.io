@@ -35,7 +35,7 @@ if (slides.length > 1) {
 }
 
 // ==========================================
-// 2. MAIN HERO IMAGE SLIDER (UPDATED FOR APP WEBVIEW)
+// 2. MAIN HERO IMAGE SLIDER (UPDATED)
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
     const heroSlider = document.getElementById('heroSlider');
@@ -140,11 +140,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (e.cancelable) {
                 e.preventDefault();
             }
-        }
-        
-        // ✅ యాప్ రిఫ్రెష్ ఆపడానికి (నిలువుగా కిందకి లాగినప్పుడు)
-        if (touchDirection === 'vertical' && currentY > touchStartY && e.cancelable) {
-            e.preventDefault();
         }
     }, { passive: false });
 
