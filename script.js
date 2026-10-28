@@ -35,7 +35,7 @@ if (slides.length > 1) {
 }
 
 // ==========================================
-// 2. MAIN HERO IMAGE SLIDER (UPDATED)
+// 2. MAIN HERO IMAGE SLIDER (UPDATED FOR APP WEBVIEW)
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
     const heroSlider = document.getElementById('heroSlider');
@@ -50,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let heroCurrent = 0;
     let heroInterval;
     let touchStartX = 0;
+    let touchStartY = 0;
     let touchEndX = 0;
     let isSwiping = false;
 
@@ -84,12 +85,11 @@ document.addEventListener("DOMContentLoaded", () => {
         heroContainer.style.transform = `translateX(-${heroCurrent * 100}%)`;
         
         heroDots.forEach((dot, i) => {
-            dot.classList.remove('active'); // Pata line animation remove
-            // Force reflow to restart animation
-            void dot.offsetWidth; 
+            dot.classList.remove('active');
+            void dot.offsetWidth; // Force reflow
             
             if (i === heroCurrent) {
-                dot.classList.add('active'); // Kottha line animation start
+                dot.classList.add('active');
             }
         });
     }
@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (heroSlides.length > 1) {
             heroInterval = setInterval(() => {
                 goToHeroSlide(heroCurrent + 1);
-            }, 5000); // 5 seconds
+            }, 5000); 
         }
     }
 
@@ -112,30 +112,50 @@ document.addEventListener("DOMContentLoaded", () => {
         startAutoSlide();
     }
 
-    // 4. Touch & Swipe Events (Left to Right & Right to Left Fix)
+    // 4. Touch & Swipe Events (App WebView Fix)
     heroSlider.addEventListener('touchstart', (e) => {
         stopAutoSlide();
         touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
         isSwiping = true;
     }, { passive: true });
 
     heroSlider.addEventListener('touchmove', (e) => {
         if (!isSwiping) return;
-        const currentX = e.changedTouches[0].screenX;
-        const diff = touchStartX - currentX;
         
-        // Horizontal ga ekkuva move aithe scroll aapadaniki
-        if (Math.abs(diff) > 10 && e.cancelable) {
+        const currentX = e.changedTouches[0].screenX;
+        const currentY = e.changedTouches[0].screenY;
+        
+        const diffX = Math.abs(touchStartX - currentX);
+        const diffY = Math.abs(touchStartY - currentY);
+
+        // యూజర్ నిలువుగా (Vertical) స్క్రోల్ చేయాలనుకుంటే స్వైప్ క్యాన్సిల్ అవ్వాలి
+        if (diffY > diffX) {
+            isSwiping = false;
+            return; 
+        }
+
+        // అడ్డంగా (Horizontal) స్వైప్ చేస్తే మాత్రమే పేజీ స్క్రోల్ ఆపాలి
+        if (diffX > 10 && e.cancelable) {
             e.preventDefault();
         }
     }, { passive: false });
 
     heroSlider.addEventListener('touchend', (e) => {
-        if (!isSwiping) return;
+        if (!isSwiping) {
+            startAutoSlide();
+            return;
+        }
         touchEndX = e.changedTouches[0].screenX;
         handleSwipe();
         startAutoSlide(); 
         isSwiping = false;
+    }, { passive: true });
+
+    // యాప్ లో అకస్మాత్తుగా టచ్ ఆగిపోతే (Touch Cancel) రీసెట్ అవ్వడానికి
+    heroSlider.addEventListener('touchcancel', () => {
+        isSwiping = false;
+        startAutoSlide();
     }, { passive: true });
 
     function handleSwipe() {
@@ -143,10 +163,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const diff = touchStartX - touchEndX;
         
         if (diff > swipeThreshold) {
-            // Left swipe (Start nunchi end ki velthe) -> Next Banner
+            // Left swipe -> Next Banner
             goToHeroSlide(heroCurrent + 1);
         } else if (diff < -swipeThreshold) {
-            // Right swipe (End nunchi start ki velthe) -> Previous Banner
+            // Right swipe -> Previous Banner
             goToHeroSlide(heroCurrent - 1);
         }
     }
