@@ -526,89 +526,70 @@ body.menu-open {
 }
 
 /* ==========================================
-   PREMIUM MENU - LIGHT
+   PREMIUM MENU (DARK FLOATING STYLE) - TARGET SECTION
    ========================================== */
 .menu {
-    background: #FFFFFF;
-    border-bottom: 2px solid rgba(212, 175, 55, 0.15);
-    padding: 12px 20px !important;
-    display: flex;
+    background: linear-gradient(145deg, #1A2235, #0B0F19) !important; /* డార్క్ థీమ్ */
+    border: 1px solid rgba(212, 175, 55, 0.25) !important; /* గోల్డ్ బార్డర్ */
+    border-radius: 40px !important; /* పిల్ షేప్ */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+    padding: 8px 12px !important;
+    margin: 15px auto !important;
+    width: calc(100% - 32px) !important;
+    max-width: 1000px !important;
+    display: flex !important;
     justify-content: flex-start !important;
-    align-items: center;
-    gap: 6px;
-    width: 100%;
-    overflow-x: auto;
-    position: relative;
-    z-index: 10;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
+    align-items: center !important;
+    gap: 6px !important;
+    overflow-x: auto !important;
+    position: relative !important;
+    z-index: 10 !important;
+    scrollbar-width: none !important;
 }
 
 .menu::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
-}
-
-.menu .cat {
-    position: relative;
-    background: transparent;
-    border: 0;
-    color: #000000;
-    padding: 11px 20px;
-    font-family: "Poppins", sans-serif;
-    font-size: 12.6px;
-    font-weight: 600;
-    cursor: pointer;
-    border-radius: 27px;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    white-space: nowrap;
-    letter-spacing: 0.3px;
-}
-
-.cat-icon {
-    font-size: 16px;
-    transition: transform 0.3s ease;
-}
-
-.menu .cat:hover {
-    color: #D4AF37;
-    background: rgba(212, 175, 55, 0.06);
-    transform: translateY(-2px);
-}
-
-.menu .cat:hover .cat-icon {
-    transform: scale(1.2) rotate(-5deg);
-}
-
-.menu .cat.active {
-    color: #FF0000;
-    background: #FFFFFF;
-    border: 1px solid #000000 !important;
-    box-shadow: none !important;
+    display: none !important; /* పాత లైట్ థీమ్ బార్డర్ తీసేసాం */
 }
 
 .menu::-webkit-scrollbar {
-    height: 3px;
+    display: none !important;
 }
 
-.menu::-webkit-scrollbar-track {
-    background: transparent;
+.menu .cat {
+    position: relative !important;
+    background: transparent !important;
+    border: none !important;
+    color: #8A94A6 !important; /* ఇన్-యాక్టివ్ టెక్స్ట్ కలర్ */
+    padding: 10px 18px !important;
+    font-family: "Poppins", sans-serif !important;
+    font-size: 12.6px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    border-radius: 25px !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    white-space: nowrap !important;
+    letter-spacing: 0.3px !important;
 }
 
-.menu::-webkit-scrollbar-thumb {
-    background: rgba(212, 175, 55, 0.3);
-    border-radius: 10px;
+.menu .cat:hover {
+    color: #F3CF55 !important;
+    background: rgba(243, 207, 85, 0.05) !important;
+    transform: translateY(-1px) !important;
 }
 
-.menu::-webkit-scrollbar-thumb:hover {
-    background: rgba(212, 175, 55, 0.5);
+.menu .cat:hover .cat-icon {
+    transform: scale(1.2) rotate(-5deg) !important;
+}
+
+/* యాక్టివ్ బటన్ కలర్ (గోల్డ్) */
+.menu .cat.active {
+    color: #F3CF55 !important; 
+    background: rgba(243, 207, 85, 0.12) !important;
+    border: 1px solid rgba(243, 207, 85, 0.2) !important;
+    box-shadow: 0 0 10px rgba(243, 207, 85, 0.1) !important;
 }
 
 /* ==========================================
@@ -776,7 +757,7 @@ body.menu-open {
 .hero-wrapper {
     width: 100% !important;
     background: #F7F5F0;
-    padding: 0 !important; /* పైన కింద ఎమ్టీ ప్లేస్ తీసేసాం */
+    padding: 0 !important; 
     margin: 0 !important;
     display: flex;
     flex-direction: column;
@@ -785,12 +766,12 @@ body.menu-open {
 
 .hero {
     position: relative;
-    width: calc(100% - 12px) !important; /* ఎడమ మరియు కుడి వైపు కేవలం 6px గ్యాప్ (50% తగ్గించాం) */
-    margin: 0 auto !important; /* మధ్యలో ఉండటానికి */
+    width: calc(100% - 12px) !important; 
+    margin: 0 auto !important; 
     padding: 0 !important;
     overflow: hidden;
     background: #F0EDE6;
-    border-radius: 12px !important; /* బ్యానర్ కర్వ్ */
+    border-radius: 12px !important; 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06) !important;
 }
 
@@ -816,7 +797,7 @@ body.menu-open {
     max-width: 100%;
     height: auto;
     object-fit: contain;
-    border-radius: 12px !important; /* ఇమేజ్ కి కూడా కర్వ్ */
+    border-radius: 12px !important; 
 }
 
 /* Dots (Lines) - Banner kinda */
@@ -831,7 +812,6 @@ body.menu-open {
     padding: 0 !important;
 }
 
-/* Line Background (Empty state) */
 .hero-dot {
     width: 35px;
     height: 4px;
@@ -842,7 +822,6 @@ body.menu-open {
     position: relative;
 }
 
-/* Yellow Fill Animation */
 .hero-dot-fill {
     position: absolute;
     top: 0;
@@ -853,7 +832,6 @@ body.menu-open {
     border-radius: 4px;
 }
 
-/* Active dot animation trigger */
 .hero-dot.active .hero-dot-fill {
     animation: fillProgress 5s linear forwards;
 }
@@ -867,7 +845,7 @@ body.menu-open {
    CATEGORIES
    ========================================== */
 .categories {
-    padding: 20px 4% 60px; /* పైన ప్యాడింగ్ తగ్గించాం */
+    padding: 20px 4% 60px;
     background: linear-gradient(180deg, #F7F5F0 0%, #F2EFEA 100%);
     position: relative;
 }
@@ -2287,30 +2265,45 @@ body.menu-open {
     .menu-footer .menu-version {
         font-size: 10px;
     }
-    .menu {
+    
+    /* ===== CATEGORY MENU: DARK FLOATING STYLE (MOBILE) ===== */
+    #categoryMenu.menu {
+        margin: 12px 10px 14px !important;
+        padding: 8px 10px !important;
+        width: calc(100% - 20px) !important;
+        box-sizing: border-box !important;
         display: flex !important;
-        flex-wrap: nowrap !important;
+        align-items: center !important;
+        gap: 6px !important;
+        background: linear-gradient(145deg, #1A2235, #0B0F19) !important;
+        border: 1px solid rgba(212, 175, 55, 0.25) !important;
+        border-radius: 40px !important;
         overflow-x: auto !important;
         overflow-y: hidden !important;
-        -webkit-overflow-scrolling: touch !important;
-        justify-content: flex-start !important;
-        padding: 10px 12px !important;
-        gap: 2px !important;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
         scrollbar-width: none !important;
+        -webkit-overflow-scrolling: touch !important;
     }
-    .menu::-webkit-scrollbar {
+    
+    #categoryMenu.menu::-webkit-scrollbar {
         display: none !important;
     }
-    .menu .cat {
-        flex-shrink: 0 !important;
+    
+    #categoryMenu .cat {
+        flex: 0 0 auto !important;
+        white-space: nowrap !important;
+        color: #8A94A6 !important;
+        padding: 8px 16px !important;
+        border: none !important;
     }
-    .cat-icon {
-        font-size: 13px;
+    
+    #categoryMenu .cat.active {
+        color: #F3CF55 !important;
+        background: rgba(243, 207, 85, 0.12) !important;
+        border: 1px solid rgba(243, 207, 85, 0.2) !important;
+        box-shadow: 0 0 10px rgba(243, 207, 85, 0.1);
     }
-    .menu .cat.active::after {
-        width: 20px;
-        bottom: 2px;
-    }
+
     .filters {
         padding: 14px 12px 18px;
     }
@@ -2381,7 +2374,7 @@ body.menu-open {
         aspect-ratio: unset !important;
         margin: 0 auto !important;
         padding: 0 !important;
-        width: calc(100% - 16px) !important; /* మొబైల్ లో ఎడమ కుడి 5px గ్యాప్ */
+        width: calc(100% - 16px) !important; /* మొబైల్ లో ఎడమ కుడి 8px గ్యాప్ */
         border-radius: 10px !important; 
     }
     .hero-slide img {
@@ -3874,4 +3867,4 @@ body.menu-open {
         height: 42px !important;
         font-size: 11.5px !important;
     }
-   }
+       }
