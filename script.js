@@ -35,7 +35,7 @@ if (slides.length > 1) {
 }
 
 // ==========================================
-// 2. MAIN HERO IMAGE SLIDER (UPDATED FOR APP WEBVIEW)
+// 2. MAIN HERO IMAGE SLIDER (UPDATED)
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
     const heroSlider = document.getElementById('heroSlider');
@@ -49,24 +49,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let heroCurrent = 0;
     let heroInterval;
+    
     let touchStartX = 0;
     let touchStartY = 0;
-    let touchEndX = 0;
-    let isSwiping = false;
+    let touchDirection = null; // డైరెక్షన్ లాక్ చేయడానికి
 
     // 1. Dots & Fill Elements Create Cheyadam
     heroSlides.forEach((_, index) => {
         const dot = document.createElement('div');
         dot.classList.add('hero-dot');
         
-        // Line lopala yellow fill koraku
         const fill = document.createElement('div');
         fill.classList.add('hero-dot-fill');
         dot.appendChild(fill);
 
         if (index === 0) dot.classList.add('active');
         
-        // Dot click chesinappudu
         dot.addEventListener('click', () => {
             goToHeroSlide(index);
             resetAutoSlide(); 
@@ -86,8 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         heroDots.forEach((dot, i) => {
             dot.classList.remove('active');
-            void dot.offsetWidth; // Force reflow
-            
+            void dot.offsetWidth; 
             if (i === heroCurrent) {
                 dot.classList.add('active');
             }
@@ -117,61 +114,63 @@ document.addEventListener("DOMContentLoaded", () => {
         stopAutoSlide();
         touchStartX = e.changedTouches[0].screenX;
         touchStartY = e.changedTouches[0].screenY;
-        isSwiping = true;
+        touchDirection = null; // ప్రతి సారి కొత్త టచ్ కి రీసెట్
     }, { passive: true });
 
     heroSlider.addEventListener('touchmove', (e) => {
-        if (!isSwiping) return;
-        
+        if (!e.touches || e.touches.length === 0) return;
+
         const currentX = e.changedTouches[0].screenX;
         const currentY = e.changedTouches[0].screenY;
         
         const diffX = Math.abs(touchStartX - currentX);
         const diffY = Math.abs(touchStartY - currentY);
 
-        // యూజర్ నిలువుగా (Vertical) స్క్రోల్ చేయాలనుకుంటే స్వైప్ క్యాన్సిల్ అవ్వాలి
-        if (diffY > diffX) {
-            isSwiping = false;
-            return; 
+        // యూజర్ ఏ దిశలో వేలు కదిలిస్తున్నారో లాక్ చేయడం
+        if (touchDirection === null) {
+            if (diffX > 10 && diffX > diffY) {
+                touchDirection = 'horizontal'; // అడ్డంగా స్వైప్
+            } else if (diffY > 10 && diffY > diffX) {
+                touchDirection = 'vertical'; // నిలువుగా స్క్రోల్
+            }
         }
 
-        // అడ్డంగా (Horizontal) స్వైప్ చేస్తే మాత్రమే పేజీ స్క్రోల్ ఆపాలి
-        if (diffX > 10 && e.cancelable) {
-            e.preventDefault();
+        // అడ్డంగా స్వైప్ చేస్తుంటే యాప్ స్క్రోల్ లేదా నావిగేషన్ ఆపాలి
+        if (touchDirection === 'horizontal') {
+            if (e.cancelable) {
+                e.preventDefault();
+            }
         }
     }, { passive: false });
 
     heroSlider.addEventListener('touchend', (e) => {
-        if (!isSwiping) {
-            startAutoSlide();
-            return;
+        if (touchDirection === 'horizontal') {
+            const touchEndX = e.changedTouches[0].screenX;
+            handleSwipe(touchStartX, touchEndX);
         }
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
         startAutoSlide(); 
-        isSwiping = false;
+        touchDirection = null;
     }, { passive: true });
 
-    // యాప్ లో అకస్మాత్తుగా టచ్ ఆగిపోతే (Touch Cancel) రీసెట్ అవ్వడానికి
     heroSlider.addEventListener('touchcancel', () => {
-        isSwiping = false;
+        touchDirection = null;
         startAutoSlide();
     }, { passive: true });
 
-    function handleSwipe() {
+    function handleSwipe(startX, endX) {
         const swipeThreshold = 40; 
-        const diff = touchStartX - touchEndX;
+        const diff = startX - endX;
         
         if (diff > swipeThreshold) {
-            // Left swipe -> Next Banner
+            // కుడి నుండి ఎడమకు స్వైప్ (Next Banner)
             goToHeroSlide(heroCurrent + 1);
         } else if (diff < -swipeThreshold) {
-            // Right swipe -> Previous Banner
+            // ఎడమ నుండి కుడికి స్వైప్ (Previous Banner)
             goToHeroSlide(heroCurrent - 1);
         }
     }
 
-    // 5. Mouse Events (Desktop kosam)
+    // 5. Mouse Events
     heroSlider.addEventListener('mouseenter', stopAutoSlide);
     heroSlider.addEventListener('mouseleave', startAutoSlide);
 
