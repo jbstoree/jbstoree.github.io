@@ -403,9 +403,6 @@
       box-shadow: none !important;
     }
   </style>
-
-    
-  </style>
 </head>
 <body>
 
@@ -620,7 +617,6 @@
 <section class="deals" id="products">
   <div class="section-head">
     <h2 id="productTitle">Top Deals <span class="fire-icon">🔥</span></h2>
-
   </div>
   <div id="productGrid" class="deal-grid"></div>
   <div id="topDealsPagination" class="top-deals-pagination"></div>
@@ -640,7 +636,6 @@
   </div>
   <div class="dots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
 </section>
-
 
 <!-- ===== TOP BRANDS ===== -->
 <section class="brands">
@@ -1296,7 +1291,7 @@
       var tn = normalize(tt);
       var tc = tn.replace(/\s+/g, '');
       var bn = normalize(getBrand(p));
-      var nn = normalize(getName(p));
+      var nn = getName(p);
 
       var s = 0;
       if (tc === qc) s += 1000;
