@@ -617,7 +617,7 @@ body.menu-open {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #D4AF37;
+    color: #000000 !important; /* బ్లాక్ కలర్ */
     font-size: 13px;
     font-weight: 600;
     letter-spacing: 0.5px;
@@ -626,6 +626,7 @@ body.menu-open {
 
 .filter-icon {
     font-size: 14px;
+    color: #000000 !important; /* స్టార్ ఐకాన్ కూడా బ్లాక్ కలర్ */
     animation: spin 8s linear infinite;
 }
 
@@ -638,9 +639,9 @@ body.menu-open {
     display: flex;
     align-items: center;
     gap: 6px;
-    background: rgba(212, 175, 55, 0.08);
-    border: 1px solid rgba(212, 175, 55, 0.15);
-    color: #D4AF37;
+    background: #000000 !important; /* బ్లాక్ బ్యాక్‌గ్రౌండ్ */
+    border: 1px solid #000000 !important; /* బ్లాక్ బార్డర్ */
+    color: #FFFFFF !important; /* వైట్ టెక్స్ట్ */
     padding: 6px 16px;
     border-radius: 20px;
     font-size: 12px;
@@ -651,15 +652,16 @@ body.menu-open {
 }
 
 .clear-btn:hover {
-    background: rgba(212, 175, 55, 0.15);
-    border-color: #D4AF37;
+    background: #333333 !important; /* హోవర్ చేసినప్పుడు కొంచెం లైట్ బ్లాక్ */
+    border-color: #333333 !important;
     transform: scale(1.03);
-    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .clear-btn span {
     font-size: 14px;
     font-weight: 400;
+    color: #FFFFFF !important; /* '✕' గుర్తు కూడా వైట్ కలర్ */
 }
 
 .brand-list {
