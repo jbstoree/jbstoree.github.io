@@ -2381,7 +2381,7 @@ body.menu-open {
         aspect-ratio: unset !important;
         margin: 0 auto !important;
         padding: 0 !important;
-        width: calc(100% - 10px) !important; /* మొబైల్ లో ఎడమ కుడి 5px గ్యాప్ */
+        width: calc(100% - 16px) !important; /* మొబైల్ లో ఎడమ కుడి 5px గ్యాప్ */
         border-radius: 10px !important; 
     }
     .hero-slide img {
