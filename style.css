@@ -9,6 +9,7 @@ body {
     max-width: 100%;
     overflow-x: hidden;
     background: #F7F5F0;
+    overscroll-behavior-y: none; /* ✅ యాప్ పేజీ రిఫ్రెష్ అవ్వకుండా ఆపుతుంది */
 }
 
 * {
@@ -776,7 +777,7 @@ body.menu-open {
     border-radius: 12px !important; 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06) !important;
     touch-action: pan-y; /* ✅ యాప్ WebView ఫిక్స్ కోసం ఇది చాలా ముఖ్యం */
-    overscroll-behavior-x: none; /* ✅ కుడి నుండి ఎడమకు స్వైప్ ఆపడానికి */
+    overscroll-behavior: contain; /* ✅ పేజీ రిఫ్రెష్ ఆపడానికి */
 }
 
 .hero-slides {
