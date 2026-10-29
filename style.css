@@ -943,7 +943,7 @@ body.menu-open {
     max-width: calc(25% - 10px);
 }
 
-/* --- Card Base Styles for Categories (Matching Brand Chips) --- */
+/* --- Card Base Styles for Categories (Matching Brand Chips perfectly) --- */
 .premium-cat-card {
     position: relative !important;
     border-radius: 16px !important;
@@ -959,12 +959,12 @@ body.menu-open {
     border: 1.5px solid #E6C875 !important;
     min-height: unset;
     aspect-ratio: 1 / 1.15;
-    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.12) !important; 
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.12), inset 0 2px 5px rgba(255, 255, 255, 0.9) !important; 
     background: #ffffff !important;
     isolation: isolate !important;
 }
 
-/* --- Colored Waves for Category Cards --- */
+/* --- Colored Waves for Category Cards (Identical to Brand Cards) --- */
 .premium-cat-card::before {
     display: block !important;
     content: '' !important;
@@ -972,7 +972,7 @@ body.menu-open {
     bottom: -5px !important;
     left: -5px !important;
     right: -5px !important;
-    height: 75% !important; /* Made slightly taller for better visibility */
+    height: 70% !important; 
     z-index: 0 !important;
     opacity: 1 !important;
     border-radius: 50% 50% 0 0 / 30px 30px 0 0 !important;
@@ -1024,21 +1024,21 @@ body.menu-open {
 }
 
 .premium-cat-card:hover {
-    transform: translateY(-6px) scale(1.02) !important;
+    transform: translateY(-4px) scale(1.02) !important;
     border-color: #D4AF37 !important;
-    box-shadow: 0 12px 25px rgba(212, 175, 55, 0.25) !important;
+    box-shadow: 0 12px 25px rgba(212, 175, 55, 0.25), inset 0 2px 6px rgba(255, 255, 255, 1) !important;
 }
 
-/* --- Colorful Gradients for Category Cards (Waves) --- */
-.category-grid .premium-cat-card:nth-child(1)::before { background: radial-gradient(ellipse at 50% 100%, rgba(255, 215, 0, 0.6) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(255, 245, 200, 1) 0%, transparent 70%), radial-gradient(ellipse at 100% 100%, rgba(255, 215, 0, 0.5) 0%, transparent 70%) !important; }
-.category-grid .premium-cat-card:nth-child(2)::before { background: radial-gradient(ellipse at 50% 100%, rgba(255, 50, 50, 0.5) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(255, 200, 200, 1) 0%, transparent 70%), radial-gradient(ellipse at 100% 100%, rgba(255, 0, 0, 0.4) 0%, transparent 70%) !important; }
-.category-grid .premium-cat-card:nth-child(3)::before { background: radial-gradient(ellipse at 50% 100%, rgba(0, 150, 255, 0.6) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(200, 240, 255, 1) 0%, transparent 70%), radial-gradient(ellipse at 100% 100%, rgba(0, 100, 255, 0.5) 0%, transparent 70%) !important; }
-.category-grid .premium-cat-card:nth-child(4)::before { background: radial-gradient(ellipse at 0% 100%, rgba(66, 133, 244, 0.5) 0%, transparent 60%), radial-gradient(ellipse at 50% 100%, rgba(234, 67, 53, 0.4) 0%, transparent 60%), radial-gradient(ellipse at 100% 100%, rgba(251, 188, 5, 0.5) 0%, transparent 60%) !important; }
-.category-grid .premium-cat-card:nth-child(5)::before { background: radial-gradient(ellipse at 50% 100%, rgba(0, 180, 255, 0.5) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(200, 255, 255, 0.9) 0%, transparent 70%) !important; }
-.category-grid .premium-cat-card:nth-child(6)::before { background: radial-gradient(ellipse at 50% 100%, rgba(0, 200, 100, 0.5) 0%, transparent 60%), radial-gradient(ellipse at 100% 100%, rgba(150, 255, 150, 0.9) 0%, transparent 70%) !important; }
-.category-grid .premium-cat-card:nth-child(7)::before { background: radial-gradient(ellipse at 50% 100%, rgba(255, 200, 0, 0.6) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(255, 255, 150, 0.9) 0%, transparent 70%) !important; }
-.category-grid .premium-cat-card:nth-child(8)::before { background: radial-gradient(ellipse at 50% 100%, rgba(255, 50, 50, 0.5) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(220, 220, 220, 0.9) 0%, transparent 70%) !important; }
-.category-grid .premium-cat-card:nth-child(n+9)::before { background: radial-gradient(ellipse at 50% 100%, rgba(150, 50, 255, 0.5) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(255, 220, 255, 0.9) 0%, transparent 70%), radial-gradient(ellipse at 100% 100%, rgba(212, 175, 55, 0.4) 0%, transparent 70%) !important; }
+/* --- Colorful Gradients for Category Cards (Waves - Matched with Brand List) --- */
+.category-grid .premium-cat-card:nth-child(1)::before { background: radial-gradient(ellipse at 50% 100%, rgba(255, 215, 0, 0.45) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(255, 245, 200, 1) 0%, transparent 70%), radial-gradient(ellipse at 100% 100%, rgba(255, 215, 0, 0.35) 0%, transparent 70%) !important; }
+.category-grid .premium-cat-card:nth-child(2)::before { background: radial-gradient(ellipse at 50% 100%, rgba(255, 50, 50, 0.45) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(255, 200, 200, 1) 0%, transparent 70%), radial-gradient(ellipse at 100% 100%, rgba(255, 0, 0, 0.3) 0%, transparent 70%) !important; }
+.category-grid .premium-cat-card:nth-child(3)::before { background: radial-gradient(ellipse at 50% 100%, rgba(0, 150, 255, 0.5) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(200, 240, 255, 1) 0%, transparent 70%), radial-gradient(ellipse at 100% 100%, rgba(0, 100, 255, 0.4) 0%, transparent 70%) !important; }
+.category-grid .premium-cat-card:nth-child(4)::before { background: radial-gradient(ellipse at 0% 100%, rgba(66, 133, 244, 0.45) 0%, transparent 60%), radial-gradient(ellipse at 50% 100%, rgba(234, 67, 53, 0.4) 0%, transparent 60%), radial-gradient(ellipse at 100% 100%, rgba(251, 188, 5, 0.45) 0%, transparent 60%) !important; }
+.category-grid .premium-cat-card:nth-child(5)::before { background: radial-gradient(ellipse at 50% 100%, rgba(0, 180, 255, 0.4) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(200, 255, 255, 0.8) 0%, transparent 70%) !important; }
+.category-grid .premium-cat-card:nth-child(6)::before { background: radial-gradient(ellipse at 50% 100%, rgba(0, 200, 100, 0.4) 0%, transparent 60%), radial-gradient(ellipse at 100% 100%, rgba(150, 255, 150, 0.8) 0%, transparent 70%) !important; }
+.category-grid .premium-cat-card:nth-child(7)::before { background: radial-gradient(ellipse at 50% 100%, rgba(255, 200, 0, 0.5) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(255, 255, 150, 0.8) 0%, transparent 70%) !important; }
+.category-grid .premium-cat-card:nth-child(8)::before { background: radial-gradient(ellipse at 50% 100%, rgba(255, 50, 50, 0.35) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(220, 220, 220, 0.8) 0%, transparent 70%) !important; }
+.category-grid .premium-cat-card:nth-child(n+9)::before { background: radial-gradient(ellipse at 50% 100%, rgba(150, 50, 255, 0.35) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(255, 220, 255, 0.8) 0%, transparent 70%), radial-gradient(ellipse at 100% 100%, rgba(212, 175, 55, 0.3) 0%, transparent 70%) !important; }
 
 .cat-badge {
     position: absolute;
@@ -2513,18 +2513,20 @@ body.menu-open {
         flex: 0 0 calc(25% - 6px);
         max-width: calc(25% - 6px);
     }
+    
+    /* Removed extra thick borders / heavy shadows on mobile to match Brand chips perfectly */
     .premium-cat-card {
         border-radius: 12px !important;
         padding: 10px 4px 8px !important;
-        border: 1.5px solid rgba(212, 175, 55, 0.4) !important;
+        border: 1.5px solid #E6C875 !important;
         aspect-ratio: 1 / 1.15;
-        box-shadow: 0 4px 10px rgba(212, 175, 55, 0.08) !important;
+        box-shadow: 0 8px 20px rgba(212, 175, 55, 0.12), inset 0 2px 5px rgba(255, 255, 255, 0.9) !important;
     }
     
-    /* Fixed: Show waves on mobile */
+    /* Fixed: Keep waves visible on mobile exactly like brand chips */
     .premium-cat-card::before {
         display: block !important;
-        height: 80% !important; /* Increased slightly for mobile */
+        height: 70% !important; /* Matched height */
     }
     .premium-cat-card::after {
         display: none !important;
