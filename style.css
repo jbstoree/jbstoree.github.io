@@ -1553,7 +1553,7 @@ body.menu-open {
 }
 
 /* ==========================================
-   TOP BRANDS
+   TOP BRANDS (UPDATED WITH COLORS)
    ========================================== */
 .brands {
     padding: 60px 5%;
@@ -1613,16 +1613,26 @@ body.menu-open {
 
 .brand-card {
     position: relative;
-    background: #FFFFFF;
     border-radius: 20px;
     padding: 24px 16px 18px;
     text-align: center;
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     cursor: pointer;
     overflow: hidden;
-    border: 1px solid #D4AF37 !important;
-    box-shadow: 0 0 3px rgba(212, 175, 55, 0.04) !important;
+    border: 1px solid rgba(212, 175, 55, 0.4) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03) !important;
 }
+
+/* Colorful Gradients for Top Brands Cards */
+.brand-grid .brand-card:nth-child(1) { background: linear-gradient(180deg, #FFFFFF 0%, #FFF3B0 100%) !important; }
+.brand-grid .brand-card:nth-child(2) { background: linear-gradient(180deg, #FFFFFF 0%, #FFD1D1 100%) !important; }
+.brand-grid .brand-card:nth-child(3) { background: linear-gradient(180deg, #FFFFFF 0%, #C6E2FF 100%) !important; }
+.brand-grid .brand-card:nth-child(4) { background: linear-gradient(180deg, #FFFFFF 0%, #D4F0FF 100%) !important; }
+.brand-grid .brand-card:nth-child(5) { background: linear-gradient(180deg, #FFFFFF 0%, #C1F0F6 100%) !important; }
+.brand-grid .brand-card:nth-child(6) { background: linear-gradient(180deg, #FFFFFF 0%, #E8D1FF 100%) !important; }
+.brand-grid .brand-card:nth-child(7) { background: linear-gradient(180deg, #FFFFFF 0%, #FFE0B2 100%) !important; }
+.brand-grid .brand-card:nth-child(8) { background: linear-gradient(180deg, #FFFFFF 0%, #F8BBD0 100%) !important; }
+.brand-grid .brand-card:nth-child(n+9) { background: linear-gradient(180deg, #FFFFFF 0%, #E0E0E0 100%) !important; }
 
 .brand-card::before,
 .brand-card::after {
@@ -1631,9 +1641,8 @@ body.menu-open {
 
 .brand-card:hover {
     transform: translateY(-8px) scale(1.03);
-    background: #FFFFFF;
     border-color: #D4AF37 !important;
-    box-shadow: 0 0 6px rgba(212, 175, 55, 0.08) !important;
+    box-shadow: 0 10px 25px rgba(212, 175, 55, 0.15) !important;
 }
 
 .brand-logo-wrapper {
@@ -1649,30 +1658,29 @@ body.menu-open {
     max-width: 80px;
     height: 55px;
     object-fit: contain;
-    opacity: 0.85;
+    opacity: 0.95;
     transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    filter: brightness(1);
+    filter: brightness(1) drop-shadow(0 2px 5px rgba(0,0,0,0.05));
 }
 
 .brand-card:hover img {
     opacity: 1;
     transform: scale(1.12);
-    filter: brightness(1) drop-shadow(0 4px 15px rgba(212, 175, 55, 0.08));
+    filter: brightness(1) drop-shadow(0 4px 15px rgba(212, 175, 55, 0.15));
 }
 
 .brand-name {
     display: block;
-    color: #4A4742;
-    font-size: 13px;
-    font-weight: 600;
+    color: #1C1C1C;
+    font-size: 14px;
+    font-weight: 700;
     letter-spacing: 0.5px;
     transition: all 0.3s ease;
-    opacity: 0.7;
+    opacity: 1;
 }
 
 .brand-card:hover .brand-name {
-    color: #D4AF37;
-    opacity: 1;
+    color: #b89016;
 }
 
 /* ==========================================
@@ -2729,8 +2737,8 @@ body.menu-open {
     .brand-card {
         padding: 16px 10px 14px;
         border-radius: 14px;
-        border: 0.6px solid #D4AF37 !important;
-        box-shadow: 0 0 3px rgba(212, 175, 55, 0.03) !important;
+        border: 0.6px solid rgba(212, 175, 55, 0.4) !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02) !important;
     }
     .brand-logo-wrapper {
         height: 45px;
@@ -2739,10 +2747,12 @@ body.menu-open {
     .brand-card img {
         max-width: 60px;
         height: 40px;
-        opacity: 0.85;
+        opacity: 0.95;
     }
     .brand-name {
-        font-size: 11px;
+        font-size: 12px;
+        font-weight: 700;
+        color: #1C1C1C;
     }
     .brand-card:hover {
         transform: translateY(-4px) scale(1.02);
@@ -4026,4 +4036,4 @@ body.menu-open {
     .brand-list .chip span {
         font-size: 11px !important;
     }
-}
+   }
