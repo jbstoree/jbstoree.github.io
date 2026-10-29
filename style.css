@@ -841,7 +841,7 @@ body.menu-open {
 }
 
 /* ==========================================
-   CATEGORIES (SHOP BY CATEGORY)
+   CATEGORIES (SHOP BY CATEGORY) - UPDATED FULL IMAGE
    ========================================== */
 .categories {
     padding: 20px 4% 60px;
@@ -892,43 +892,6 @@ body.menu-open {
     content: none !important;
 }
 
-.view-all {
-    color: #D4AF37;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    padding: 8px 18px;
-    border-radius: 25px;
-    border: 1.5px solid rgba(212, 175, 55, 0.25);
-    background: rgba(212, 175, 55, 0.02);
-    letter-spacing: 0.5px;
-    position: relative;
-    overflow: hidden;
-}
-
-.view-all::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.06), transparent);
-    transition: left 0.5s ease;
-}
-
-.view-all:hover::before {
-    left: 100%;
-}
-
-.view-all:hover {
-    background: rgba(212, 175, 55, 0.06);
-    border-color: #D4AF37;
-    transform: translateX(4px);
-    box-shadow: 0 4px 30px rgba(212, 175, 55, 0.06);
-}
-
 .category-grid {
     display: flex;
     flex-wrap: wrap;
@@ -943,11 +906,11 @@ body.menu-open {
     max-width: calc(25% - 10px);
 }
 
-/* --- Card Base Styles for Categories (Matching Brand Chips perfectly) --- */
+/* --- Card Base Styles for Categories (Full Cover Image) --- */
 .premium-cat-card {
     position: relative !important;
     border-radius: 16px !important;
-    padding: 12px 6px !important;
+    padding: 0 !important; /* పాడింగ్ తీసేశాము, ఇమేజ్ ఫుల్ కవర్ అవుతుంది */
     text-align: center;
     transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
     cursor: pointer;
@@ -964,63 +927,26 @@ body.menu-open {
     isolation: isolate !important;
 }
 
-/* --- Colored Waves for Category Cards (Identical to Brand Cards) --- */
-.premium-cat-card::before {
-    display: block !important;
-    content: '' !important;
-    position: absolute !important;
-    bottom: -5px !important;
-    left: -5px !important;
-    right: -5px !important;
-    height: 70% !important; 
-    z-index: 0 !important;
-    opacity: 1 !important;
-    border-radius: 50% 50% 0 0 / 30px 30px 0 0 !important;
-    transition: opacity 0.3s ease !important;
-    pointer-events: none !important;
-    border: none !important;
-}
-
+.premium-cat-card::before,
 .premium-cat-card::after {
-    display: none !important;
-}
-
-.premium-cat-card img,
-.premium-cat-card p,
-.premium-cat-card .cat-badge {
-    position: relative !important;
-    z-index: 2 !important;
+    display: none !important; /* పాత వేవ్స్ బ్యాక్ గ్రౌండ్ హైడ్ చేయబడింది */
 }
 
 .premium-cat-card img {
     width: 100% !important;
-    max-width: 75px !important;
-    height: auto !important;
-    max-height: 75px !important;
-    object-fit: contain !important;
-    margin-bottom: 8px !important;
+    height: 100% !important;
+    object-fit: cover !important; /* ఇమేజ్ కార్డ్ మొత్తం నిండిపోయేలా చేస్తుంది */
+    object-position: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 14.5px !important; /* బోర్డర్ లోపల ఇమేజ్ ఫిట్ అవ్వడానికి */
+    display: block !important;
     transition: transform 0.3s ease !important;
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15)) !important;
-    background: transparent !important;
+    filter: none !important;
 }
 
 .premium-cat-card:hover img {
-    transform: scale(1.1) translateY(-2px) !important;
-}
-
-.premium-cat-card p {
-    color: #111111 !important;
-    font-size: 11px !important;
-    font-weight: 700 !important;
-    margin: 0 !important;
-    letter-spacing: 0.2px;
-    transition: all 0.3s ease;
-    line-height: 1.2;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8) !important;
-}
-
-.premium-cat-card:hover p {
-    color: #b89016 !important;
+    transform: scale(1.05) !important;
 }
 
 .premium-cat-card:hover {
@@ -1029,40 +955,12 @@ body.menu-open {
     box-shadow: 0 12px 25px rgba(212, 175, 55, 0.25), inset 0 2px 6px rgba(255, 255, 255, 1) !important;
 }
 
-/* --- Colorful Gradients for Category Cards (Waves - Matched with Brand List) --- */
-.category-grid .premium-cat-card:nth-child(1)::before { background: radial-gradient(ellipse at 50% 100%, rgba(255, 215, 0, 0.45) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(255, 245, 200, 1) 0%, transparent 70%), radial-gradient(ellipse at 100% 100%, rgba(255, 215, 0, 0.35) 0%, transparent 70%) !important; }
-.category-grid .premium-cat-card:nth-child(2)::before { background: radial-gradient(ellipse at 50% 100%, rgba(255, 50, 50, 0.45) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(255, 200, 200, 1) 0%, transparent 70%), radial-gradient(ellipse at 100% 100%, rgba(255, 0, 0, 0.3) 0%, transparent 70%) !important; }
-.category-grid .premium-cat-card:nth-child(3)::before { background: radial-gradient(ellipse at 50% 100%, rgba(0, 150, 255, 0.5) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(200, 240, 255, 1) 0%, transparent 70%), radial-gradient(ellipse at 100% 100%, rgba(0, 100, 255, 0.4) 0%, transparent 70%) !important; }
-.category-grid .premium-cat-card:nth-child(4)::before { background: radial-gradient(ellipse at 0% 100%, rgba(66, 133, 244, 0.45) 0%, transparent 60%), radial-gradient(ellipse at 50% 100%, rgba(234, 67, 53, 0.4) 0%, transparent 60%), radial-gradient(ellipse at 100% 100%, rgba(251, 188, 5, 0.45) 0%, transparent 60%) !important; }
-.category-grid .premium-cat-card:nth-child(5)::before { background: radial-gradient(ellipse at 50% 100%, rgba(0, 180, 255, 0.4) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(200, 255, 255, 0.8) 0%, transparent 70%) !important; }
-.category-grid .premium-cat-card:nth-child(6)::before { background: radial-gradient(ellipse at 50% 100%, rgba(0, 200, 100, 0.4) 0%, transparent 60%), radial-gradient(ellipse at 100% 100%, rgba(150, 255, 150, 0.8) 0%, transparent 70%) !important; }
-.category-grid .premium-cat-card:nth-child(7)::before { background: radial-gradient(ellipse at 50% 100%, rgba(255, 200, 0, 0.5) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(255, 255, 150, 0.8) 0%, transparent 70%) !important; }
-.category-grid .premium-cat-card:nth-child(8)::before { background: radial-gradient(ellipse at 50% 100%, rgba(255, 50, 50, 0.35) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(220, 220, 220, 0.8) 0%, transparent 70%) !important; }
-.category-grid .premium-cat-card:nth-child(n+9)::before { background: radial-gradient(ellipse at 50% 100%, rgba(150, 50, 255, 0.35) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(255, 220, 255, 0.8) 0%, transparent 70%), radial-gradient(ellipse at 100% 100%, rgba(212, 175, 55, 0.3) 0%, transparent 70%) !important; }
-
-.cat-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: linear-gradient(135deg, #D4AF37, #F3CF55);
-    color: #0A0A0A;
-    font-size: 9px;
-    font-weight: 700;
-    padding: 3px 12px;
-    border-radius: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    opacity: 0;
-    transform: translateY(-5px) scale(0.9);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    z-index: 3;
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+/* టెక్స్ట్ మరియు బ్యాడ్జ్ లు ఉంటే హైడ్ చేయండి */
+.premium-cat-card p,
+.premium-cat-card .cat-badge {
+    display: none !important;
 }
 
-.premium-cat-card:hover .cat-badge {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-}
 
 /* ==========================================
    DEALS (UPDATED WITH COLORS)
@@ -2514,66 +2412,40 @@ body.menu-open {
         max-width: calc(25% - 6px);
     }
     
-    /* Removed extra thick borders / heavy shadows on mobile to match Brand chips perfectly */
+    /* Mobile లో కూడా ఫుల్ ఇమేజ్ ఫిట్ అయ్యేలా మార్చబడింది */
     .premium-cat-card {
         border-radius: 12px !important;
-        padding: 10px 4px 8px !important;
+        padding: 0 !important;
         border: 1.5px solid #E6C875 !important;
         aspect-ratio: 1 / 1.15;
         box-shadow: 0 8px 20px rgba(212, 175, 55, 0.12), inset 0 2px 5px rgba(255, 255, 255, 0.9) !important;
     }
     
-    /* Fixed: Keep waves visible on mobile exactly like brand chips */
-    .premium-cat-card::before {
-        display: block !important;
-        height: 70% !important; /* Matched height */
-    }
+    .premium-cat-card::before,
     .premium-cat-card::after {
         display: none !important;
     }
     
     .premium-cat-card img {
         width: 100% !important;
-        max-width: 60px !important;
-        height: auto !important;
-        max-height: 60px !important;
-        margin-bottom: 6px !important;
-        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.03));
+        height: 100% !important;
+        object-fit: cover !important;
+        border-radius: 10.5px !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
-    .premium-cat-card p {
-        color: #1C1C1C;
-        font-size: 9px !important;
-        font-weight: 700 !important;
-        margin: 0;
-        letter-spacing: 0.2px;
-        line-height: 1.2;
+    
+    .premium-cat-card p,
+    .premium-cat-card .cat-badge {
+        display: none !important;
     }
-    .cat-badge {
-        position: absolute;
-        top: 4px;
-        right: 4px;
-        background: linear-gradient(135deg, #D4AF37, #F3CF55);
-        color: #0A0A0A;
-        font-size: 6.05px;
-        font-weight: 700;
-        padding: 1.1px 5.5px;
-        border-radius: 7.7px;
-        text-transform: uppercase;
-        letter-spacing: 0.33px;
-        opacity: 1;
-        z-index: 3;
-        box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2);
-    }
+    
     .premium-cat-card:hover {
         transform: none !important;
         scale: none !important;
     }
     .premium-cat-card:hover img {
         transform: none !important;
-    }
-    .premium-cat-card:hover p {
-        color: #1C1C1C !important;
-        text-shadow: none !important;
     }
     .premium-cat-card:active {
         transform: scale(0.95) !important;
