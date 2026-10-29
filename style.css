@@ -28,7 +28,7 @@ body {
 }
 
 body {
-    padding-bottom: 50px !important;
+    padding-bottom: 100px !important;
 }
 
 /* ============================================
@@ -2157,7 +2157,7 @@ body.menu-open {
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 !important;
-        padding: 0 0 50px 0 !important;
+        padding: 0 0 100px 0 !important;
         overflow-x: hidden !important;
         overflow-y: auto !important;
         background: #F7F5F0;
@@ -3875,10 +3875,32 @@ body.menu-open {
 
 
 /* =========================================================
-   ఖచ్చితంగా ఇమేజ్ లాగా మార్చే కొత్త ప్రీమియం బ్రాండ్ కార్డ్స్ కోడ్
+   FINAL FIX: PREMIUM BRAND CARDS WITH WAVES (NO ARROW)
    ========================================================= */
 
-/* 1. పాత కోడ్‌లోని display: none ని ఓవర్ రైడ్ చేయడం */
+/* 1. బేస్ కార్డ్ మరియు గోల్డ్ బార్డర్ */
+.brand-list .chip {
+    position: relative !important;
+    overflow: hidden !important;
+    background: #ffffff !important;
+    border: 1.5px solid #E6C875 !important; /* గోల్డ్ బార్డర్ */
+    border-radius: 18px !important;
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.12), inset 0 2px 5px rgba(255, 255, 255, 0.9) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s ease !important;
+    isolation: isolate !important;
+    
+    /* మొబైల్ మరియు డెస్క్‌టాప్ సైజులు */
+    flex: 0 0 120px !important;
+    width: 120px !important;
+    height: 100px !important;
+    padding: 10px 5px !important;
+}
+
+/* 2. కింద వచ్చే కలర్ వేవ్ (Wave Effect) */
 .brand-list .chip::before {
     display: block !important;
     content: '' !important;
@@ -3891,52 +3913,16 @@ body.menu-open {
     opacity: 1 !important;
     border-radius: 50% 50% 0 0 / 30px 30px 0 0 !important;
     transition: opacity 0.3s ease !important;
+    pointer-events: none !important;
 }
 
-.brand-list .chip {
-    position: relative !important;
-    overflow: hidden !important;
-    background: #ffffff !important;
-    border: 1.5px solid #E6C875 !important; /* గోల్డ్ బార్డర్ */
-    border-radius: 18px !important;
-    box-shadow: 
-        0 8px 20px rgba(212, 175, 55, 0.12), 
-        inset 0 2px 5px rgba(255, 255, 255, 0.9) !important;
-    
-    /* మొబైల్ మరియు డెస్క్‌టాప్ రెండింటికీ సరిపోయే సైజు */
-    flex: 0 0 120px !important;
-    width: 120px !important;
-    height: 100px !important;
-    padding: 10px 5px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    transition: all 0.3s ease !important;
-    isolation: isolate !important;
-}
-
-/* కుడి వైపు గోల్డ్ బాణం గుర్తు (Arrow Button) */
+/* 3. కుడి వైపు బాణం గుర్తు తీసేయడం (Removed Arrow) */
 .brand-list .chip::after {
-    content: '' !important;
-    position: absolute !important;
-    right: 8px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    width: 24px !important;
-    height: 24px !important;
-    background-color: #FCEFB4 !important;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'%3E%3C/polyline%3E%3C/svg%3E") !important;
-    background-size: 9px !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    border: 1px solid #D4AF37 !important;
-    border-radius: 50% !important;
-    z-index: 5 !important;
-    box-shadow: 0 2px 5px rgba(212, 175, 55, 0.3) !important;
+    display: none !important;
+    content: none !important;
 }
 
-/* లోగో మరియు టెక్స్ట్ */
+/* 4. లోగో మరియు టెక్స్ట్ (వేవ్ కింద కనిపించడానికి z-index) */
 .brand-list .chip img {
     position: relative !important;
     z-index: 2 !important;
@@ -3960,14 +3946,12 @@ body.menu-open {
     text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8) !important;
 }
 
-/* హోవర్ ఎఫెక్ట్స్ */
+/* 5. హోవర్ ఎఫెక్ట్స్ */
 .brand-list .chip:hover,
 .brand-list .chip.on {
     transform: translateY(-4px) scale(1.02) !important;
     border-color: #D4AF37 !important;
-    box-shadow: 
-        0 12px 25px rgba(212, 175, 55, 0.25), 
-        inset 0 2px 6px rgba(255, 255, 255, 1) !important;
+    box-shadow: 0 12px 25px rgba(212, 175, 55, 0.25), inset 0 2px 6px rgba(255, 255, 255, 1) !important;
 }
 
 .brand-list .chip:hover img,
@@ -3976,10 +3960,10 @@ body.menu-open {
 }
 
 /* =========================================================
-   రంగుల వేవ్స్ (Colored Waves for ALL Brands)
+   రంగుల వేవ్స్ (Colored Waves)
    ========================================================= */
 
-/* 1. Apple (Gold Wave) */
+/* Apple (Gold Wave) */
 .brand-list .chip:nth-child(1)::before {
     background: 
         radial-gradient(ellipse at 50% 100%, rgba(255, 215, 0, 0.45) 0%, transparent 60%),
@@ -3987,7 +3971,7 @@ body.menu-open {
         radial-gradient(ellipse at 100% 100%, rgba(255, 215, 0, 0.35) 0%, transparent 70%) !important;
 }
 
-/* 2. OnePlus (Red Wave) */
+/* OnePlus (Red Wave) */
 .brand-list .chip:nth-child(2)::before {
     background: 
         radial-gradient(ellipse at 50% 100%, rgba(255, 50, 50, 0.45) 0%, transparent 60%),
@@ -3995,7 +3979,7 @@ body.menu-open {
         radial-gradient(ellipse at 100% 100%, rgba(255, 0, 0, 0.3) 0%, transparent 70%) !important;
 }
 
-/* 3. Samsung (Blue Wave) */
+/* Samsung (Blue Wave) */
 .brand-list .chip:nth-child(3)::before {
     background: 
         radial-gradient(ellipse at 50% 100%, rgba(0, 150, 255, 0.5) 0%, transparent 60%),
@@ -4003,7 +3987,7 @@ body.menu-open {
         radial-gradient(ellipse at 100% 100%, rgba(0, 100, 255, 0.4) 0%, transparent 70%) !important;
 }
 
-/* 4. Google Pixel (Multi-Color Wave) */
+/* Google Pixel (Multi-Color Wave) */
 .brand-list .chip:nth-child(4)::before {
     background: 
         radial-gradient(ellipse at 0% 100%, rgba(66, 133, 244, 0.45) 0%, transparent 60%),
@@ -4011,28 +3995,28 @@ body.menu-open {
         radial-gradient(ellipse at 100% 100%, rgba(251, 188, 5, 0.45) 0%, transparent 60%) !important;
 }
 
-/* 5. Vivo (Cyan Wave) */
+/* Vivo (Cyan Wave) */
 .brand-list .chip:nth-child(5)::before {
     background: 
         radial-gradient(ellipse at 50% 100%, rgba(0, 180, 255, 0.4) 0%, transparent 60%),
         radial-gradient(ellipse at 0% 100%, rgba(200, 255, 255, 0.8) 0%, transparent 70%) !important;
 }
 
-/* 6. Oppo (Green Wave) */
+/* Oppo (Green Wave) */
 .brand-list .chip:nth-child(6)::before {
     background: 
         radial-gradient(ellipse at 50% 100%, rgba(0, 200, 100, 0.4) 0%, transparent 60%),
         radial-gradient(ellipse at 100% 100%, rgba(150, 255, 150, 0.8) 0%, transparent 70%) !important;
 }
 
-/* 7. Realme (Yellow Wave) */
+/* Realme (Yellow Wave) */
 .brand-list .chip:nth-child(7)::before {
     background: 
         radial-gradient(ellipse at 50% 100%, rgba(255, 200, 0, 0.5) 0%, transparent 60%),
         radial-gradient(ellipse at 0% 100%, rgba(255, 255, 150, 0.8) 0%, transparent 70%) !important;
 }
 
-/* 8. Nothing (Red/Grey Wave) */
+/* Nothing (Red/Grey Wave) */
 .brand-list .chip:nth-child(8)::before {
     background: 
         radial-gradient(ellipse at 50% 100%, rgba(255, 50, 50, 0.35) 0%, transparent 60%),
@@ -4048,7 +4032,7 @@ body.menu-open {
 }
 
 /* =========================================================
-   మొబైల్ వ్యూ కోసం ప్రత్యేక అడ్జస్ట్‌మెంట్స్ (సైజు కరెక్ట్ చేయడం)
+   మొబైల్ వ్యూ కోసం ప్రత్యేక అడ్జస్ట్‌మెంట్స్
    ========================================================= */
 @media (max-width: 768px) {
     .brand-list {
@@ -4063,12 +4047,6 @@ body.menu-open {
         padding: 8px 4px !important;
         border-width: 1.5px !important;
     }
-    .brand-list .chip::after {
-        width: 18px !important;
-        height: 18px !important;
-        right: 5px !important;
-        background-size: 7px !important;
-    }
     .brand-list .chip::before {
         border-radius: 50% 50% 0 0 / 20px 20px 0 0 !important;
     }
@@ -4080,4 +4058,4 @@ body.menu-open {
     .brand-list .chip span {
         font-size: 11px !important;
     }
-   }
+                       }
