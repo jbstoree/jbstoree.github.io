@@ -4076,96 +4076,107 @@ body.menu-open {
         font-size: 11px !important;
     }
    }
-
 /* =========================================================
-   EXACT 3D WAVES TOP DEALS CARDS (IMAGE 2 EXACT MATCH)
+   EXACT IMAGE 2 LOOK - 3D GLASS WAVES & PEDESTAL
+   (NO OFFER BADGE, NO ADD TO CART)
    ========================================================= */
 
-/* 1. కార్డ్ మెయిన్ కంటైనర్ (బేస్) */
+/* 1. కార్డ్ మెయిన్ కంటైనర్ (వైట్ బ్యాక్‌గ్రౌండ్ + గోల్డెన్ బార్డర్) */
 .deal-grid .deal-card {
     background: #ffffff !important;
     border: 1.5px solid #E6C875 !important; /* గోల్డెన్ బార్డర్ */
-    border-radius: 20px !important;
-    padding: 20px 16px 16px !important;
-    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.12) !important;
+    border-radius: 22px !important;
+    padding: 18px 16px 16px !important;
+    box-shadow: 0 10px 25px rgba(212, 175, 55, 0.1) !important;
     position: relative !important;
     overflow: hidden !important;
     display: flex !important;
     flex-direction: column !important;
-    transition: all 0.3s ease !important;
     isolation: isolate !important; /* లేయర్స్ కరెక్ట్ గా ఉండటానికి */
 }
 
-/* 2. 3D వేవ్ యొక్క ఆకారం (గ్లాస్ లాంటి కర్వ్) */
+/* 2. వేవ్స్ మరియు కలర్ బ్యాక్‌గ్రౌండ్ (కింద భాగంలో) */
 .deal-grid .deal-card::before {
-    display: block !important;
     content: '' !important;
     position: absolute !important;
-    bottom: 0 !important;
+    bottom: -10px !important;
     left: -10% !important;
     width: 120% !important;
-    height: 65% !important; /* వేవ్ ఎంత పైకి రావాలో */
+    height: 55% !important; /* వేవ్ ఎంత పైకి రావాలో */
     z-index: 0 !important;
-    border-radius: 50% 50% 0 0 / 40px 40px 0 0 !important; /* ఇది ఆ 3D వంపు ఆకారం ఇస్తుంది */
-    box-shadow: inset 0 4px 10px rgba(255, 255, 255, 0.8) !important; /* పైన షైనింగ్ */
+    border-radius: 45% 55% 0 0 / 40px 40px 0 0 !important;
     pointer-events: none !important;
+    opacity: 1 !important;
 }
 
-/* 3. 3D షైనింగ్ ఎఫెక్ట్ (వేవ్ పైన గ్లాస్ లాంటి రిఫ్లెక్షన్) */
+/* 3. గ్లాస్ లాంటి షైనింగ్ ఎఫెక్ట్ (వేవ్ పైన వైట్ లైట్) */
 .deal-grid .deal-card::after {
     content: '' !important;
     position: absolute !important;
     bottom: 0 !important;
     left: 0 !important;
     width: 100% !important;
-    height: 65% !important;
-    border-radius: 50% 50% 0 0 / 40px 40px 0 0 !important;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 20%) !important;
+    height: 52% !important;
     z-index: 1 !important;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 40%) !important;
+    border-radius: 45% 55% 0 0 / 40px 40px 0 0 !important;
     pointer-events: none !important;
 }
 
-/* 4. ప్రతి కార్డ్ కి ప్రత్యేక రంగులు (Image 2 లోని రంగులు) */
+/* 4. ప్రతి కార్డ్ కి ప్రత్యేక రంగులు (ఇమేజ్ 2 లోని పేస్టల్ కలర్స్) */
 /* పసుపు రంగు (Yellow) */
-.deal-grid .deal-card:nth-child(4n+1)::before { background: radial-gradient(ellipse at 50% 100%, #FFE899 0%, #FFF9E6 80%) !important; }
-/* నీలం రంగు (Light Blue) */
-.deal-grid .deal-card:nth-child(4n+2)::before { background: radial-gradient(ellipse at 50% 100%, #C2E8FF 0%, #F0F8FF 80%) !important; }
-/* నారింజ రంగు (Orange/Peach) */
-.deal-grid .deal-card:nth-child(4n+3)::before { background: radial-gradient(ellipse at 50% 100%, #FFD1B3 0%, #FFF4EC 80%) !important; }
-/* గులాబీ రంగు (Pink) */
-.deal-grid .deal-card:nth-child(4n+4)::before { background: radial-gradient(ellipse at 50% 100%, #FFC2DE 0%, #FFF0F5 80%) !important; }
+.deal-grid .deal-card:nth-child(4n+1)::before { background: radial-gradient(ellipse at 50% 100%, #FFF2CC 0%, #FFF9E6 80%) !important; }
+/* లైట్ బ్లూ (Blue) */
+.deal-grid .deal-card:nth-child(4n+2)::before { background: radial-gradient(ellipse at 50% 100%, #DDF0FF 0%, #F2F8FF 80%) !important; }
+/* పీచ్/ఆరెంజ్ (Peach) */
+.deal-grid .deal-card:nth-child(4n+3)::before { background: radial-gradient(ellipse at 50% 100%, #FFE6D5 0%, #FFF4EE 80%) !important; }
+/* పింక్ (Pink) */
+.deal-grid .deal-card:nth-child(4n+4)::before { background: radial-gradient(ellipse at 50% 100%, #FFD9E6 0%, #FFF0F5 80%) !important; }
 
-/* 5. కంటెంట్ మరియు ఫోన్ ఇమేజ్ వేవ్ పైన కనిపించడానికి */
-.deal-grid .deal-card * {
+/* 5. కంటెంట్ అంతా వేవ్ పైన కనిపించేలా చేయడం */
+.deal-grid .deal-card > * {
     position: relative !important;
     z-index: 2 !important;
 }
 
-/* 6. ఫోన్ కింద పెడస్టల్ (3D షాడో) */
+/* 6. 3D పెడస్టల్ (ఫోన్ కింద స్టాండ్ లాగా) */
 .deal-card .image-wrapper {
     position: relative !important;
     display: flex !important;
     justify-content: center !important;
-    margin-top: 5px !important;
-}
-.deal-card .image-wrapper::after {
-    content: '' !important;
-    position: absolute !important;
-    bottom: 5px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: 80% !important;
-    height: 25px !important;
-    background: radial-gradient(ellipse, rgba(0,0,0,0.15) 0%, transparent 70%) !important;
-    border-radius: 50% !important;
-    z-index: 1 !important;
-}
-.deal-card img {
-    filter: drop-shadow(0 12px 12px rgba(0, 0, 0, 0.1)) !important;
+    align-items: center !important;
+    margin-top: 10px !important;
     margin-bottom: 15px !important;
 }
+.deal-card .image-wrapper::before {
+    content: '' !important;
+    position: absolute !important;
+    bottom: -5px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 130px !important;
+    height: 35px !important;
+    background: linear-gradient(to bottom, #FFF, #F0F0F0) !important;
+    border: 2px solid #FFF !important;
+    border-radius: 50% !important;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.08), inset 0 -2px 5px rgba(0,0,0,0.05) !important;
+    z-index: -1 !important;
+}
+.deal-card img {
+    filter: drop-shadow(0 15px 10px rgba(0, 0, 0, 0.15)) !important;
+    z-index: 2 !important;
+    transition: transform 0.3s ease !important;
+}
 
-/* 7. హార్ట్ ఐకాన్ (కుడివైపు పైన) */
+/* 7. Offer Badge మరియు Add to Cart పూర్తిగా హైడ్ చేయడం */
+.deal-card .offer {
+    display: none !important;
+}
+.deal-actions .add-to-cart-btn {
+    display: none !important;
+}
+
+/* 8. హార్ట్ ఐకాన్ (Top Right) */
 .deal-card .favorite-btn {
     top: 15px !important;
     right: 15px !important;
@@ -4173,44 +4184,73 @@ body.menu-open {
     height: 32px !important;
     background: #FFFFFF !important;
     border-radius: 50% !important;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08) !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+    border: none !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    border: 1px solid #F0F0F0 !important;
 }
 
-/* 8. View Details బటన్ (Image 2 లో లాగా బ్లాక్ మరియు గోల్డ్) */
+/* 9. View Details బటన్ (ఇమేజ్ 2 లోని View Details లుక్ - వైట్ బార్డర్) */
 .deal-actions {
     display: flex !important;
-    margin-top: 15px !important;
+    margin-top: 10px !important;
     width: 100% !important;
 }
 .deal-actions .view-details-btn {
     flex: 1 !important;
     width: 100% !important;
-    height: 38px !important;
-    background: #1A1A1A !important; 
-    color: #F3CF55 !important; /* గోల్డెన్ టెక్స్ట్ */
-    border: none !important;
-    border-radius: 20px !important;
-    font-size: 12px !important;
+    height: 40px !important;
+    background: #FFFFFF !important; 
+    color: #111111 !important; 
+    border: 1px solid #111111 !important; /* బ్లాక్ బార్డర్ */
+    border-radius: 30px !important; /* పూర్తిగా రౌండ్ */
+    font-size: 13px !important;
     font-weight: 700 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    gap: 8px !important;
     cursor: pointer !important;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
+}
+.deal-actions .view-details-btn:hover {
+    background: #F9F9F9 !important;
 }
 
-/* 9. స్టోరేజ్ పిల్ (4GB + 64GB) */
+/* 10. Brand & Condition (Brand: Vivo | Condition: Seal Pack) */
+.deal-card .brand {
+    color: #555 !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    margin-bottom: 4px !important;
+}
+.deal-card .brand::before {
+    display: none !important; /* పాత స్టార్ ఐకాన్ తీసేస్తున్నాం */
+}
+/* బ్రాండ్ మరియు కండిషన్ మధ్య లైన్ ( | ) */
+.deal-card .brand::after {
+    content: '|' !important;
+    color: #CCC !important;
+    margin: 0 4px !important;
+}
+.deal-card .condition {
+    color: #555 !important;
+    font-size: 11px !important;
+    display: inline-block !important;
+}
+
+/* 11. స్టోరేజ్ పిల్ (4GB + 64GB) */
 .deal-card .variant-tag {
-    background: rgba(255, 255, 255, 0.7) !important;
-    border: 1px solid #E6C875 !important;
+    background: rgba(255, 255, 255, 0.6) !important;
+    border: 1px solid rgba(212, 175, 55, 0.2) !important;
     color: #b89016 !important;
-    border-radius: 12px !important;
-    padding: 4px 12px !important;
-    font-size: 10px !important;
+    border-radius: 20px !important;
+    padding: 5px 14px !important;
+    font-size: 11px !important;
     font-weight: 700 !important;
     display: inline-block !important;
     margin: 6px 0 !important;
@@ -4221,20 +4261,20 @@ body.menu-open {
 /* మొబైల్ వ్యూ అడ్జస్ట్‌మెంట్స్ */
 @media (max-width: 768px) {
     .deal-grid .deal-card {
-        padding: 14px 12px 12px !important;
-        border-radius: 16px !important;
+        padding: 12px 10px 12px !important;
+        border-radius: 18px !important;
     }
     .deal-grid .deal-card::before,
     .deal-grid .deal-card::after {
-        height: 60% !important;
-        border-radius: 50% 50% 0 0 / 30px 30px 0 0 !important;
+        height: 50% !important;
+        border-radius: 45% 55% 0 0 / 25px 25px 0 0 !important;
     }
-    .deal-card .image-wrapper::after {
-        width: 70% !important;
-        height: 15px !important;
+    .deal-card .image-wrapper::before {
+        width: 90px !important;
+        height: 25px !important;
     }
     .deal-actions .view-details-btn {
-        font-size: 10px !important;
         height: 34px !important;
+        font-size: 11px !important;
     }
 }
