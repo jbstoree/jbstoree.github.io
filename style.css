@@ -910,16 +910,16 @@ body.menu-open {
 .premium-cat-card {
     position: relative !important;
     border-radius: 16px !important;
-    padding: 0 !important; /* ప్యాడింగ్ పూర్తిగా తీసేయబడింది */
+    padding: 0 !important;
     text-align: center;
     transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
     cursor: pointer;
-    overflow: hidden !important; /* ఇమేజ్ కార్డ్ బయటకు పోకుండా కట్ చేస్తుంది */
+    overflow: hidden !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    border: 1.5px solid #E6C875 !important;
+    border: none !important; /* బార్డర్ తీసేయబడింది */
     min-height: unset;
     aspect-ratio: 1 / 1.15;
     box-shadow: 0 8px 20px rgba(212, 175, 55, 0.12) !important; 
@@ -939,11 +939,11 @@ body.menu-open {
     height: 100% !important;
     max-width: none !important;
     max-height: none !important;
-    object-fit: cover !important; /* ఖాళీ లేకుండా ఫుల్ కవర్ */
+    object-fit: cover !important; 
     object-position: center !important;
     margin: 0 !important;
     padding: 0 !important;
-    border-radius: 0 !important; /* పేరెంట్ overflow:hidden క్లిప్ చేస్తుంది */
+    border-radius: 0 !important; 
     display: block !important;
     transition: transform 0.3s ease !important;
     filter: none !important;
@@ -955,7 +955,7 @@ body.menu-open {
 
 .premium-cat-card:hover {
     transform: translateY(-4px) scale(1.02) !important;
-    border-color: #D4AF37 !important;
+    border-color: transparent !important; /* హోవర్ లో బార్డర్ రాకుండా */
     box-shadow: 0 12px 25px rgba(212, 175, 55, 0.25) !important;
 }
 
@@ -2419,8 +2419,8 @@ body.menu-open {
     /* Mobile లో ఇమేజ్ ఫుల్ కవర్ అయ్యేలా ఫిక్స్ */
     .premium-cat-card {
         border-radius: 12px !important;
-        padding: 0 !important; /* ప్యాడింగ్ జీరో */
-        border: 1.5px solid #E6C875 !important;
+        padding: 0 !important; 
+        border: none !important; /* మొబైల్ లో బార్డర్ తీసేయబడింది */
         aspect-ratio: 1 / 1.15;
         overflow: hidden !important;
         box-shadow: 0 8px 20px rgba(212, 175, 55, 0.12) !important;
@@ -2434,8 +2434,8 @@ body.menu-open {
     .premium-cat-card img {
         width: 100% !important;
         height: 100% !important;
-        max-width: none !important; /* 60px లిమిట్ తీసేయబడింది */
-        max-height: none !important; /* 60px లిమిట్ తీసేయబడింది */
+        max-width: none !important; 
+        max-height: none !important; 
         object-fit: cover !important;
         border-radius: 0 !important;
         margin: 0 !important;
@@ -3954,4 +3954,4 @@ body.menu-open {
     .brand-list .chip span {
         font-size: 11px !important;
     }
-       }
+   }
