@@ -434,9 +434,6 @@ body {
     flex: 1;
 }
 
-/* ==========================================
-   SIDEBAR FAVORITES & CART BADGE FIX
-   ========================================== */
 .menu-nav .menu-item .fav-badge,
 .menu-nav .menu-item .cart-badge {
     position: static !important;
@@ -526,7 +523,7 @@ body.menu-open {
 }
 
 /* ==========================================
-   PREMIUM MENU (DARK FLOATING STYLE) - TARGET SECTION
+   PREMIUM MENU (DARK FLOATING STYLE)
    ========================================== */
 .menu {
     background: linear-gradient(145deg, #1A2235, #0B0F19) !important;
@@ -584,7 +581,6 @@ body.menu-open {
     transform: scale(1.2) rotate(-5deg) !important;
 }
 
-/* యాక్టివ్ బటన్ కలర్ (గోల్డ్) */
 .menu .cat.active {
     color: #F3CF55 !important; 
     background: rgba(243, 207, 85, 0.12) !important;
@@ -754,7 +750,7 @@ body.menu-open {
 }
 
 /* ==========================================
-   HERO SLIDER - CURVED CORNERS & SIDE GAP
+   HERO SLIDER
    ========================================== */
 .hero-wrapper {
     width: 100% !important;
@@ -775,8 +771,8 @@ body.menu-open {
     background: #F0EDE6;
     border-radius: 12px !important; 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06) !important;
-    touch-action: pan-y; /* ✅ యాప్ WebView ఫిక్స్ కోసం ఇది చాలా ముఖ్యం */
-    overscroll-behavior-x: none; /* ✅ కుడి నుండి ఎడమకు స్వైప్ ఆపడానికి */
+    touch-action: pan-y;
+    overscroll-behavior-x: none;
 }
 
 .hero-slides {
@@ -804,7 +800,6 @@ body.menu-open {
     border-radius: 12px !important; 
 }
 
-/* Dots (Lines) - Banner kinda */
 .hero-dots {
     position: relative;
     display: flex;
@@ -1040,7 +1035,7 @@ body.menu-open {
 }
 
 /* ==========================================
-   DEALS
+   DEALS (UPDATED WITH COLORS)
    ========================================== */
 .deals {
     padding: 60px 5%;
@@ -1119,211 +1114,230 @@ body.menu-open {
     width: 100%;
 }
 
+/* --- Card Base Styles --- */
 .deal-card {
     position: relative;
-    background: #FFFFFF;
-    border-radius: 16px;
+    border-radius: 20px;
     padding: 18px 16px 16px;
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    border: 1px solid #D4AF37 !important;
-    box-shadow: 0 0 4px rgba(212, 175, 55, 0.05) !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03) !important;
 }
 
 .deal-card::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    border-radius: 18px;
-    padding: 2px;
-    background: conic-gradient(
-        from 0deg,
-        transparent 0%,
-        rgba(212, 175, 55, 0) 20%,
-        rgba(212, 175, 55, 0.6) 40%,
-        #D4AF37 50%,
-        rgba(212, 175, 55, 0.6) 60%,
-        rgba(212, 175, 55, 0) 80%,
-        transparent 100%
-    );
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    animation: none;
-    pointer-events: none;
-    z-index: 1;
+    display: none !important;
 }
-
-@keyframes goldShine {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.deal-card:hover::before {
-    opacity: 1;
-}
-
 .deal-card::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 16px;
-    background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.03), transparent 70%);
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    pointer-events: none;
-    z-index: 0;
+    display: none !important;
 }
 
-.deal-card:hover::after {
-    opacity: 1;
-}
-
-.deal-card .offer,
-.deal-card img,
-.deal-card h3,
-.deal-card .brand,
-.deal-card .variant-tag,
-.deal-card .rating,
-.deal-card .price,
-.deal-card .old-price,
-.deal-card .deal-actions {
-    position: relative;
-    z-index: 2;
-}
+/* --- Colorful Gradients for Cards --- */
+.deal-grid .deal-card:nth-child(4n+1) { background: linear-gradient(180deg, #FFFFFF 20%, #FFF6D6 100%) !important; }
+.deal-grid .deal-card:nth-child(4n+2) { background: linear-gradient(180deg, #FFFFFF 20%, #D6EEFF 100%) !important; }
+.deal-grid .deal-card:nth-child(4n+3) { background: linear-gradient(180deg, #FFFFFF 20%, #FFE6D6 100%) !important; }
+.deal-grid .deal-card:nth-child(4n+4) { background: linear-gradient(180deg, #FFFFFF 20%, #FFD6E6 100%) !important; }
 
 .deal-card:hover {
     transform: translateY(-6px);
-    background: #FFFFFF;
-    border-color: #D4AF37 !important;
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.04), 0 0 30px rgba(212, 175, 55, 0.04);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06) !important;
 }
 
+/* --- Hide Discount Badge --- */
 .deal-card .offer {
     display: none !important;
 }
 
+/* --- Favorite Button (Top Right) --- */
+.deal-card .favorite-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #FFFFFF !important;
+    border: none !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.deal-card .favorite-btn .fa-heart {
+    font-size: 14px;
+}
+
+/* --- Image & Pedestal Glow --- */
 .deal-card img {
     width: 100%;
     height: 160px;
     object-fit: contain;
-    margin: 8px 0 10px;
+    margin: 20px 0 10px;
     transition: all 0.4s ease;
-    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.04));
+    filter: drop-shadow(0 15px 15px rgba(0, 0, 0, 0.12));
+    position: relative;
+    z-index: 2;
 }
 
 .deal-card:hover img {
     transform: scale(1.05);
-    filter: drop-shadow(0 8px 30px rgba(212, 175, 55, 0.06));
 }
 
+.deal-card .image-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Pedestal shadow under phone */
+.deal-card .image-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 130px;
+    height: 25px;
+    background: radial-gradient(ellipse, rgba(0,0,0,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+/* --- Text Styling --- */
 .deal-card h3 {
-    font-size: 14px;
-    font-weight: 600;
-    color: #000000;
-    margin: 6px 0 3px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #111;
+    margin: 6px 0 4px;
     line-height: 1.3;
     min-height: 36px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    position: relative;
+    z-index: 2;
 }
 
 .deal-card .brand {
-    color: #000000;
+    color: #777;
     font-size: 11px;
     margin: 2px 0;
     display: flex;
     align-items: center;
     gap: 6px;
+    position: relative;
+    z-index: 2;
 }
 
 .deal-card .brand::before {
     content: '✦';
-    color: #000000;
+    color: #999;
     font-size: 8px;
 }
 
 .deal-card .variant-tag {
     display: inline-block;
-    background: rgba(212, 175, 55, 0.06);
-    color: #000000 !important;
+    background: #FFFFFF;
+    color: #333 !important;
     font-size: 10px;
     font-weight: 600;
-    padding: 2px 10px;
-    border-radius: 10px;
-    margin: 3px 0 4px;
-    border: 1px solid rgba(212, 175, 55, 0.06);
+    padding: 3px 12px;
+    border-radius: 12px;
+    margin: 4px 0 6px;
+    border: 1px solid rgba(0,0,0,0.05);
     align-self: flex-start;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
 }
 
 .deal-card .rating {
-    color: #000000;
+    color: #111;
     font-size: 12px;
     margin: 4px 0 6px;
     display: flex;
     align-items: center;
     gap: 4px;
+    position: relative;
+    z-index: 2;
+    font-weight: 600;
 }
 
 .deal-card .rating span {
-    color: #000000;
+    color: #777;
     font-size: 11px;
+    font-weight: 500;
 }
 
 .deal-card .price {
-    color: #000000;
-    font-size: 15px;
-    font-weight: 700;
-    margin: 2px 0;
+    color: #111;
+    font-size: 16px;
+    font-weight: 800;
+    margin: 2px 0 6px;
     white-space: nowrap;
+    position: relative;
+    z-index: 2;
 }
 
 .deal-card .old-price {
     display: inline-block;
-    color: #000000;
+    color: #999;
     text-decoration: line-through;
-    font-size: 10px;
-    margin-left: 0;
+    font-size: 11px;
+    margin-left: 6px;
     white-space: nowrap;
+    position: relative;
+    z-index: 2;
+    font-weight: 500;
 }
 
+/* --- Action Buttons (Only View Details) --- */
 .deal-actions {
     display: flex;
-    gap: 10px;
-    margin-top: 12px;
+    margin-top: auto;
     width: 100%;
+    position: relative;
+    z-index: 2;
+    padding-top: 10px;
 }
 
-.deal-actions button {
+/* Hide Add to Cart if present in HTML */
+.deal-actions .add-to-cart-btn {
+    display: none !important;
+}
+
+.deal-actions .view-details-btn {
     flex: 1;
     height: 40px;
     border: none;
-    border-radius: 10px;
-    font-weight: 600;
+    border-radius: 20px;
+    font-weight: 700;
     font-size: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
     letter-spacing: 0.3px;
     font-family: "Poppins", sans-serif;
-}
-
-.deal-actions .view-details-btn {
-    background: linear-gradient(135deg, #D4AF37, #C9A030);
-    color: #000000;
-    box-shadow: 0 2px 15px rgba(212, 175, 55, 0.15);
-    width: 100%;
+    background: #FFFFFF;
+    color: #111;
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 }
 
 .deal-actions .view-details-btn:hover {
-    background: linear-gradient(135deg, #F3CF55, #D4AF37);
+    background: #F9F9F9;
+    border-color: #D4AF37;
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.25);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
 .deal-actions .view-details-btn:active {
@@ -1873,7 +1887,7 @@ body.menu-open {
 }
 
 /* ==========================================
-   BOTTOM BAR (FLOATING PILL STYLE)
+   BOTTOM BAR
    ========================================== */
 .bottom-bar {
     position: fixed;
@@ -2057,7 +2071,7 @@ body.menu-open {
 }
 
 /* ==========================================
-   FAVORITE BUTTON
+   FAVORITE BUTTON (GLOBAL)
    ========================================== */
 .favorite-btn {
     position: absolute;
@@ -2270,7 +2284,6 @@ body.menu-open {
         font-size: 10px;
     }
     
-    /* ===== CATEGORY MENU: DARK FLOATING STYLE (MOBILE) ===== */
     #categoryMenu.menu {
         margin: 12px 10px 14px !important;
         padding: 8px 10px !important;
@@ -2563,44 +2576,35 @@ body.menu-open {
     .deal-card {
         border-radius: 14px;
         padding: 8px 10px 8px;
-        border: 1px solid #D4AF37 !important;
-        box-shadow: 0 0 4px rgba(212, 175, 55, 0.04) !important;
+        border: 1px solid rgba(0, 0, 0, 0.05) !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02) !important;
     }
     .deal-card::before {
-        border-radius: 16px;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-    .deal-card:active::before {
-        opacity: 1;
+        display: none !important;
     }
     .deal-card::after {
-        border-radius: 14px;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-    .deal-card:active::after {
-        opacity: 1;
-    }
-    .deal-card .offer {
         display: none !important;
     }
     .deal-card img {
         height: 95px;
-        margin: 3px 0 5px;
-        filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.03));
+        margin: 15px 0 8px;
+        filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.1));
+    }
+    .deal-card .image-wrapper::after {
+        width: 80px;
+        height: 15px;
     }
     .deal-card:active img {
         transform: scale(1.03);
     }
     .deal-card h3 {
-        font-size: 11px;
+        font-size: 12px;
         margin: 3px 0 1px;
         min-height: 24px;
         line-height: 1.3;
     }
     .deal-card .brand {
-        color: #000000;
+        color: #777;
         font-size: 9px;
         margin: 2px 0;
         display: flex;
@@ -2609,20 +2613,18 @@ body.menu-open {
     }
     .deal-card .brand::before {
         content: '✦';
-        color: #000000;
+        color: #999;
         font-size: 7px;
     }
     .deal-card .variant-tag {
-        color: #000000;
+        color: #333;
         font-size: 8px;
-        padding: 1px 7px;
+        padding: 2px 8px;
         border-radius: 8px;
-        margin: 2px 0 2px;
-        border: 1px solid rgba(212, 175, 55, 0.06);
-        align-self: flex-start;
+        margin: 2px 0 4px;
     }
     .deal-card .rating {
-        color: #000000;
+        color: #111;
         font-size: 10px;
         margin: 2px 0;
         display: flex;
@@ -2630,50 +2632,41 @@ body.menu-open {
         gap: 3px;
     }
     .deal-card .rating span {
-        color: #000000;
+        color: #777;
         font-size: 9px;
     }
     .deal-card .price {
-        color: #000000;
+        color: #111;
         font-size: 15px;
-        font-weight: 700;
+        font-weight: 800;
         margin: 2px 0 2px;
     }
     .deal-card .old-price {
         display: inline-block;
-        color: #000000;
+        color: #999;
         text-decoration: line-through;
         font-size: 10px;
         margin-left: 4px;
     }
     .deal-actions {
         display: flex;
-        gap: 7px;
         margin-top: 6px;
         width: 100%;
     }
-    .deal-actions button {
+    .deal-actions .view-details-btn {
         flex: 1;
         height: 32px;
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
+        border-radius: 16px;
+        font-weight: 700;
         font-size: 10px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        letter-spacing: 0.3px;
-        font-family: "Poppins", sans-serif;
-        -webkit-tap-highlight-color: transparent;
-    }
-    .deal-actions .view-details-btn {
-        background: linear-gradient(135deg, #D4AF37, #C9A030);
-        color: #FFFFFF;
-        box-shadow: 0 2px 12px rgba(212, 175, 55, 0.12);
-        width: 100%;
+        background: #FFFFFF;
+        color: #111;
+        border: 1px solid rgba(0,0,0,0.08);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.04);
     }
     .deal-actions .view-details-btn:active {
         transform: scale(0.95);
-        box-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
+        background: #F9F9F9;
     }
     .best-sellers {
         padding: 12px 8px;
@@ -2835,7 +2828,6 @@ body.menu-open {
         font-size: 11px;
     }
     
-    /* Mobile Bottom Bar Override */
     .bottom-bar {
         position: fixed;
         bottom: 16px !important;
@@ -3873,17 +3865,15 @@ body.menu-open {
     }
 }
 
-
 /* =========================================================
    FINAL FIX: PREMIUM BRAND CARDS WITH WAVES (NO ARROW)
    ========================================================= */
 
-/* 1. బేస్ కార్డ్ మరియు గోల్డ్ బార్డర్ */
 .brand-list .chip {
     position: relative !important;
     overflow: hidden !important;
     background: #ffffff !important;
-    border: 1.5px solid #E6C875 !important; /* గోల్డ్ బార్డర్ */
+    border: 1.5px solid #E6C875 !important;
     border-radius: 18px !important;
     box-shadow: 0 8px 20px rgba(212, 175, 55, 0.12), inset 0 2px 5px rgba(255, 255, 255, 0.9) !important;
     display: flex !important;
@@ -3892,15 +3882,12 @@ body.menu-open {
     justify-content: center !important;
     transition: all 0.3s ease !important;
     isolation: isolate !important;
-    
-    /* మొబైల్ మరియు డెస్క్‌టాప్ సైజులు */
     flex: 0 0 120px !important;
     width: 120px !important;
     height: 100px !important;
     padding: 10px 5px !important;
 }
 
-/* 2. కింద వచ్చే కలర్ వేవ్ (Wave Effect) */
 .brand-list .chip::before {
     display: block !important;
     content: '' !important;
@@ -3916,13 +3903,11 @@ body.menu-open {
     pointer-events: none !important;
 }
 
-/* 3. కుడి వైపు బాణం గుర్తు తీసేయడం (Removed Arrow) */
 .brand-list .chip::after {
     display: none !important;
     content: none !important;
 }
 
-/* 4. లోగో మరియు టెక్స్ట్ (వేవ్ కింద కనిపించడానికి z-index) */
 .brand-list .chip img {
     position: relative !important;
     z-index: 2 !important;
@@ -3946,7 +3931,6 @@ body.menu-open {
     text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8) !important;
 }
 
-/* 5. హోవర్ ఎఫెక్ట్స్ */
 .brand-list .chip:hover,
 .brand-list .chip.on {
     transform: translateY(-4px) scale(1.02) !important;
@@ -3959,11 +3943,6 @@ body.menu-open {
     transform: scale(1.1) translateY(-2px) !important;
 }
 
-/* =========================================================
-   రంగుల వేవ్స్ (Colored Waves)
-   ========================================================= */
-
-/* Apple (Gold Wave) */
 .brand-list .chip:nth-child(1)::before {
     background: 
         radial-gradient(ellipse at 50% 100%, rgba(255, 215, 0, 0.45) 0%, transparent 60%),
@@ -3971,7 +3950,6 @@ body.menu-open {
         radial-gradient(ellipse at 100% 100%, rgba(255, 215, 0, 0.35) 0%, transparent 70%) !important;
 }
 
-/* OnePlus (Red Wave) */
 .brand-list .chip:nth-child(2)::before {
     background: 
         radial-gradient(ellipse at 50% 100%, rgba(255, 50, 50, 0.45) 0%, transparent 60%),
@@ -3979,7 +3957,6 @@ body.menu-open {
         radial-gradient(ellipse at 100% 100%, rgba(255, 0, 0, 0.3) 0%, transparent 70%) !important;
 }
 
-/* Samsung (Blue Wave) */
 .brand-list .chip:nth-child(3)::before {
     background: 
         radial-gradient(ellipse at 50% 100%, rgba(0, 150, 255, 0.5) 0%, transparent 60%),
@@ -3987,7 +3964,6 @@ body.menu-open {
         radial-gradient(ellipse at 100% 100%, rgba(0, 100, 255, 0.4) 0%, transparent 70%) !important;
 }
 
-/* Google Pixel (Multi-Color Wave) */
 .brand-list .chip:nth-child(4)::before {
     background: 
         radial-gradient(ellipse at 0% 100%, rgba(66, 133, 244, 0.45) 0%, transparent 60%),
@@ -3995,35 +3971,30 @@ body.menu-open {
         radial-gradient(ellipse at 100% 100%, rgba(251, 188, 5, 0.45) 0%, transparent 60%) !important;
 }
 
-/* Vivo (Cyan Wave) */
 .brand-list .chip:nth-child(5)::before {
     background: 
         radial-gradient(ellipse at 50% 100%, rgba(0, 180, 255, 0.4) 0%, transparent 60%),
         radial-gradient(ellipse at 0% 100%, rgba(200, 255, 255, 0.8) 0%, transparent 70%) !important;
 }
 
-/* Oppo (Green Wave) */
 .brand-list .chip:nth-child(6)::before {
     background: 
         radial-gradient(ellipse at 50% 100%, rgba(0, 200, 100, 0.4) 0%, transparent 60%),
         radial-gradient(ellipse at 100% 100%, rgba(150, 255, 150, 0.8) 0%, transparent 70%) !important;
 }
 
-/* Realme (Yellow Wave) */
 .brand-list .chip:nth-child(7)::before {
     background: 
         radial-gradient(ellipse at 50% 100%, rgba(255, 200, 0, 0.5) 0%, transparent 60%),
         radial-gradient(ellipse at 0% 100%, rgba(255, 255, 150, 0.8) 0%, transparent 70%) !important;
 }
 
-/* Nothing (Red/Grey Wave) */
 .brand-list .chip:nth-child(8)::before {
     background: 
         radial-gradient(ellipse at 50% 100%, rgba(255, 50, 50, 0.35) 0%, transparent 60%),
         radial-gradient(ellipse at 0% 100%, rgba(220, 220, 220, 0.8) 0%, transparent 70%) !important;
 }
 
-/* మిగతా బ్రాండ్స్ (Motorola, iQoo, Poco, Infinix, Lava) కి ప్రీమియం పర్పుల్/గోల్డ్ వేవ్ */
 .brand-list .chip:nth-child(n+9)::before {
     background: 
         radial-gradient(ellipse at 50% 100%, rgba(150, 50, 255, 0.35) 0%, transparent 60%),
@@ -4031,9 +4002,6 @@ body.menu-open {
         radial-gradient(ellipse at 100% 100%, rgba(212, 175, 55, 0.3) 0%, transparent 70%) !important;
 }
 
-/* =========================================================
-   మొబైల్ వ్యూ కోసం ప్రత్యేక అడ్జస్ట్‌మెంట్స్
-   ========================================================= */
 @media (max-width: 768px) {
     .brand-list {
         gap: 10px !important;
@@ -4058,4 +4026,4 @@ body.menu-open {
     .brand-list .chip span {
         font-size: 11px !important;
     }
-                       }
+}
