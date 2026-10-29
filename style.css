@@ -3872,3 +3872,149 @@ body.menu-open {
         font-size: 11.5px !important;
     }
    }
+
+/* ==========================================================
+   JB STORE — PREMIUM FLOATING SELECT BY BRAND CARDS
+   ONLY BRAND CARDS — NO OTHER UI MODIFIED
+   ========================================================== */
+
+.brand-grid .brand-card {
+    position: relative !important;
+    overflow: hidden !important;
+    isolation: isolate !important;
+    background: linear-gradient(145deg, #ffffff 0%, #fffdf8 48%, #f8f2e4 100%) !important;
+    border: 1px solid rgba(212, 175, 55, 0.58) !important;
+    border-radius: 24px !important;
+    box-shadow:
+        0 10px 24px rgba(31, 27, 18, 0.10),
+        0 20px 42px rgba(212, 175, 55, 0.13),
+        inset 0 1px 0 rgba(255,255,255,0.95),
+        inset 0 -1px 0 rgba(212,175,55,0.10) !important;
+    transform: translateY(0) !important;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.35s ease,
+                border-color 0.35s ease !important;
+}
+
+/* Soft luxury glass highlight */
+.brand-grid .brand-card::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 1px !important;
+    z-index: -1 !important;
+    border-radius: 23px !important;
+    background:
+        radial-gradient(circle at 18% 8%, rgba(255,255,255,0.98), transparent 34%),
+        linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.06) 55%, rgba(212,175,55,0.06)) !important;
+    pointer-events: none !important;
+}
+
+/* Elegant diagonal shine */
+.brand-grid .brand-card::after {
+    content: "" !important;
+    position: absolute !important;
+    width: 125% !important;
+    height: 55% !important;
+    left: -45% !important;
+    top: -22% !important;
+    transform: rotate(-18deg) !important;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.48), transparent) !important;
+    pointer-events: none !important;
+    opacity: 0.65 !important;
+    transition: transform 0.55s ease, opacity 0.35s ease !important;
+}
+
+.brand-grid .brand-card:hover {
+    transform: translateY(-8px) !important;
+    border-color: rgba(212, 175, 55, 0.90) !important;
+    box-shadow:
+        0 18px 34px rgba(31, 27, 18, 0.13),
+        0 24px 52px rgba(212, 175, 55, 0.20),
+        0 0 0 1px rgba(212,175,55,0.16),
+        inset 0 1px 0 rgba(255,255,255,1) !important;
+}
+
+.brand-grid .brand-card:hover::after {
+    transform: translateX(55%) rotate(-18deg) !important;
+    opacity: 0.85 !important;
+}
+
+.brand-grid .brand-card:active {
+    transform: translateY(-3px) scale(0.985) !important;
+}
+
+.brand-grid .brand-card img,
+.brand-grid .brand-card .brand-logo-wrapper,
+.brand-grid .brand-card .brand-name {
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+.brand-grid .brand-card img {
+    filter: drop-shadow(0 5px 8px rgba(0,0,0,0.10)) !important;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), filter 0.35s ease !important;
+}
+
+.brand-grid .brand-card:hover img {
+    transform: scale(1.08) translateY(-2px) !important;
+    filter: drop-shadow(0 8px 12px rgba(0,0,0,0.13)) !important;
+}
+
+.brand-grid .brand-card .brand-name {
+    color: #151515 !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.15px !important;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.9) !important;
+}
+
+/* Selected brand — premium gold lift */
+.brand-grid .brand-card.active,
+.brand-grid .brand-card.selected,
+.brand-grid .brand-card.on {
+    border: 1.5px solid #D4AF37 !important;
+    background: linear-gradient(145deg, #fffef9 0%, #fff8df 100%) !important;
+    transform: translateY(-7px) !important;
+    box-shadow:
+        0 16px 34px rgba(31, 27, 18, 0.13),
+        0 0 0 3px rgba(212,175,55,0.10),
+        0 22px 48px rgba(212,175,55,0.22),
+        inset 0 1px 0 #ffffff !important;
+}
+
+/* Small circular arrow — only if the card already contains one */
+.brand-grid .brand-card .brand-arrow,
+.brand-grid .brand-card .arrow,
+.brand-grid .brand-card .arrow-icon {
+    position: relative !important;
+    z-index: 3 !important;
+    background: linear-gradient(145deg, #fffdf5, #f5e8bd) !important;
+    border: 1px solid rgba(212,175,55,0.55) !important;
+    box-shadow: 0 5px 12px rgba(212,175,55,0.20) !important;
+}
+
+/* Mobile — preserve horizontal layout while making cards float */
+@media (max-width: 600px) {
+    .brand-grid .brand-card {
+        border-radius: 19px !important;
+        box-shadow:
+            0 8px 18px rgba(31, 27, 18, 0.09),
+            0 14px 28px rgba(212, 175, 55, 0.11),
+            inset 0 1px 0 rgba(255,255,255,0.95),
+            inset 0 -1px 0 rgba(212,175,55,0.08) !important;
+    }
+
+    .brand-grid .brand-card::before {
+        border-radius: 18px !important;
+    }
+
+    .brand-grid .brand-card:hover {
+        transform: translateY(-5px) !important;
+        box-shadow:
+            0 14px 26px rgba(31, 27, 18, 0.12),
+            0 18px 36px rgba(212, 175, 55, 0.17) !important;
+    }
+
+    .brand-grid .brand-card:active {
+        transform: translateY(-2px) scale(0.985) !important;
+    }
+}
