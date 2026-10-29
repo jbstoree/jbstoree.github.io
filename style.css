@@ -841,7 +841,7 @@ body.menu-open {
 }
 
 /* ==========================================
-   CATEGORIES (SHOP BY CATEGORY) - UPDATED FULL IMAGE
+   CATEGORIES (SHOP BY CATEGORY) - FULL IMAGE
    ========================================== */
 .categories {
     padding: 20px 4% 60px;
@@ -906,15 +906,15 @@ body.menu-open {
     max-width: calc(25% - 10px);
 }
 
-/* --- Card Base Styles for Categories (Full Cover Image) --- */
+/* --- Card Base Styles (Perfect Full Cover Image) --- */
 .premium-cat-card {
     position: relative !important;
     border-radius: 16px !important;
-    padding: 0 !important; /* పాడింగ్ తీసేశాము, ఇమేజ్ ఫుల్ కవర్ అవుతుంది */
+    padding: 0 !important; /* ప్యాడింగ్ పూర్తిగా తీసేయబడింది */
     text-align: center;
     transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
     cursor: pointer;
-    overflow: hidden !important;
+    overflow: hidden !important; /* ఇమేజ్ కార్డ్ బయటకు పోకుండా కట్ చేస్తుంది */
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
@@ -922,24 +922,28 @@ body.menu-open {
     border: 1.5px solid #E6C875 !important;
     min-height: unset;
     aspect-ratio: 1 / 1.15;
-    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.12), inset 0 2px 5px rgba(255, 255, 255, 0.9) !important; 
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.12) !important; 
     background: #ffffff !important;
     isolation: isolate !important;
 }
 
+/* పాత వేవ్స్ మరియు బ్యాక్ గ్రౌండ్ ఎఫెక్ట్స్ తీసేయబడ్డాయి */
 .premium-cat-card::before,
 .premium-cat-card::after {
-    display: none !important; /* పాత వేవ్స్ బ్యాక్ గ్రౌండ్ హైడ్ చేయబడింది */
+    display: none !important; 
 }
 
+/* ఇమేజ్ కార్డ్ మొత్తం నిండిపోయేలా సెట్ చేయబడింది */
 .premium-cat-card img {
     width: 100% !important;
     height: 100% !important;
-    object-fit: cover !important; /* ఇమేజ్ కార్డ్ మొత్తం నిండిపోయేలా చేస్తుంది */
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: cover !important; /* ఖాళీ లేకుండా ఫుల్ కవర్ */
     object-position: center !important;
     margin: 0 !important;
     padding: 0 !important;
-    border-radius: 14.5px !important; /* బోర్డర్ లోపల ఇమేజ్ ఫిట్ అవ్వడానికి */
+    border-radius: 0 !important; /* పేరెంట్ overflow:hidden క్లిప్ చేస్తుంది */
     display: block !important;
     transition: transform 0.3s ease !important;
     filter: none !important;
@@ -952,10 +956,10 @@ body.menu-open {
 .premium-cat-card:hover {
     transform: translateY(-4px) scale(1.02) !important;
     border-color: #D4AF37 !important;
-    box-shadow: 0 12px 25px rgba(212, 175, 55, 0.25), inset 0 2px 6px rgba(255, 255, 255, 1) !important;
+    box-shadow: 0 12px 25px rgba(212, 175, 55, 0.25) !important;
 }
 
-/* టెక్స్ట్ మరియు బ్యాడ్జ్ లు ఉంటే హైడ్ చేయండి */
+/* టెక్స్ట్ మరియు బ్యాడ్జ్ లను పూర్తిగా దాచడం */
 .premium-cat-card p,
 .premium-cat-card .cat-badge {
     display: none !important;
@@ -2412,13 +2416,14 @@ body.menu-open {
         max-width: calc(25% - 6px);
     }
     
-    /* Mobile లో కూడా ఫుల్ ఇమేజ్ ఫిట్ అయ్యేలా మార్చబడింది */
+    /* Mobile లో ఇమేజ్ ఫుల్ కవర్ అయ్యేలా ఫిక్స్ */
     .premium-cat-card {
         border-radius: 12px !important;
-        padding: 0 !important;
+        padding: 0 !important; /* ప్యాడింగ్ జీరో */
         border: 1.5px solid #E6C875 !important;
         aspect-ratio: 1 / 1.15;
-        box-shadow: 0 8px 20px rgba(212, 175, 55, 0.12), inset 0 2px 5px rgba(255, 255, 255, 0.9) !important;
+        overflow: hidden !important;
+        box-shadow: 0 8px 20px rgba(212, 175, 55, 0.12) !important;
     }
     
     .premium-cat-card::before,
@@ -2429,8 +2434,10 @@ body.menu-open {
     .premium-cat-card img {
         width: 100% !important;
         height: 100% !important;
+        max-width: none !important; /* 60px లిమిట్ తీసేయబడింది */
+        max-height: none !important; /* 60px లిమిట్ తీసేయబడింది */
         object-fit: cover !important;
-        border-radius: 10.5px !important;
+        border-radius: 0 !important;
         margin: 0 !important;
         padding: 0 !important;
     }
@@ -3947,4 +3954,4 @@ body.menu-open {
     .brand-list .chip span {
         font-size: 11px !important;
     }
-   }
+       }
