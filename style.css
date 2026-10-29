@@ -841,7 +841,7 @@ body.menu-open {
 }
 
 /* ==========================================
-   CATEGORIES
+   CATEGORIES (SHOP BY CATEGORY)
    ========================================== */
 .categories {
     padding: 20px 4% 60px;
@@ -943,24 +943,36 @@ body.menu-open {
     max-width: calc(25% - 10px);
 }
 
+/* --- Card Base Styles for Categories --- */
 .premium-cat-card {
     position: relative;
-    background: #FFFFFF;
     border-radius: 16px;
-    padding: 18px 12px 16px;
+    padding: 15px 8px !important;
     text-align: center;
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     cursor: pointer;
-    overflow: hidden;
+    overflow: hidden !important;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 1px solid #D4AF37 !important;
+    border: 1.5px solid rgba(212, 175, 55, 0.4) !important;
     min-height: unset;
-    aspect-ratio: 1 / 1.05;
-    box-shadow: 0 0 4px rgba(212, 175, 55, 0.06) !important;
+    aspect-ratio: 1 / 1.15; /* Slightly taller to fit images better */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03) !important;
+    background-clip: padding-box;
 }
+
+/* --- Colorful Gradients for Category Cards --- */
+.category-grid .premium-cat-card:nth-child(1) { background: linear-gradient(180deg, #FFFFFF 20%, #FFF3B0 100%) !important; }
+.category-grid .premium-cat-card:nth-child(2) { background: linear-gradient(180deg, #FFFFFF 20%, #FFD1D1 100%) !important; }
+.category-grid .premium-cat-card:nth-child(3) { background: linear-gradient(180deg, #FFFFFF 20%, #C6E2FF 100%) !important; }
+.category-grid .premium-cat-card:nth-child(4) { background: linear-gradient(180deg, #FFFFFF 20%, #D4F0FF 100%) !important; }
+.category-grid .premium-cat-card:nth-child(5) { background: linear-gradient(180deg, #FFFFFF 20%, #C1F0F6 100%) !important; }
+.category-grid .premium-cat-card:nth-child(6) { background: linear-gradient(180deg, #FFFFFF 20%, #E8D1FF 100%) !important; }
+.category-grid .premium-cat-card:nth-child(7) { background: linear-gradient(180deg, #FFFFFF 20%, #FFE0B2 100%) !important; }
+.category-grid .premium-cat-card:nth-child(8) { background: linear-gradient(180deg, #FFFFFF 20%, #F8BBD0 100%) !important; }
+.category-grid .premium-cat-card:nth-child(n+9) { background: linear-gradient(180deg, #FFFFFF 20%, #E0E0E0 100%) !important; }
 
 .premium-cat-card::before,
 .premium-cat-card::after {
@@ -975,31 +987,32 @@ body.menu-open {
 }
 
 .premium-cat-card img {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
-    margin-bottom: 8px;
+    width: 100% !important;
+    max-width: 75px !important; /* Keep image strictly inside */
+    height: auto !important;
+    max-height: 75px !important;
+    object-fit: contain !important;
+    margin-bottom: 8px !important;
     transition: all 0.4s ease;
-    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.04));
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.08));
 }
 
 .premium-cat-card:hover img {
-    transform: scale(1.08);
-    filter: drop-shadow(0 8px 25px rgba(212, 175, 55, 0.15));
+    transform: scale(1.1);
 }
 
 .premium-cat-card p {
     color: #1C1C1C;
-    font-size: 15px;
-    font-weight: 600;
-    margin: 0;
-    letter-spacing: 0.3px;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+    letter-spacing: 0.2px;
     transition: all 0.3s ease;
     line-height: 1.2;
 }
 
 .premium-cat-card:hover p {
-    color: #D4AF37;
+    color: #b89016 !important;
     text-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
 }
 
@@ -1028,10 +1041,9 @@ body.menu-open {
 }
 
 .premium-cat-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    background: #FFFFFF;
+    transform: translateY(-6px) scale(1.02);
     border-color: #D4AF37 !important;
-    box-shadow: 0 0 8px rgba(212, 175, 55, 0.12) !important;
+    box-shadow: 0 10px 25px rgba(212, 175, 55, 0.15) !important;
 }
 
 /* ==========================================
@@ -2485,9 +2497,9 @@ body.menu-open {
     }
     .premium-cat-card {
         border-radius: 12px;
-        padding: 12px 4px 10px;
-        border: 0.5px solid #D4AF37 !important;
-        aspect-ratio: 1 / 1.1;
+        padding: 10px 4px 8px !important;
+        border: 1.5px solid rgba(212, 175, 55, 0.4) !important;
+        aspect-ratio: 1 / 1.15;
         box-shadow: 0 0 3px rgba(212, 175, 55, 0.04) !important;
     }
     .premium-cat-card::before,
@@ -2495,16 +2507,17 @@ body.menu-open {
         display: none !important;
     }
     .premium-cat-card img {
-        width: 55px;
-        height: 55px;
-        object-fit: contain;
-        margin-bottom: 4px;
+        width: 100% !important;
+        max-width: 60px !important;
+        height: auto !important;
+        max-height: 60px !important;
+        margin-bottom: 6px !important;
         filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.03));
     }
     .premium-cat-card p {
         color: #1C1C1C;
-        font-size: 9px;
-        font-weight: 600;
+        font-size: 9px !important;
+        font-weight: 700 !important;
         margin: 0;
         letter-spacing: 0.2px;
         line-height: 1.2;
