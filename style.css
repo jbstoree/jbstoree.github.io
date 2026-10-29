@@ -4076,3 +4076,204 @@ body.menu-open {
         font-size: 11px !important;
     }
    }
+
+/* =========================================================
+   PREMIUM 3D WAVES TOP DEALS CARDS (IMAGE 2 MATCH)
+   ========================================================= */
+
+/* 1. కార్డ్ మెయిన్ కంటైనర్ డిజైన్ */
+.deal-grid .deal-card {
+    background: #ffffff !important;
+    border: 1.5px solid #E6C875 !important; /* గోల్డెన్ బార్డర్ */
+    border-radius: 20px !important;
+    padding: 16px 14px !important;
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15), inset 0 2px 8px rgba(255, 255, 255, 0.9) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    isolation: isolate !important;
+    display: flex !important;
+    flex-direction: column !important;
+    transition: all 0.3s ease !important;
+}
+
+/* 2. 3D వేవ్స్ ఎఫెక్ట్ (కింద భాగంలో) */
+.deal-grid .deal-card::before {
+    display: block !important;
+    content: '' !important;
+    position: absolute !important;
+    bottom: -5px !important;
+    left: -5px !important;
+    right: -5px !important;
+    height: 65% !important; /* ఎంత హైట్ వరకు వేవ్ రావాలో */
+    z-index: 0 !important;
+    opacity: 1 !important;
+    border-radius: 50% 50% 0 0 / 35px 35px 0 0 !important; /* వంపు ఆకారం */
+    pointer-events: none !important;
+}
+
+/* కార్డ్ లోపల ఉన్న ఎలిమెంట్స్ వేవ్స్ పైన కనిపించడానికి */
+.deal-grid .deal-card img,
+.deal-grid .deal-card h3,
+.deal-grid .deal-card .brand,
+.deal-grid .deal-card .condition,
+.deal-grid .deal-card .variant-tag,
+.deal-grid .deal-card .rating,
+.deal-grid .deal-card .price,
+.deal-grid .deal-card .deal-actions,
+.deal-grid .deal-card .favorite-btn,
+.deal-grid .deal-card .offer {
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+/* 3. ప్రతి కార్డ్ కి వేర్వేరు రంగుల వేవ్స్ (Image 2 లోని రంగులు) */
+.deal-grid .deal-card:nth-child(4n+1)::before { background: radial-gradient(ellipse at 50% 100%, rgba(255, 215, 0, 0.45) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(255, 245, 200, 1) 0%, transparent 70%) !important; }
+.deal-grid .deal-card:nth-child(4n+2)::before { background: radial-gradient(ellipse at 50% 100%, rgba(0, 150, 255, 0.35) 0%, transparent 60%), radial-gradient(ellipse at 100% 100%, rgba(200, 240, 255, 1) 0%, transparent 70%) !important; }
+.deal-grid .deal-card:nth-child(4n+3)::before { background: radial-gradient(ellipse at 50% 100%, rgba(255, 100, 50, 0.35) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(255, 220, 200, 1) 0%, transparent 70%) !important; }
+.deal-grid .deal-card:nth-child(4n+4)::before { background: radial-gradient(ellipse at 50% 100%, rgba(255, 50, 150, 0.3) 0%, transparent 60%), radial-gradient(ellipse at 100% 100%, rgba(255, 200, 220, 1) 0%, transparent 70%) !important; }
+
+/* 4. ఫోన్ కింద 3D పెడస్టల్ / గ్లో ఎఫెక్ట్ */
+.deal-card .image-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+.deal-card .image-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 130px;
+    height: 30px;
+    background: radial-gradient(ellipse, rgba(212, 175, 55, 0.25) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 1;
+}
+.deal-card img {
+    filter: drop-shadow(0 15px 15px rgba(0, 0, 0, 0.15)) !important;
+    z-index: 2 !important;
+}
+
+/* 5. Discount Badge (ఎడమవైపు పైన 28% OFF) */
+.deal-card .offer {
+    display: flex !important;
+    position: absolute;
+    top: 12px;
+    left: 0;
+    background: #1A1A1A; /* బ్లాక్ బ్యాక్ గ్రౌండ్ */
+    color: #D4AF37; /* గోల్డెన్ టెక్స్ట్ */
+    font-size: 11px;
+    font-weight: 800;
+    padding: 5px 12px 5px 10px;
+    border-radius: 0 20px 20px 0;
+    z-index: 10;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+}
+
+/* 6. Heart Icon (కుడివైపు పైన) */
+.deal-card .favorite-btn {
+    top: 12px !important;
+    right: 12px !important;
+    width: 30px !important;
+    height: 30px !important;
+    background: #FFFFFF !important;
+    border-radius: 50% !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: none !important;
+}
+
+/* 7. బటన్స్ (View Details & Add to Cart) */
+.deal-actions {
+    display: flex !important;
+    gap: 8px !important;
+    margin-top: 15px !important;
+    width: 100% !important;
+}
+
+/* View Details బటన్ */
+.deal-actions .view-details-btn {
+    flex: 1 !important;
+    height: 36px !important;
+    background: transparent !important;
+    color: #111 !important;
+    border: 1px solid #D4AF37 !important;
+    border-radius: 20px !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+}
+
+/* Add to Cart బటన్ (మీ పాత కోడ్ లో దీన్ని display:none చేసారు, ఇప్పుడు చూపిస్తున్నాం) */
+.deal-actions .add-to-cart-btn {
+    display: flex !important;
+    flex: 1 !important;
+    height: 36px !important;
+    background: #1A1A1A !important; /* బ్లాక్ బ్యాక్ గ్రౌండ్ */
+    color: #D4AF37 !important; /* గోల్డెన్ టెక్స్ట్ */
+    border: 1px solid #1A1A1A !important;
+    border-radius: 20px !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    cursor: pointer !important;
+}
+.deal-actions .add-to-cart-btn:hover {
+    background: #333 !important;
+}
+
+/* 8. Storage Pill (4GB + 64GB) */
+.deal-card .variant-tag {
+    background: #FCF9F2 !important;
+    border: 1px solid #E6C875 !important;
+    color: #b89016 !important;
+    border-radius: 12px !important;
+    padding: 3px 12px !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    display: inline-block !important;
+    margin: 5px 0 !important;
+}
+
+/* 9. Brand & Condition (Brand: Vivo | Condition: Seal Pack) */
+.deal-card .brand {
+    color: #666 !important;
+    font-size: 10px !important;
+    font-weight: 500 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+}
+.deal-card .brand::before {
+    display: none !important; /* పాత స్టార్ ఐకాన్ తీసేస్తున్నాం */
+}
+.deal-card .condition {
+    color: #666 !important;
+    font-size: 10px !important;
+}
+
+/* మొబైల్ వ్యూ కోసం అడ్జస్ట్‌మెంట్స్ */
+@media (max-width: 768px) {
+    .deal-grid .deal-card {
+        padding: 12px 10px !important;
+    }
+    .deal-actions .view-details-btn,
+    .deal-actions .add-to-cart-btn {
+        font-size: 9px !important;
+        height: 32px !important;
+    }
+    .deal-card .offer {
+        font-size: 9px !important;
+        padding: 4px 8px 4px 6px !important;
+    }
+}
