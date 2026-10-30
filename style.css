@@ -4076,3 +4076,42 @@ body.menu-open {
         font-size: 11px !important;
     }
    }
+
+/* =========================================================
+   USER CUSTOM CHANGES: BLACK SEARCH BAR & BLACK ICONS
+   ========================================================= */
+
+/* 1. Search Bar Border to Black */
+.search {
+    border: 1.5px solid #000000 !important;
+}
+
+.search:focus-within {
+    border-color: #000000 !important;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* 2. Hamburger Menu (Three Lines) to Black */
+.menu-toggle span {
+    background: #000000 !important;
+}
+
+.menu-toggle:hover {
+    background: rgba(0, 0, 0, 0.05) !important; /* Hover effect for menu */
+}
+
+/* 3. Profile Icon and its Circle Border to Black */
+.header-top .account-link {
+    border-color: #000000 !important; /* If the circle is a border */
+    background-color: transparent !important;
+}
+
+.header-top .account-link i,
+.header-top .account-link span,
+.header-top .account-link svg,
+.header-top .account-link path {
+    color: #000000 !important;
+    fill: #000000 !important;
+    stroke: #000000 !important;
+}
+}
