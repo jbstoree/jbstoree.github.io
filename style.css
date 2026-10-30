@@ -769,7 +769,7 @@ body.menu-open {
 
 .hero {
     position: relative;
-    width: calc(100% -12px) !important; 
+    width: calc(100% - 12px) !important; 
     margin: 0 auto !important; 
     padding: 0 !important;
     overflow: hidden;
