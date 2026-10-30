@@ -68,7 +68,9 @@ body {
 }
 
 .header-top .account-link {
-    filter: brightness(0) !important; /* ఏ రంగు ఉన్నా బ్లాక్ అవుతుంది */
+    transform: scale(0.9) !important;
+    order: 3 !important;
+    margin-left: 0 !important;
 }
 
 .logo {
