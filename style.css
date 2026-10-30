@@ -2262,42 +2262,7 @@ body.menu-open {
         font-size: 10px;
     }
     
-    #categoryMenu.menu {
-        margin: 12px 10px 14px !important;
-        padding: 8px 10px !important;
-        width: calc(100% - 20px) !important;
-        box-sizing: border-box !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-        background: linear-gradient(145deg, #1A2235, #0B0F19) !important;
-        border: 1px solid rgba(212, 175, 55, 0.25) !important;
-        border-radius: 40px !important;
-        overflow-x: auto !important;
-        overflow-y: hidden !important;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
-        scrollbar-width: none !important;
-        -webkit-overflow-scrolling: touch !important;
-    }
-    
-    #categoryMenu.menu::-webkit-scrollbar {
-        display: none !important;
-    }
-    
-    #categoryMenu .cat {
-        flex: 0 0 auto !important;
-        white-space: nowrap !important;
-        color: #FFFFFF !important; 
-        padding: 8px 16px !important;
-        border: none !important;
-    }
-    
-    #categoryMenu .cat.active {
-        color: #F3CF55 !important;
-        background: rgba(243, 207, 85, 0.12) !important;
-        border: 1px solid rgba(243, 207, 85, 0.2) !important;
-        box-shadow: 0 0 10px rgba(243, 207, 85, 0.1);
-    }
+   
 
     .filters {
         padding: 14px 12px 18px;
