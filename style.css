@@ -760,7 +760,7 @@ body.menu-open {
 .hero-wrapper {
     width: 100% !important;
     background: #F7F5F0;
-    padding: 0 !important; 
+    padding: 0 4px !important; 
     margin: 0 !important;
     display: flex;
     flex-direction: column;
