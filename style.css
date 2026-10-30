@@ -71,6 +71,11 @@ body {
     transform: scale(0.9) !important;
     order: 3 !important;
     margin-left: 0 !important;
+    
+    /* కొత్తగా యాడ్ చేసిన బ్లాక్ కలర్ కోడ్ */
+    color: #000000 !important;
+    border-color: #000000 !important;
+    filter: brightness(0) !important; /* ఐకాన్ ఏ రంగులో ఉన్నా బ్లాక్ అవుతుంది */
 }
 
 .logo {
