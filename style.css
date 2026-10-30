@@ -2675,10 +2675,10 @@ body.menu-open {
     }
     .deal-card .variant-tag {
         color: #333;
-        font-size: 8px;
-        padding: 2px 8px;
+        font-size: 11px;
+        padding: 4px 12px;
         border-radius: 8px;
-        margin: 2px 0 4px;
+        margin: 4px 0 6px;
     }
     .deal-card .rating {
         color: #111;
