@@ -349,14 +349,14 @@ function displayProducts() {
         card.addEventListener("click", () => viewProduct(product.id));
 
         const firstVariant = getFirstVariant(product);
-        let variantHTML = '';
-        if (firstVariant) {
-            variantHTML = `
-                <div style="display:inline-block; background:rgba(212,175,55,0.12); color:#D4AF37; font-size:11px; font-weight:600; padding:2px 10px; border-radius:12px; margin:4px 0; border:1px solid rgba(212,175,55,0.15);">
-                    📱 ${firstVariant}
-                </div>
-            `;
-        }
+let variantHTML = '';
+if (firstVariant) {
+    variantHTML = `
+        <div class="variant-tag">
+            📱 ${firstVariant}
+        </div>
+    `;
+}
 
         let imgSrc = product.image || (product.images && product.images[0]) || '#';
 
