@@ -177,8 +177,8 @@ body {
 }
 
 .search:focus-within {
-    border-color: rgba(212, 175, 55, 0.4);
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.04);
+    border-color: #000000;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .search input {
