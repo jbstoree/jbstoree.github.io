@@ -1894,14 +1894,14 @@ body.menu-open {
 }
 
 .footer-divider span {
-    background: #FFFFFF;
+    background: #F8F6F0; /* Match footer background */
     padding: 0 20px;
     color: #D4AF37;
     font-size: 15px;
     position: relative;
     z-index: 2;
     letter-spacing: 3px;
-    text-shadow: 0 0 40px rgba(212, 175, 55, 0.15);
+    text-shadow: none; /* Clean look kosam theesesa */
 }
 
 .footer-bottom {
