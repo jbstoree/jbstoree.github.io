@@ -1728,11 +1728,12 @@ body.menu-open {
    FOOTER
    ========================================== */
 .footer-premium {
-    background: #FFFFFF;
-    border-top: 2px solid rgba(212, 175, 55, 0.15);
-    padding: 30px 5% 18px;
+    background: #F8F6F0; /* Premium soft cream background */
+    border-top: 2px solid rgba(212, 175, 55, 0.3); /* Konchem strong gold border */
+    padding: 35px 5% 20px;
     font-family: "Poppins", sans-serif;
     width: 100%;
+    box-shadow: 0 -5px 25px rgba(212, 175, 55, 0.03); /* Subtle premium shadow */
 }
 
 .footer-row {
