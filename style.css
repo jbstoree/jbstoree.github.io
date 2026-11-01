@@ -1728,12 +1728,11 @@ body.menu-open {
    FOOTER
    ========================================== */
 .footer-premium {
-    background: #F8F6F0; /* Premium soft cream background */
-    border-top: 2px solid rgba(212, 175, 55, 0.3); /* Konchem strong gold border */
-    padding: 35px 5% 20px;
+    background: #FFFFFF;
+    border-top: 2px solid rgba(212, 175, 55, 0.15);
+    padding: 30px 5% 18px;
     font-family: "Poppins", sans-serif;
     width: 100%;
-    box-shadow: 0 -5px 25px rgba(212, 175, 55, 0.03); /* Subtle premium shadow */
 }
 
 .footer-row {
@@ -1775,258 +1774,167 @@ body.menu-open {
     color: #D4AF37;
     line-height: 1;
     text-shadow: 0 0 40px rgba(212, 175, 55, 0.15);
-
-    /* ==========================================
-   PREMIUM FOOTER (IMAGE MATCHING STYLE)
-   ========================================== */
-.footer-premium {
-    background-color: #F8F5EE;
-    background-image: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
-    padding: 40px 5% 10px;
-    font-family: "Poppins", sans-serif;
-    width: 100%;
-    position: relative;
-    overflow: hidden;
 }
 
-/* చుక్కలు (Dots) డిజైన్ */
-.footer-dots-top-left {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 120px;
-    height: 120px;
-    background-image: radial-gradient(#d4af37 1.5px, transparent 1.5px);
-    background-size: 12px 12px;
-    opacity: 0.3;
-    z-index: 0;
-}
-.footer-dots-bottom-right {
-    position: absolute;
-    bottom: 80px;
-    right: 20px;
-    width: 150px;
-    height: 150px;
-    background-image: radial-gradient(#d4af37 1.5px, transparent 1.5px);
-    background-size: 12px 12px;
-    opacity: 0.3;
-    z-index: 0;
-}
-
-/* కింద నల్లటి వేవ్ (Wave) డిజైన్ */
-.footer-wave-bottom {
-    position: absolute;
-    bottom: -10px;
-    left: -5%;
-    width: 110%;
-    height: 80px;
-    background: #0A0A0A;
-    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-    box-shadow: 0 -8px 20px rgba(212, 175, 55, 0.15);
-    z-index: 0;
-}
-
-.footer-inner-content {
-    position: relative;
-    z-index: 2;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* లోగో సెక్షన్ */
-.footer-brand-row {
-    text-align: center;
-    margin-bottom: 30px;
-}
-.brand-star {
-    color: #D4AF37;
-    font-size: 24px;
-    display: block;
-    margin-bottom: 5px;
-}
-.brand-title {
-    font-size: 32px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    line-height: 1;
-    margin-bottom: 5px;
-}
-.brand-title .text-gold { color: #C9A030; }
-.brand-title .text-black { color: #111111; }
-.brand-subtitle {
-    color: #555;
-    font-size: 15px;
-    font-weight: 500;
-}
-
-/* పిల్ హెడ్డర్స్ (CATEGORIES, CONTACT US) */
-.footer-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 25px;
-}
-.footer-pill-header {
-    background: #1A1105;
-    color: #F3CF55;
-    font-size: 13px;
-    font-weight: 700;
-    padding: 6px 30px;
-    border-radius: 50px;
-    border: 1px solid #D4AF37;
-    letter-spacing: 2px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2), inset 0 0 10px rgba(212, 175, 55, 0.2);
-}
-
-/* కేటగిరీల గ్రిడ్ (బాక్సులు) */
-.footer-cat-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    width: 100%;
-}
-.cat-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: linear-gradient(180deg, #ffffff, #FCF8F2);
-    border: 1.5px solid #E6C875;
-    border-radius: 16px;
-    padding: 15px 20px;
-    min-width: 110px;
-    text-decoration: none;
-    color: #111;
-    font-size: 13px;
-    font-weight: 600;
-    box-shadow: 0 4px 10px rgba(212, 175, 55, 0.08);
-    transition: all 0.3s ease;
-}
-.cat-box i {
+.brand-group .brand-name {
     font-size: 26px;
-    color: #C9A030;
-}
-.cat-box:hover {
-    transform: translateY(-3px);
-    border-color: #D4AF37;
-    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
+    font-weight: 800;
+    color: #D4AF37 !important;
+    letter-spacing: 0.5px;
+    text-shadow: none !important;
 }
 
-/* కాంటాక్ట్ అస్ బటన్స్ */
-.footer-contact-row {
+.brand-group .brand-name span {
+    color: #1C1C1C !important;
+    text-shadow: none !important;
+}
+
+.brand-group .brand-tagline {
+    color: #D4AF37;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 1;
+    text-shadow: 0 0 25px rgba(212, 175, 55, 0.15);
+}
+
+.inline-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-}
-.contact-pill {
-    display: flex;
     align-items: center;
-    gap: 8px;
-    background: linear-gradient(180deg, #ffffff, #FCF8F2);
-    border: 1.5px solid #E6C875;
-    border-radius: 50px;
-    padding: 10px 25px;
-    text-decoration: none;
-    color: #111;
-    font-weight: 600;
-    font-size: 14px;
-    box-shadow: 0 4px 10px rgba(212, 175, 55, 0.08);
-    transition: all 0.3s ease;
-}
-.contact-pill:hover {
-    transform: translateY(-2px);
-    border-color: #D4AF37;
-    box-shadow: 0 6px 15px rgba(212, 175, 55, 0.15);
-}
-.contact-pill i { font-size: 18px; }
-
-/* ఇన్ఫర్మేషన్ లింక్స్ */
-.footer-info-links {
-    text-align: center;
-    line-height: 2;
-    color: #111;
-}
-.footer-info-links a {
-    color: #111;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
-    transition: color 0.3s;
-    padding: 0 5px;
-}
-.footer-info-links a:hover {
-    color: #C9A030;
-}
-.footer-info-links .pipe {
-    color: #C9A030;
-    font-weight: 300;
-    margin: 0 5px;
+    gap: 6px 24px;
 }
 
-/* ఇన్‌స్టాగ్రామ్ లింక్ */
-.footer-insta-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+.inline-list li a {
+    color: #1C1C1C;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    padding: 2px 0;
+    position: relative;
+    white-space: nowrap;
+}
+
+.inline-list li a:hover {
+    color: #D4AF37;
+    text-shadow: 0 0 35px rgba(212, 175, 55, 0.15);
+}
+
+.inline-list li a.accent-link {
+    color: #D4AF37;
     font-weight: 700;
-    color: #dc2743;
-    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.15);
+}
+
+.inline-list li a.accent-link:hover {
+    color: #F3CF55;
+    text-shadow: 0 0 45px rgba(212, 175, 55, 0.2);
+}
+
+.inline-list li a.whatsapp-link {
+    color: #25D366;
+    text-shadow: 0 0 25px rgba(37, 211, 102, 0.08);
+}
+
+.inline-list li a.whatsapp-link:hover {
+    text-shadow: 0 0 45px rgba(37, 211, 102, 0.12);
+}
+
+.follow-row .insta-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-}
-.footer-insta-btn i {
-    font-size: 22px;
-    -webkit-text-fill-color: #dc2743;
+    background-clip: text;
+    filter: drop-shadow(0 0 20px rgba(225, 48, 108, 0.08)) drop-shadow(0 0 40px rgba(225, 48, 108, 0.04));
 }
 
-/* డివైడర్ */
+.follow-row .insta-link span:first-child {
+    font-size: 20px;
+    -webkit-text-fill-color: initial;
+    color: #1C1C1C;
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.04));
+}
+
+.follow-row .insta-link:hover span:first-child {
+    transform: scale(1.25) rotate(-6deg);
+    filter: drop-shadow(0 0 30px rgba(225, 48, 108, 0.12));
+}
+
 .footer-divider {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px 0 20px;
+    padding: 22px 0 16px;
     position: relative;
+    z-index: 2;
+    max-width: 1320px;
     margin: 0 auto;
 }
+
 .footer-divider::before {
     content: '';
     position: absolute;
-    left: 15%;
-    right: 15%;
-    height: 1.5px;
-    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.5), transparent);
-}
-.footer-divider span {
-    background: #F8F5EE;
-    padding: 0 20px;
-    color: #D4AF37;
-    font-size: 16px;
-    position: relative;
-    letter-spacing: 5px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.04);
 }
 
-/* కాపీరైట్ */
-.footer-copyright {
-    text-align: center;
-    margin-bottom: 25px;
+.footer-divider span {
+    background: #FFFFFF;
+    padding: 0 20px;
+    color: #D4AF37;
+    font-size: 15px;
+    position: relative;
+    z-index: 2;
+    letter-spacing: 3px;
+    text-shadow: 0 0 40px rgba(212, 175, 55, 0.15);
 }
-.footer-copyright p {
-    margin: 5px 0;
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding-top: 6px;
+    position: relative;
+    z-index: 2;
+}
+
+.footer-bottom p {
+    color: #1C1C1C;
     font-size: 13px;
-    color: #111;
-    font-weight: 500;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    margin: 0;
 }
-.footer-copyright .made-in-india {
-    color: #C9A030;
+
+.footer-bottom .made {
+    color: #D4AF37;
+    opacity: 1;
     font-weight: 600;
+    text-shadow: 0 0 25px rgba(212, 175, 55, 0.06);
 }
-.footer-copyright .made-in-india span { color: #e85d5d; }
+
+.footer-bottom .made span {
+    color: #D4AF37;
+    opacity: 1;
+    text-shadow: 0 0 40px rgba(212, 175, 55, 0.08);
+}
+
 /* ==========================================
    BOTTOM BAR
    ========================================== */
@@ -2901,60 +2809,149 @@ body.menu-open {
     .brand-card:hover img {
         transform: scale(1.08);
     }
+    .footer-premium {
+        padding: 20px 4% 14px;
+    }
+    .footer-row {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px 0;
+        padding: 4px 0;
+    }
+    .row-label {
+        font-size: 11px;
+        text-align: center;
+    }
+    .brand-group {
+        flex-direction: column;
+        align-items: center;
+        gap: 4px 10px;
+        text-align: center;
+    }
+    .brand-group .brand-icon {
+        font-size: 20px;
+    }
+    .brand-group .brand-name {
+        font-size: 22px;
+    }
+    .brand-group .brand-tagline {
+        font-size: 12px;
+    }
+    .brand-group .brand-desc {
+        font-size: 12px;
+    }
+    .inline-list {
+        gap: 4px 16px;
+    }
+    .inline-list li a {
+        font-size: 13px;
+    }
+    .inline-list li a:active {
+        color: #D4AF37;
+        transform: scale(1.05);
+        text-shadow: 0 0 35px rgba(212, 175, 55, 0.12);
+    }
+    .inline-list li a.accent-link:active {
+        color: #F3CF55;
+        text-shadow: 0 0 45px rgba(212, 175, 55, 0.15);
+    }
+    .inline-list li a.whatsapp-link:active {
+        text-shadow: 0 0 45px rgba(37, 211, 102, 0.10);
+    }
+    .follow-row .insta-link {
+        font-size: 14px;
+    }
+    .follow-row .insta-link span:first-child {
+        font-size: 18px;
+    }
+    .follow-row .insta-link:active span:first-child {
+        transform: scale(1.2) rotate(-6deg);
+        filter: drop-shadow(0 0 30px rgba(225, 48, 108, 0.08));
+    }
+    .footer-divider {
+        padding: 14px 0 10px;
+    }
+    .footer-divider span {
+        font-size: 13px;
+        padding: 0 14px;
+    }
+    .footer-bottom {
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        padding: 4px 4px;
+        text-align: center;
+    }
+    .footer-bottom p {
+        font-size: 11px;
+    }
     
-    
-    /* Mobile Footer Responsive */
-.footer-premium {
-    padding: 30px 10px 10px;
-}
-.footer-dots-top-left, .footer-dots-bottom-right {
-    display: none;
-}
-.footer-wave-bottom {
-    height: 50px;
-}
-.brand-title { font-size: 26px; }
-.brand-subtitle { font-size: 13px; }
+    .bottom-bar {
+        position: fixed;
+        bottom: 16px !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+        width: calc(100% - 24px) !important;
+        max-width: 450px !important;
+        z-index: 9999 !important;
+        background: linear-gradient(145deg, #1A2235, #0B0F19) !important;
+        border: 1px solid rgba(212, 175, 55, 0.25) !important;
+        border-radius: 40px !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+        padding: 0 !important;
+    }
+    .bottom-container {
+        padding: 8px 10px !important;
+    }
+    .bottom-item {
+        padding: 4px 8px !important;
+        max-width: 75px !important;
+    }
+    .bottom-item.active::before {
+        display: none !important;
+    }
 
-.footer-pill-header {
-    font-size: 11px;
-    padding: 5px 20px;
-    margin-bottom: 12px;
-}
-
-.footer-cat-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    width: 100%;
-}
-.cat-box {
-    min-width: unset;
-    width: 100%;
-    padding: 12px 5px;
-    font-size: 10px;
-}
-.cat-box i { font-size: 22px; }
-
-.footer-contact-row {
-    gap: 8px;
-}
-.contact-pill {
-    padding: 8px 15px;
-    font-size: 12px;
-}
-.contact-pill i { font-size: 16px; }
-
-.footer-info-links { line-height: 2.2; }
-.footer-info-links a { font-size: 12px; padding: 0 3px; }
-.footer-info-links .pipe { margin: 0 2px; }
-
-.footer-divider::before { left: 5%; right: 5%; }
-
-.footer-copyright p { font-size: 11px; }
-
-.developer-credit-label { font-size: 11px; letter-spacing: 1px; }
-.developer-credit-link { padding: 8px 18px; font-size: 13px; }
+    .cart-item {
+        position: relative;
+    }
+    .cart-item .bottom-icon,
+    .cart-item .bottom-icon:focus,
+    .cart-item .bottom-icon:active {
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+    }
+    .bottom-bar .cart-item {
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        transform: none;
+    }
+    .bottom-bar .cart-item:hover {
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        transform: none;
+    }
+    .product-fav-btn {
+        width: 36px !important;
+        height: 36px !important;
+        top: 10px !important;
+        right: 10px !important;
+    }
+    .product-fav-btn .fa-heart {
+        font-size: 18px !important;
+    }
+    .footer-row .inline-list {
+        width: 100% !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
 }
 
 /* ================================================================
