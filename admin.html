@@ -670,7 +670,7 @@
                 <select id="categoryFilter" onchange="filterProducts()">
                     <option value="">All</option>
                     <option value="mobiles">📱 Mobiles</option>
-                    <option value="fridge">🧊 Refrigerators</option>
+                    <option value="fridge">🧊 Fridge</option>
                     <option value="washing">👕 Washing</option>
                     <option value="ac">❄️ AC</option>
                     <option value="tv">🖥️ TV</option>
@@ -837,7 +837,7 @@
                         <label>Category <span class="required">*</span></label>
                         <select id="editCategory">
                             <option value="mobiles">📱 Mobiles</option>
-                            <option value="fridge">🧊 Refrigerators</option>
+                            <option value="fridge">🧊 Fridge</option>
                             <option value="washing">👕 Washing Machines</option>
                             <option value="ac">❄️ AC</option>
                             <option value="tv">🖥️ TV</option>
@@ -1061,6 +1061,36 @@
 
         const $ = id => document.getElementById(id);
 
+        // Keep every refrigerator product under one canonical category.
+        // Legacy values (Refrigerators / Fridge / refrigerator) are normalized to "fridge".
+        function normalizeCategory(value) {
+            // Accept legacy DB labels, mixed casing, whitespace and emoji-prefixed labels.
+            const key = String(value ?? '')
+                .normalize('NFKC')
+                .toLowerCase()
+                .replace(/[^a-z]+/g, ' ')
+                .trim()
+                .replace(/\\s+/g, ' ');
+
+            if (/^(refrigerator|refrigerators|fridge|fridges)$/.test(key)) return 'fridge';
+            if (/^(mobile|mobiles)$/.test(key)) return 'mobiles';
+            if (/^(washing|washing machine|washing machines|washer|washers)$/.test(key)) return 'washing';
+            if (/^(air conditioner|air conditioners|ac)$/.test(key)) return 'ac';
+            if (/^(television|televisions|tv)$/.test(key)) return 'tv';
+            return key;
+        }
+
+        function categoryDisplayName(value) {
+            const category = normalizeCategory(value);
+            return ({
+                mobiles: 'Mobiles',
+                fridge: 'Fridge',
+                washing: 'Washing',
+                ac: 'AC',
+                tv: 'TV'
+            })[category] || (value || 'Uncategorized');
+        }
+
         // ───── AUTH ─────
         // Only this email is allowed to access the Admin Panel.
         const ADMIN_EMAIL = 'jbstore01012@gmail.com';
@@ -1217,7 +1247,29 @@
             try {
                 const { data, error } = await supabaseClient.from('products').select('*').order('id', { ascending: true });
                 if (error) throw error;
-                allProducts = data || [];
+                const rawProducts = data || [];
+                allProducts = rawProducts.map(product => ({
+                    ...product,
+                    category: normalizeCategory(product.category)
+                }));
+
+                // Persist category cleanup so old and new refrigerator rows no longer mix.
+                const legacyRows = rawProducts.filter(product =>
+                    normalizeCategory(product.category) !== String(product.category || '').trim().toLowerCase()
+                );
+                if (legacyRows.length) {
+                    const migrationResults = await Promise.all(legacyRows.map(product =>
+                        supabaseClient.from('products')
+                            .update({ category: normalizeCategory(product.category) })
+                            .eq('id', product.id)
+                    ));
+                    const migrationError = migrationResults.find(result => result.error)?.error;
+                    if (migrationError) {
+                        console.warn('Some product categories could not be normalized:', migrationError);
+                        showToast('Some old category values could not be updated in the database. Display is normalized.', 'error');
+                    }
+                }
+
                 filteredProducts = [...allProducts];
                 currentPage = 1;
                 updateStats();
@@ -1253,7 +1305,7 @@
 
         function updateStats() {
             $('statTotal').textContent = allProducts.length;
-            const cats = new Set(allProducts.map(p => p.category).filter(Boolean));
+            const cats = new Set(allProducts.map(p => normalizeCategory(p.category)).filter(Boolean));
             $('statCategories').textContent = cats.size;
             let vc = 0, cc = 0;
             allProducts.forEach(p => {
@@ -1271,7 +1323,7 @@
             const search = $('globalSearch').value.toLowerCase().trim();
             filteredProducts = allProducts.filter(p => {
                 let m = true;
-                if (cat && p.category !== cat) m = false;
+                if (cat && normalizeCategory(p.category) !== normalizeCategory(cat)) m = false;
                 if (m && cond && p.condition !== cond) m = false;
                 if (m && brand && (p.brand || '') !== brand) m = false;
                 if (m && search) {
@@ -1312,8 +1364,8 @@
             pageItems.forEach(p => {
                 const colors = p.colors || [];
                 const colorNames = colors.map(c => c.name).filter(Boolean).join(', ') || '—';
-                const catClass = p.category || 'mobiles';
-                const catLabel = p.category ? p.category.charAt(0).toUpperCase() + p.category.slice(1) : 'Uncategorized';
+                const catClass = normalizeCategory(p.category) || 'mobiles';
+                const catLabel = categoryDisplayName(p.category);
                 html += `<tr>
                     <td><div class="product-cell">
                         <div class="thumb"><img src="${p.image || 'https://via.placeholder.com/48/eee/aaa?text=No+Img'}" onerror="this.src='https://via.placeholder.com/48/eee/aaa?text=No+Img'" /></div>
@@ -1673,19 +1725,16 @@
             $('editId').value = p.id || '';
             $('editName').value = p.name || '';
             $('editBrand').value = p.brand || '';
-            const categoryMap = {
-        'Refrigerators': 'fridge',
-        'Fridge': 'fridge',
-        'Mobiles': 'mobiles',
-        'mobiles': 'mobiles',
-        'Washing Machines': 'washing',
-        'washing': 'washing',
-        'AC': 'ac',
-        'ac': 'ac',
-        'TV': 'tv',
-        'tv': 'tv'
-    };
-    $('editCategory').value = categoryMap[p.category] || 'mobiles';
+            // Set the edit dropdown from the product's actual saved category.
+            // Never silently fall back to Mobiles for an unknown/legacy category.
+            const editCategoryValue = normalizeCategory(p.category);
+            const editCategorySelect = $('editCategory');
+            const categoryExists = Array.from(editCategorySelect.options)
+                .some(option => option.value === editCategoryValue);
+            editCategorySelect.value = categoryExists ? editCategoryValue : '';
+            if (!categoryExists) {
+                console.warn('Unknown product category while editing:', p.id, p.category);
+            }
             $('editPrice').value = p.price || 0;
             $('editOldPrice').value = p.oldPrice || 0;
             $('editCondition').value = p.condition || '';
@@ -1793,9 +1842,7 @@
                 const product = {
                     id, name,
                     brand: $('editBrand').value.trim(),
-                    category: $('editCategory').value === 'fridge'
-            ? 'Refrigerators'
-            : $('editCategory').value,
+                    category: normalizeCategory($('editCategory').value),
                     price: parseFloat($('editPrice').value) || 0,
                     oldPrice: parseFloat($('editOldPrice').value) || 0,
                     condition: $('editCondition').value.trim(),
