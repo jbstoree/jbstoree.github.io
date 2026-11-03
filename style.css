@@ -4087,3 +4087,521 @@ body.menu-open {
         font-size: 11px !important;
     }
    }
+
+/* ================================================================
+   SMART TV / LARGE SCREEN OPTIMIZATION (50-inch TV ~1920px+)
+   ================================================================ */
+@media (min-width: 1600px) {
+
+    /* ---------- HEADER ---------- */
+    .header {
+        padding: 16px 48px 18px !important;
+        gap: 12px !important;
+    }
+    .header-top {
+        width: 100% !important;
+        max-width: 1700px !important;
+        margin: 0 auto !important;
+    }
+    .logo img {
+        width: 210px !important;
+    }
+    .header .logo {
+        font-size: 34px !important;
+    }
+    .menu-toggle span {
+        width: 34px !important;
+        height: 3px !important;
+    }
+    .account-link {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 24px !important;
+    }
+
+    /* ---------- SEARCH ---------- */
+    .search {
+        width: calc(100% - 6px) !important;
+        max-width: 1700px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        border-radius: 60px !important;
+    }
+    .search input {
+        height: 58px !important;
+        font-size: 16px !important;
+        padding: 0 26px !important;
+    }
+    .search button {
+        width: 72px !important;
+        height: 58px !important;
+        font-size: 24px !important;
+        border-radius: 0 60px 60px 0 !important;
+    }
+
+    /* ---------- HERO ---------- */
+    .hero-wrapper {
+        max-width: 1780px !important;
+        margin: 0 auto !important;
+        padding: 8px 20px 0 !important;
+    }
+    .hero {
+        width: 100% !important;
+        border-radius: 24px !important;
+    }
+    .hero-slide img {
+        border-radius: 24px !important;
+    }
+    .hero-dot {
+        width: 60px !important;
+        height: 6px !important;
+    }
+
+    /* ---------- CATEGORY MENU ---------- */
+    #categoryMenu.menu {
+        max-width: 1500px !important;
+        width: calc(100% - 80px) !important;
+        padding: 10px 14px !important;
+        gap: 12px !important;
+        margin: 24px auto !important;
+        border-radius: 60px !important;
+    }
+    #categoryMenu .cat {
+        font-size: 15px !important;
+        padding: 14px 26px !important;
+        border-radius: 50px !important;
+    }
+    #categoryMenu .cat .cat-icon {
+        font-size: 20px !important;
+        margin-right: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    /* ---------- FILTERS / BRAND CHIPS ---------- */
+    .filters {
+        padding: 28px 6% 34px !important;
+    }
+    .filter-header {
+        max-width: 1700px;
+        margin: 0 auto 20px !important;
+    }
+    .filter-title { font-size: 15px !important; }
+    .filter-icon { font-size: 18px !important; }
+    .clear-btn {
+        font-size: 14px !important;
+        padding: 9px 24px !important;
+    }
+    #brandFilters {
+        max-width: 1700px !important;
+        margin: 0 auto !important;
+        justify-content: center !important;
+    }
+    .brand-list {
+        gap: 18px !important;
+        padding: 10px 4px 18px !important;
+        justify-content: center !important;
+    }
+    .brand-list .chip {
+        flex: 0 0 160px !important;
+        width: 160px !important;
+        height: 130px !important;
+        padding: 14px 8px !important;
+        border-radius: 22px !important;
+    }
+    .brand-list .chip img {
+        width: 70px !important;
+        height: 55px !important;
+        margin-bottom: 8px !important;
+    }
+    .brand-list .chip span { font-size: 15px !important; }
+
+    /* ---------- SECTION CONTAINERS ---------- */
+    .categories,
+    .deals,
+    .best-sellers,
+    .brands {
+        padding-left: 6% !important;
+        padding-right: 6% !important;
+    }
+    .categories > .section-head,
+    .categories > .category-grid,
+    .deals > .section-head,
+    .deals > .deal-grid,
+    .deals > .top-deals-pagination,
+    .best-sellers > .section-head,
+    .best-sellers > .best-grid,
+    .brands > .section-head,
+    .brands > .brand-grid {
+        max-width: 1700px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    .section-head {
+        margin-bottom: 40px !important;
+        padding-bottom: 22px !important;
+    }
+    .section-head h2,
+    .deals .section-head h2,
+    .brands .section-head h2 {
+        font-size: 38px !important;
+    }
+    .section-head h2::before,
+    .deals .section-head h2::before {
+        width: 6px !important;
+        height: 38px !important;
+    }
+    .view-all {
+        font-size: 16px !important;
+        padding: 11px 26px !important;
+        border-radius: 30px !important;
+    }
+
+    /* ---------- CATEGORY CARDS (8 in one row) ---------- */
+    .category-grid { gap: 16px !important; }
+    .category-grid .premium-cat-card {
+        flex: 0 0 calc(12.5% - 14px) !important;
+        max-width: calc(12.5% - 14px) !important;
+        border-radius: 20px !important;
+        padding: 20px 10px !important;
+        aspect-ratio: 1 / 1.2 !important;
+    }
+    .premium-cat-card img {
+        max-width: 110px !important;
+        max-height: 110px !important;
+        margin-bottom: 14px !important;
+    }
+    .premium-cat-card p {
+        font-size: 15px !important;
+        font-weight: 700 !important;
+    }
+    .cat-badge {
+        font-size: 11px !important;
+        padding: 4px 14px !important;
+    }
+
+    /* ---------- DEAL CARDS (5 in one row) ---------- */
+    .deal-grid {
+        grid-template-columns: repeat(5, 1fr) !important;
+        gap: 24px !important;
+    }
+    .deal-card {
+        padding: 24px 20px 22px !important;
+        border-radius: 24px !important;
+    }
+    .deal-card img { height: 200px !important; }
+    .deal-card .image-wrapper::after {
+        width: 180px !important;
+        height: 32px !important;
+    }
+    .deal-card h3 {
+        font-size: 17px !important;
+        min-height: 44px !important;
+    }
+    .deal-card .brand { font-size: 13px !important; }
+    .deal-card .variant-tag {
+        font-size: 13px !important;
+        padding: 6px 16px !important;
+    }
+    .deal-card .rating { font-size: 14px !important; }
+    .deal-card .rating span { font-size: 13px !important; }
+    .deal-card .price { font-size: 20px !important; }
+    .deal-card .old-price { font-size: 13px !important; }
+    .deal-actions .view-details-btn {
+        height: 48px !important;
+        font-size: 14px !important;
+        border-radius: 24px !important;
+    }
+    .deal-card .favorite-btn {
+        width: 44px !important;
+        height: 44px !important;
+    }
+    .deal-card .favorite-btn .fa-heart {
+        font-size: 18px !important;
+    }
+
+    /* ---------- EXCHANGE OFFER ---------- */
+    .exchange-offer { padding: 30px 6% !important; }
+    .exchange-offer img {
+        max-width: 1700px !important;
+        border-radius: 20px !important;
+    }
+
+    /* ---------- BANNER SLIDER ---------- */
+    .banner-slider {
+        max-width: 1780px !important;
+        margin: 0 auto !important;
+        padding: 0 20px !important;
+    }
+    .slides {
+        aspect-ratio: 16 / 5 !important;
+        border-radius: 20px !important;
+    }
+
+    /* ---------- BEST SELLERS (5 in one row) ---------- */
+    .best-grid {
+        grid-template-columns: repeat(5, 1fr) !important;
+        gap: 24px !important;
+    }
+    .best-card {
+        padding: 24px !important;
+        border-radius: 24px !important;
+    }
+    .best-card img { height: 220px !important; }
+    .best-card h3 { font-size: 19px !important; }
+    .best-card .brand { font-size: 15px !important; }
+    .new { font-size: 26px !important; }
+    .old { font-size: 15px !important; }
+    .best-card button {
+        height: 52px !important;
+        font-size: 15px !important;
+        border-radius: 14px !important;
+    }
+
+    /* ---------- TOP BRANDS ---------- */
+    .brand-grid {
+        gap: 28px !important;
+        justify-content: center !important;
+    }
+    .brand-grid .brand-card {
+        min-width: 220px !important;
+    }
+    .brand-card {
+        padding: 32px 24px 26px !important;
+        border-radius: 24px !important;
+    }
+    .brand-card img {
+        max-width: 100px !important;
+        height: 70px !important;
+    }
+    .brand-name { font-size: 17px !important; }
+    .brand-count {
+        font-size: 15px !important;
+        padding: 8px 20px !important;
+    }
+
+    /* ---------- FOOTER ---------- */
+    .footer-premium { padding: 50px 6% 30px !important; }
+    .footer-row {
+        max-width: 1700px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        gap: 10px 36px !important;
+        padding: 8px 0 !important;
+    }
+    .row-label { font-size: 14px !important; }
+    .inline-list { gap: 8px 32px !important; }
+    .inline-list li a { font-size: 16px !important; }
+    .brand-group .brand-name { font-size: 36px !important; }
+    .brand-group .brand-tagline { font-size: 17px !important; }
+    .brand-group .brand-icon { font-size: 32px !important; }
+    .follow-row .insta-link { font-size: 18px !important; }
+    .follow-row .insta-link span:first-child { font-size: 26px !important; }
+    .footer-divider {
+        max-width: 1700px !important;
+        margin: 0 auto !important;
+    }
+    .footer-divider span { font-size: 18px !important; }
+    .footer-bottom {
+        max-width: 1700px !important;
+        margin: 0 auto !important;
+    }
+    .footer-bottom p { font-size: 15px !important; }
+
+    /* ---------- DEVELOPER CREDIT ---------- */
+    .developer-credit { padding: 22px 24px 28px !important; }
+    .developer-credit-label {
+        font-size: 14px !important;
+        letter-spacing: 2px !important;
+    }
+    .developer-credit-link {
+        font-size: 17px !important;
+        padding: 12px 24px !important;
+        gap: 12px !important;
+    }
+    .developer-credit-link .fa-instagram { font-size: 24px !important; }
+
+    /* ---------- BOTTOM BAR ---------- */
+    .bottom-bar {
+        max-width: 680px !important;
+        bottom: 32px !important;
+        border-radius: 50px !important;
+    }
+    .bottom-container { padding: 14px 28px !important; }
+    .bottom-item {
+        max-width: 120px !important;
+        padding: 10px 18px !important;
+        gap: 6px !important;
+    }
+    .bottom-icon { font-size: 28px !important; }
+    .bottom-label { font-size: 14px !important; }
+    .bottom-item .cart-badge,
+    .bottom-item .fav-badge {
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 12px !important;
+        top: 4px !important;
+        right: 10px !important;
+    }
+    .call-item .bottom-icon {
+        padding: 10px !important;
+        font-size: 20px !important;
+    }
+
+    /* ---------- MENU DRAWER ---------- */
+    .menu-drawer {
+        width: 36vw !important;
+        max-width: 720px !important;
+    }
+    .menu-header { padding: 30px 32px 22px !important; }
+    .menu-header .menu-logo { font-size: 26px !important; }
+    .menu-close {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 24px !important;
+    }
+    .menu-nav {
+        padding: 22px 24px 26px !important;
+        gap: 8px !important;
+    }
+    .menu-item {
+        font-size: 18px !important;
+        padding: 18px 24px !important;
+        border-radius: 18px !important;
+    }
+    .menu-item .item-icon {
+        font-size: 24px !important;
+        width: 34px !important;
+    }
+    .menu-nav .menu-item .fav-badge,
+    .menu-nav .menu-item .cart-badge {
+        width: 26px !important;
+        height: 26px !important;
+        font-size: 12px !important;
+    }
+    .menu-footer { padding: 20px 32px 14px !important; }
+    .menu-footer .menu-version { font-size: 13px !important; }
+
+    /* ---------- SEARCH SUGGESTIONS ---------- */
+    .search-suggestions,
+    #searchSuggestions {
+        max-height: 520px !important;
+        border-radius: 22px !important;
+    }
+    .search-suggestion {
+        padding: 16px 26px !important;
+        gap: 20px !important;
+    }
+    .search-suggestion img {
+        width: 62px !important;
+        height: 62px !important;
+    }
+    .suggestion-name { font-size: 17px !important; }
+    .suggestion-category { font-size: 14px !important; }
+    .suggestion-arrow { font-size: 22px !important; }
+
+    /* ---------- TOP DEALS PAGINATION ---------- */
+    .top-deals-pagination {
+        gap: 12px !important;
+        margin-top: 40px !important;
+    }
+    .top-deals-pagination button {
+        min-width: 54px !important;
+        height: 54px !important;
+        font-size: 16px !important;
+        padding: 0 20px !important;
+        border-radius: 12px !important;
+    }
+    .top-deals-pagination .page-info { font-size: 16px !important; }
+
+    /* ---------- PROFILE MODAL ---------- */
+    .jb-profile-card {
+        max-width: 680px !important;
+        padding: 36px 40px !important;
+        border-radius: 30px 30px 0 0 !important;
+    }
+    .jb-profile-head h2 { font-size: 32px !important; }
+    .jb-profile-avatar {
+        width: 96px !important;
+        height: 96px !important;
+        font-size: 46px !important;
+    }
+    .jb-profile-field label { font-size: 15px !important; }
+    .jb-profile-field input,
+    .jb-profile-field textarea {
+        font-size: 17px !important;
+        padding: 16px 18px !important;
+    }
+    .jb-profile-save,
+    .jb-profile-logout,
+    .jb-profile-delete {
+        font-size: 17px !important;
+        padding: 16px !important;
+    }
+}
+
+/* ================================================================
+   4K / VERY LARGE TV (2560px+)
+   ================================================================ */
+@media (min-width: 2560px) {
+    .header {
+        padding-left: 80px !important;
+        padding-right: 80px !important;
+    }
+    .header-top,
+    .search { max-width: 2200px !important; }
+    .hero-wrapper {
+        max-width: 2300px !important;
+        padding: 10px 30px 0 !important;
+    }
+    .categories > .section-head,
+    .categories > .category-grid,
+    .deals > .section-head,
+    .deals > .deal-grid,
+    .best-sellers > .section-head,
+    .best-sellers > .best-grid,
+    .brands > .section-head,
+    .brands > .brand-grid,
+    .footer-row,
+    .footer-divider,
+    .footer-bottom,
+    #brandFilters { max-width: 2200px !important; }
+
+    .categories, .deals, .best-sellers, .brands,
+    .filters, .footer-premium {
+        padding-left: 8% !important;
+        padding-right: 8% !important;
+    }
+    .section-head h2,
+    .deals .section-head h2,
+    .brands .section-head h2 { font-size: 48px !important; }
+    .section-head h2::before,
+    .deals .section-head h2::before {
+        width: 7px !important;
+        height: 48px !important;
+    }
+    .deal-grid, .best-grid { gap: 32px !important; }
+    .deal-card img { height: 250px !important; }
+    .deal-card h3 { font-size: 20px !important; }
+    .deal-card .price { font-size: 24px !important; }
+    .brand-grid .brand-card { min-width: 260px !important; }
+    .brand-card img {
+        max-width: 120px !important;
+        height: 85px !important;
+    }
+    .brand-name { font-size: 20px !important; }
+    #categoryMenu.menu { max-width: 2000px !important; }
+    #categoryMenu .cat {
+        font-size: 17px !important;
+        padding: 16px 30px !important;
+    }
+    .banner-slider {
+        max-width: 2300px !important;
+        padding: 0 30px !important;
+    }
+    .exchange-offer { padding: 40px 8% !important; }
+    .exchange-offer img { max-width: 2200px !important; }
+    .bottom-bar { max-width: 780px !important; }
+    .bottom-icon { font-size: 32px !important; }
+    .bottom-label { font-size: 16px !important; }
+}
+}
