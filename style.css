@@ -4380,7 +4380,9 @@ body.menu-open {
     }
 
     /* ---------- FOOTER ---------- */
-    .footer-premium { padding: 50px 6% 45px !important; }
+    .footer-premium {
+        padding-bottom: 45px !important;
+        margin-bottom: 50px !important;
     .footer-row {
         max-width: 1700px !important;
         margin-left: auto !important;
