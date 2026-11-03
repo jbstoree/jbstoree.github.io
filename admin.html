@@ -1064,12 +1064,19 @@
         // Keep every refrigerator product under one canonical category.
         // Legacy values (Refrigerators / Fridge / refrigerator) are normalized to "fridge".
         function normalizeCategory(value) {
-            const key = String(value || '').trim().toLowerCase();
-            if (['refrigerator', 'refrigerators', 'fridge', 'fridges'].includes(key)) return 'fridge';
-            if (['mobile', 'mobiles'].includes(key)) return 'mobiles';
-            if (['washing machine', 'washing machines', 'washing'].includes(key)) return 'washing';
-            if (['air conditioner', 'air conditioners', 'ac'].includes(key)) return 'ac';
-            if (['television', 'televisions', 'tv'].includes(key)) return 'tv';
+            // Accept legacy DB labels, mixed casing, whitespace and emoji-prefixed labels.
+            const key = String(value ?? '')
+                .normalize('NFKC')
+                .toLowerCase()
+                .replace(/[^a-z]+/g, ' ')
+                .trim()
+                .replace(/\\s+/g, ' ');
+
+            if (/^(refrigerator|refrigerators|fridge|fridges)$/.test(key)) return 'fridge';
+            if (/^(mobile|mobiles)$/.test(key)) return 'mobiles';
+            if (/^(washing|washing machine|washing machines|washer|washers)$/.test(key)) return 'washing';
+            if (/^(air conditioner|air conditioners|ac)$/.test(key)) return 'ac';
+            if (/^(television|televisions|tv)$/.test(key)) return 'tv';
             return key;
         }
 
@@ -1718,7 +1725,16 @@
             $('editId').value = p.id || '';
             $('editName').value = p.name || '';
             $('editBrand').value = p.brand || '';
-            $('editCategory').value = normalizeCategory(p.category) || 'mobiles';
+            // Set the edit dropdown from the product's actual saved category.
+            // Never silently fall back to Mobiles for an unknown/legacy category.
+            const editCategoryValue = normalizeCategory(p.category);
+            const editCategorySelect = $('editCategory');
+            const categoryExists = Array.from(editCategorySelect.options)
+                .some(option => option.value === editCategoryValue);
+            editCategorySelect.value = categoryExists ? editCategoryValue : '';
+            if (!categoryExists) {
+                console.warn('Unknown product category while editing:', p.id, p.category);
+            }
             $('editPrice').value = p.price || 0;
             $('editOldPrice').value = p.oldPrice || 0;
             $('editCondition').value = p.condition || '';
