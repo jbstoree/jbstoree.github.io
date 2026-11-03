@@ -1673,7 +1673,19 @@
             $('editId').value = p.id || '';
             $('editName').value = p.name || '';
             $('editBrand').value = p.brand || '';
-            $('editCategory').value = p.category || 'mobiles';
+            const categoryMap = {
+        'Refrigerators': 'fridge',
+        'Fridge': 'fridge',
+        'Mobiles': 'mobiles',
+        'mobiles': 'mobiles',
+        'Washing Machines': 'washing',
+        'washing': 'washing',
+        'AC': 'ac',
+        'ac': 'ac',
+        'TV': 'tv',
+        'tv': 'tv'
+    };
+    $('editCategory').value = categoryMap[p.category] || 'mobiles';
             $('editPrice').value = p.price || 0;
             $('editOldPrice').value = p.oldPrice || 0;
             $('editCondition').value = p.condition || '';
@@ -1781,7 +1793,9 @@
                 const product = {
                     id, name,
                     brand: $('editBrand').value.trim(),
-                    category: $('editCategory').value,
+                    category: $('editCategory').value === 'fridge'
+            ? 'Refrigerators'
+            : $('editCategory').value,
                     price: parseFloat($('editPrice').value) || 0,
                     oldPrice: parseFloat($('editOldPrice').value) || 0,
                     condition: $('editCondition').value.trim(),
