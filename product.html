@@ -2701,6 +2701,14 @@
                 manufacturer: document.getElementById('tab-manufacturer')
             };
 
+            // Default tab: Specifications
+            tabs.forEach(tab => tab.classList.remove('active'));
+            const specificationsTab = document.querySelector('.details-tab[data-tab="specifications"]');
+            if (specificationsTab) specificationsTab.classList.add('active');
+            Object.keys(contents).forEach(key => {
+                if (contents[key]) contents[key].classList.toggle('active', key === 'specifications');
+            });
+
             tabs.forEach(tab => {
                 tab.addEventListener('click', function() {
                     tabs.forEach(t => t.classList.remove('active'));
