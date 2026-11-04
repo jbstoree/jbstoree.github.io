@@ -1434,12 +1434,14 @@
                 gap: 18px;
             }
             .product-image-box {
-                aspect-ratio: 1 / 1.05;
-                max-height: 400px;
-                padding: 0;
-                border-radius: 0;
-                background: #FFFFFF;
-            }
+    aspect-ratio: 1 / 1.05;
+    max-height: 400px;
+    padding: 0;
+    /* 👇 మార్పు: మొబైల్ లో కూడా గ్రేడియంట్ వచ్చేలా */
+    border-radius: 16px !important; 
+    background: linear-gradient(145deg, #FFFDF0 0%, #E6F7FF 100%) !important;
+    border: 1px solid rgba(212, 175, 55, 0.3) !important;
+}
             .gallery-slide {
                 padding: 0;
                 background: transparent;
@@ -1575,10 +1577,13 @@
 
         @media (max-width: 400px) {
             .product-image-box {
-                aspect-ratio: 1 / 1.08;
-                max-height: 320px;
-                padding: 8px;
-            }
+    aspect-ratio: 1 / 1.08;
+    max-height: 320px;
+    padding: 8px;
+    /* 👇 మార్పు: స్మాల్ మొబైల్ లో కూడా గ్రేడియంట్ వచ్చేలా */
+    border-radius: 16px !important; 
+    background: linear-gradient(145deg, #FFFDF0 0%, #E6F7FF 100%) !important;
+}
             .thumbnail-strip .thumb-item {
                 flex: 0 0 44px;
                 width: 44px;
