@@ -135,40 +135,55 @@
         }
 
         /* ── LEFT COLUMN: IMAGE GALLERY ── */
-.product-image-section {
-    min-width: 0;
-    position: relative;
-}
+        .product-image-section {
+            min-width: 0;
+            position: relative;
+        }
 
-.product-image-box {
-    touch-action: pan-y;
-    cursor: grab;
-    overflow: hidden !important;
-    isolation: isolate;
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    
-    /* 👇 మార్పు: హోమ్ పేజీ లాంటి ప్రీమియం గ్రేడియంట్ బ్యాక్‌గ్రౌండ్ */
-    background: linear-gradient(145deg, #FFFDF0 0%, #E6F7FF 100%); 
-    border-radius: 16px; /* రౌండ్ కార్నర్స్ */
-    padding: 0;
-    border: 1px solid rgba(212, 175, 55, 0.3) !important; /* సట్ల్ గోల్డ్ బార్డర్ */
-    box-shadow: 0 8px 24px rgba(212, 175, 55, 0.06) !important; /* లైట్ షాడో */
-    
-    /* ── mobile smoothness ── */
-    -webkit-user-select: none;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-}
+        .product-image-box {
+            touch-action: pan-y;
+            cursor: grab;
+            overflow: hidden !important;
+            isolation: isolate;
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: #FFFFFF;
+            border-radius: 0;
+            padding: 0;
+            border: none !important;
+            box-shadow: none !important;
+            /* ── mobile smoothness ── */
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
 
-.product-image-box.dragging {
-    cursor: grabbing;
-}
+        .product-image-box.dragging {
+            cursor: grabbing;
+        }
 
-/* ... (మిగిలిన కోడ్ అలాగే ఉంచండి) ... */
+        .gallery-track {
+            display: flex;
+            flex-wrap: nowrap;
+            height: 100%;
+            width: 100%;
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
+            transition: transform 320ms cubic-bezier(0.22, 0.61, 0.36, 1);
+            user-select: none;
+            -webkit-user-select: none;
+            /* ── mobile GPU layer ── */
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        .gallery-track.is-dragging {
+            transition: none !important;
+        }
+
         .gallery-track.is-snapping {
             transition: transform 320ms cubic-bezier(0.22, 0.61, 0.36, 1) !important;
         }
@@ -1434,14 +1449,12 @@
                 gap: 18px;
             }
             .product-image-box {
-    aspect-ratio: 1 / 1.05;
-    max-height: 400px;
-    padding: 0;
-    /* 👇 మార్పు: మొబైల్ లో కూడా గ్రేడియంట్ వచ్చేలా */
-    border-radius: 16px !important; 
-    background: linear-gradient(145deg, #FFFDF0 0%, #E6F7FF 100%) !important;
-    border: 1px solid rgba(212, 175, 55, 0.3) !important;
-}
+                aspect-ratio: 1 / 1.05;
+                max-height: 400px;
+                padding: 0;
+                border-radius: 0;
+                background: #FFFFFF;
+            }
             .gallery-slide {
                 padding: 0;
                 background: transparent;
@@ -1577,13 +1590,10 @@
 
         @media (max-width: 400px) {
             .product-image-box {
-    aspect-ratio: 1 / 1.08;
-    max-height: 320px;
-    padding: 8px;
-    /* 👇 మార్పు: స్మాల్ మొబైల్ లో కూడా గ్రేడియంట్ వచ్చేలా */
-    border-radius: 16px !important; 
-    background: linear-gradient(145deg, #FFFDF0 0%, #E6F7FF 100%) !important;
-}
+                aspect-ratio: 1 / 1.08;
+                max-height: 320px;
+                padding: 8px;
+            }
             .thumbnail-strip .thumb-item {
                 flex: 0 0 44px;
                 width: 44px;
