@@ -2460,7 +2460,9 @@
                 return;
             }
 
-            const totalRevenue = groupedUsers.reduce((s, u) => s + u.totalSpent, 0);
+            const totalRevenue = allOrders
+    .filter(o => String(o.status || '').trim().toLowerCase() === 'delivered')
+    .reduce((s, o) => s + (Number(o.total) || 0), 0);
             const blockedCount = groupedUsers.filter(u => u.blockedInfo).length;
 
             let html = `
